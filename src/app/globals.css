@@ -1,0 +1,923 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* -------------------------------------------------------------------------- */
+/* 1. DESIGN TOKENS (CSS Variables)                                           */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* Brand Colors */
+  --color-primary-dark: #0d332b;
+  --color-primary-main: #1a4d43;
+  --color-accent-lime: #b0ff5b;
+  --color-accent-orange: #ff6b2c;
+  --color-accent-blue: #1155cc;
+
+  /* Typography Colors */
+  --color-text-main: #0d332b;
+  --color-text-muted: #6b7280;
+  --color-white: #ffffff;
+
+  /* Backgrounds */
+  --color-bg-light: #f9fafb;
+  --background: var(--color-bg-light);
+  --foreground: var(--color-text-main);
+
+  /* Semantic Colors for Services */
+  --color-commercial-bg: #e6f4f1;
+  --color-commercial-text: #1a4d43;
+  --color-digital-bg: #e3f2fd;
+  --color-digital-text: #1155cc;
+
+  /* Glassmorphism & Special Effects */
+  --glass-bg: rgba(26, 77, 67, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --radius-suzali: 24px;
+
+  /* Gradients */
+  --grad-hero: radial-gradient(circle at top right, #1a4d43, #0d332b);
+  --grad-lime: linear-gradient(90deg, #b0ff5b 0%, #d4ff9d 100%);
+
+  /* Animation Tokens */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.7s;
+  --duration-reveal: 0.9s;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 2. TAILWIND THEME CONFIGURATION                                            */
+/* -------------------------------------------------------------------------- */
+@theme {
+  /* Colors */
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-main: var(--color-primary-main);
+  --color-accent-lime: var(--color-accent-lime);
+  --color-accent-orange: var(--color-accent-orange);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-text-muted: var(--color-text-muted);
+
+  /* Spacing & Radius */
+  --radius-suzali: var(--radius-suzali);
+
+  /* Fonts */
+  --font-sans: "Outfit", "Inter", sans-serif;
+  --font-heading: "Outfit", sans-serif;
+
+  /* Animations */
+  --animate-subtle-float: float 6s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3. BASE STYLES                                                             */
+/* -------------------------------------------------------------------------- */
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 8vw, 7rem);
+}
+h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* Custom selection color */
+::selection {
+  background: rgba(176, 255, 91, 0.3);
+  color: var(--color-primary-dark);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 4. PREMIUM ANIMATION KEYFRAMES                                              */
+/* -------------------------------------------------------------------------- */
+
+/* Float */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Reveal Up */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reveal Down */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide In Left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In Right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hero Text Reveal (Split lines) */
+@keyframes heroTextReveal {
+  from {
+    opacity: 0;
+    transform: translateY(100%) rotateX(10deg);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+    filter: blur(0);
+  }
+}
+
+/* Glow Pulse */
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(176, 255, 91, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(176, 255, 91, 0.4),
+      0 0 60px rgba(176, 255, 91, 0.1);
+  }
+}
+
+/* Shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Gradient Shift */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Spin Slow */
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Blob animations for team page */
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes blob-delayed {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-40px, 30px) scale(1.05);
+  }
+  66% {
+    transform: translate(20px, -20px) scale(0.95);
+  }
+}
+
+@keyframes blob-slow {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(10px, -15px) scale(1.08);
+  }
+}
+
+/* Morphing Gradient Background */
+@keyframes morphGradient {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: rotate(0deg);
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: rotate(180deg);
+  }
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: rotate(360deg);
+  }
+}
+
+/* Tag Entrance */
+@keyframes tagEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Counter Reveal */
+@keyframes counterReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Underline Grow */
+@keyframes underlineGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Orbit */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(200px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(200px) rotate(-360deg);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 5. ANIMATION UTILITY CLASSES                                                */
+/* -------------------------------------------------------------------------- */
+
+.animate-reveal-up {
+  animation: revealUp var(--duration-reveal) var(--ease-premium) forwards;
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown var(--duration-normal) var(--ease-premium) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--duration-slow) var(--ease-premium) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--duration-slow) var(--ease-premium) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--duration-slow) var(--ease-premium) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-slow) var(--ease-smooth) forwards;
+}
+
+.animate-hero-text {
+  animation: heroTextReveal 1s var(--ease-premium) forwards;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+
+.animate-blob {
+  animation: blob 8s ease-in-out infinite;
+}
+
+.animate-blob-delayed {
+  animation: blob-delayed 10s ease-in-out infinite;
+}
+
+.animate-blob-slow {
+  animation: blob-slow 12s ease-in-out infinite;
+}
+
+.animate-morph {
+  animation: morphGradient 15s ease-in-out infinite;
+}
+
+.animate-tag-entrance {
+  animation: tagEntrance 0.5s var(--ease-bounce) forwards;
+}
+
+.animate-counter-reveal {
+  animation: counterReveal 0.8s var(--ease-premium) forwards;
+}
+
+/* Stagger delay utilities */
+.delay-0 {
+  animation-delay: 0ms;
+}
+.delay-75 {
+  animation-delay: 75ms;
+}
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-150 {
+  animation-delay: 150ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-400 {
+  animation-delay: 400ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+.delay-600 {
+  animation-delay: 600ms;
+}
+.delay-700 {
+  animation-delay: 700ms;
+}
+.delay-800 {
+  animation-delay: 800ms;
+}
+.delay-1000 {
+  animation-delay: 1000ms;
+}
+.delay-1200 {
+  animation-delay: 1200ms;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 6. CUSTOM UTILITY CLASSES (The "Suzali" Look)                              */
+/* -------------------------------------------------------------------------- */
+
+/* Glass Button (The "Planifier un appel" look) */
+.glass-nav-btn {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  color: white;
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.glass-nav-btn:hover {
+  background: var(--color-primary-main);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Lime Action Button */
+.btn-lime {
+  background: var(--grad-lime);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: transform var(--duration-fast) ease;
+}
+
+.btn-lime:hover {
+  transform: scale(1.03);
+  filter: brightness(1.05);
+}
+
+/* Section Wrapper with the specific Radial Background */
+.hero-gradient {
+  background: var(--grad-hero);
+  color: white;
+}
+
+/* Dotted background pattern */
+.bg-dots {
+  background-image: radial-gradient(
+    var(--color-primary-main) 1px,
+    transparent 0
+  );
+  background-size: 20px 20px;
+}
+
+/* Enhanced card hover */
+.card-hover {
+  transition: all 0.4s var(--ease-premium);
+  border: 1px solid transparent;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  border-color: rgba(26, 77, 67, 0.1);
+  box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.08);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 7. MAGNETIC BUTTON SYSTEM                                                   */
+/* -------------------------------------------------------------------------- */
+
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 36px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  will-change: transform;
+  min-width: 200px;
+}
+
+.magnetic-btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.magnetic-btn-shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg) translateX(-100%);
+  transition: transform 0.6s var(--ease-premium);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.magnetic-btn:hover .magnetic-btn-shine {
+  transform: rotate(45deg) translateX(100%);
+}
+
+/* Primary Magnetic */
+.magnetic-btn-primary {
+  background: linear-gradient(135deg, #b0ff5b 0%, #8adf35 100%);
+  color: var(--color-primary-dark);
+  box-shadow:
+    0 4px 15px rgba(176, 255, 91, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.magnetic-btn-primary:hover {
+  box-shadow:
+    0 8px 30px rgba(176, 255, 91, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Outline Light Magnetic */
+.magnetic-btn-outline-light {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+.magnetic-btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Outline Magnetic */
+.magnetic-btn-outline {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 2px solid var(--color-primary-main);
+}
+
+.magnetic-btn-outline:hover {
+  background: var(--color-primary-main);
+  color: var(--color-accent-lime);
+}
+
+/* Lime Magnetic */
+.magnetic-btn-lime {
+  background: linear-gradient(135deg, #b0ff5b 0%, #d4ff9d 100%);
+  color: var(--color-primary-dark);
+  box-shadow: 0 4px 20px rgba(176, 255, 91, 0.25);
+}
+
+.magnetic-btn-lime:hover {
+  box-shadow: 0 8px 35px rgba(176, 255, 91, 0.4);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 8. PREMIUM GLASS MORPHISM NAVBAR                                            */
+/* -------------------------------------------------------------------------- */
+
+.navbar-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(13, 51, 43, 0.06);
+  transition: all 0.4s var(--ease-smooth);
+}
+
+.navbar-glass.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Nav link hover underline effect */
+.nav-link-premium {
+  position: relative;
+  font-weight: 500;
+  transition: color 0.3s var(--ease-smooth);
+}
+
+.nav-link-premium::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent-lime),
+    var(--color-primary-main)
+  );
+  border-radius: 1px;
+  transition: width 0.3s var(--ease-premium);
+}
+
+.nav-link-premium:hover::after {
+  width: 100%;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 9. SCROLL-TRIGGERED SECTION TRANSITIONS                                     */
+/* -------------------------------------------------------------------------- */
+
+.section-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity var(--duration-reveal) var(--ease-premium),
+    transform var(--duration-reveal) var(--ease-premium);
+}
+
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 10. PREMIUM CARD EFFECTS                                                    */
+/* -------------------------------------------------------------------------- */
+
+/* 3D Tilt Card */
+.card-3d {
+  perspective: 1000px;
+  transition: transform 0.5s var(--ease-premium);
+}
+
+.card-3d-inner {
+  transition: transform 0.6s var(--ease-premium);
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover .card-3d-inner {
+  transform: rotateY(-5deg) rotateX(3deg) scale(1.02);
+}
+
+/* Glow Card */
+.card-glow {
+  position: relative;
+  transition: all 0.4s var(--ease-premium);
+}
+
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(176, 255, 91, 0),
+    rgba(176, 255, 91, 0)
+  );
+  z-index: -1;
+  transition: all 0.5s var(--ease-premium);
+  opacity: 0;
+}
+
+.card-glow:hover::before {
+  background: linear-gradient(
+    135deg,
+    rgba(176, 255, 91, 0.3),
+    rgba(26, 77, 67, 0.3)
+  );
+  opacity: 1;
+  inset: -2px;
+  filter: blur(8px);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 11. PREMIUM HEADING EFFECTS                                                 */
+/* -------------------------------------------------------------------------- */
+
+/* Gradient text */
+.text-gradient-lime {
+  background: linear-gradient(135deg, var(--color-accent-lime), #8adf35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-premium {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark),
+    var(--color-primary-main),
+    var(--color-accent-lime)
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 12. FOOTER GRADIENT ANIMATION                                               */
+/* -------------------------------------------------------------------------- */
+
+.footer-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-animated::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-accent-lime),
+    transparent
+  );
+  animation: shimmer 3s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 13. METHOD STEP CONNECTOR                                                   */
+/* -------------------------------------------------------------------------- */
+
+.step-connector {
+  position: relative;
+}
+
+.step-connector::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  width: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent-lime), transparent);
+  transform: translateY(-50%);
+}
+
+@media (max-width: 1024px) {
+  .step-connector::after {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 14. SCROLLBAR STYLING                                                       */
+/* -------------------------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary-main),
+    var(--color-primary-dark)
+  );
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-lime);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 15. INTERACTIVE TAG STYLES                                                  */
+/* -------------------------------------------------------------------------- */
+
+.tag-interactive {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-premium);
+}
+
+.tag-interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s var(--ease-premium);
+}
+
+.tag-interactive:hover::before {
+  transform: translateX(100%);
+}
+
+.tag-interactive:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.15);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 16. ORBIT RING DECORATIONS                                                  */
+/* -------------------------------------------------------------------------- */
+
+.orbit-ring {
+  position: absolute;
+  border: 1px solid rgba(176, 255, 91, 0.08);
+  border-radius: 50%;
+  animation: spinSlow 30s linear infinite;
+}
+
+.orbit-ring::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent-lime);
+  border-radius: 50%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(176, 255, 91, 0.5);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 17. CONTENT VISIBILITY (rendering-content-visibility)                       */
+/* Defers off-screen rendering for faster initial paint in long lists/grids.   */
+/* -------------------------------------------------------------------------- */
+
+.cv-auto-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px;
+}
+
+.cv-auto-row {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 80px;
+}

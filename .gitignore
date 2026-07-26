@@ -1,0 +1,41 @@
+# Environment Variables
+.env.local
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+*.tsbuildinfo
+
+# Next.js
+.next/
+out/
+build/
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# Database
+*.db
+*.sqlite
+
+# Debug
+debug_*.txt
+debug_*.log
+.seo-audit/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+temp_*/
+finovate/
+
+.vercel
