@@ -17,7 +17,6 @@ const teamMembers = [
     name: "Hichem Hammouche",
     role: "CEO",
     department: "strategy",
-    image: "/assets/hichem-hammouche.png",
     linkedin: "https://www.linkedin.com/in/hichem-hammouche-ba957238/",
     quote: "Transformer l'ambition en résultats concrets.",
   },
@@ -28,7 +27,6 @@ const commercialTeamMembers = [
     name: "Équipe Commerciale",
     role: "Prospection & Acquisition",
     department: "sales",
-    image: "/images/equipeprospection.png",
     linkedin: null,
   },
 ];
@@ -153,37 +151,15 @@ export default function EquipeClient() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className={`group relative rounded-[24px] md:rounded-[32px] overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow duration-500 ${
+                className={`group relative flex items-end rounded-[24px] md:rounded-[32px] overflow-hidden bg-[#0d332b] cursor-pointer hover:shadow-2xl transition-shadow duration-500 ${
                   member.name === "Équipe Commerciale"
                     ? "sm:col-span-2 lg:col-span-2 aspect-[4/3] sm:aspect-[2/1] min-h-[320px] sm:min-h-[380px]"
                     : "aspect-[4/5] sm:aspect-[3/4]"
                 }`}
               >
-                <div className="absolute inset-0 bg-[#0d332b] mix-blend-multiply z-10 opacity-60 group-hover:opacity-0 transition-opacity duration-500" />
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 brightness-110 contrast-110 group-hover:brightness-100 group-hover:contrast-100 transition-all duration-500 group-hover:scale-105"
-                  sizes={
-                    department === "web" && member.department === "web"
-                      ? "(max-width: 768px) 100vw, 896px"
-                      : "(max-width: 768px) 100vw, 33vw"
-                  }
-                />
-
-                <div
-                  className="absolute inset-0 z-10 opacity-20 pointer-events-none mix-blend-overlay group-hover:opacity-0 transition-opacity duration-300"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle, #000 1px, transparent 1px)",
-                    backgroundSize: "4px 4px",
-                  }}
-                />
-
                 {/* Glassmorphism card */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 z-20">
-                  <div className="bg-[#0d332b]/90 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 border border-white/10 shadow-2xl flex flex-col gap-2 group-hover:bg-[#0d332b]/95 transition-colors duration-300">
+                <div className="relative w-full p-4 md:p-6 z-20">
+                  <div className="bg-[#0d332b]/90 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 border border-white/10 shadow-2xl flex flex-col gap-2 group-hover:bg-[#0d332b] transition-colors duration-300">
                     <div className="flex justify-between items-start">
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-base md:text-lg leading-tight text-white">
