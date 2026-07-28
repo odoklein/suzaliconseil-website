@@ -332,7 +332,7 @@ export default function TeleprospectionClient() {
                     whileHover={{ x: 10 }}
                     className="flex gap-4 sm:gap-6 group p-4 sm:p-5 rounded-2xl hover:bg-emerald-50 transition-all duration-300"
                   >
-                    <div className="text-3xl sm:text-4xl font-black text-emerald-100 group-hover:text-[#B0FF5B] transition-colors font-heading leading-none flex-shrink-0">
+                    <div className="text-3xl sm:text-4xl font-extrabold text-emerald-100 group-hover:text-[#B0FF5B] transition-colors font-heading leading-none flex-shrink-0">
                       {step.id}
                     </div>
                     <div>
@@ -433,7 +433,7 @@ export default function TeleprospectionClient() {
       {/* Final CTA - Enhanced */}
       <section className="py-16 sm:py-20 md:py-32 lg:py-40 bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none flex items-center justify-center">
-          <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-black font-heading text-white select-none uppercase">
+          <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-extrabold font-heading text-white select-none uppercase">
             CALLS
           </span>
         </div>

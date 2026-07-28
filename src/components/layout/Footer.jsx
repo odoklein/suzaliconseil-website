@@ -38,6 +38,7 @@ const Footer = () => {
     pathname?.startsWith("/services") ||
     pathname === "/contact" ||
     pathname === "/equipe" ||
+    pathname === "/offres" ||
     pathname?.startsWith("/portal");
 
   return (

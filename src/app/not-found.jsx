@@ -8,7 +8,7 @@ export default function NotFound() {
     <div className="min-h-[80vh] flex items-center justify-center bg-[#F6F7F4] px-4 py-24">
       <div className="max-w-3xl mx-auto text-center">
         <div className="mb-8 inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#0D332B]/5 text-[#0D332B]">
-          <span className="text-4xl font-black">404</span>
+          <span className="text-4xl font-extrabold">404</span>
         </div>
         
         <h1 className="text-4xl md:text-5xl font-heading font-extrabold text-[#0D332B] mb-6">

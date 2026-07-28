@@ -76,7 +76,7 @@ export default function DevMethodology() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="text-6xl font-black text-white mb-2"
+                  className="text-6xl font-extrabold text-white mb-2"
                 >
                   30%
                 </motion.div>
@@ -93,7 +93,7 @@ export default function DevMethodology() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
-                  className="text-6xl font-black text-white mb-2"
+                  className="text-6xl font-extrabold text-white mb-2"
                 >
                   -50%
                 </motion.div>

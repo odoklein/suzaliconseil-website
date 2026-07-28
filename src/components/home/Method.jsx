@@ -12,28 +12,24 @@ const steps = [
     title: "Analyse & Ciblage",
     description:
       "Comprendre votre activité, vos offres et vos clients idéaux pour poser des bases solides avant toute action.",
-    icon: "🎯",
   },
   {
     number: "2",
     title: "Stratégie & Plan d'Action",
     description:
       "Définir une stratégie multicanale sur mesure afin de générer rapidement des leads qualifiés.",
-    icon: "📋",
   },
   {
     number: "3",
     title: "Exécution & Suivi",
     description:
       "Déployer et piloter vos campagnes en temps réel via SuzaLink CRM pour un suivi transparent.",
-    icon: "🚀",
   },
   {
     number: "4",
     title: "Optimisation Continue",
     description:
       "Analyser les données, ajuster les actions et automatiser ce qui fonctionne pour maximiser vos résultats.",
-    icon: "📈",
   },
 ];
 
@@ -92,7 +88,7 @@ const Method = () => {
                   {step.title}
                 </h3>
 
-                <p className="text-gray-400 leading-relaxed text-xs md:text-sm group-hover:text-gray-300 transition-colors duration-300">
+                <p className="text-gray-300 leading-relaxed text-sm group-hover:text-white transition-colors duration-300">
                   {step.description}
                 </p>
               </div>
@@ -110,7 +106,7 @@ const Method = () => {
             variant="primary"
             className="inline-flex items-center gap-3"
           >
-            Démarrons ensemble
+            Audit gratuit de prospection
             <ArrowRight size={20} />
           </MagneticButton>
         </AnimatedSection>

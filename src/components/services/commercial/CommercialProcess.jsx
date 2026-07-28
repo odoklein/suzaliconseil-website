@@ -75,7 +75,7 @@ export function CommercialProcess() {
 
               <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:bg-slate-800 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-2 h-full">
                 <div className="flex items-center justify-between mb-6">
-                  <span className="text-4xl font-black text-slate-700 group-hover:text-emerald-500/20 transition-colors">
+                  <span className="text-4xl font-extrabold text-slate-700 group-hover:text-emerald-500/20 transition-colors">
                     {step.number}
                   </span>
                   <div className="w-12 h-12 bg-slate-700/50 rounded-lg flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">

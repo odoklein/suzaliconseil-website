@@ -112,7 +112,7 @@ export default function SitesWebProcess() {
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ delay: 0.6, type: "spring" }}
-                  className="text-4xl font-black text-white mb-2"
+                  className="text-4xl font-extrabold text-white mb-2"
                 >
                   100%
                 </motion.div>

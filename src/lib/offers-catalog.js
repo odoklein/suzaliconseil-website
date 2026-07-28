@@ -338,3 +338,18 @@ export const getOfferCount = (categoryId) => {
     ? category.sections.reduce((total, section) => total + section.offers.length, 0)
     : 0;
 };
+
+/** Flat view of every offer, used to look one up by id. */
+export const ALL_OFFERS = OFFER_CATEGORIES.flatMap((category) =>
+  category.sections.flatMap((section) => section.offers),
+);
+
+/**
+ * Returns the offers matching the given ids, in the order requested.
+ * Lets other surfaces (e.g. the homepage teaser) reuse catalogue pricing
+ * without duplicating it.
+ */
+export const getOffersByIds = (ids) =>
+  ids
+    .map((id) => ALL_OFFERS.find((offer) => offer.id === id))
+    .filter(Boolean);

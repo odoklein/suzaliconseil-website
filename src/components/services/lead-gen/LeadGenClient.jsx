@@ -415,7 +415,7 @@ export default function LeadGenClient() {
                 variants={itemVariants}
                 className="group p-6 sm:p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-[#B0FF5B] hover:text-[#0D332B] transition-all duration-500 text-center"
               >
-                <div className="text-3xl sm:text-4xl font-black font-heading mb-4 sm:mb-6 opacity-20 group-hover:opacity-100 transition-opacity">
+                <div className="text-3xl sm:text-4xl font-extrabold font-heading mb-4 sm:mb-6 opacity-20 group-hover:opacity-100 transition-opacity">
                   {step.step}
                 </div>
                 <step.icon
@@ -490,7 +490,7 @@ export default function LeadGenClient() {
       {/* CTA Final - Enhanced */}
       <section className="py-16 sm:py-20 md:py-32 lg:py-40 bg-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
-          <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-black font-heading text-[#0D332B] select-none uppercase">
+          <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-extrabold font-heading text-[#0D332B] select-none uppercase">
             RESULTS
           </span>
         </div>

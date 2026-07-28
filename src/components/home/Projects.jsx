@@ -2,6 +2,7 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useBooking } from "../../context/BookingContext";
 import AnimatedSection from "../ui/AnimatedSection";
 import MagneticButton from "../ui/MagneticButton";
@@ -37,7 +38,7 @@ const Projects = ({ projects = [] }) => {
                 variant="primary"
                 className="inline-flex items-center gap-2"
               >
-                Planifier un appel
+                Audit gratuit de prospection
                 <ArrowUpRight className="w-5 h-5" />
               </MagneticButton>
             </div>
@@ -50,7 +51,14 @@ const Projects = ({ projects = [] }) => {
                 <AnimatedSection
                   key={project.id}
                   delay={idx * 150}
-                  className="group flex flex-col bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 card-glow"
+                  {...(project.link
+                    ? { as: Link, href: project.link }
+                    : {})}
+                  className={`group flex flex-col bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-sm transition-all duration-500 ${
+                    project.link
+                      ? "hover:shadow-xl hover:-translate-y-2 card-glow"
+                      : ""
+                  }`}
                 >
                   {/* Image */}
                   <div className="h-48 md:h-64 bg-gray-200 relative overflow-hidden">
@@ -60,7 +68,9 @@ const Projects = ({ projects = [] }) => {
                         alt={project.title}
                         fill
                         sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        className={`object-cover transition-transform duration-700 ${
+                          project.link ? "group-hover:scale-110" : ""
+                        }`}
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-medium bg-gray-100">
@@ -69,10 +79,12 @@ const Projects = ({ projects = [] }) => {
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent group-hover:from-black/5 transition-colors duration-300" />
 
-                    {/* Floating arrow on hover */}
-                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <ArrowUpRight size={18} className="text-[#0D332B]" />
-                    </div>
+                    {/* Floating arrow — only where the card actually leads somewhere */}
+                    {project.link && (
+                      <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        <ArrowUpRight size={18} className="text-[#0D332B]" />
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}

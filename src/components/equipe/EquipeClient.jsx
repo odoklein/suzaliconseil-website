@@ -63,7 +63,7 @@ function StatCard({ value, suffix, label, trigger, index }) {
   const count = useCountUp(value, 2000, trigger);
   return (
     <AnimatedSection delay={index * 150} className="text-center group">
-      <div className="font-heading font-black text-5xl md:text-7xl text-[#0d332b] group-hover:text-primary-main transition-colors duration-300">
+      <div className="font-heading font-extrabold text-5xl md:text-7xl text-[#0d332b] group-hover:text-primary-main transition-colors duration-300">
         {count}
         {suffix}
       </div>

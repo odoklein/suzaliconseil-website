@@ -87,7 +87,7 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                   {!isSuccess && (
                     <p className="text-xs md:text-sm text-gray-500 mt-0.5 md:mt-1 max-w-[200px] md:max-w-[280px]">
                       Vous avez choisi l&apos;offre{" "}
-                      <span className="font-bold text-[#FF6A3D]">
+                      <span className="font-bold text-[#1A6D48]">
                         {offer.name}
                       </span>
                     </p>
@@ -139,7 +139,7 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                             type="text"
                             required
                             placeholder="Jean Dupont"
-                            className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#FF6A3D]/20 focus:ring-4 focus:ring-[#FF6A3D]/5 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
+                            className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#1A6D48]/25 focus:ring-4 focus:ring-[#1A6D48]/10 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
                           />
                         </div>
                         <div className="space-y-1.5">
@@ -150,7 +150,7 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                             name="phone"
                             type="tel"
                             placeholder="06 12 34 56 78"
-                            className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#FF6A3D]/20 focus:ring-4 focus:ring-[#FF6A3D]/5 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
+                            className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#1A6D48]/25 focus:ring-4 focus:ring-[#1A6D48]/10 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
                           />
                         </div>
                       </div>
@@ -164,7 +164,7 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                           type="email"
                           required
                           placeholder="jean@entreprise.com"
-                          className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#FF6A3D]/20 focus:ring-4 focus:ring-[#FF6A3D]/5 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
+                          className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#1A6D48]/25 focus:ring-4 focus:ring-[#1A6D48]/10 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
                         />
                       </div>
 
@@ -176,7 +176,7 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                           name="companyName"
                           type="text"
                           placeholder="Votre société"
-                          className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#FF6A3D]/20 focus:ring-4 focus:ring-[#FF6A3D]/5 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
+                          className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#1A6D48]/25 focus:ring-4 focus:ring-[#1A6D48]/10 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B]"
                         />
                       </div>
 
@@ -188,7 +188,7 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                           name="message"
                           rows={2}
                           placeholder="Précisez votre besoin..."
-                          className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#FF6A3D]/20 focus:ring-4 focus:ring-[#FF6A3D]/5 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B] resize-none"
+                          className="w-full px-4 py-2.5 md:py-3 rounded-xl bg-gray-50 border-2 border-transparent focus:bg-white focus:border-[#1A6D48]/25 focus:ring-4 focus:ring-[#1A6D48]/10 outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base text-[#0D332B] resize-none"
                         />
                       </div>
                     </div>
@@ -196,7 +196,7 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="mt-2 w-full py-3 md:py-4 rounded-xl font-bold text-center text-white bg-gradient-to-r from-[#FF6A3D] to-[#FF8F6B] hover:from-[#E85A2D] hover:to-[#FF6A3D] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#FF6A3D]/25 hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] text-sm md:text-base"
+                      className="mt-2 w-full py-3 md:py-4 rounded-xl font-extrabold text-center text-[#0D332B] bg-[#B0FF5B] hover:bg-[#9BEA45] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#B0FF5B]/25 hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] text-sm md:text-base"
                     >
                       {isSubmitting ? (
                         <>

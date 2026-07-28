@@ -1,9 +1,12 @@
-import { Outfit } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-jakarta",
+  display: "swap",
+  // Variable font: Jakarta ships 200–800. There is no 900 weight.
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 import LayoutSwitcher from "../components/layout/LayoutSwitcher";
@@ -124,13 +127,20 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="fr">
       <head>
+        {/* Runs before first paint: marks the document as JS-capable so the
+            scroll-reveal styles may hide content they are able to reveal again. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("js")`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body
-        className={`${outfit.variable} antialiased font-sans bg-[#F9FAFB] text-[#0D332B]`}
+        className={`${jakarta.variable} antialiased font-sans bg-[#F9FAFB] text-[#0D332B]`}
       >
         <BookingProvider>
           <LayoutSwitcher services={services}>{children}</LayoutSwitcher>

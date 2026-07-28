@@ -531,7 +531,7 @@ export default function OutboundClient() {
       <section className="py-16 sm:py-20 md:py-32 lg:py-40 bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] relative overflow-hidden">
         {/* Animated Background Text Watermark */}
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.05] whitespace-nowrap select-none pointer-events-none">
-          <span className="text-[15vw] sm:text-[18vw] md:text-[20vw] font-black uppercase font-heading text-white">
+          <span className="text-[15vw] sm:text-[18vw] md:text-[20vw] font-extrabold uppercase font-heading text-white">
             LEAD GEN
           </span>
         </div>

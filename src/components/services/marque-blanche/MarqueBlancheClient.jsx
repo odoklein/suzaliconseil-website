@@ -293,7 +293,7 @@ export default function MarqueBlancheClient() {
       {/* CTA Section */}
       <section className="py-24 md:py-40 bg-[#0D332B] relative overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.05] whitespace-nowrap select-none pointer-events-none">
-          <span className="text-[20vw] font-black uppercase font-heading text-white">
+          <span className="text-[20vw] font-extrabold uppercase font-heading text-white">
             PARTNERS
           </span>
         </div>

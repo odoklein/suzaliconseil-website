@@ -48,7 +48,7 @@ export default function AnimatedSection({
   return (
     <Tag
       ref={ref}
-      className={`${className} ${isVisible ? animation : "opacity-0 translate-y-8"}`}
+      className={`${className} ${isVisible ? animation : "reveal-init"}`}
       style={{
         transitionDelay: `${delay}ms`,
         transition:

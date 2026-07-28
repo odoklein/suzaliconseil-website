@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import AnimatedSection from "../ui/AnimatedSection";
 import AnimatedCounter from "../ui/AnimatedCounter";
 
@@ -17,6 +19,7 @@ const Results = () => {
       theme: "light",
       size: "large",
       accentColor: "#B0FF5B",
+      href: "/services/outbound-marketing-b2b",
     },
     {
       value: "- 60%",
@@ -29,6 +32,7 @@ const Results = () => {
       theme: "dark",
       size: "small",
       accentColor: "#60A5FA",
+      href: "/services/qualification-leads-b2b",
     },
     {
       value: "+45%",
@@ -41,6 +45,7 @@ const Results = () => {
       theme: "light",
       size: "small",
       accentColor: "#B0FF5B",
+      href: "/services/prise-rendez-vous-b2b",
     },
     {
       value: "-40%",
@@ -53,11 +58,12 @@ const Results = () => {
       theme: "dark",
       size: "large",
       accentColor: "#FF6B2C",
+      href: "/services/generation-leads-b2b",
     },
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-[#F8FAFC] relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-50 rounded-full blur-[150px] translate-x-1/2 -translate-y-1/2 opacity-60 pointer-events-none" />
 
@@ -83,6 +89,8 @@ const Results = () => {
             <AnimatedSection
               key={idx}
               delay={idx * 150}
+              as={Link}
+              href={stat.href}
               className={`rounded-[32px] md:rounded-[40px] p-8 md:p-12 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl relative overflow-hidden group
                 ${stat.size === "large" ? "lg:col-span-2 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-12" : "lg:col-span-1 flex flex-col justify-between"}
                 ${
@@ -92,6 +100,17 @@ const Results = () => {
                 }
               `}
             >
+              {/* Affordance: this card leads somewhere */}
+              <span
+                className={`absolute top-6 right-6 md:top-8 md:right-8 w-10 h-10 rounded-full flex items-center justify-center opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20 ${
+                  stat.theme === "dark"
+                    ? "bg-white/10 text-white"
+                    : "bg-white/70 text-[#0D332B]"
+                }`}
+              >
+                <ArrowUpRight size={18} />
+              </span>
+
               {/* Hover glow effect */}
               <div
                 className="absolute -top-20 -right-20 w-40 h-40 rounded-full blur-[60px] opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"

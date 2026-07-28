@@ -317,7 +317,7 @@ export default function PriseRdvClient() {
                   transition={{ delay: i * 0.1 }}
                   className="flex items-start gap-4 sm:gap-6 lg:gap-8 group p-4 sm:p-5 rounded-2xl hover:bg-emerald-50 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#0D332B] text-[#B0FF5B] rounded-2xl flex items-center justify-center font-black text-xl sm:text-2xl flex-shrink-0 shadow-lg shadow-emerald-950/20 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#0D332B] text-[#B0FF5B] rounded-2xl flex items-center justify-center font-extrabold text-xl sm:text-2xl flex-shrink-0 shadow-lg shadow-emerald-950/20 group-hover:scale-110 transition-transform">
                     {i + 1}
                   </div>
                   <div>
@@ -385,7 +385,7 @@ export default function PriseRdvClient() {
       {/* CTA Section - Enhanced */}
       <section className="py-16 sm:py-20 md:py-32 lg:py-40 bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none flex items-center justify-center">
-          <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-black font-heading text-white select-none uppercase">
+          <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-extrabold font-heading text-white select-none uppercase">
             AGENDA
           </span>
         </div>

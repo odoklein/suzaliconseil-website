@@ -62,9 +62,13 @@
   /* Spacing & Radius */
   --radius-suzali: var(--radius-suzali);
 
-  /* Fonts */
-  --font-sans: "Outfit", "Inter", sans-serif;
-  --font-heading: "Outfit", sans-serif;
+  /* Fonts — wired to the next/font variable so the metric-matched fallback
+     ("Plus Jakarta Sans Fallback") is actually used and CLS stays low.
+     Jakarta is a 200–800 variable font: there is no 900 / `font-black`. */
+  --font-sans: var(--font-jakarta), "Plus Jakarta Sans Fallback", system-ui,
+    sans-serif;
+  --font-heading: var(--font-jakarta), "Plus Jakarta Sans Fallback", system-ui,
+    sans-serif;
 
   /* Animations */
   --animate-subtle-float: float 6s ease-in-out infinite;
@@ -73,37 +77,51 @@
 /* -------------------------------------------------------------------------- */
 /* 3. BASE STYLES                                                             */
 /* -------------------------------------------------------------------------- */
-* {
-  scroll-behavior: smooth;
+/* These live in `@layer base` on purpose. Unlayered CSS beats *every* layered
+   rule in Tailwind v4, so an unlayered `h1 { font-size }` silently overrode
+   `text-4xl`, `md:text-5xl` and the typography plugin's `.prose` sizes on
+   every heading in the app. Inside the base layer, utilities win again. */
+@layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  /* Fallback sizes only — any explicit text-* utility now takes precedence. */
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 7rem);
+  }
+  h2 {
+    font-size: clamp(2rem, 5vw, 4rem);
+  }
+  h3 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-h1 {
-  font-size: clamp(2.5rem, 8vw, 7rem);
-}
-h2 {
-  font-size: clamp(2rem, 5vw, 4rem);
-}
-h3 {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+/* Prices, counters and any figure meant to align in a column.
+   Proportional digits make 1 590 / 890 / 290 read ragged when stacked. */
+.tabular-figures {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 /* Custom selection color */
@@ -920,4 +938,66 @@ h3 {
 .cv-auto-row {
   content-visibility: auto;
   contain-intrinsic-size: 0 80px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 18. PROGRESSIVE ENHANCEMENT — SCROLL REVEAL                                 */
+/* Content ships visible. The hidden state is applied only when the `js` class  */
+/* is present on <html>, so crawlers, no-JS visitors and a failed hydration     */
+/* always see the full page instead of a blank one.                            */
+/* -------------------------------------------------------------------------- */
+
+.js .reveal-init {
+  opacity: 0;
+  transform: translateY(2rem);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 19. HERO ENTRANCE                                                           */
+/* CSS-driven so the first paint no longer waits for React to hydrate.         */
+/* The h1 uses delay 0 to keep it eligible as the LCP element.                 */
+/* -------------------------------------------------------------------------- */
+
+.hero-rise {
+  animation: revealUp 0.8s var(--ease-premium) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 20. REDUCED MOTION                                                          */
+/* -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  * {
+    scroll-behavior: auto !important;
+  }
+
+  /* Never leave revealed content stranded in its hidden state. */
+  .js .reveal-init,
+  .hero-rise {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Purely ornamental motion is dropped entirely. */
+  .orbit-ring,
+  .footer-animated::before {
+    display: none;
+  }
+
+  .animate-morph,
+  .animate-blob-slow,
+  .animate-blob-delayed,
+  .animate-gradient-shift,
+  .animate-subtle-float {
+    animation: none !important;
+  }
 }

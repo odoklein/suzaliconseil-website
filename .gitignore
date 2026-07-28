@@ -13,6 +13,11 @@ node_modules/
 out/
 build/
 
+# Cloudflare
+.open-next/
+.wrangler/
+cloudflare-env.d.ts
+
 # Supabase
 supabase/.branches
 supabase/.temp

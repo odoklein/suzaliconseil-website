@@ -2,6 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import AnimatedSection from "../ui/AnimatedSection";
 
 const ClientsTrust = () => {
@@ -16,6 +18,7 @@ const ClientsTrust = () => {
       description: "de rendez-vous qualifiés générés en 3 mois",
       bgImage:
         "/images/investissementlocatif.png",
+      href: "/services/prise-rendez-vous-b2b",
     },
     {
       company: "Velis Conseil",
@@ -24,6 +27,7 @@ const ClientsTrust = () => {
       description: "générés à partir de 1000 prospects ciblés",
       bgImage:
         "/images/velis.png",
+      href: "/services/prospection-commerciale-externalisee",
     },
     {
       company: "ZUP&CO",
@@ -33,6 +37,7 @@ const ClientsTrust = () => {
         "taux d'ouverture des communications et une gestion des sessions entièrement simplifiée.",
       bgImage:
         "/images/zupdeco.png",
+      href: "/services/digital/developpement-automatisation",
     },
   ];
 
@@ -63,6 +68,8 @@ const ClientsTrust = () => {
             <AnimatedSection
               key={idx}
               delay={idx * 200}
+              as={Link}
+              href={study.href}
               className="group relative rounded-[32px] md:rounded-[40px] overflow-hidden min-h-[480px] md:h-[540px] bg-gray-900 shadow-lg hover:shadow-2xl transition-all duration-500 md:hover:-translate-y-3 flex flex-col"
             >
               {/* Background Image */}
@@ -93,10 +100,13 @@ const ClientsTrust = () => {
                     </span>
                   </div>
 
-                  <div className="inline-block">
+                  <div className="flex items-start justify-between gap-4">
                     <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/90 bg-white/20 backdrop-blur-md border border-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm">
                       {study.service}
                     </p>
+                    <span className="shrink-0 w-10 h-10 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                      <ArrowUpRight size={18} className="text-white" />
+                    </span>
                   </div>
                 </div>
 

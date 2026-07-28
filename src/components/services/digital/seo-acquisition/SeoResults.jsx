@@ -65,7 +65,7 @@ export default function SeoResults() {
                   type: "spring",
                   stiffness: 100,
                 }}
-                className="text-5xl font-black mb-2 text-sky-400"
+                className="text-5xl font-extrabold mb-2 text-sky-400"
               >
                 {item.value}
               </motion.div>

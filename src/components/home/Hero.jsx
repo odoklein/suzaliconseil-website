@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MagneticButton from "../ui/MagneticButton";
 import ParticleField from "../ui/ParticleField";
 import { TrendingUp, Target, BarChart3, PieChart } from "lucide-react";
@@ -8,13 +8,6 @@ import { useBooking } from "../../context/BookingContext";
 
 export default function Hero() {
   const { openBooking } = useBooking();
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    // Trigger entrance animations after mount
-    const timer = setTimeout(() => setIsLoaded(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section className="relative w-full min-h-[calc(100vh-5rem)] flex flex-col items-center justify-start pt-32 md:pt-48 pb-20 overflow-hidden hero-gradient">
@@ -82,21 +75,18 @@ export default function Hero() {
       <div className="container mx-auto px-4 z-10 relative flex flex-col items-center text-center">
         {/* Badge */}
         <div
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/90 text-xs md:text-sm font-medium mb-6 transition-all duration-700 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-          style={{ transitionDelay: "200ms" }}
+          className="hero-rise inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/90 text-xs md:text-sm font-medium mb-6"
+          style={{ "--rise-delay": "0ms" }}
         >
           <span className="w-2 h-2 bg-[#B0FF5B] rounded-full animate-glow-pulse" />
           Agence B2B • Paris, France
         </div>
 
-        {/* Main Heading with Text Reveal */}
-        <div className="overflow-hidden mb-4">
+        {/* Main Heading — delay 0 so it stays eligible as the LCP element */}
+        <div className="mb-4">
           <h1
-            className={`font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight tracking-tight !text-white drop-shadow-sm max-w-5xl transition-all duration-1000 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full"}`}
-            style={{
-              transitionDelay: "400ms",
-              transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
+            className="hero-rise font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight tracking-tight !text-white drop-shadow-sm max-w-5xl"
+            style={{ "--rise-delay": "0ms" }}
           >
             Génération de Leads{" "}
             <span className="text-gradient-lime inline-block">B2B</span> en
@@ -106,16 +96,16 @@ export default function Hero() {
 
         {/* Subheading */}
         <h2
-          className={`text-lg md:text-xl lg:text-2xl font-medium !text-white/90 mb-6 max-w-4xl leading-snug transition-all duration-700 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-          style={{ transitionDelay: "600ms" }}
+          className="hero-rise text-lg md:text-xl lg:text-2xl font-medium !text-white/90 mb-6 max-w-4xl leading-snug"
+          style={{ "--rise-delay": "90ms" }}
         >
           Prospection commerciale, téléprospection et outbound marketing
         </h2>
 
         {/* Description */}
         <p
-          className={`text-base md:text-lg !text-gray-200 max-w-2xl mb-10 font-regular leading-relaxed transition-all duration-700 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-          style={{ transitionDelay: "800ms" }}
+          className="hero-rise text-base md:text-lg !text-gray-200 max-w-2xl mb-10 font-regular leading-relaxed"
+          style={{ "--rise-delay": "180ms" }}
         >
           Suzali Conseil, agence spécialisée en génération de leads B2B en
           France, aide les entreprises à structurer leur prospection
@@ -125,8 +115,8 @@ export default function Hero() {
 
         {/* Buttons */}
         <div
-          className={`flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto transition-all duration-700 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-          style={{ transitionDelay: "1000ms" }}
+          className="hero-rise flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto"
+          style={{ "--rise-delay": "270ms" }}
         >
           <MagneticButton
             onClick={openBooking}
@@ -137,18 +127,18 @@ export default function Hero() {
           </MagneticButton>
 
           <MagneticButton
-            href="/contact"
+            href="/offres"
             variant="outline-light"
             className="w-full sm:w-auto"
           >
-            Calculez votre ROI
+            Voir nos tarifs
           </MagneticButton>
         </div>
 
         {/* Scroll Indicator */}
         <div
-          className={`mt-16 md:mt-20 flex flex-col items-center gap-2 text-white/40 transition-all duration-700 ${isLoaded ? "opacity-100" : "opacity-0"}`}
-          style={{ transitionDelay: "1400ms" }}
+          className="hero-rise mt-16 md:mt-20 flex flex-col items-center gap-2 text-white/40"
+          style={{ "--rise-delay": "360ms" }}
         >
           <span className="text-xs uppercase tracking-widest">Découvrir</span>
           <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1.5">

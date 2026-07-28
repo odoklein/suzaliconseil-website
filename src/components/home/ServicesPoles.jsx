@@ -7,21 +7,21 @@ import AnimatedSection from "../ui/AnimatedSection";
 
 const ServicesPoles = () => {
   const commercialTags = [
-    "Génération de leads B2B",
-    "Téléprospection",
-    "Prise de rendez-vous qualifiés",
-    "Prospection commerciale",
-    "Outbound marketing",
-    "Cold emailing",
+    ["Génération de leads B2B", "/services/generation-leads-b2b"],
+    ["Téléprospection", "/services/teleprospection-b2b"],
+    ["Prise de rendez-vous qualifiés", "/services/prise-rendez-vous-b2b"],
+    ["Prospection commerciale", "/services/prospection-commerciale-externalisee"],
+    ["Outbound marketing", "/services/outbound-marketing-b2b"],
+    ["Cold emailing", "/services/campagnes-email-sms-b2b"],
   ];
 
   const digitalTags = [
-    "E-commerce",
-    "Stratégie digitale",
-    "Google Ads & Social Ads",
-    "Automatisation",
-    "Référencement naturel (SEO)",
-    "IA Personnalisée",
+    ["E-commerce", "/services/digital/sites-web-ecommerce"],
+    ["Stratégie digitale", "/services/digital/strategie-digitale"],
+    ["Google Ads & Social Ads", "/services/digital/seo-acquisition"],
+    ["Automatisation", "/services/digital/developpement-automatisation"],
+    ["Référencement naturel (SEO)", "/services/digital/seo-acquisition"],
+    ["IA Personnalisée", "/services/digital/developpement-automatisation"],
   ];
 
   return (
@@ -95,14 +95,15 @@ const ServicesPoles = () => {
 
                 {/* Tags Cloud */}
                 <div className="flex flex-wrap justify-center content-end gap-2 md:gap-3 mt-6">
-                  {commercialTags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="tag-interactive bg-white/95 backdrop-blur-sm text-[#1A4D43] font-bold text-xs md:text-base px-4 md:px-5 py-2 md:py-2.5 rounded-full shadow-sm cursor-default"
+                  {commercialTags.map(([tag, href], idx) => (
+                    <Link
+                      key={href + tag}
+                      href={href}
+                      className="tag-interactive bg-white/95 backdrop-blur-sm text-[#1A4D43] font-bold text-xs md:text-base px-4 md:px-5 py-2 md:py-2.5 rounded-full shadow-sm hover:bg-white hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                       style={{ animationDelay: `${idx * 80}ms` }}
                     >
                       {tag}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -157,14 +158,15 @@ const ServicesPoles = () => {
 
                 {/* Tags Cloud */}
                 <div className="flex flex-wrap justify-center content-end gap-2 md:gap-3 mt-6">
-                  {digitalTags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="tag-interactive bg-white/95 backdrop-blur-sm text-[#1E40AF] font-bold text-xs md:text-base px-4 md:px-5 py-2 md:py-2.5 rounded-full shadow-sm cursor-default"
+                  {digitalTags.map(([tag, href], idx) => (
+                    <Link
+                      key={href + tag}
+                      href={href}
+                      className="tag-interactive bg-white/95 backdrop-blur-sm text-[#1E40AF] font-bold text-xs md:text-base px-4 md:px-5 py-2 md:py-2.5 rounded-full shadow-sm hover:bg-white hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                       style={{ animationDelay: `${idx * 80}ms` }}
                     >
                       {tag}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -184,23 +186,33 @@ const ServicesPoles = () => {
           </AnimatedSection>
         </div>
 
-        <div className="mt-12 flex flex-wrap justify-center gap-3">
-          {[
-            ["Agence de prospection B2B", "/services/commercial"],
-            ["Prospection externalisée", "/services/prospection-commerciale-externalisee"],
-            ["Génération de leads", "/services/generation-leads-b2b"],
-            ["Téléprospection B2B", "/services/teleprospection-b2b"],
-            ["Prise de rendez-vous", "/services/prise-rendez-vous-b2b"],
-          ].map(([label, href]) => (
-            <Link
-              key={href}
-              href={href}
-              className="rounded-full border border-[#0D332B]/15 bg-white px-5 py-2.5 text-sm font-bold text-[#0D332B] shadow-sm transition-colors hover:border-[#FF6A3D] hover:text-[#C84B25]"
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
+        <AnimatedSection delay={200} className="mt-16 md:mt-20">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
+            Toutes nos expertises en détail
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            {[
+              ["Agence de prospection B2B", "/services/commercial"],
+              ["Prospection externalisée", "/services/prospection-commerciale-externalisee"],
+              ["Génération de leads", "/services/generation-leads-b2b"],
+              ["Téléprospection B2B", "/services/teleprospection-b2b"],
+              ["Prise de rendez-vous", "/services/prise-rendez-vous-b2b"],
+              ["Qualification de leads", "/services/qualification-leads-b2b"],
+              ["Fichier de prospection B2B", "/services/fichier-prospection-b2b"],
+              ["Campagnes email et SMS", "/services/campagnes-email-sms-b2b"],
+              ["Outbound marketing B2B", "/services/outbound-marketing-b2b"],
+              ["Force de vente externalisée", "/services/vente-marque-blanche"],
+            ].map(([label, href]) => (
+              <Link
+                key={label}
+                href={href}
+                className="rounded-full border border-[#0D332B]/15 bg-white px-5 py-2.5 text-sm font-bold text-[#0D332B] shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#FF6A3D] hover:text-[#C84B25] hover:shadow-md"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
