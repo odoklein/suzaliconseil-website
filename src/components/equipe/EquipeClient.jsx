@@ -1,37 +1,109 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Linkedin, ArrowRight } from "lucide-react";
+import { Linkedin, ArrowRight, Compass, Code2, TrendingUp } from "lucide-react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import AnimatedSection from "../ui/AnimatedSection";
 
-const DEPARTMENTS = [
+/**
+ * Pôles de l'équipe.
+ * Les membres sans nom propre sont décrits par leur fonction :
+ * remplacer `name` par le nom réel dès qu'il est communicable,
+ * le monogramme et la mise en page s'adaptent automatiquement.
+ */
+const POLES = [
+  {
+    id: "direction",
+    label: "Direction",
+    icon: Compass,
+    tagline: "Vision, stratégie et pilotage global des engagements clients.",
+    members: [
+      {
+        name: "Hichem Hammouche",
+        role: "CEO & Fondateur",
+        description: "Stratégie, partenariats et direction générale.",
+        linkedin: "https://www.linkedin.com/in/hichem-hammouche-ba957238/",
+      },
+      {
+        name: "Direction des Opérations",
+        role: "Pilotage & Qualité",
+        description: "Cadrage des missions, délais et qualité de service.",
+        linkedin: null,
+      },
+    ],
+  },
+  {
+    id: "tech",
+    label: "Pôle Technologie",
+    icon: Code2,
+    tagline:
+      "Développement, automatisation et design des outils qui soutiennent votre croissance.",
+    members: [
+      {
+        name: "Lead Développeur",
+        role: "Applications & Plateformes",
+        description: "Sites, e-commerce et développement de SuzaLink CRM.",
+        linkedin: null,
+      },
+      {
+        name: "Ingénieur Automatisation",
+        role: "Intégrations & Data",
+        description: "API, workflows et synchronisation de vos outils.",
+        linkedin: null,
+      },
+      {
+        name: "Designer Produit",
+        role: "UI & Expérience",
+        description: "Design system, interfaces et parcours de conversion.",
+        linkedin: null,
+      },
+    ],
+  },
+  {
+    id: "sales",
+    label: "Pôle Commercial",
+    icon: TrendingUp,
+    tagline:
+      "Prospection, qualification et suivi des comptes, de la première prise de contact à la fidélisation.",
+    members: [
+      {
+        name: "Business Developer",
+        role: "Prospection & Acquisition",
+        description: "Ciblage, outbound multicanal et ouverture de comptes.",
+        linkedin: null,
+      },
+      {
+        name: "Chargé de Qualification",
+        role: "Leads & Rendez-vous",
+        description: "Qualification des leads et prise de rendez-vous.",
+        linkedin: null,
+      },
+      {
+        name: "Account Manager",
+        role: "Suivi & Fidélisation",
+        description: "Relation client, reporting et développement du compte.",
+        linkedin: null,
+      },
+    ],
+  },
+];
+
+const FILTERS = [
   { id: "all", label: "Tous" },
-  { id: "strategy", label: "Stratégie" },
-  { id: "sales", label: "Ventes & Croissance" },
+  ...POLES.map((p) => ({ id: p.id, label: p.label })),
 ];
 
-const teamMembers = [
-  {
-    name: "Hichem Hammouche",
-    role: "CEO",
-    department: "strategy",
-    linkedin: "https://www.linkedin.com/in/hichem-hammouche-ba957238/",
-    quote: "Transformer l'ambition en résultats concrets.",
-  },
-];
-
-const commercialTeamMembers = [
-  {
-    name: "Équipe Commerciale",
-    role: "Prospection & Acquisition",
-    department: "sales",
-    linkedin: null,
-  },
-];
-
-const ALL_MEMBERS = [...teamMembers, ...commercialTeamMembers];
+/** Monogramme : initiales du nom (ou de la fonction). */
+function monogram(name) {
+  return name
+    .split(" ")
+    .filter((w) => w.length > 2)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+}
 
 const STATS = [
   { value: 50, suffix: "+", label: "Projets réalisés" },
@@ -72,6 +144,90 @@ function StatCard({ value, suffix, label, trigger, index }) {
   );
 }
 
+/** Carte membre sobre : monogramme, fonction, une ligne de contexte. */
+function MemberCard({ member, index }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex flex-col gap-4 rounded-2xl border border-gray-200/80 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#0d332b]/25 hover:shadow-[0_18px_40px_-24px_rgba(13,51,43,0.35)]"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 font-heading text-sm font-bold tracking-wide text-[#0d332b] transition-colors duration-300 group-hover:bg-[#0d332b] group-hover:text-[#B0FF5B]">
+          {monogram(member.name)}
+        </span>
+        {member.linkedin && (
+          <a
+            href={member.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Profil LinkedIn de ${member.name}`}
+            className="rounded-lg p-2 text-gray-400 transition-colors duration-300 hover:bg-emerald-50 hover:text-[#0d332b]"
+          >
+            <Linkedin className="h-4 w-4" />
+          </a>
+        )}
+      </div>
+
+      <div>
+        <h3 className="font-heading text-base font-bold leading-tight text-[#0d332b]">
+          {member.name}
+        </h3>
+        <p className="mt-1 text-sm font-medium text-emerald-700">
+          {member.role}
+        </p>
+      </div>
+
+      <p className="border-t border-gray-100 pt-4 text-sm leading-relaxed text-gray-500">
+        {member.description}
+      </p>
+
+      {/* Filet d'accent au survol */}
+      <span className="pointer-events-none absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-gradient-to-r from-[#B0FF5B] to-transparent transition-transform duration-500 group-hover:scale-x-100" />
+    </motion.div>
+  );
+}
+
+/** Bloc d'un pôle : en-tête discret + grille de cartes. */
+function PoleBlock({ pole }) {
+  const Icon = pole.icon;
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div className="mb-8 flex flex-col gap-3 border-b border-gray-100 pb-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex items-start gap-4">
+          <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-200 text-[#0d332b]">
+            <Icon className="h-5 w-5" strokeWidth={1.75} />
+          </span>
+          <div>
+            <h2 className="font-heading text-xl font-bold text-[#0d332b] md:text-2xl">
+              {pole.label}
+            </h2>
+            <p className="mt-1 max-w-xl text-sm leading-relaxed text-gray-500">
+              {pole.tagline}
+            </p>
+          </div>
+        </div>
+        <span className="shrink-0 text-xs font-semibold uppercase tracking-wider text-gray-400">
+          {pole.members.length} membres
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+        {pole.members.map((member, index) => (
+          <MemberCard key={member.name} member={member} index={index} />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function EquipeClient() {
   const [department, setDepartment] = useState("all");
   const numbersRef = useRef(null);
@@ -80,10 +236,8 @@ export default function EquipeClient() {
     margin: "-100px",
   });
 
-  const filteredMembers =
-    department === "all"
-      ? ALL_MEMBERS
-      : ALL_MEMBERS.filter((m) => m.department === department);
+  const visiblePoles =
+    department === "all" ? POLES : POLES.filter((p) => p.id === department);
 
   return (
     <main className="min-h-screen relative overflow-hidden">
@@ -128,15 +282,16 @@ export default function EquipeClient() {
       {/* 2. TEAM CLUSTERS - White section */}
       <section className="relative z-10 py-16 md:py-24 px-4 bg-white text-[#0d332b]">
         <div className="container mx-auto max-w-6xl">
-          <AnimatedSection className="flex flex-wrap justify-center gap-2 mb-12">
-            {DEPARTMENTS.map((d) => (
+          <AnimatedSection className="flex flex-wrap justify-center gap-2 mb-12 md:mb-16">
+            {FILTERS.map((d) => (
               <button
                 key={d.id}
                 onClick={() => setDepartment(d.id)}
-                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
+                aria-pressed={department === d.id}
+                className={`rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-300 ${
                   department === d.id
                     ? "bg-[#0d332b] text-white shadow-lg shadow-[#0d332b]/20"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-[#0d332b] border border-gray-200"
+                    : "border border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-[#0d332b]"
                 }`}
               >
                 {d.label}
@@ -144,87 +299,13 @@ export default function EquipeClient() {
             ))}
           </AnimatedSection>
 
-          <div className="grid gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredMembers.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className={`group relative flex items-end rounded-[24px] md:rounded-[32px] overflow-hidden bg-[#0d332b] cursor-pointer hover:shadow-2xl transition-shadow duration-500 ${
-                  member.name === "Équipe Commerciale"
-                    ? "sm:col-span-2 lg:col-span-2 aspect-[4/3] sm:aspect-[2/1] min-h-[320px] sm:min-h-[380px]"
-                    : "aspect-[4/5] sm:aspect-[3/4]"
-                }`}
-              >
-                {/* Glassmorphism card */}
-                <div className="relative w-full p-4 md:p-6 z-20">
-                  <div className="bg-[#0d332b]/90 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 border border-white/10 shadow-2xl flex flex-col gap-2 group-hover:bg-[#0d332b] transition-colors duration-300">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-base md:text-lg leading-tight text-white">
-                          {member.name}
-                        </h3>
-                        <p className="text-xs md:text-sm text-gray-300 mt-0.5 leading-snug">
-                          {member.role}
-                        </p>
-                      </div>
-                      {member.linkedin && (
-                        <a
-                          href={member.linkedin}
-                          className="p-2 rounded-lg bg-white/10 hover:bg-[#B0FF5B] hover:text-[#0d332b] text-white transition-all duration-300 shrink-0"
-                        >
-                          <Linkedin className="w-4 h-4 md:w-5 md:h-5" />
-                        </a>
-                      )}
-                    </div>
-                    {member.techStack && (
-                      <div className="flex flex-wrap gap-2 pt-2 border-t border-white/10 items-center">
-                        {member.techStack.map((tech) => (
-                          <div
-                            key={tech.name}
-                            className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
-                            title={tech.name}
-                          >
-                            {tech.logo ? (
-                              <Image
-                                src={tech.logo}
-                                alt={tech.name}
-                                width={16}
-                                height={16}
-                                className="w-4 h-4 object-contain opacity-90"
-                              />
-                            ) : null}
-                            <span className="text-[10px] text-white font-medium">
-                              {tech.name}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {(member.metric || member.quote) && (
-                      <p className="text-xs text-gray-300 italic truncate">
-                        {member.metric && (
-                          <span className="text-[#B0FF5B] font-bold not-italic mr-1">
-                            {member.metric}
-                          </span>
-                        )}
-                        {member.metricLabel && (
-                          <span className="text-gray-400 mr-1">
-                            {member.metricLabel} ·{" "}
-                          </span>
-                        )}
-                        {member.quote}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Hover border glow */}
-                <div className="absolute inset-0 rounded-[24px] md:rounded-[32px] border-2 border-[#B0FF5B]/0 group-hover:border-[#B0FF5B]/30 transition-all duration-500 pointer-events-none z-30" />
-              </motion.div>
-            ))}
-          </div>
+          <motion.div layout className="space-y-16 md:space-y-24">
+            <AnimatePresence mode="popLayout" initial={false}>
+              {visiblePoles.map((pole) => (
+                <PoleBlock key={pole.id} pole={pole} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </section>
 
