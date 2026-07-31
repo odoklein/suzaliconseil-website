@@ -15,20 +15,25 @@ import AnimatedSection from "../ui/AnimatedSection";
 const POLES = [
   {
     id: "direction",
-    label: "Direction",
+    label: "Équipe de Direction",
+    filterLabel: "Direction",
     icon: Compass,
-    tagline: "Vision, stratégie et pilotage global des engagements clients.",
+    tagline:
+      "La direction de Suzali Conseil définit la stratégie de l'entreprise, pilote l'excellence opérationnelle et veille à la réussite des projets ainsi qu'à la satisfaction durable de nos clients.",
     members: [
       {
         name: "Hichem Hammouche",
-        role: "CEO & Fondateur",
-        description: "Stratégie, partenariats et direction générale.",
+        role: "Président-Directeur Général (CEO) & Fondateur",
+        focus: ["Vision stratégique", "Innovation", "Développement"],
+        description:
+          "Définit la vision de l'entreprise, pilote sa stratégie de croissance et développe les partenariats clés. Il veille à l'innovation, à la qualité des services et au développement durable de Suzali Conseil.",
         linkedin: "https://www.linkedin.com/in/hichem-hammouche-ba957238/",
       },
       {
         name: "Direction des Opérations",
-        role: "Pilotage & Qualité",
-        description: "Cadrage des missions, délais et qualité de service.",
+        role: "Excellence Opérationnelle & Pilotage des Projets",
+        description:
+          "Supervise l'ensemble des opérations afin de garantir le respect des délais, la qualité des livrables et la coordination des équipes. Assure l'amélioration continue des processus et la satisfaction des clients.",
         linkedin: null,
       },
     ],
@@ -91,18 +96,21 @@ const POLES = [
 
 const FILTERS = [
   { id: "all", label: "Tous" },
-  ...POLES.map((p) => ({ id: p.id, label: p.label })),
+  ...POLES.map((p) => ({ id: p.id, label: p.filterLabel ?? p.label })),
 ];
 
-/** Monogramme : initiales du nom (ou de la fonction). */
+/**
+ * Monogramme : initiales du nom (ou de la fonction).
+ * Les mots de liaison en minuscule sont ignorés — « Direction des Opérations » → DO.
+ */
 function monogram(name) {
   return name
-    .split(" ")
-    .filter((w) => w.length > 2)
+    .split(/\s+/)
+    .filter((w) => w.length > 1 && w[0] === w[0].toLocaleUpperCase("fr"))
     .slice(0, 2)
     .map((w) => w[0])
     .join("")
-    .toUpperCase();
+    .toLocaleUpperCase("fr");
 }
 
 const STATS = [
@@ -174,12 +182,26 @@ function MemberCard({ member, index }) {
         <h3 className="font-heading text-base font-bold leading-tight text-[#0d332b]">
           {member.name}
         </h3>
-        <p className="mt-1 text-sm font-medium text-emerald-700">
+        <p className="mt-1 text-sm font-medium leading-snug text-emerald-700">
           {member.role}
         </p>
+        {member.focus && (
+          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-400">
+            {member.focus.map((item, i) => (
+              <React.Fragment key={item}>
+                {i > 0 && (
+                  <span aria-hidden="true" className="text-[#B0FF5B]">
+                    •
+                  </span>
+                )}
+                <span>{item}</span>
+              </React.Fragment>
+            ))}
+          </p>
+        )}
       </div>
 
-      <p className="border-t border-gray-100 pt-4 text-sm leading-relaxed text-gray-500">
+      <p className="mt-auto border-t border-gray-100 pt-4 text-sm leading-relaxed text-gray-500">
         {member.description}
       </p>
 
@@ -209,7 +231,7 @@ function PoleBlock({ pole }) {
             <h2 className="font-heading text-xl font-bold text-[#0d332b] md:text-2xl">
               {pole.label}
             </h2>
-            <p className="mt-1 max-w-xl text-sm leading-relaxed text-gray-500">
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-500">
               {pole.tagline}
             </p>
           </div>
@@ -219,7 +241,11 @@ function PoleBlock({ pole }) {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+      <div
+        className={`grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 ${
+          pole.members.length > 2 ? "lg:grid-cols-3" : ""
+        }`}
+      >
         {pole.members.map((member, index) => (
           <MemberCard key={member.name} member={member} index={index} />
         ))}
