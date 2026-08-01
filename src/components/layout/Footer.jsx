@@ -167,6 +167,14 @@ const Footer = () => {
             <ul className="space-y-4 text-slate-300 text-sm">
               <li>
                 <Link
+                  href="/etudes-de-cas"
+                  className="hover:text-white hover:translate-x-1 transform inline-block transition-all duration-200"
+                >
+                  Études de cas
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/equipe"
                   className="hover:text-white hover:translate-x-1 transform inline-block transition-all duration-200"
                 >

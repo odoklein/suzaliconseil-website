@@ -1,12 +1,30 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ChevronDown, Menu, X, ArrowRight } from "lucide-react";
 import MegaMenu from "./MegaMenu";
 import { useBooking } from "../../context/BookingContext";
+
+/* One source of truth: the desktop bar and the mobile panel read the same list,
+   so a new route can never appear in one and not the other. */
+const NAV_LINKS = [
+  { href: "/offres", label: "Offres" },
+  { href: "/etudes-de-cas", label: "Études de cas" },
+  { href: "/equipe", label: "Équipe" },
+  { href: "/carriers", label: "Carrières" },
+  { href: "/actualites", label: "Actualités" },
+  { href: "/contact", label: "Contact" },
+];
+
+const MEGA_MENU_ID = "nav-services-panel";
+const MOBILE_PANEL_ID = "nav-mobile-panel";
+
+/* Hovering out of the trigger toward the panel crosses a few dead pixels;
+   closing on a delay lets the pointer make the trip. */
+const HOVER_INTENT_MS = 140;
 
 export default function Navbar({ services }) {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
@@ -15,205 +33,325 @@ export default function Navbar({ services }) {
   const pathname = usePathname();
   const { openBooking } = useBooking();
 
-  useEffect(() => {
-    if (isServicesOpen) setIsServicesOpen(false);
-    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  const servicesTriggerRef = useRef(null);
+  const servicesWrapRef = useRef(null);
+  const mobileToggleRef = useRef(null);
+  const closeTimer = useRef(null);
 
-  // Scroll detection for glass effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+  const isCurrent = (href) =>
+    pathname === href || pathname?.startsWith(`${href}/`);
+  const isServicesSection = pathname?.startsWith("/services");
+
+  const openServices = useCallback(() => {
+    clearTimeout(closeTimer.current);
+    setIsServicesOpen(true);
   }, []);
 
+  const closeServices = useCallback(() => {
+    clearTimeout(closeTimer.current);
+    setIsServicesOpen(false);
+  }, []);
+
+  const scheduleCloseServices = useCallback(() => {
+    clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(
+      () => setIsServicesOpen(false),
+      HOVER_INTENT_MS,
+    );
+  }, []);
+
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
+
+  // Route change closes whatever is open.
+  useEffect(() => {
+    closeServices();
+    setIsMobileMenuOpen(false);
+  }, [pathname, closeServices]);
+
+  // Glass state. rAF-throttled and only writes on an actual state flip.
+  useEffect(() => {
+    let frame = 0;
+    let last = window.scrollY > 20;
+    setIsScrolled(last);
+
+    const handleScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const next = window.scrollY > 20;
+        if (next !== last) {
+          last = next;
+          setIsScrolled(next);
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  // Escape closes the open surface and hands focus back to its trigger.
+  useEffect(() => {
+    if (!isServicesOpen && !isMobileMenuOpen) return;
+
+    const onKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      if (isServicesOpen) {
+        closeServices();
+        servicesTriggerRef.current?.focus();
+      }
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+        mobileToggleRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isServicesOpen, isMobileMenuOpen, closeServices]);
+
+  // Pointer down outside the services group closes it — replaces the
+  // full-viewport invisible div that used to swallow clicks on the page.
+  useEffect(() => {
+    if (!isServicesOpen) return;
+
+    const onPointerDown = (event) => {
+      if (!servicesWrapRef.current?.contains(event.target)) closeServices();
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [isServicesOpen, closeServices]);
+
+  // The mega menu grows from the trigger, not from the middle of the screen.
+  useEffect(() => {
+    if (!isServicesOpen) return;
+    const rect = servicesTriggerRef.current?.getBoundingClientRect();
+    if (rect) {
+      document.documentElement.style.setProperty(
+        "--dropdown-origin-x",
+        `${Math.round(rect.left + rect.width / 2)}px`,
+      );
+    }
+  }, [isServicesOpen]);
+
+  // Lock the page behind the mobile panel so scrolling past its end doesn't
+  // chain to the document underneath.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [isMobileMenuOpen]);
+
+  // Tabbing past the last link in the panel closes it.
+  const handleServicesBlur = (event) => {
+    if (!servicesWrapRef.current?.contains(event.relatedTarget)) {
+      closeServices();
+    }
+  };
+
   return (
-    <header
-      className={`fixed w-full z-40 transition-all duration-500 ${
-        isScrolled
-          ? "navbar-glass scrolled"
-          : "bg-white/80 backdrop-blur-md border-b border-gray-100/50"
-      }`}
-    >
-      {/* Invisible Hover Trap for MegaMenu */}
-      {isServicesOpen && (
-        <div
-          className="fixed inset-0 top-20 z-[-1]"
-          onMouseEnter={() => setIsServicesOpen(false)}
-        />
-      )}
+    <>
+      <a href="#main" className="skip-link">
+        Aller au contenu
+      </a>
 
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <Image
-              src="/assets/greenlogo.svg"
-              alt="Suzali Conseil"
-              width={180}
-              height={50}
-              className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
-            />
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
-            <div
-              className="relative h-20 flex items-center"
-              onMouseLeave={() => setIsServicesOpen(false)}
-            >
-              <button
-                onMouseEnter={() => setIsServicesOpen(true)}
-                className={`nav-link-premium flex items-center gap-1 text-[15px] uppercase tracking-wide font-heading
-                  ${isServicesOpen ? "text-[var(--color-primary-main)]" : "text-[#0D332B] hover:text-[var(--color-primary-main)]"}`}
-              >
-                Services
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-300 ${isServicesOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              {/* Mega Menu Dropdown */}
-              <MegaMenu
-                services={services}
-                isOpen={isServicesOpen}
-                onClose={() => setIsServicesOpen(false)}
-              />
-            </div>
-
-            <Link
-              href="/offres"
-              className="nav-link-premium text-[15px] text-[#0D332B] hover:text-[var(--color-primary-main)] uppercase tracking-wide font-heading"
-            >
-              Offres
-            </Link>
-            <Link
-              href="/equipe"
-              className="nav-link-premium text-[15px] text-[#0D332B] hover:text-[var(--color-primary-main)] uppercase tracking-wide font-heading"
-            >
-              Équipe
-            </Link>
-            <Link
-              href="/carriers"
-              className="nav-link-premium text-[15px] text-[#0D332B] hover:text-[var(--color-primary-main)] uppercase tracking-wide font-heading"
-            >
-              Carrières
-            </Link>
-            <Link
-              href="/actualites"
-              className="nav-link-premium text-[15px] text-[#0D332B] hover:text-[var(--color-primary-main)] uppercase tracking-wide font-heading"
-            >
-              Actualités
-            </Link>
-            <Link
-              href="/contact"
-              className="nav-link-premium text-[15px] text-[#0D332B] hover:text-[var(--color-primary-main)] uppercase tracking-wide font-heading"
-            >
-              Contact
-            </Link>
-          </nav>
-
-          {/* CTA & Mobile Toggle */}
-          <div className="flex items-center gap-4">
-            <button
-              onClick={openBooking}
-              className="hidden lg:inline-flex items-center gap-2 bg-[#0D332B] hover:bg-[#1A4D43] text-white hover:text-[var(--color-accent-lime)] px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 group/cta overflow-hidden relative"
-            >
-              <span className="relative z-10">Planifier un appel</span>
-              <ArrowRight
-                size={16}
-                className="relative z-10 group-hover/cta:translate-x-0.5 transition-transform"
-              />
-              {/* Shine effect */}
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/cta:translate-x-full transition-transform duration-700" />
-            </button>
-
-            <button
-              className="lg:hidden p-2 text-gray-700 hover:text-[#0D332B] transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      <div
-        className={`lg:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-gray-100 transition-all duration-500 ${
-          isMobileMenuOpen
-            ? "h-[calc(100vh-80px)] opacity-100"
-            : "h-0 opacity-0 pointer-events-none"
-        } overflow-hidden`}
+      <header
+        className={`navbar-shell fixed w-full z-40 ${
+          isScrolled ? "is-scrolled" : ""
+        } ${isServicesOpen || isMobileMenuOpen ? "is-open" : ""}`}
       >
-        <div className="p-6 flex flex-col gap-6 overflow-y-auto h-full">
-          <div className="space-y-4">
-            <h4 className="text-lg font-bold text-[#0D332B] uppercase tracking-wide font-heading">
-              Services
-            </h4>
-            <div className="flex flex-col gap-3 pl-4 border-l-2 border-primary-dark/10">
-              {services.map((service) => (
-                <Link
-                  key={service.id}
-                  href={`/services/${service.slug}`}
-                  className="block font-medium text-sm text-gray-400 hover:text-primary-main transition-colors hover:translate-x-1 transform duration-200"
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link
+              href="/"
+              aria-label="Suzali Conseil — accueil"
+              className="nav-focus flex items-center gap-2 group"
+            >
+              <Image
+                src="/assets/greenlogo.svg"
+                alt="Suzali Conseil"
+                width={180}
+                height={50}
+                priority
+                className="h-12 w-auto transition-transform duration-300 group-hover:scale-[1.03]"
+              />
+            </Link>
+
+            {/* Desktop navigation */}
+            <nav
+              aria-label="Navigation principale"
+              className="hidden lg:flex items-center gap-8"
+            >
+              <div
+                ref={servicesWrapRef}
+                className="relative h-20 flex items-center"
+                onMouseEnter={openServices}
+                onMouseLeave={scheduleCloseServices}
+                onBlur={handleServicesBlur}
+              >
+                <button
+                  ref={servicesTriggerRef}
+                  type="button"
+                  aria-expanded={isServicesOpen}
+                  aria-controls={MEGA_MENU_ID}
+                  aria-current={isServicesSection ? "page" : undefined}
+                  data-open={isServicesOpen}
+                  onClick={() =>
+                    isServicesOpen ? closeServices() : openServices()
+                  }
+                  className={`nav-link-premium nav-focus flex items-center gap-1 text-[15px] uppercase tracking-wide font-heading ${
+                    isServicesOpen
+                      ? "text-[var(--color-primary-main)]"
+                      : "text-[var(--color-primary-dark)] hover:text-[var(--color-primary-main)]"
+                  }`}
                 >
-                  {service.title}
+                  Services
+                  <ChevronDown
+                    size={14}
+                    aria-hidden="true"
+                    className={`transition-transform duration-[var(--dropdown-open-dur)] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isServicesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                <MegaMenu
+                  id={MEGA_MENU_ID}
+                  services={services}
+                  isOpen={isServicesOpen}
+                  onClose={closeServices}
+                />
+              </div>
+
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isCurrent(link.href) ? "page" : undefined}
+                  className="nav-link-premium nav-focus text-[15px] text-[var(--color-primary-dark)] hover:text-[var(--color-primary-main)] uppercase tracking-wide font-heading"
+                >
+                  {link.label}
                 </Link>
               ))}
+            </nav>
+
+            {/* CTA & mobile toggle */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={openBooking}
+                className="nav-cta nav-focus hidden lg:inline-flex items-center gap-2 bg-[var(--color-primary-dark)] hover:bg-[var(--color-primary-main)] text-white hover:text-[var(--color-accent-lime)] px-6 py-2.5 rounded-full font-medium text-sm transition-[background-color,color,transform,box-shadow] duration-[var(--dropdown-open-dur)] ease-[cubic-bezier(0.22,1,0.36,1)] shadow-[0_6px_20px_-8px_rgba(13,51,43,0.6)] hover:shadow-[0_12px_28px_-10px_rgba(13,51,43,0.65)] hover:-translate-y-0.5 group/cta overflow-hidden relative"
+              >
+                <span className="relative z-10">Planifier un appel</span>
+                <ArrowRight
+                  size={16}
+                  aria-hidden="true"
+                  className="relative z-10 transition-transform duration-[var(--dropdown-open-dur)] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/cta:translate-x-1"
+                />
+                <span className="nav-cta-sweep" aria-hidden="true" />
+              </button>
+
+              <button
+                ref={mobileToggleRef}
+                type="button"
+                aria-label={
+                  isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"
+                }
+                aria-expanded={isMobileMenuOpen}
+                aria-controls={MOBILE_PANEL_ID}
+                onClick={() => setIsMobileMenuOpen((open) => !open)}
+                className="nav-focus lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-full text-[var(--color-primary-dark)] hover:bg-[var(--color-primary-dark)]/5 transition-colors"
+              >
+                <span
+                  className="t-icon-swap"
+                  data-state={isMobileMenuOpen ? "b" : "a"}
+                >
+                  <Menu className="t-icon" data-icon="a" size={24} />
+                  <X className="t-icon" data-icon="b" size={24} />
+                </span>
+              </button>
             </div>
           </div>
-
-          <hr className="border-gray-100" />
-
-          <div className="flex flex-col gap-6">
-            <Link
-              href="/offres"
-              className="text-lg font-bold text-[#0D332B] uppercase tracking-wide font-heading hover:text-primary-main transition-colors"
-            >
-              Offres
-            </Link>
-            <Link
-              href="/equipe"
-              className="text-lg font-bold text-[#0D332B] uppercase tracking-wide font-heading hover:text-primary-main transition-colors"
-            >
-              Équipe
-            </Link>
-            <Link
-              href="/carriers"
-              className="text-lg font-bold text-[#0D332B] uppercase tracking-wide font-heading hover:text-primary-main transition-colors"
-            >
-              Carrières
-            </Link>
-            <Link
-              href="/actualites"
-              className="text-lg font-bold text-[#0D332B] uppercase tracking-wide font-heading hover:text-primary-main transition-colors"
-            >
-              Actualités
-            </Link>
-            <Link
-              href="/contact"
-              className="text-lg font-bold text-[#0D332B] uppercase tracking-wide font-heading hover:text-primary-main transition-colors"
-            >
-              Contact
-            </Link>
-          </div>
-
-          <button
-            onClick={() => {
-              setIsMobileMenuOpen(false);
-              openBooking();
-            }}
-            className="mt-4 flex items-center justify-center w-full bg-[#003F3A] text-white py-3.5 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all hover:bg-[#0D332B]"
-          >
-            Planifier un appel
-          </button>
         </div>
-      </div>
-    </header>
+
+        {/* Mobile panel */}
+        <div
+          id={MOBILE_PANEL_ID}
+          className={`nav-mobile-panel t-stagger lg:hidden absolute top-full left-0 w-full bg-white/97 backdrop-blur-xl border-t border-[var(--color-primary-dark)]/8 overflow-hidden ${
+            isMobileMenuOpen ? "is-open is-shown" : ""
+          }`}
+          style={{ height: "calc(100dvh - var(--nav-h))" }}
+        >
+          <nav
+            aria-label="Navigation mobile"
+            className="p-6 pb-16 flex flex-col gap-6 overflow-y-auto overscroll-contain h-full"
+          >
+            <div className="t-stagger-line" style={{ "--i": 0 }}>
+              <h2 className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-[0.14em] mb-3">
+                Services
+              </h2>
+              <ul className="flex flex-col pl-4 border-l border-[var(--color-primary-dark)]/15">
+                {services.map((service) => (
+                  <li key={service.id}>
+                    <Link
+                      href={`/services/${service.slug}`}
+                      aria-current={
+                        isCurrent(`/services/${service.slug}`)
+                          ? "page"
+                          : undefined
+                      }
+                      className="nav-focus flex items-center min-h-11 py-1 font-medium text-[15px] text-[var(--color-text-muted)] hover:text-[var(--color-primary-main)] aria-[current=page]:text-[var(--color-primary-dark)] aria-[current=page]:font-semibold transition-colors"
+                    >
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <hr className="border-[var(--color-primary-dark)]/10" />
+
+            <ul className="flex flex-col">
+              {NAV_LINKS.map((link, index) => (
+                <li
+                  key={link.href}
+                  className="t-stagger-line"
+                  style={{ "--i": index + 1 }}
+                >
+                  <Link
+                    href={link.href}
+                    aria-current={isCurrent(link.href) ? "page" : undefined}
+                    className="nav-focus flex items-center min-h-14 text-lg font-bold text-[var(--color-primary-dark)] uppercase tracking-wide font-heading hover:text-[var(--color-primary-main)] aria-[current=page]:text-[var(--color-primary-main)] transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                openBooking();
+              }}
+              className="nav-focus t-stagger-line mt-auto flex items-center justify-center gap-2 w-full bg-[var(--color-primary-dark)] text-white min-h-14 rounded-full font-bold shadow-[0_10px_30px_-12px_rgba(13,51,43,0.7)] active:scale-[0.99] transition-transform"
+              style={{ "--i": NAV_LINKS.length + 1 }}
+            >
+              Planifier un appel
+              <ArrowRight size={18} aria-hidden="true" />
+            </button>
+          </nav>
+        </div>
+      </header>
+    </>
   );
 }

@@ -655,23 +655,57 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* 8. PREMIUM GLASS MORPHISM NAVBAR                                            */
+/* 8. HEADER: NAVBAR, MEGA MENU, MOBILE PANEL                                  */
 /* -------------------------------------------------------------------------- */
 
-.navbar-glass {
-  background: rgba(255, 255, 255, 0.85);
+/* Motion variables for the header transitions (transitions.dev semantic names).
+   Only the per-snippet blocks are installed — the full `_root.css` token scale
+   would redefine this project's own `--duration-fast` / `--ease-bounce`. */
+:root {
+  /* menu dropdown */
+  --dropdown-open-dur: 250ms;
+  --dropdown-close-dur: 150ms;
+  --dropdown-pre-scale: 0.97;
+  --dropdown-closing-scale: 0.99;
+  --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* texts reveal (mega-menu rows + mobile links) */
+  --stagger-dur: 500ms;
+  --stagger-distance: 12px;
+  --stagger-stagger: 40ms;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* icon swap (hamburger ↔ close) */
+  --icon-swap-dur: 250ms;
+  --icon-swap-blur: 2px;
+  --icon-swap-start-scale: 0.25;
+  --icon-swap-ease: ease-in-out;
+  /* header shell */
+  --nav-h: 5rem;
+}
+
+/* The bar is transparent-ish at rest and only earns its glass once content
+   is actually sliding underneath it. */
+.navbar-shell {
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid transparent;
+  box-shadow: 0 0 0 0 rgba(13, 51, 43, 0);
+  transition:
+    background-color var(--dropdown-open-dur) var(--dropdown-ease),
+    border-color var(--dropdown-open-dur) var(--dropdown-ease),
+    box-shadow var(--dropdown-open-dur) var(--dropdown-ease);
+}
+
+.navbar-shell.is-scrolled,
+.navbar-shell.is-open {
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(13, 51, 43, 0.06);
-  transition: all 0.4s var(--ease-smooth);
+  border-bottom-color: rgba(13, 51, 43, 0.07);
+  box-shadow: 0 8px 30px -12px rgba(13, 51, 43, 0.18);
 }
 
-.navbar-glass.scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
-}
-
-/* Nav link hover underline effect */
+/* Nav link underline: grows from the left on hover, stays put on the current
+   page. `scaleX` instead of `width` so it never triggers layout. */
 .nav-link-premium {
   position: relative;
   font-weight: 500;
@@ -681,21 +715,225 @@
 .nav-link-premium::after {
   content: "";
   position: absolute;
-  bottom: -4px;
+  bottom: -6px;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 2px;
+  border-radius: 1px;
   background: linear-gradient(
     90deg,
     var(--color-accent-lime),
     var(--color-primary-main)
   );
-  border-radius: 1px;
-  transition: width 0.3s var(--ease-premium);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dropdown-open-dur) var(--dropdown-ease);
 }
 
-.nav-link-premium:hover::after {
-  width: 100%;
+.nav-link-premium:hover::after,
+.nav-link-premium[data-open="true"]::after,
+.nav-link-premium[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* The current page keeps a quieter, solid marker so it reads as state rather
+   than as a stuck hover. */
+.nav-link-premium[aria-current="page"] {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+.nav-link-premium[aria-current="page"]::after {
+  background: var(--color-primary-dark);
+}
+
+/* --- Menu dropdown (transitions.dev 05) ----------------------------------- */
+.t-dropdown {
+  transform-origin: var(--dropdown-origin-x, center) top;
+  transform: scale(var(--dropdown-pre-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-open-dur) var(--dropdown-ease),
+    opacity var(--dropdown-open-dur) var(--dropdown-ease);
+  will-change: transform, opacity;
+}
+
+.t-dropdown.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.t-dropdown.is-closing {
+  transform: scale(var(--dropdown-closing-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-close-dur) var(--dropdown-ease),
+    opacity var(--dropdown-close-dur) var(--dropdown-ease);
+}
+
+/* --- Texts reveal (transitions.dev 18), generalised to an --i index -------- */
+.t-stagger-line {
+  opacity: 0;
+  transform: translateY(var(--stagger-distance));
+  filter: blur(var(--stagger-blur));
+  transition:
+    opacity var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter var(--stagger-dur) var(--stagger-ease);
+  transition-delay: calc(var(--stagger-stagger) * var(--i, 0));
+  will-change: transform, opacity, filter;
+}
+
+.t-stagger.is-shown .t-stagger-line {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Exit is one quiet fade, not the entrance played backwards. */
+.t-stagger.is-hiding .t-stagger-line {
+  opacity: 0;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 200ms ease,
+    transform 0s linear,
+    filter 0s linear;
+  transition-delay: 0s;
+}
+
+/* --- Icon swap (transitions.dev 09) --------------------------------------- */
+.t-icon-swap {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+}
+
+.t-icon-swap .t-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--icon-swap-dur) var(--icon-swap-ease),
+    filter var(--icon-swap-dur) var(--icon-swap-ease),
+    transform var(--icon-swap-dur) var(--icon-swap-ease);
+  will-change: opacity, filter, transform;
+}
+
+.t-icon-swap[data-state="a"] .t-icon[data-icon="a"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="b"] {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1) rotate(0deg);
+}
+
+.t-icon-swap[data-state="a"] .t-icon[data-icon="b"],
+.t-icon-swap[data-state="b"] .t-icon[data-icon="a"] {
+  opacity: 0;
+  filter: blur(var(--icon-swap-blur));
+  transform: scale(var(--icon-swap-start-scale)) rotate(-45deg);
+}
+
+/* --- Mobile panel --------------------------------------------------------- */
+/* Opacity + transform only. The old version tweened `height`, which relayouts
+   a full-viewport surface on every frame. */
+.nav-mobile-panel {
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition:
+    opacity var(--dropdown-close-dur) var(--dropdown-ease),
+    transform var(--dropdown-close-dur) var(--dropdown-ease),
+    visibility 0s linear var(--dropdown-close-dur);
+}
+
+.nav-mobile-panel.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition:
+    opacity var(--dropdown-open-dur) var(--dropdown-ease),
+    transform var(--dropdown-open-dur) var(--dropdown-ease),
+    visibility 0s linear 0s;
+}
+
+/* --- CTA sweep ------------------------------------------------------------ */
+/* An animation, not a hover transition: it plays forward on enter and never
+   rewinds itself across the button on leave. */
+@keyframes navCtaSweep {
+  from {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
+.nav-cta-sweep {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  transform: translateX(-120%) skewX(-12deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(176, 255, 91, 0.28),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.nav-cta:hover .nav-cta-sweep,
+.nav-cta:focus-visible .nav-cta-sweep {
+  animation: navCtaSweep 700ms var(--ease-premium);
+}
+
+/* --- Focus visibility ----------------------------------------------------- */
+/* There was no focus style anywhere in this stylesheet. */
+.nav-focus:focus-visible,
+.skip-link:focus-visible {
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--color-primary-dark);
+  color: var(--color-accent-lime);
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform var(--dropdown-open-dur) var(--dropdown-ease);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Anchored sections must clear the fixed header. */
+:target {
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-dropdown,
+  .t-stagger-line,
+  .t-icon-swap .t-icon,
+  .nav-mobile-panel,
+  .nav-link-premium::after {
+    transition: none !important;
+  }
+
+  .nav-cta:hover .nav-cta-sweep,
+  .nav-cta:focus-visible .nav-cta-sweep {
+    animation: none;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -999,5 +1237,146 @@
   .animate-gradient-shift,
   .animate-subtle-float {
     animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   Transitions — transitions.dev (t-* namespace, semantic custom properties)
+   Used by the case-studies surface. Every block ships its reduced-motion guard.
+   ========================================================================== */
+
+:root {
+  /* 18 — texts reveal */
+  --stagger-dur: 500ms;
+  --stagger-distance: 12px;
+  --stagger-stagger: 40ms;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* 21 — accordion expand */
+  --acc-expand: 250ms;
+  --acc-collapse: 250ms;
+  --acc-chevron: 250ms;
+  --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* 24 — learn more hover */
+  --learn-shift: 2px;
+  --learn-spread: 8deg;
+  --learn-in: 350ms;
+  --learn-out: 350ms;
+  --learn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- 18. Texts reveal ---------------------------------------------------- */
+.t-stagger-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(var(--stagger-distance));
+  filter: blur(var(--stagger-blur));
+  transition:
+    opacity var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter var(--stagger-dur) var(--stagger-ease);
+  will-change: transform, opacity, filter;
+}
+.t-stagger-line--2 { transition-delay: var(--stagger-stagger); }
+.t-stagger-line--3 { transition-delay: calc(var(--stagger-stagger) * 2); }
+.t-stagger-line--4 { transition-delay: calc(var(--stagger-stagger) * 3); }
+
+.t-stagger.is-shown .t-stagger-line {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-stagger-line {
+    transition: none !important;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* --- 21. Accordion expand ------------------------------------------------ */
+.t-acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--acc-expand) var(--acc-ease);
+}
+.t-acc-panel-inner {
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(2px);
+  transition:
+    opacity var(--acc-collapse) var(--acc-ease),
+    filter var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel-inner {
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--acc-expand) var(--acc-ease),
+    filter var(--acc-expand) var(--acc-ease);
+}
+.t-acc-chevron {
+  display: inline-flex;
+  transform: scaleY(1);
+  transform-origin: center;
+  transition: transform var(--acc-chevron) var(--acc-ease);
+}
+.t-acc-chevron path { vector-effect: non-scaling-stroke; }
+.t-acc[data-open="true"] .t-acc-chevron { transform: scaleY(-1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .t-acc-panel,
+  .t-acc-panel-inner,
+  .t-acc-chevron {
+    transition: none !important;
+  }
+}
+
+/* --- 24. Learn more hover ------------------------------------------------ */
+.t-learn-chevron {
+  display: inline-flex;
+  transform: translateX(0);
+  transition: transform var(--learn-out) var(--learn-ease);
+}
+.t-learn-arm {
+  transform-box: view-box;
+  transform-origin: 10px 8px;
+  vector-effect: non-scaling-stroke;
+  transition: transform var(--learn-out) var(--learn-ease);
+}
+.t-learn:hover .t-learn-chevron {
+  transform: translateX(var(--learn-shift));
+  transition-duration: var(--learn-in);
+}
+.t-learn:hover .t-learn-arm { transition-duration: var(--learn-in); }
+.t-learn:hover .t-learn-arm-top { transform: rotate(var(--learn-spread)); }
+.t-learn:hover .t-learn-arm-bot { transform: rotate(calc(var(--learn-spread) * -1)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .t-learn-chevron,
+  .t-learn-arm { transition: none !important; }
+}
+
+/* --- Surface: la couture (case-studies seam) ----------------------------- */
+/* The seam draws down as the page scrolls; it is the surface's one authored
+   moment. scaleY is driven from a CSS custom property set in JS. */
+.seam-line {
+  transform-origin: top center;
+  transform: scaleY(var(--seam-progress, 0));
+  transition: transform 120ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seam-line {
+    transform: scaleY(1);
+    transition: none !important;
   }
 }
