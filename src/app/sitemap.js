@@ -23,6 +23,7 @@ const STATIC_ROUTES = [
   ["/services/digital/branding-identite", "monthly", 0.8],
   ["/services/digital/developpement-automatisation", "monthly", 0.8],
   ["/offres", "weekly", 0.8],
+  ["/etudes-de-cas", "monthly", 0.8],
   ["/equipe", "monthly", 0.7],
   ["/actualites", "weekly", 0.8],
   ["/contact", "monthly", 0.7],
