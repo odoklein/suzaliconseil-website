@@ -85,13 +85,15 @@ function CaseStudy({ study, tone, index }) {
   const dark = tone === "dark";
   const seam = tone === "seam";
 
+  /* Sur le sol vert, le texte secondaire se teinte depuis la teinte du sol
+     plutôt que de virer au gris neutre. */
   const heading = dark ? "text-white" : "text-[#0d332b]";
-  const body = dark ? "text-gray-300" : "text-gray-600";
-  const meta = dark ? "text-gray-400" : "text-gray-500";
+  const body = dark ? "text-[#c5d8d1]" : "text-gray-600";
+  const meta = dark ? "text-[#8fa8a0]" : "text-gray-500";
   const rule = dark ? "border-white/15" : "border-gray-200";
   const accent = dark ? "text-[#B0FF5B]" : "text-emerald-700";
   const chipBg = dark
-    ? "bg-white/10 text-gray-200"
+    ? "bg-white/10 text-[#dbe9e3]"
     : "bg-emerald-50 text-emerald-800";
 
   return (
@@ -121,19 +123,15 @@ function CaseStudy({ study, tone, index }) {
       )}
 
       <div className={seam ? "lg:col-span-7" : ""}>
-        <p
-          className={`text-xs font-semibold uppercase tracking-[0.12em] ${meta}`}
-        >
-          {study.sector}
-        </p>
-
         <h3
-          className={`mt-3 font-heading text-2xl font-bold leading-tight md:text-3xl ${heading}`}
+          className={`font-heading text-2xl font-bold leading-tight md:text-3xl ${heading}`}
         >
           {study.clientLabel}
         </h3>
 
-        <p className={`mt-4 text-lg leading-relaxed ${body}`}>
+        <p className={`mt-2 text-sm ${meta}`}>{study.sector}</p>
+
+        <p className={`mt-5 text-lg leading-relaxed ${body}`}>
           {study.summary}
         </p>
 
@@ -283,10 +281,10 @@ export default function EtudesDeCasClient() {
     <main className="min-h-screen bg-white">
       {/* ─── L'ouverture : la couture naît ici ─────────────────────────── */}
       <section className="relative overflow-hidden bg-[#0d332b] pt-28 pb-24 md:pt-36 md:pb-32">
-        <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[#f9fafb] lg:block" />
+        {/* La couture naît ici, en filet, avant que les deux sols ne s'ouvrent. */}
         <div
           aria-hidden="true"
-          className="absolute inset-y-0 left-1/2 hidden w-px bg-[#B0FF5B]/40 lg:block"
+          className="absolute inset-y-0 left-1/2 hidden w-px bg-gradient-to-b from-transparent to-[#B0FF5B]/50 lg:block"
         />
 
         <div className="container relative z-10 mx-auto max-w-6xl px-4">
@@ -298,9 +296,9 @@ export default function EtudesDeCasClient() {
             <h1 className="t-stagger-line t-stagger-line--1 font-heading text-4xl font-extrabold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
               Deux métiers,
               <br />
-              <span className="lg:text-[#0d332b]">un seul cabinet.</span>
+              un seul cabinet.
             </h1>
-            <p className="t-stagger-line t-stagger-line--2 mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-gray-300 lg:text-gray-300">
+            <p className="t-stagger-line t-stagger-line--2 mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-[#c5d8d1]">
               À gauche, ce que nous vendons pour nos clients. À droite, ce que
               nous construisons pour eux. Au milieu, les missions où les deux se
               sont rejoints — et c&apos;est là que ce cabinet se distingue.
@@ -320,13 +318,10 @@ export default function EtudesDeCasClient() {
 
       {/* ─── Le diptyque ────────────────────────────────────────────────── */}
       <div ref={seamRef} className="relative">
-        {/* Les deux sols */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[#0d332b] lg:bg-transparent"
-        >
-          <div className="absolute inset-y-0 left-0 hidden w-1/2 bg-[#0d332b] lg:block" />
-          <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[#f9fafb] lg:block" />
+        {/* Les deux sols, en pleine largeur de fenêtre au-delà du conteneur */}
+        <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
+          <div className="absolute inset-y-0 left-0 w-1/2 bg-[#0d332b]" />
+          <div className="absolute inset-y-0 right-0 w-1/2 bg-[#f9fafb]" />
         </div>
 
         {/* La couture, qui se dessine au scroll */}
@@ -336,34 +331,22 @@ export default function EtudesDeCasClient() {
         />
 
         <div className="relative z-10">
-          {/* Les noms des territoires */}
-          <div className="container mx-auto max-w-6xl px-4">
-            <div className="grid gap-0 lg:grid-cols-2">
-              <div className="py-14 lg:pr-16 lg:text-right">
+          {/* Chaque territoire porte son propre sol : en dessous de lg les
+              deux moitiés disparaissent et les bandes s'empilent. */}
+          <div className="lg:mx-auto lg:grid lg:max-w-6xl lg:grid-cols-2 lg:px-4">
+            {/* Territoire gauche : commercial */}
+            <div className="bg-[#0d332b] px-4 py-14 lg:bg-transparent lg:px-0 lg:pr-16">
+              <div className="lg:text-right">
                 <h2 className="font-heading text-2xl font-bold text-white md:text-3xl">
                   Commercial
                 </h2>
-                <p className="mt-3 max-w-sm text-gray-400 lg:ml-auto">
+                <p className="mt-3 max-w-sm text-[#8fa8a0] lg:ml-auto">
                   Prospection, qualification et rendez-vous. Nous vendons à la
                   place de nos clients, avec leur voix.
                 </p>
               </div>
-              <div className="border-t border-white/10 py-14 lg:border-t-0 lg:pl-16">
-                <h2 className="font-heading text-2xl font-bold text-white md:text-3xl lg:text-[#0d332b]">
-                  Technologie
-                </h2>
-                <p className="mt-3 max-w-sm text-gray-400 lg:text-gray-600">
-                  Plateformes, tableaux de bord et automatisation. Nous
-                  construisons l&apos;outil qui tient l&apos;activité.
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* Territoire gauche : commercial */}
-          <div className="container mx-auto max-w-6xl px-4">
-            <div className="grid gap-0 lg:grid-cols-2">
-              <div className="space-y-20 pb-20 lg:pr-16">
+              <div className="mt-16 space-y-20 pb-6">
                 {COMMERCIAL_CASES.map((study, i) => (
                   <CaseStudy
                     key={study.id}
@@ -373,9 +356,19 @@ export default function EtudesDeCasClient() {
                   />
                 ))}
               </div>
+            </div>
 
-              {/* Territoire droit : technologie */}
-              <div className="space-y-20 pb-20 lg:pl-16 lg:pt-40">
+            {/* Territoire droit : technologie */}
+            <div className="bg-[#f9fafb] px-4 py-14 lg:bg-transparent lg:px-0 lg:pl-16 lg:pt-40">
+              <h2 className="font-heading text-2xl font-bold text-[#0d332b] md:text-3xl">
+                Technologie
+              </h2>
+              <p className="mt-3 max-w-sm text-gray-600">
+                Plateformes, tableaux de bord et automatisation. Nous
+                construisons l&apos;outil qui tient l&apos;activité.
+              </p>
+
+              <div className="mt-16 space-y-20 pb-6">
                 {TECH_CASES.map((study, i) => (
                   <CaseStudy
                     key={study.id}
@@ -398,7 +391,7 @@ export default function EtudesDeCasClient() {
               <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
                 Là où les deux métiers se rejoignent
               </h2>
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-gray-300">
+              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#c5d8d1]">
                 Sur ces missions, la campagne commerciale et l&apos;outil qui la
                 reçoit ont été conçus par la même équipe. C&apos;est la seule
                 partie de ce catalogue qu&apos;un prestataire d&apos;un seul des
