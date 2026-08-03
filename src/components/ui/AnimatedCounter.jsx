@@ -4,11 +4,11 @@ import {
   animate,
   motion,
   useInView,
+  useMotionValueEvent,
   useMotionValue,
   useReducedMotion,
-  useTransform,
 } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * AnimatedCounter - Animates a number from 0 to target value when visible.
@@ -30,8 +30,12 @@ export default function AnimatedCounter({
   const target = Number.isFinite(numericValue) ? Math.abs(numericValue) : 0;
 
   const count = useMotionValue(target);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const [rounded, setRounded] = useState(() => Math.round(target));
   const isVisible = useInView(ref, { once: true, amount: 0.3 });
+
+  useMotionValueEvent(count, "change", (latest) => {
+    setRounded(Math.round(latest));
+  });
 
   useEffect(() => {
     if (!isVisible || reduceMotion) {

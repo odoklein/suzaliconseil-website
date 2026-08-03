@@ -87,6 +87,75 @@ function StatCard({ label, value, icon, accent = "emerald" }) {
   );
 }
 
+function formatDate(date) {
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
+function InquiryCard({ inquiry, type }) {
+  const isLead = type === "lead";
+  const organisation = isLead
+    ? inquiry.companyName || inquiry.offerName || inquiry.offerId
+    : inquiry.subject;
+
+  return (
+    <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_12px_28px_-24px_rgba(13,51,43,0.45)] transition-colors hover:border-emerald-200 hover:bg-emerald-50/20">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="mb-1 flex flex-wrap items-center gap-2">
+            <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${isLead ? "bg-amber-50 text-amber-800" : "bg-sky-50 text-sky-800"}`}>
+              {isLead ? "Demande d'offre" : "Message de contact"}
+            </span>
+            {organisation && (
+              <span className="truncate text-xs font-medium text-slate-500">
+                {organisation}
+              </span>
+            )}
+          </div>
+          <h3 className="truncate text-base font-bold text-slate-950">
+            {inquiry.fullName}
+          </h3>
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-600">
+            <a
+              href={`mailto:${inquiry.email}`}
+              className="font-medium text-[#0D332B] underline-offset-4 hover:underline"
+            >
+              {inquiry.email}
+            </a>
+            {isLead && inquiry.phone && (
+              <a
+                href={`tel:${inquiry.phone}`}
+                className="underline-offset-4 hover:text-[#0D332B] hover:underline"
+              >
+                {inquiry.phone}
+              </a>
+            )}
+          </div>
+        </div>
+        <StatusSelect
+          id={inquiry.id}
+          idField={isLead ? "leadId" : "contactId"}
+          status={inquiry.status}
+          action={isLead ? updateLeadStatus : updateContactStatus}
+        />
+      </div>
+
+      {inquiry.message && (
+        <p className="mt-3 line-clamp-2 border-l-2 border-emerald-200 pl-3 text-sm leading-6 text-slate-600">
+          {inquiry.message}
+        </p>
+      )}
+
+      <p className="mt-3 text-xs font-medium text-slate-400">
+        Reçu le {formatDate(inquiry.createdAt)}
+      </p>
+    </article>
+  );
+}
+
 export default function AdminDashboard({
   settings,
   posts,
@@ -101,6 +170,8 @@ export default function AdminDashboard({
   const [manualMessage, setManualMessage] = useState("");
   const [manualLoading, setManualLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("list");
+  const [inquiryStatus, setInquiryStatus] = useState("all");
+  const [inquirySearch, setInquirySearch] = useState("");
 
   const s = settings || {
     frequencyPerWeek: "3",
@@ -155,6 +226,30 @@ export default function AdminDashboard({
   const draftCount = posts.filter((p) => !p.publishedAt).length;
   const digitalCount = posts.filter((p) => p.topic === "digital").length;
   const commercialCount = posts.filter((p) => p.topic !== "digital").length;
+  const newLeadCount = leads.filter((lead) => !lead.status || lead.status === "new").length;
+  const newContactCount = contacts.filter((contact) => !contact.status || contact.status === "new").length;
+  const pendingInquiryCount = newLeadCount + newContactCount;
+  const normalizedInquirySearch = inquirySearch.trim().toLocaleLowerCase("fr-FR");
+  const matchesInquiry = (inquiry) => {
+    const status = inquiry.status || "new";
+    const matchesStatus = inquiryStatus === "all" || status === inquiryStatus;
+    if (!matchesStatus) return false;
+    if (!normalizedInquirySearch) return true;
+    return [
+      inquiry.fullName,
+      inquiry.email,
+      inquiry.phone,
+      inquiry.companyName,
+      inquiry.offerName,
+      inquiry.offerId,
+      inquiry.subject,
+      inquiry.message,
+    ].some((value) =>
+      String(value || "").toLocaleLowerCase("fr-FR").includes(normalizedInquirySearch),
+    );
+  };
+  const visibleLeads = leads.filter(matchesInquiry);
+  const visibleContacts = contacts.filter(matchesInquiry);
 
   const tabs = [
     {
@@ -611,18 +706,64 @@ export default function AdminDashboard({
             />
           </div>
 
+          <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_12px_28px_-24px_rgba(13,51,43,0.45)] sm:p-5">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-sm font-bold text-slate-950">Boîte de traitement</p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {pendingInquiryCount > 0
+                    ? `${pendingInquiryCount} demande${pendingInquiryCount > 1 ? "s" : ""} attend${pendingInquiryCount > 1 ? "ent" : ""} une première réponse.`
+                    : "Aucune nouvelle demande à traiter."}
+                </p>
+              </div>
+              <label className="w-full lg:max-w-sm">
+                <span className="sr-only">Rechercher dans les demandes</span>
+                <input
+                  type="search"
+                  value={inquirySearch}
+                  onChange={(event) => setInquirySearch(event.target.value)}
+                  placeholder="Rechercher un nom, un e-mail ou un message"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-[#0D332B] focus:bg-white focus:ring-2 focus:ring-[#0D332B]/15"
+                />
+              </label>
+            </div>
+            <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+              {[
+                ["all", "Toutes", leads.length + contacts.length],
+                ["new", "À traiter", pendingInquiryCount],
+                ["contacted", "En cours", leads.filter((lead) => lead.status === "contacted").length + contacts.filter((contact) => contact.status === "contacted").length],
+                ["closed", "Clôturées", leads.filter((lead) => lead.status === "closed").length + contacts.filter((contact) => contact.status === "closed").length],
+              ].map(([status, label, count]) => (
+                <button
+                  key={status}
+                  type="button"
+                  onClick={() => setInquiryStatus(status)}
+                  aria-pressed={inquiryStatus === status}
+                  className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+                    inquiryStatus === status
+                      ? "bg-[#0D332B] text-white"
+                      : "border border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-[#0D332B]"
+                  }`}
+                >
+                  {label} <span className="ml-1 opacity-70">{count}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
           {/* Leads Section */}
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <h2 className="font-bold text-base text-gray-900 mb-4 flex items-center gap-2">
               <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              Leads ({leads.length})
+              Leads ({visibleLeads.length})
             </h2>
-            {leads.length === 0 ? (
+            {visibleLeads.length === 0 ? (
               <EmptyState text="Aucun lead pour le moment." />
             ) : (
-              <div className="overflow-x-auto">
+              <>
+              <div className="hidden overflow-x-auto md:block">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-100">
@@ -636,7 +777,7 @@ export default function AdminDashboard({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    {leads.map((lead) => (
+                    {visibleLeads.map((lead) => (
                       <tr key={lead.id} className="hover:bg-gray-50/50 transition-colors">
                         <td className="py-3 px-4 font-medium text-gray-900">{lead.fullName}</td>
                         <td className="py-3 px-4">
@@ -660,6 +801,12 @@ export default function AdminDashboard({
                   </tbody>
                 </table>
               </div>
+              <div className="grid gap-3 md:hidden">
+                {visibleLeads.map((lead) => (
+                  <InquiryCard key={lead.id} inquiry={lead} type="lead" />
+                ))}
+              </div>
+              </>
             )}
           </section>
 
@@ -669,12 +816,13 @@ export default function AdminDashboard({
               <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              Messages de contact ({contacts.length})
+              Messages de contact ({visibleContacts.length})
             </h2>
-            {contacts.length === 0 ? (
+            {visibleContacts.length === 0 ? (
               <EmptyState text="Aucun message de contact pour le moment." />
             ) : (
-              <div className="overflow-x-auto">
+              <>
+              <div className="hidden overflow-x-auto md:block">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-100">
@@ -687,7 +835,7 @@ export default function AdminDashboard({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    {contacts.map((contact) => (
+                    {visibleContacts.map((contact) => (
                       <tr key={contact.id} className="hover:bg-gray-50/50 transition-colors">
                         <td className="py-3 px-4 font-medium text-gray-900">{contact.fullName}</td>
                         <td className="py-3 px-4">
@@ -706,6 +854,12 @@ export default function AdminDashboard({
                   </tbody>
                 </table>
               </div>
+              <div className="grid gap-3 md:hidden">
+                {visibleContacts.map((contact) => (
+                  <InquiryCard key={contact.id} inquiry={contact} type="contact" />
+                ))}
+              </div>
+              </>
             )}
           </section>
         </div>

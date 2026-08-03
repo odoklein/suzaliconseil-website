@@ -46,7 +46,7 @@ export default async function DashboardLayout({ children }) {
           </form>
         </div>
       </header>
-      <main className="p-4 md:p-6 max-w-5xl mx-auto">{children}</main>
+      <main className="mx-auto max-w-7xl p-4 md:p-6">{children}</main>
     </div>
   );
 }

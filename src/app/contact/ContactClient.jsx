@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import Image from "next/image";
 import Button from "../../components/ui/Button";
 import AnimatedSection from "../../components/ui/AnimatedSection";
 import { submitContact } from "./actions";
@@ -42,50 +43,43 @@ export default function ContactClient() {
       {/* ----------------------------------------------------------------- */}
       {/* 1. HERO SECTION                                                    */}
       {/* ----------------------------------------------------------------- */}
-      <section className="relative w-full pt-32 pb-48 overflow-hidden hero-gradient">
-        {/* Background Patterns */}
-        <div className="absolute inset-0 bg-dots opacity-[0.05] pointer-events-none" />
-
-        {/* Radial Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-main rounded-full blur-[120px] opacity-30 pointer-events-none" />
-
-        {/* Floating Icons for Depth */}
-        <div className="absolute top-[10%] left-[5%] text-white/5 animate-subtle-float pointer-events-none">
-          <Mail size={180} strokeWidth={1} />
-        </div>
-        <div
-          className="absolute bottom-[20%] right-[8%] text-white/5 animate-subtle-float pointer-events-none"
-          style={{ animationDelay: "1s" }}
-        >
-          <MessageSquare size={160} strokeWidth={1} />
-        </div>
-
-        {/* Orbit Rings */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-          <div className="orbit-ring w-[500px] h-[500px]" />
-          <div
-            className="orbit-ring w-[700px] h-[700px]"
-            style={{ animationDelay: "-10s" }}
+      <section className="w-full bg-[#F6F7F4] p-3 sm:p-4 lg:p-5">
+        <div className="relative mx-auto min-h-[520px] max-w-[1600px] overflow-hidden rounded-[14px] border border-[#0D332B]/10 bg-[#0D332B] shadow-[0_28px_80px_-48px_rgba(13,51,43,0.78)] md:min-h-[600px]">
+          <Image
+            src="/images/hero-office.webp"
+            alt="Les bureaux de Suzali Conseil baignés de lumière"
+            fill
+            priority
+            sizes="(max-width: 1600px) 100vw, 1600px"
+            className="object-cover object-[62%_center] sm:object-center"
           />
-        </div>
 
-        <div className="container relative z-10 mx-auto px-6 text-center">
-          <AnimatedSection>
-            <span className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/10 border border-white/10 text-accent-lime text-sm font-medium mb-8 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-accent-lime animate-pulse" />
-              Contactez-nous
-            </span>
+          <div
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(7,34,29,0.94)_0%,rgba(7,34,29,0.8)_34%,rgba(7,34,29,0.28)_68%,rgba(7,34,29,0.08)_100%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(7,34,29,0.24)_0%,transparent_46%)]"
+            aria-hidden="true"
+          />
 
-            <h1 className="font-heading font-extrabold text-5xl md:text-7xl text-white mb-6 leading-[1.1]">
-              Parlons de votre <span className="text-accent-lime">Projet</span>
-            </h1>
+          <div className="relative z-10 mx-auto flex min-h-[520px] w-full max-w-7xl items-center px-6 py-16 sm:px-8 md:min-h-[600px] md:px-12 lg:px-14">
+            <AnimatedSection className="min-w-0 w-full max-w-[680px] text-left">
+              <h1 className="font-heading text-[2.4rem] font-bold leading-[1.04] tracking-[-0.045em] text-[#F7FAF8] sm:text-5xl lg:text-[4rem]">
+                Parlons de votre projet
+              </h1>
 
-            <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed font-light">
-              Une question stratégique, un besoin d&apos;accompagnement ou une
-              opportunité d&apos;affaire ? Notre équipe est prête à vous
-              répondre.
-            </p>
-          </AnimatedSection>
+              <p className="mt-6 max-w-[590px] text-base font-medium leading-relaxed text-[#E4ECE8] sm:text-lg lg:text-xl">
+                Une question stratégique, un besoin d&apos;accompagnement ou une
+                opportunité commerciale ? Notre équipe vous répond rapidement.
+              </p>
+            </AnimatedSection>
+          </div>
+
+          <div
+            className="pointer-events-none absolute inset-[1px] rounded-[13px] border border-white/12"
+            aria-hidden="true"
+          />
         </div>
       </section>
 
