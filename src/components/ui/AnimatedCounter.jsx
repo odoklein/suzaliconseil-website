@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef } from "react";
 
 /**
  * AnimatedCounter - Animates a number from 0 to target value when visible.
@@ -14,57 +22,38 @@ export default function AnimatedCounter({
   className = "",
 }) {
   const ref = useRef(null);
-  const hasAnimatedRef = useRef(false);
+  const reduceMotion = useReducedMotion();
 
   // Parse numeric value from string like "+320%", "-60%", "35", etc.
   const numericValue = parseFloat(value.replace(/[^0-9.-]/g, ""));
   const isNegative = value.includes("-");
   const target = Number.isFinite(numericValue) ? Math.abs(numericValue) : 0;
 
-  // SSR and first paint: show real number so crawlers and no-JS users see correct stats
-  const [count, setCount] = useState(target);
+  const count = useMotionValue(target);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const isVisible = useInView(ref, { once: true, amount: 0.3 });
 
   useEffect(() => {
-    hasAnimatedRef.current = false;
+    if (!isVisible || reduceMotion) {
+      count.set(target);
+      return;
+    }
 
-    const el = ref.current;
-    if (!el) return;
+    count.set(0);
+    const controls = animate(count, target, {
+      duration: Math.min(duration, 650) / 1000,
+      ease: [0.22, 1, 0.36, 1],
+    });
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimatedRef.current) {
-          hasAnimatedRef.current = true;
-          requestAnimationFrame((startTime) => {
-            setCount(0);
-            const animate = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-
-            // Ease out cubic for smooth deceleration
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.round(eased * target));
-
-            if (progress < 1) {
-              requestAnimationFrame(animate);
-            }
-            };
-            requestAnimationFrame(animate);
-          });
-        }
-      },
-      { threshold: 0.3 },
-    );
-
-    observer.observe(el);
-    return () => observer.unobserve(el);
-  }, [target, duration]);
+    return () => controls.stop();
+  }, [count, duration, isVisible, reduceMotion, target]);
 
   return (
-    <span ref={ref} className={className}>
+    <motion.span ref={ref} className={className}>
       {prefix}
       {isNegative ? "- " : ""}
-      {count}
+      {rounded}
       {suffix}
-    </span>
+    </motion.span>
   );
 }

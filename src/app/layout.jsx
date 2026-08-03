@@ -1,14 +1,6 @@
-import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-jakarta",
-  display: "swap",
-  // Variable font: Jakarta ships 200–800. There is no 900 weight.
-  weight: ["400", "500", "600", "700", "800"],
-});
-
+import Script from "next/script";
 import LayoutSwitcher from "../components/layout/LayoutSwitcher";
 import { getMegaMenuData } from "../lib/data";
 import { BookingProvider } from "../context/BookingContext";
@@ -127,21 +119,32 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="fr">
       <head>
-        {/* Runs before first paint: marks the document as JS-capable so the
-            scroll-reveal styles may hide content they are able to reveal again. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.add("js")`,
-          }}
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link
+          rel="preconnect"
+          href="https://cdn.fontshare.com"
+          crossOrigin="anonymous"
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@1&display=swap"
         />
       </head>
-      <body
-        className={`${jakarta.variable} antialiased font-sans bg-[#F9FAFB] text-[#0D332B]`}
-      >
+      <body className="bg-[#F9FAFB] font-sans text-[#0D332B] antialiased">
+        {/* Runs before first paint: marks the document as JS-capable so the
+            scroll-reveal styles may hide content they are able to reveal again.
+            Placed in <body>, not <head>, because React 19 treats <head> as a
+            singleton and never hydrates script tags rendered inside it. */}
+        <Script id="js-flag" strategy="beforeInteractive">
+          {`document.documentElement.classList.add("js")`}
+        </Script>
+        <Script
+          id="json-ld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+        >
+          {JSON.stringify(jsonLd)}
+        </Script>
         <BookingProvider>
           <LayoutSwitcher services={services}>{children}</LayoutSwitcher>
         </BookingProvider>

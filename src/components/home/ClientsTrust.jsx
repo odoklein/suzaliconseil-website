@@ -42,35 +42,37 @@ const ClientsTrust = () => {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
+    <section className="relative overflow-hidden bg-[#FCFDFC] py-20 md:py-28">
       {/* Background decor */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-50 rounded-full blur-[200px] opacity-40 pointer-events-none" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E3FFC4] opacity-20 blur-[200px]" />
 
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
-        <AnimatedSection className="text-center mb-12 md:mb-20">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs md:text-sm font-semibold tracking-wide uppercase mb-6">
+        <AnimatedSection className="mb-12 max-w-3xl md:mb-16">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
             Témoignages
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-primary-dark tracking-tight mb-4">
+          <h2 className="mb-4 font-heading text-4xl font-bold tracking-[-0.04em] text-primary-dark sm:text-5xl lg:text-6xl">
             Ils nous font{" "}
-            <span className="text-gradient-premium">confiance</span>
+            <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
+              confiance
+            </span>
           </h2>
-          <p className="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+          <p className="max-w-2xl text-lg leading-relaxed text-[#52635F] md:text-xl">
             Des entreprises ambitieuses qui ont transformé leur croissance avec
             Suzali Conseil.
           </p>
         </AnimatedSection>
 
         {/* Case Study Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-12">
           {caseStudies.map((study, idx) => (
             <AnimatedSection
               key={idx}
-              delay={idx * 200}
+              delay={idx * 40}
               as={Link}
               href={study.href}
-              className="group relative rounded-[32px] md:rounded-[40px] overflow-hidden min-h-[480px] md:h-[540px] bg-gray-900 shadow-lg hover:shadow-2xl transition-all duration-500 md:hover:-translate-y-3 flex flex-col"
+              className={`group relative flex min-h-[460px] flex-col overflow-hidden rounded-[28px] bg-[#0D332B] shadow-[0_28px_72px_-46px_rgba(13,51,43,0.72)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_34px_78px_-44px_rgba(13,51,43,0.7)] md:h-[520px] ${idx === 0 ? "lg:col-span-5" : idx === 1 ? "lg:col-span-7" : "lg:col-span-12 lg:h-[440px]"}`}
             >
               {/* Background Image */}
               <Image
@@ -78,7 +80,7 @@ const ClientsTrust = () => {
                 alt={study.company}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover opacity-90 group-hover:scale-110 transition-transform duration-1000"
+                className="object-cover opacity-90 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]"
               />
 
               {/* Gradient Overlay - darker at bottom for text readability */}
@@ -91,9 +93,9 @@ const ClientsTrust = () => {
               <div className="relative h-full flex-1 flex flex-col justify-between p-8 md:p-10 text-white z-10">
                 {/* Top: Company & Service */}
                 <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 md:w-10 md:h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center justify-center shadow-sm group-hover:bg-white/20 transition-colors duration-300">
-                      <div className="w-4 h-4 md:w-5 md:h-5 bg-white rounded-md shadow-inner" />
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-[#B0FF5B] shadow-sm md:h-10 md:w-10">
+                      <div className="h-4 w-4 rounded-[4px] bg-[#0D332B] md:h-5 md:w-5" />
                     </div>
                     <span className="text-base md:text-lg font-bold tracking-tight text-white drop-shadow-md">
                       {study.company}
@@ -101,10 +103,10 @@ const ClientsTrust = () => {
                   </div>
 
                   <div className="flex items-start justify-between gap-4">
-                    <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/90 bg-white/20 backdrop-blur-md border border-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm">
+                    <p className="max-w-[80%] border-l-2 border-[#B0FF5B] pl-3 text-[10px] font-bold uppercase tracking-[0.12em] text-white/90 md:text-xs">
                       {study.service}
                     </p>
-                    <span className="shrink-0 w-10 h-10 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    <span className="flex h-10 w-10 shrink-0 -translate-y-1 items-center justify-center rounded-full border border-white/20 bg-white/12 opacity-0 backdrop-blur-md transition-[opacity,transform] duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                       <ArrowUpRight size={18} className="text-white" />
                     </span>
                   </div>
@@ -122,10 +124,10 @@ const ClientsTrust = () => {
               </div>
 
               {/* Hover highlight effect */}
-              <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/15 rounded-[32px] md:rounded-[40px] transition-all duration-500 pointer-events-none" />
+              <div className="pointer-events-none absolute inset-0 rounded-[28px] border border-white/0 transition-colors duration-300 group-hover:border-white/18" />
 
               {/* Hover glow at bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#B0FF5B] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#B0FF5B] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </AnimatedSection>
           ))}
         </div>

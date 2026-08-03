@@ -19,42 +19,44 @@ const FEATURED = getOffersByIds([
 
 const Pricing = () => {
   return (
-    <section className="py-20 md:py-32 bg-[#0D332B] relative overflow-hidden">
+    <section className="relative overflow-hidden bg-[#EAF2EE] py-20 md:py-28">
       {/* Ambient decor */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#1A6D48] rounded-full blur-[150px] opacity-40 pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#B0FF5B] rounded-full blur-[180px] opacity-[0.06] pointer-events-none" />
-      <div className="absolute inset-0 bg-dots opacity-[0.02] pointer-events-none" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[380px] w-[680px] -translate-x-1/2 rounded-full bg-[#CFE6DA] opacity-55 blur-[150px]" />
+      <div className="pointer-events-none absolute bottom-0 right-1/4 h-[360px] w-[360px] rounded-full bg-[#B0FF5B] opacity-[0.1] blur-[160px]" />
+      <div className="pointer-events-none absolute inset-0 bg-dots opacity-[0.012]" />
 
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <AnimatedSection className="text-center mb-12 md:mb-20 space-y-4 md:space-y-6 max-w-4xl mx-auto">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 text-[#B0FF5B] text-xs md:text-sm font-semibold tracking-wide uppercase">
+        <AnimatedSection className="mb-12 max-w-3xl space-y-4 md:mb-16 md:space-y-5">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
             Tarifs
           </span>
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-6xl text-white tracking-tight leading-[1.1]">
+          <h2 className="font-heading text-4xl font-bold leading-[1.04] tracking-[-0.04em] text-[#0D332B] sm:text-5xl md:text-6xl">
             Des budgets clairs,{" "}
-            <span className="text-gradient-lime">dès le départ</span>.
+            <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
+              dès le départ
+            </span>.
           </h2>
-          <p className="text-white/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="max-w-2xl text-lg font-medium leading-relaxed text-[#52635F] md:text-xl">
             Testez une cible, remplissez un agenda ou pilotez toute votre
             acquisition : trois points d&apos;entrée, sans engagement caché.
           </p>
         </AnimatedSection>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12">
           {FEATURED.map((offer, idx) => {
             const isHighlighted = Boolean(offer.highlight);
 
             return (
               <AnimatedSection
                 key={offer.id}
-                delay={idx * 150}
-                className={`relative flex flex-col rounded-[32px] p-8 lg:p-10 transition-all duration-500
+                delay={idx * 40}
+                className={`relative flex flex-col rounded-[28px] border border-[#0D332B]/8 p-8 shadow-[0_24px_64px_-50px_rgba(13,51,43,0.68)] transition-[border-color,box-shadow,transform] duration-300 lg:p-9 ${idx === 0 ? "lg:col-span-4" : idx === 1 ? "lg:col-span-5" : "lg:col-span-3"}
                   ${
                     isHighlighted
-                      ? "bg-[#B0FF5B] text-[#0D332B] shadow-2xl shadow-[#B0FF5B]/10 md:-translate-y-3 hover:md:-translate-y-4"
-                      : "bg-white text-[#0D332B] shadow-lg hover:shadow-2xl hover:-translate-y-1"
+                      ? "bg-[#E3FFC4] text-[#0D332B] lg:-translate-y-2 hover:lg:-translate-y-3"
+                      : "bg-[#FCFDFC] text-[#0D332B] hover:-translate-y-1 hover:border-[#0D332B]/16 hover:shadow-[0_28px_70px_-48px_rgba(13,51,43,0.62)]"
                   }
                 `}
               >
@@ -136,7 +138,7 @@ const Pricing = () => {
                       ${
                         isHighlighted
                           ? "bg-[#0D332B] text-white hover:bg-[#174A3E]"
-                          : "bg-white text-[#0D332B] border-2 border-gray-100 hover:border-[#FF6A3D] hover:text-[#C84B25]"
+                          : "border border-[#0D332B]/16 bg-[#FCFDFC] text-[#0D332B] hover:border-[#0D332B]/38 hover:bg-[#E9FFD2]"
                       }
                     `}
                   >
@@ -153,10 +155,10 @@ const Pricing = () => {
         </div>
 
         {/* Catalogue link */}
-        <AnimatedSection delay={450} className="mt-12 md:mt-16 text-center">
+        <AnimatedSection delay={120} className="mt-12 text-left md:mt-14">
           <Link
             href="/offres"
-            className="group inline-flex items-center gap-3 rounded-full bg-[#B0FF5B] px-8 py-4 text-sm md:text-base font-bold uppercase tracking-wide text-[#0D332B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_8px_30px_rgba(176,255,91,0.25)]"
+            className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-[#0D332B] px-7 py-3 text-sm font-bold tracking-[-0.01em] text-[#FCFDFC] shadow-[0_14px_32px_-20px_rgba(13,51,43,0.75)] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#1A4D43] md:text-base"
           >
             Voir toutes nos offres et tarifs
             <ArrowUpRight
@@ -164,7 +166,7 @@ const Pricing = () => {
               className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </Link>
-          <p className="mt-4 text-sm text-white/50">
+          <p className="mt-4 max-w-3xl text-sm text-[#65746F]">
             Fichiers B2B, rendez-vous qualifiés, campagnes email et SMS, sites
             web, SEO et automatisation.
           </p>

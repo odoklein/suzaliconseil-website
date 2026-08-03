@@ -22,7 +22,7 @@ export default function ParticleField({
     const ctx = canvas.getContext("2d");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
-    if (reduceMotion || isSmallScreen) {
+    if (reduceMotion || isSmallScreen || particleCount <= 0) {
       canvas.hidden = true;
       return;
     }

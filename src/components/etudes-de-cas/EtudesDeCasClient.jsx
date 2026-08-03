@@ -1,451 +1,489 @@
 "use client";
 
-/*
-  DIRECTION CONTRACT — /etudes-de-cas
-
-  THESIS: Suzali tient deux métiers sous une enseigne ; la page EST ce diptyque,
-    et les missions qui ont mobilisé les deux vivent sur la couture entre les
-    territoires. Refuse la grille filtrée de cartes identiques, défaut de la
-    catégorie, qui range les deux métiers dans des silos interchangeables.
-  OWN-WORLD: monde Suzali existant, inchangé. Territoire commercial sur vert
-    profond #0d332b, territoire technologie sur #f9fafb, couture lime #b0ff5b
-    en encre unique de la jointure. Plus Jakarta Sans, rayon 24px.
-  STORY: le visiteur voit d'abord que le cabinet fait les deux, rejoint son
-    métier, lit une démarche sans chiffre inventé, et repart vers l'audit.
-  FIRST VIEWPORT: la couture descend au centre, le titre l'enjambe, les deux
-    territoires se nomment de part et d'autre ; l'action primaire en bas du bloc.
-  FORM: diptyque à couture, candidat 4 de la liste structurelle, clé fe5c8741.
-  FINISH: unreviewed and undocumented is unfinished; this build ends with the
-    finish review, the verdict, and DESIGN.md.
-*/
-
-import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BriefcaseBusiness,
+  CheckCircle2,
+  ChevronDown,
+  Code2,
+  Layers3,
+  PhoneCall,
+  Route,
+  Workflow,
+} from "lucide-react";
 import {
   COMMERCIAL_CASES,
   TECH_CASES,
   COUTURE_CASES,
 } from "../../lib/case-studies";
+import { useBooking } from "../../context/BookingContext";
+import AnimatedSection from "../ui/AnimatedSection";
+import Breadcrumbs from "../ui/Breadcrumbs";
 
-/* Chevron used by the accordion — symmetric about the 16x16 viewBox centre so
-   the scaleY flip lands exactly on the "^". */
-function AccChevron() {
+function StudyDetails({ study, compact = false }) {
   return (
-    <span className="t-acc-chevron">
-      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-        <path
-          d="M4 6.5L8 10.5L12 6.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+    <details className="group mt-7 border-t border-[#0D332B]/14 pt-5">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-5 font-bold text-[#0D332B] marker:content-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D332B]">
+        Voir le contexte et les livrables
+        <ChevronDown
+          size={19}
+          strokeWidth={1.8}
+          aria-hidden="true"
+          className="shrink-0 transition-transform duration-300 ease-[var(--ease-premium)] group-open:rotate-180"
         />
-      </svg>
-    </span>
+      </summary>
+
+      <div className="pt-5">
+        <h4 className="text-sm font-bold text-[#0D332B]">Point de départ</h4>
+        <p className="mt-3 max-w-[68ch] leading-relaxed text-[#52635F]">
+          {study.contexte}
+        </p>
+
+        <div className={`mt-7 grid gap-7 ${compact ? "" : "md:grid-cols-2"}`}>
+          <div>
+            <h4 className="text-sm font-bold text-[#0D332B]">
+              Démarche menée
+            </h4>
+            <ul className="mt-4 space-y-3">
+              {study.demarche.map((step) => (
+                <li
+                  key={step}
+                  className="flex items-start gap-3 text-sm leading-relaxed text-[#52635F]"
+                >
+                  <ArrowRight
+                    size={15}
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                    className="mt-1 shrink-0 text-[#4E8D38]"
+                  />
+                  {step}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-bold text-[#0D332B]">
+              Livrables remis
+            </h4>
+            <ul className="mt-4 space-y-3">
+              {study.livrables.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-3 text-sm leading-relaxed text-[#52635F]"
+                >
+                  <CheckCircle2
+                    size={16}
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                    className="mt-0.5 shrink-0 text-[#4E8D38]"
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <p className="mt-7 text-sm text-[#65746F]">
+          <span className="font-bold text-[#0D332B]">Canaux :</span>{" "}
+          {study.canaux.join(", ")}
+        </p>
+      </div>
+    </details>
   );
 }
 
-function LearnChevron() {
+function StudyHeading({ study, titleClassName = "" }) {
   return (
-    <span className="t-learn-chevron">
-      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-        <path
-          className="t-learn-arm t-learn-arm-top"
-          d="M6 4L10 8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-        />
-        <path
-          className="t-learn-arm t-learn-arm-bot"
-          d="M10 8L6 12"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-        />
-      </svg>
-    </span>
+    <>
+      <p className="text-sm font-semibold text-[#4E6A62]">{study.sector}</p>
+      <h3
+        className={`mt-3 text-3xl font-bold leading-[1.05] tracking-[-0.035em] text-[#0D332B] ${titleClassName}`}
+      >
+        {study.clientLabel}
+      </h3>
+      <p className="mt-4 max-w-[58ch] text-lg leading-relaxed text-[#52635F]">
+        {study.summary}
+      </p>
+      {study.metiers && (
+        <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-bold text-[#3F7131]">
+          {study.metiers.map((metier, index) => (
+            <span key={metier} className="inline-flex items-center gap-3">
+              {index > 0 && <span aria-hidden="true">+</span>}
+              {metier}
+            </span>
+          ))}
+        </p>
+      )}
+    </>
   );
 }
 
-/**
- * Un cas. `tone` porte le territoire : "dark" (commercial), "light" (tech),
- * "seam" (bande pleine largeur). Pas de carte : le bloc se pose directement
- * sur le sol du territoire.
- */
-function CaseStudy({ study, tone, index }) {
-  const [open, setOpen] = useState(false);
-  const panelId = `case-panel-${study.id}`;
-
-  const dark = tone === "dark";
-  const seam = tone === "seam";
-
-  /* Sur le sol vert, le texte secondaire se teinte depuis la teinte du sol
-     plutôt que de virer au gris neutre. */
-  const heading = dark ? "text-white" : "text-[#0d332b]";
-  const body = dark ? "text-[#c5d8d1]" : "text-gray-600";
-  const meta = dark ? "text-[#8fa8a0]" : "text-gray-500";
-  const rule = dark ? "border-white/15" : "border-gray-200";
-  const accent = dark ? "text-[#B0FF5B]" : "text-emerald-700";
-  const chipBg = dark
-    ? "bg-white/10 text-[#dbe9e3]"
-    : "bg-emerald-50 text-emerald-800";
-
+function HybridStudy({ study, reverse = false, eager = false }) {
   return (
-    <article
-      className={`t-acc ${seam ? "lg:grid lg:grid-cols-12 lg:gap-12 lg:items-start" : ""}`}
-      data-open={open ? "true" : "false"}
+    <AnimatedSection
+      as="article"
+      id={study.id}
+      className="scroll-mt-28 grid items-center gap-8 lg:grid-cols-2 lg:gap-14"
     >
-      {study.image && (
-        <div
-          className={`relative overflow-hidden rounded-suzali ${
-            seam ? "lg:col-span-5 aspect-[16/10]" : "aspect-[16/10]"
-          } mb-7`}
-        >
+      <div className={reverse ? "lg:order-2" : ""}>
+        <div className="relative aspect-[16/10] overflow-hidden rounded-[28px] bg-[#DDE5E1]">
           <Image
             src={study.image}
             alt={`Projet réalisé pour ${study.clientLabel}`}
             fill
-            sizes={
-              seam
-                ? "(min-width: 1024px) 40vw, 100vw"
-                : "(min-width: 1024px) 42vw, 100vw"
-            }
-            className="object-cover"
-            loading={index === 0 ? "eager" : "lazy"}
+            priority={eager}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover transition-transform duration-700 ease-[var(--ease-premium)] hover:scale-[1.02]"
           />
         </div>
-      )}
-
-      <div className={seam ? "lg:col-span-7" : ""}>
-        <h3
-          className={`font-heading text-2xl font-bold leading-tight md:text-3xl ${heading}`}
-        >
-          {study.clientLabel}
-        </h3>
-
-        <p className={`mt-2 text-sm ${meta}`}>{study.sector}</p>
-
-        <p className={`mt-5 text-lg leading-relaxed ${body}`}>
-          {study.summary}
-        </p>
-
-        {study.metiers && (
-          <p className={`mt-5 flex flex-wrap items-center gap-2 text-sm ${meta}`}>
-            {study.metiers.map((m, i) => (
-              <React.Fragment key={m}>
-                {i > 0 && (
-                  <span aria-hidden="true" className={accent}>
-                    +
-                  </span>
-                )}
-                <span className={`${accent} font-semibold`}>{m}</span>
-              </React.Fragment>
-            ))}
-          </p>
-        )}
-
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls={panelId}
-          className={`t-acc-head t-learn mt-6 inline-flex items-center gap-2 rounded-lg text-sm font-bold ${
-            dark ? "text-white" : "text-[#0d332b]"
-          } transition-opacity duration-200 hover:opacity-70`}
-        >
-          {open ? "Replier le cas" : "Lire la démarche"}
-          <AccChevron />
-        </button>
-
-        <div id={panelId} className="t-acc-panel" role="region">
-          <div className="t-acc-panel-inner">
-            <div className={`mt-7 border-t pt-7 ${rule}`}>
-              <h4 className={`font-heading text-sm font-bold ${heading}`}>
-                Le contexte
-              </h4>
-              <p className={`mt-3 max-w-[68ch] leading-relaxed ${body}`}>
-                {study.contexte}
-              </p>
-
-              <div className="mt-8 grid gap-8 sm:grid-cols-2">
-                <div>
-                  <h4 className={`font-heading text-sm font-bold ${heading}`}>
-                    Ce que nous avons fait
-                  </h4>
-                  <ul className="mt-3 space-y-3">
-                    {study.demarche.map((step) => (
-                      <li
-                        key={step}
-                        className={`flex gap-3 text-sm leading-relaxed ${body}`}
-                      >
-                        <span
-                          aria-hidden="true"
-                          className={`mt-2 h-px w-4 shrink-0 ${
-                            dark ? "bg-[#B0FF5B]" : "bg-emerald-600"
-                          }`}
-                        />
-                        {step}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className={`font-heading text-sm font-bold ${heading}`}>
-                    Ce que le client a reçu
-                  </h4>
-                  <ul className="mt-3 space-y-3">
-                    {study.livrables.map((item) => (
-                      <li
-                        key={item}
-                        className={`flex gap-3 text-sm leading-relaxed ${body}`}
-                      >
-                        <span
-                          aria-hidden="true"
-                          className={`mt-2 h-px w-4 shrink-0 ${
-                            dark ? "bg-[#B0FF5B]" : "bg-emerald-600"
-                          }`}
-                        />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <p className="mt-8 flex flex-wrap gap-2">
-                {study.canaux.map((c) => (
-                  <span
-                    key={c}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${chipBg}`}
-                  >
-                    {c}
-                  </span>
-                ))}
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
-    </article>
+      <div className={reverse ? "lg:order-1" : ""}>
+        <StudyHeading study={study} titleClassName="sm:text-4xl" />
+        <StudyDetails study={study} />
+      </div>
+    </AnimatedSection>
+  );
+}
+
+function CommercialStudy({ study, index }) {
+  return (
+    <AnimatedSection
+      as="article"
+      id={study.id}
+      delay={index * 90}
+      className={`scroll-mt-28 rounded-[28px] bg-[#FCFDFC] p-7 shadow-[0_24px_60px_-48px_rgba(13,51,43,0.7)] sm:p-9 ${
+        index === 0 ? "lg:mr-12" : "lg:ml-12"
+      }`}
+    >
+      <StudyHeading study={study} />
+      <StudyDetails study={study} />
+    </AnimatedSection>
+  );
+}
+
+function DigitalStudy({ study, index }) {
+  const wide = index === TECH_CASES.length - 1;
+
+  return (
+    <AnimatedSection
+      as="article"
+      id={study.id}
+      delay={index * 80}
+      className={`scroll-mt-28 overflow-hidden rounded-[28px] bg-[#F0F3F1] ${
+        wide
+          ? "lg:col-span-12 lg:grid lg:grid-cols-[1.08fr_0.92fr]"
+          : index === 0
+            ? "lg:col-span-7"
+            : "lg:col-span-5"
+      }`}
+    >
+      <div
+        className={`relative overflow-hidden bg-[#DDE5E1] ${
+          wide ? "min-h-72 lg:min-h-full" : "aspect-[16/10]"
+        }`}
+      >
+        <Image
+          src={study.image}
+          alt={`Projet réalisé pour ${study.clientLabel}`}
+          fill
+          sizes={
+            wide
+              ? "(max-width: 1024px) 100vw, 54vw"
+              : index === 0
+                ? "(max-width: 1024px) 100vw, 58vw"
+                : "(max-width: 1024px) 100vw, 42vw"
+          }
+          className="object-cover transition-transform duration-700 ease-[var(--ease-premium)] hover:scale-[1.02]"
+        />
+      </div>
+      <div className="p-7 sm:p-9">
+        <StudyHeading study={study} titleClassName={wide ? "sm:text-4xl" : ""} />
+        <StudyDetails study={study} compact={!wide} />
+      </div>
+    </AnimatedSection>
   );
 }
 
 export default function EtudesDeCasClient() {
-  const [heroShown, setHeroShown] = useState(false);
-  const seamRef = useRef(null);
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setHeroShown(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-
-  /* La couture est le moment orchestré de la page : une seule ligne qui se
-     dessine du haut vers le bas au rythme du scroll. */
-  const onScroll = useCallback(() => {
-    const el = seamRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const total = rect.height - window.innerHeight;
-    const progress =
-      total <= 0 ? 1 : Math.min(1, Math.max(0, -rect.top / total));
-    el.style.setProperty("--seam-progress", String(progress));
-  }, []);
-
-  useEffect(() => {
-    let ticking = false;
-    const handler = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        onScroll();
-        ticking = false;
-      });
-    };
-    handler();
-    window.addEventListener("scroll", handler, { passive: true });
-    window.addEventListener("resize", handler);
-    return () => {
-      window.removeEventListener("scroll", handler);
-      window.removeEventListener("resize", handler);
-    };
-  }, [onScroll]);
+  const { openBooking } = useBooking();
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* ─── L'ouverture : la couture naît ici ─────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#0d332b] pt-28 pb-24 md:pt-36 md:pb-32">
-        {/* La couture naît ici, en filet, avant que les deux sols ne s'ouvrent. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-y-0 left-1/2 hidden w-px bg-gradient-to-b from-transparent to-[#B0FF5B]/50 lg:block"
-        />
+    <div className="min-h-[100dvh] overflow-hidden bg-[#F6F7F4] text-[#0D332B]">
+      <section className="pt-16 pb-16 md:pt-20 md:pb-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs
+            items={[{ label: "Études de cas", href: "/etudes-de-cas" }]}
+          />
 
-        <div className="container relative z-10 mx-auto max-w-6xl px-4">
-          <div
-            className={`t-stagger mx-auto max-w-3xl text-center ${
-              heroShown ? "is-shown" : ""
-            }`}
+          <div className="grid items-center gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16">
+            <div className="hero-rise" style={{ "--rise-delay": "0ms" }}>
+              <p className="mb-5 text-xs font-bold uppercase tracking-[0.16em] text-[#1A4D43] sm:text-sm">
+                Études de cas
+              </p>
+              <h1 className="max-w-[720px] text-4xl font-bold leading-[1.02] tracking-[-0.045em] text-[#0D332B] sm:text-5xl lg:text-[3.5rem] xl:text-[4rem]">
+                Nos missions, du défi au livrable.
+              </h1>
+              <p className="mt-6 max-w-[56ch] text-lg leading-relaxed text-[#52635F]">
+                Découvrez le contexte, les décisions et les livrables de
+                missions qui relient acquisition, vente et outils.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="#missions"
+                  className="group inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#0D332B] px-6 py-3 text-sm font-bold text-[#F8FBF9] shadow-[0_12px_30px_-16px_rgba(13,51,43,0.72)] transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-[#1A4D43] active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D332B]"
+                >
+                  Explorer les missions
+                  <ArrowRight
+                    size={18}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </Link>
+                <Link
+                  href="/services"
+                  className="group inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[#0D332B]/20 bg-[#FCFDFC]/65 px-6 py-3 text-sm font-bold text-[#0D332B] transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-[#0D332B]/40 hover:bg-[#FCFDFC] active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D332B]"
+                >
+                  Voir nos services
+                  <ArrowUpRight
+                    size={17}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              </div>
+            </div>
+
+            <figure
+              className="hero-rise lg:pl-5"
+              style={{ "--rise-delay": "120ms" }}
+            >
+              <div className="relative aspect-[6/5]">
+                <div
+                  aria-hidden="true"
+                  className="absolute right-0 top-8 z-0 h-[72%] w-[76%] rounded-[28px] bg-[#B0FF5B]"
+                />
+                <div className="absolute left-0 top-0 z-10 h-[82%] w-[82%] overflow-hidden rounded-[28px] bg-[#DDE5E1] shadow-[0_30px_70px_-38px_rgba(13,51,43,0.52)]">
+                  <Image
+                    src="/projects/investissementLocatif.png"
+                    alt="Projet Investissement Locatif"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 88vw, 48vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="absolute bottom-0 right-0 z-20 h-[48%] w-[48%] overflow-hidden rounded-[24px] border-[8px] border-[#F6F7F4] bg-[#DDE5E1] shadow-[0_24px_50px_-28px_rgba(13,51,43,0.58)]">
+                  <Image
+                    src="/projects/zupdeco.jpg"
+                    alt="Projet ZupDeCo"
+                    fill
+                    sizes="(max-width: 1024px) 48vw, 24vw"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <figcaption className="mt-3 text-sm text-[#5F6F6B]">
+                Une campagne et son parcours digital conçus comme un seul
+                système.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-[#0D332B]/10 bg-[#FCFDFC]">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          <p className="font-bold text-[#0D332B]">Explorer par expertise</p>
+          <nav
+            aria-label="Catégories des études de cas"
+            className="flex flex-wrap gap-x-6 gap-y-3"
           >
-            <h1 className="t-stagger-line t-stagger-line--1 font-heading text-4xl font-extrabold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
-              Deux métiers,
-              <br />
-              un seul cabinet.
-            </h1>
-            <p className="t-stagger-line t-stagger-line--2 mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-[#c5d8d1]">
-              À gauche, ce que nous vendons pour nos clients. À droite, ce que
-              nous construisons pour eux. Au milieu, les missions où les deux se
-              sont rejoints — et c&apos;est là que ce cabinet se distingue.
-            </p>
-            <p className="t-stagger-line t-stagger-line--3 mt-9">
+            <Link
+              href="#missions"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-[#40524E] transition-colors hover:text-[#0D332B]"
+            >
+              <Layers3 size={17} aria-hidden="true" />
+              Commercial + digital
+            </Link>
+            <Link
+              href="#commercial"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-[#40524E] transition-colors hover:text-[#0D332B]"
+            >
+              <PhoneCall size={17} aria-hidden="true" />
+              Performance commerciale
+            </Link>
+            <Link
+              href="#digital"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-[#40524E] transition-colors hover:text-[#0D332B]"
+            >
+              <Code2 size={17} aria-hidden="true" />
+              Produits digitaux
+            </Link>
+          </nav>
+        </div>
+      </section>
+
+      <section
+        id="missions"
+        className="scroll-mt-24 bg-[#F6F7F4] py-20 md:py-28"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="max-w-3xl">
+            <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#E3FFC4] text-[#0D332B]">
+              <Layers3 size={24} strokeWidth={1.6} aria-hidden="true" />
+            </div>
+            <h2 className="mt-7 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+              Quand les deux expertises se répondent
+            </h2>
+            <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-[#52635F]">
+              Ces missions relient le travail commercial à l&apos;outil, au
+              parcours ou à l&apos;automatisation qui permet de le faire durer. Une
+              logique au cœur de notre approche{" "}
               <Link
-                href="/contact"
-                className="t-learn inline-flex items-center gap-2 rounded-full bg-[#B0FF5B] px-7 py-3.5 font-bold text-[#0d332b] transition-colors duration-300 hover:bg-white"
+                href="/services"
+                className="font-semibold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4"
               >
-                Parler de votre projet
-                <LearnChevron />
-              </Link>
+                commerciale et digitale
+              </Link>.
             </p>
+          </AnimatedSection>
+
+          <div className="mt-14 space-y-20 md:space-y-28">
+            {COUTURE_CASES.map((study, index) => (
+              <HybridStudy
+                key={study.id}
+                study={study}
+                reverse={index % 2 === 1}
+                eager={index === 0}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Le diptyque ────────────────────────────────────────────────── */}
-      <div ref={seamRef} className="relative">
-        {/* Les deux sols, en pleine largeur de fenêtre au-delà du conteneur */}
-        <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
-          <div className="absolute inset-y-0 left-0 w-1/2 bg-[#0d332b]" />
-          <div className="absolute inset-y-0 right-0 w-1/2 bg-[#f9fafb]" />
-        </div>
-
-        {/* La couture, qui se dessine au scroll */}
-        <div
-          aria-hidden="true"
-          className="seam-line absolute inset-y-0 left-1/2 hidden w-px bg-gradient-to-b from-[#B0FF5B] via-[#B0FF5B]/60 to-transparent lg:block"
-        />
-
-        <div className="relative z-10">
-          {/* Chaque territoire porte son propre sol : en dessous de lg les
-              deux moitiés disparaissent et les bandes s'empilent. */}
-          <div className="lg:mx-auto lg:grid lg:max-w-6xl lg:grid-cols-2 lg:px-4">
-            {/* Territoire gauche : commercial */}
-            <div className="bg-[#0d332b] px-4 py-14 lg:bg-transparent lg:px-0 lg:pr-16">
-              <div className="lg:text-right">
-                <h2 className="font-heading text-2xl font-bold text-white md:text-3xl">
-                  Commercial
-                </h2>
-                <p className="mt-3 max-w-sm text-[#8fa8a0] lg:ml-auto">
-                  Prospection, qualification et rendez-vous. Nous vendons à la
-                  place de nos clients, avec leur voix.
-                </p>
+      <section
+        id="commercial"
+        className="scroll-mt-24 bg-[#EAF2EE] py-20 md:py-28"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+            <AnimatedSection className="lg:sticky lg:top-28 lg:self-start">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-[#DDE5E1]">
+                <Image
+                  src="/images/equipeprospection.png"
+                  alt="Équipe de prospection Suzali Conseil"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 38vw"
+                  className="object-cover"
+                />
               </div>
-
-              <div className="mt-16 space-y-20 pb-6">
-                {COMMERCIAL_CASES.map((study, i) => (
-                  <CaseStudy
-                    key={study.id}
-                    study={study}
-                    tone="dark"
-                    index={i}
-                  />
-                ))}
+              <div className="mt-7 flex items-center gap-3 text-sm font-bold text-[#3F7131]">
+                <BriefcaseBusiness size={18} aria-hidden="true" />
+                Performance commerciale
               </div>
-            </div>
-
-            {/* Territoire droit : technologie */}
-            <div className="bg-[#f9fafb] px-4 py-14 lg:bg-transparent lg:px-0 lg:pl-16 lg:pt-40">
-              <h2 className="font-heading text-2xl font-bold text-[#0d332b] md:text-3xl">
-                Technologie
+              <h2 className="mt-4 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+                Ouvrir les bonnes conversations
               </h2>
-              <p className="mt-3 max-w-sm text-gray-600">
-                Plateformes, tableaux de bord et automatisation. Nous
-                construisons l&apos;outil qui tient l&apos;activité.
+              <p className="mt-5 max-w-[52ch] leading-relaxed text-[#52635F]">
+                Deux missions où la qualité du ciblage, de la qualification et
+                de la transmission comptait plus que le volume brut. Découvrez
+                aussi notre{" "}
+                <Link
+                  href="/services/commercial"
+                  className="font-semibold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4"
+                >
+                  accompagnement commercial
+                </Link>.
               </p>
+            </AnimatedSection>
 
-              <div className="mt-16 space-y-20 pb-6">
-                {TECH_CASES.map((study, i) => (
-                  <CaseStudy
-                    key={study.id}
-                    study={study}
-                    tone="light"
-                    index={i}
-                  />
-                ))}
-              </div>
+            <div className="space-y-7 lg:pt-24">
+              {COMMERCIAL_CASES.map((study, index) => (
+                <CommercialStudy
+                  key={study.id}
+                  study={study}
+                  index={index}
+                />
+              ))}
             </div>
-          </div>
-
-          {/* ─── La couture : les cas qui ont mobilisé les deux ─────────── */}
-          <div className="relative bg-[#0d332b] py-20 md:py-28">
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#B0FF5B] to-transparent"
-            />
-            <div className="container mx-auto max-w-5xl px-4">
-              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
-                Là où les deux métiers se rejoignent
-              </h2>
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#c5d8d1]">
-                Sur ces missions, la campagne commerciale et l&apos;outil qui la
-                reçoit ont été conçus par la même équipe. C&apos;est la seule
-                partie de ce catalogue qu&apos;un prestataire d&apos;un seul des
-                deux métiers ne peut pas présenter.
-              </p>
-
-              <div className="mt-16 space-y-20">
-                {COUTURE_CASES.map((study, i) => (
-                  <CaseStudy
-                    key={study.id}
-                    study={study}
-                    tone="seam"
-                    index={i}
-                  />
-                ))}
-              </div>
-            </div>
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#B0FF5B] to-transparent"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* ─── La fermeture ───────────────────────────────────────────────── */}
-      <section className="bg-[#f9fafb] py-20 md:py-28">
-        <div className="container mx-auto max-w-3xl px-4 text-center">
-          <h2 className="font-heading text-3xl font-bold text-[#0d332b] md:text-4xl">
-            Votre projet appartient à quel côté&nbsp;?
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-gray-600">
-            La plupart des nôtres commencent d&apos;un côté et finissent au
-            milieu. Dites-nous où vous en êtes, nous vous dirons ce que nous
-            ferions.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
-              className="t-learn inline-flex items-center gap-2 rounded-full bg-[#0d332b] px-7 py-3.5 font-bold text-white transition-colors duration-300 hover:bg-[#1a4d43]"
-            >
-              Demander un audit gratuit
-              <LearnChevron />
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 rounded-full border border-gray-300 px-7 py-3.5 font-bold text-[#0d332b] transition-colors duration-300 hover:border-[#0d332b]"
-            >
-              Voir nos services
-              <ArrowRight size={18} />
-            </Link>
           </div>
         </div>
       </section>
-    </main>
+
+      <section
+        id="digital"
+        className="scroll-mt-24 bg-[#FCFDFC] py-20 md:py-28"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="max-w-3xl">
+            <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#E3FFC4] text-[#0D332B]">
+              <Workflow size={24} strokeWidth={1.6} aria-hidden="true" />
+            </div>
+            <h2 className="mt-7 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+              Des outils qui tiennent l&apos;activité
+            </h2>
+            <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-[#52635F]">
+              Portails, plateformes et tableaux de bord conçus autour du travail
+              réel des équipes et de leurs utilisateurs. Retrouvez les expertises
+              de notre{" "}
+              <Link
+                href="/services/digital"
+                className="font-semibold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4"
+              >
+                pôle digital
+              </Link>.
+            </p>
+          </AnimatedSection>
+
+          <div className="mt-14 grid gap-6 lg:grid-cols-12">
+            {TECH_CASES.map((study, index) => (
+              <DigitalStudy key={study.id} study={study} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#F6F7F4] py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="grid items-center gap-8 rounded-[28px] bg-[#E3FFC4] p-7 shadow-[0_28px_70px_-48px_rgba(13,51,43,0.75)] sm:p-10 lg:grid-cols-[1fr_auto] lg:p-14">
+            <div>
+              <Route size={25} strokeWidth={1.6} aria-hidden="true" />
+              <h2 className="mt-5 max-w-[19ch] text-3xl font-bold tracking-[-0.035em] sm:text-4xl">
+                Votre projet ressemble-t-il à l&apos;un de ces parcours ?
+              </h2>
+              <p className="mt-4 max-w-[58ch] leading-relaxed text-[#40524E]">
+                Nous pouvons cadrer le prochain mouvement, qu&apos;il soit
+                commercial, digital ou construit à la jonction des deux.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+              <button
+                type="button"
+                onClick={openBooking}
+                className="group inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#0D332B] px-6 py-3 text-sm font-bold text-[#F8FBF9] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#1A4D43] active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D332B]"
+              >
+                Planifier un appel
+                <ArrowRight
+                  size={18}
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </button>
+              <Link
+                href="/offres"
+                className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full border border-[#0D332B]/24 bg-[#FCFDFC]/60 px-6 py-3 text-sm font-bold text-[#0D332B] transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-[#0D332B]/45 hover:bg-[#FCFDFC] active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D332B]"
+              >
+                Voir les offres
+              </Link>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+    </div>
   );
 }

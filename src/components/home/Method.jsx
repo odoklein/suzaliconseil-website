@@ -37,41 +37,44 @@ const Method = () => {
   const { openBooking } = useBooking();
 
   return (
-    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
+    <section className="relative overflow-hidden bg-[#FCFDFC] py-20 md:py-28">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-emerald-50 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 opacity-60 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-emerald-50 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 opacity-60 pointer-events-none" />
+      <div className="pointer-events-none absolute left-0 top-0 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E3FFC4] opacity-35 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[300px] translate-x-1/2 translate-y-1/2 rounded-full bg-[#D7EEE4] opacity-55 blur-[110px]" />
 
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <AnimatedSection className="text-center mb-12 md:mb-20 px-4">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs md:text-sm font-semibold tracking-wide uppercase mb-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <AnimatedSection className="mb-12 max-w-3xl md:mb-16">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
             Notre Processus
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold font-heading text-primary-dark mb-4 md:mb-6 tracking-tight">
-            Notre <span className="text-gradient-premium">méthode</span>
+          <h2 className="mb-4 font-heading text-4xl font-bold tracking-[-0.04em] text-primary-dark sm:text-5xl md:mb-6 lg:text-6xl">
+            Notre{" "}
+            <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
+              méthode
+            </span>
           </h2>
-          <p className="text-base md:text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
+          <p className="max-w-3xl text-base leading-relaxed text-text-muted md:text-xl">
             Chez Suzali Conseil, chaque projet suit une méthode claire — testée
             sur des centaines de campagnes B2B. Un process transparent, pensé
             pour transformer vos objectifs en résultats.
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-12">
           {steps.map((step, idx) => (
             <AnimatedSection
               key={step.number}
-              delay={idx * 150}
-              className={`group relative bg-primary-dark rounded-suzali p-6 md:p-8 text-white hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-500 md:hover:-translate-y-3 overflow-hidden ${idx < steps.length - 1 ? "step-connector" : ""}`}
+              delay={idx * 40}
+              className={`group relative overflow-hidden rounded-[28px] border border-[#0D332B]/8 p-7 text-[#0D332B] shadow-[0_24px_58px_-48px_rgba(13,51,43,0.7)] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#0D332B]/16 hover:shadow-[0_28px_64px_-46px_rgba(13,51,43,0.62)] md:p-9 ${idx === 0 || idx === 3 ? "bg-[#E3FFC4] lg:col-span-5" : "bg-[#F0F3F1] lg:col-span-7"}`}
             >
               {/* Large Number Background Opacity */}
-              <div className="absolute top-0 right-0 p-4 md:p-8 font-heading font-bold text-7xl md:text-9xl leading-none text-white opacity-[0.03] select-none pointer-events-none group-hover:opacity-[0.08] transition-opacity duration-500">
+              <div className="pointer-events-none absolute right-0 top-0 select-none p-4 font-heading text-7xl font-bold leading-none text-[#0D332B] opacity-[0.035] transition-opacity duration-300 group-hover:opacity-[0.06] md:p-8 md:text-9xl">
                 {step.number}
               </div>
 
               {/* Animated gradient border on hover */}
               <div
-                className="absolute inset-0 rounded-suzali opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                className="pointer-events-none absolute inset-0 rounded-[28px] opacity-0"
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(176,255,91,0.15), transparent, rgba(176,255,91,0.1))",
@@ -80,27 +83,27 @@ const Method = () => {
 
               <div className="relative z-10 flex flex-col h-full">
                 {/* Number Box with glow */}
-                <div className="w-12 h-12 md:w-14 md:h-14 border-2 border-accent-lime rounded-xl flex items-center justify-center text-accent-lime font-bold text-lg md:text-xl mb-4 md:mb-6 font-heading group-hover:bg-accent-lime/10 group-hover:shadow-[0_0_20px_rgba(176,255,91,0.2)] transition-all duration-500">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#0D332B] font-heading text-lg font-bold text-[#B0FF5B] transition-transform duration-300 group-hover:-translate-y-0.5 md:h-14 md:w-14 md:text-xl">
                   {step.number}
                 </div>
 
-                <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 font-heading text-white group-hover:text-[#B0FF5B] transition-colors duration-300">
+                <h3 className="mb-3 font-heading text-xl font-bold text-[#0D332B] md:mb-4 md:text-2xl">
                   {step.title}
                 </h3>
 
-                <p className="text-gray-300 leading-relaxed text-sm group-hover:text-white transition-colors duration-300">
+                <p className="text-sm leading-relaxed text-[#52635F] md:text-base">
                   {step.description}
                 </p>
               </div>
 
               {/* Bottom Gradient Line Effect */}
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent-lime to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-[#B0FF5B] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </AnimatedSection>
           ))}
         </div>
 
         {/* CTA below method */}
-        <AnimatedSection delay={600} className="text-center mt-12 md:mt-16">
+        <AnimatedSection delay={120} className="mt-12 text-left md:mt-14">
           <MagneticButton
             onClick={openBooking}
             variant="primary"

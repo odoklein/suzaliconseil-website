@@ -4,6 +4,33 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+// Fixed set of visuals used for the article cards, cycled by position so the
+// sequence never changes between renders (no randomness, no dependency on a
+// per-post cover image).
+const CARD_VISUALS = [
+  {
+    src: "/images/actualites/dashboard-commercial.png",
+    alt: "Dirigeant consultant un tableau de bord commercial interactif avec pipeline, taux de conversion et prévisions de revenus",
+  },
+  {
+    src: "/images/actualites/salle-reunion-strategie.png",
+    alt: "Salle de réunion avec tableau blanc de stratégie d'entreprise, priorités trimestrielles et vue sur la ville",
+  },
+  {
+    src: "/images/actualites/analyse-personas-clients.png",
+    alt: "Consultant analysant des personas clients et un plan de croissance commerciale sur son lieu de travail",
+  },
+  {
+    src: "/images/actualites/logo-suzali-conseil.svg",
+    alt: "Logo Suzali Conseil",
+    isLogo: true,
+  },
+];
+
+function getCardVisual(index) {
+  return CARD_VISUALS[index % CARD_VISUALS.length];
+}
+
 function getTheme(post) {
   if (post.topic === "digital") return "digital";
   const text = `${(post.title || "").toLowerCase()} ${(typeof post.excerpt === "string" ? post.excerpt.replace(/<[^>]+>/g, " ") : "").toLowerCase()}`;
@@ -41,9 +68,10 @@ function readingTime(post) {
   return Math.max(3, Math.ceil(words / 200)) + " min";
 }
 
-function FeaturedCard({ post }) {
+function FeaturedCard({ post, visualIndex }) {
   const theme = getTheme(post);
   const isDigital = theme === "digital";
+  const visual = getCardVisual(visualIndex);
 
   return (
     <Link
@@ -60,9 +88,25 @@ function FeaturedCard({ post }) {
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
+        ) : visual.isLogo ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#DCE9E3] p-16">
+            <Image
+              src={visual.src}
+              alt={visual.alt}
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-contain p-16 transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
         ) : (
-          <div
-            className={`absolute inset-0 bg-gradient-to-br ${isDigital ? "from-[#0c4a6e] via-[#0369a1] to-[#0ea5e9]" : "from-[#0D332B] via-[#1a4d42] to-[#2d7a6a]"}`}
+          <Image
+            src={visual.src}
+            alt={visual.alt}
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
@@ -123,6 +167,10 @@ function FeaturedCard({ post }) {
 function PostCard({ post, index }) {
   const theme = getTheme(post);
   const isDigital = theme === "digital";
+  // Featured card above takes visual index 0, so the grid continues the
+  // sequence from index 1 onward — keeps a single fixed rotation across
+  // the whole page instead of resetting per section.
+  const visual = getCardVisual(index + 1);
 
   return (
     <Link
@@ -140,9 +188,23 @@ function PostCard({ post, index }) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
+        ) : visual.isLogo ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#DCE9E3]">
+            <Image
+              src={visual.src}
+              alt={visual.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-contain p-10 transition-transform duration-700 group-hover:scale-110"
+            />
+          </div>
         ) : (
-          <div
-            className={`absolute inset-0 bg-gradient-to-br ${isDigital ? "from-[#0c4a6e] via-[#0369a1] to-[#0ea5e9]" : "from-[#0D332B] via-[#1a4d42] to-[#2d7a6a]"}`}
+          <Image
+            src={visual.src}
+            alt={visual.alt}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -386,7 +448,7 @@ export default function ActualitesView({ posts: initialPosts = [] }) {
             </div>
           ) : (
             <div className="space-y-12">
-              {featured && <FeaturedCard post={featured} />}
+              {featured && <FeaturedCard post={featured} visualIndex={0} />}
 
               {rest.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">

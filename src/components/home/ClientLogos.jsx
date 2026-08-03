@@ -7,23 +7,23 @@ import Image from "next/image";
  */
 const ClientLogos = () => {
   return (
-    <section className="bg-white py-12 md:py-16 relative overflow-hidden">
+    <section className="relative overflow-hidden border-y border-[#0D332B]/10 bg-[#FCFDFC] py-9 md:py-11">
       {/* Background decor */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-50 rounded-full blur-[120px] opacity-50 pointer-events-none" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[220px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E3FFC4] opacity-35 blur-[100px]" />
 
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p className="text-center text-xs font-bold uppercase tracking-[0.16em] text-[#65746F]">
           Ils nous font confiance
         </p>
 
-        <div className="mt-8 flex justify-center">
+        <div className="mt-7 flex justify-center opacity-75 grayscale transition-[filter,opacity] duration-300 hover:opacity-100 hover:grayscale-0">
           <Image
             src="/logos/Group-6896.svg"
             alt="Logos des entreprises qui font confiance à Suzali Conseil"
             width={0}
             height={0}
             sizes="100vw"
-            className="w-full max-w-4xl h-auto"
+            className="h-auto w-full max-w-4xl"
           />
         </div>
       </div>

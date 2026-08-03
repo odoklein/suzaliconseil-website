@@ -62,13 +62,10 @@
   /* Spacing & Radius */
   --radius-suzali: var(--radius-suzali);
 
-  /* Fonts — wired to the next/font variable so the metric-matched fallback
-     ("Plus Jakarta Sans Fallback") is actually used and CLS stays low.
-     Jakarta is a 200–800 variable font: there is no 900 / `font-black`. */
-  --font-sans: var(--font-jakarta), "Plus Jakarta Sans Fallback", system-ui,
-    sans-serif;
-  --font-heading: var(--font-jakarta), "Plus Jakarta Sans Fallback", system-ui,
-    sans-serif;
+  /* Satoshi is loaded once in the root layout through Fontshare's variable
+     webfont endpoint. System fallbacks keep text visible during the swap. */
+  --font-sans: "Satoshi", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-heading: "Satoshi", "Avenir Next", "Segoe UI", system-ui, sans-serif;
 
   /* Animations */
   --animate-subtle-float: float 6s ease-in-out infinite;
@@ -82,8 +79,9 @@
    `text-4xl`, `md:text-5xl` and the typography plugin's `.prose` sizes on
    every heading in the app. Inside the base layer, utilities win again. */
 @layer base {
-  * {
+  html {
     scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
   }
 
   body {
@@ -93,6 +91,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    letter-spacing: -0.01em;
   }
 
   h1,
@@ -101,7 +100,7 @@
   h4 {
     font-family: var(--font-heading);
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.028em;
     line-height: 1.1;
   }
 
@@ -564,16 +563,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 36px;
+  min-height: 48px;
+  padding: 12px 24px;
   border-radius: 9999px;
   font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 0.025em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: -0.01em;
   cursor: pointer;
   overflow: hidden;
-  will-change: transform;
-  min-width: 200px;
+  min-width: 0;
+  transition:
+    background-color 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 250ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .magnetic-btn-text {
@@ -594,7 +596,8 @@
     transparent 70%
   );
   transform: rotate(45deg) translateX(-100%);
-  transition: transform 0.6s var(--ease-premium);
+  opacity: 0;
+  transition: none;
   z-index: 1;
   pointer-events: none;
 }
@@ -605,17 +608,14 @@
 
 /* Primary Magnetic */
 .magnetic-btn-primary {
-  background: linear-gradient(135deg, #b0ff5b 0%, #8adf35 100%);
+  background: #b0ff5b;
   color: var(--color-primary-dark);
-  box-shadow:
-    0 4px 15px rgba(176, 255, 91, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px -18px rgba(13, 51, 43, 0.72);
 }
 
 .magnetic-btn-primary:hover {
-  box-shadow:
-    0 8px 30px rgba(176, 255, 91, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: #c8ff8d;
+  box-shadow: 0 16px 34px -20px rgba(13, 51, 43, 0.72);
 }
 
 /* Outline Light Magnetic */
@@ -635,12 +635,13 @@
 .magnetic-btn-outline {
   background: transparent;
   color: var(--color-primary-dark);
-  border: 2px solid var(--color-primary-main);
+  border: 1px solid rgba(13, 51, 43, 0.24);
 }
 
 .magnetic-btn-outline:hover {
-  background: var(--color-primary-main);
-  color: var(--color-accent-lime);
+  background: rgba(252, 253, 252, 0.9);
+  border-color: rgba(13, 51, 43, 0.48);
+  color: var(--color-primary-dark);
 }
 
 /* Lime Magnetic */
@@ -680,24 +681,25 @@
   --icon-swap-start-scale: 0.25;
   --icon-swap-ease: ease-in-out;
   /* header shell */
-  --nav-h: 5rem;
+  --nav-h: 4.5rem;
 }
 
-/* The bar is transparent-ish at rest and only earns its glass once content
-   is actually sliding underneath it. */
+/* A restrained glass shell keeps the navigation legible over every page while
+   preserving the warm off-white canvas. */
 .navbar-shell {
-  background: rgba(255, 255, 255, 0.72);
-  border-bottom: 1px solid transparent;
-  box-shadow: 0 0 0 0 rgba(13, 51, 43, 0);
+  background: rgba(252, 253, 252, 0.88);
+  -webkit-backdrop-filter: blur(18px) saturate(165%);
+  backdrop-filter: blur(18px) saturate(165%);
+  border-bottom: 1px solid rgba(13, 51, 43, 0.07);
+  box-shadow: 0 10px 32px -24px rgba(13, 51, 43, 0.38);
   transition:
     background-color var(--dropdown-open-dur) var(--dropdown-ease),
     border-color var(--dropdown-open-dur) var(--dropdown-ease),
     box-shadow var(--dropdown-open-dur) var(--dropdown-ease);
 }
 
-.navbar-shell.is-scrolled,
 .navbar-shell.is-open {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(252, 253, 252, 0.97);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom-color: rgba(13, 51, 43, 0.07);
@@ -715,16 +717,12 @@
 .nav-link-premium::after {
   content: "";
   position: absolute;
-  bottom: -6px;
+  bottom: -8px;
   left: 0;
   width: 100%;
   height: 2px;
   border-radius: 1px;
-  background: linear-gradient(
-    90deg,
-    var(--color-accent-lime),
-    var(--color-primary-main)
-  );
+  background: var(--color-accent-lime);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--dropdown-open-dur) var(--dropdown-ease);
@@ -744,7 +742,7 @@
 }
 
 .nav-link-premium[aria-current="page"]::after {
-  background: var(--color-primary-dark);
+  background: var(--color-accent-lime);
 }
 
 /* --- Menu dropdown (transitions.dev 05) ----------------------------------- */
@@ -878,7 +876,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(176, 255, 91, 0.28),
+    rgba(252, 253, 252, 0.58),
     transparent
   );
   pointer-events: none;

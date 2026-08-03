@@ -1,7 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
+import { useRef } from "react";
 import Link from "next/link";
+
+const MotionLink = motion.create(Link);
 
 /**
  * MagneticButton - A button that subtly follows the cursor when hovered,
@@ -13,25 +21,30 @@ export default function MagneticButton({
   onClick,
   variant = "primary",
   className = "",
-  strength = 0.3,
+  strength = 0.08,
   ...props
 }) {
   const ref = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const reduceMotion = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 280, damping: 24, mass: 0.45 });
+  const springY = useSpring(y, { stiffness: 280, damping: 24, mass: 0.45 });
 
   const handleMouseMove = (e) => {
+    if (reduceMotion) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    const x = (e.clientX - centerX) * strength;
-    const y = (e.clientY - centerY) * strength;
-    setPosition({ x, y });
+    x.set(Math.max(-4, Math.min(4, (e.clientX - centerX) * strength)));
+    y.set(Math.max(-3, Math.min(3, (e.clientY - centerY) * strength)));
   };
 
   const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 });
+    x.set(0);
+    y.set(0);
   };
 
   const variants = {
@@ -43,17 +56,11 @@ export default function MagneticButton({
 
   const combinedClasses = `magnetic-btn ${variants[variant] || variants.primary} ${className}`;
 
-  const style = {
-    transform: `translate(${position.x}px, ${position.y}px)`,
-    transition:
-      position.x === 0
-        ? "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)"
-        : "transform 0.15s ease-out",
-  };
+  const style = reduceMotion ? undefined : { x: springX, y: springY };
 
   if (href) {
     return (
-      <Link
+      <MotionLink
         ref={ref}
         href={href}
         className={combinedClasses}
@@ -64,12 +71,12 @@ export default function MagneticButton({
       >
         <span className="magnetic-btn-text">{children}</span>
         <span className="magnetic-btn-shine" />
-      </Link>
+      </MotionLink>
     );
   }
 
   return (
-    <button
+    <motion.button
       ref={ref}
       onClick={onClick}
       className={combinedClasses}
@@ -80,6 +87,6 @@ export default function MagneticButton({
     >
       <span className="magnetic-btn-text">{children}</span>
       <span className="magnetic-btn-shine" />
-    </button>
+    </motion.button>
   );
 }

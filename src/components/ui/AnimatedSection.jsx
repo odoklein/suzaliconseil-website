@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import Link from "next/link";
+import { useRef } from "react";
+
+const MotionLink = motion.create(Link);
 
 /**
  * AnimatedSection - Wraps children in a scroll-triggered animation container.
@@ -14,49 +18,53 @@ import { useEffect, useRef, useState } from "react";
  */
 export default function AnimatedSection({
   children,
-  animation = "animate-reveal-up",
   delay = 0,
   threshold = 0.15,
   className = "",
   once = true,
   as: Tag = "div",
+  style,
   ...props
 }) {
   const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const isVisible = useInView(ref, {
+    once,
+    amount: threshold,
+    margin: "0px 0px -48px 0px",
+  });
+  const motionProps = {
+    ref,
+    initial: false,
+    animate:
+      isVisible
+        ? { opacity: 1, y: 0, filter: "blur(0px)" }
+        : reduceMotion
+          ? { opacity: 1, y: 0, filter: "blur(0px)" }
+          : undefined,
+    transition: {
+      duration: reduceMotion ? 0 : 0.5,
+      delay: reduceMotion ? 0 : Math.min(delay, 240) / 1000,
+      ease: [0.22, 1, 0.36, 1],
+    },
+    className: `${className} ${isVisible || reduceMotion ? "" : "reveal-init"}`,
+    style,
+    ...props,
+  };
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+  if (Tag === Link) {
+    return <MotionLink {...motionProps}>{children}</MotionLink>;
+  }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          if (once) observer.unobserve(el);
-        } else if (!once) {
-          setIsVisible(false);
-        }
-      },
-      { threshold, rootMargin: "0px 0px -50px 0px" },
-    );
-
-    observer.observe(el);
-    return () => observer.unobserve(el);
-  }, [threshold, once]);
+  if (Tag === "article") {
+    return <motion.article {...motionProps}>{children}</motion.article>;
+  }
 
   return (
-    <Tag
-      ref={ref}
-      className={`${className} ${isVisible ? animation : "reveal-init"}`}
-      style={{
-        transitionDelay: `${delay}ms`,
-        transition:
-          "opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
-      }}
-      {...props}
+    <motion.div
+      {...motionProps}
     >
       {children}
-    </Tag>
+    </motion.div>
   );
 }

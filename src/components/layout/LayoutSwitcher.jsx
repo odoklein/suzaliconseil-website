@@ -15,7 +15,7 @@ export default function LayoutSwitcher({ children, services }) {
   return (
     <>
       <Navbar services={services} />
-      <main id="main" className="pt-20 min-h-screen">
+      <main id="main" className="min-h-[100dvh] pt-[72px]">
         {children}
       </main>
       <Footer />

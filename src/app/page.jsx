@@ -18,9 +18,14 @@ export const metadata = createPageMetadata({
 });
 
 export default async function Home() {
-  const projectsData = await db.query.projects.findMany({
-    orderBy: (projects, { desc }) => [desc(projects.createdAt)],
-  });
+  let projectsData = [];
+  try {
+    projectsData = await db.query.projects.findMany({
+      orderBy: (projects, { desc }) => [desc(projects.createdAt)],
+    });
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+  }
 
   /*
    * Narrative order: hook → proof → offer → problem → method → results →

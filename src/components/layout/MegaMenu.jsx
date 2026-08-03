@@ -1,47 +1,32 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { Monitor, Handshake, CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Handshake,
+  Monitor,
+} from "lucide-react";
 
-/* One card definition, two poles. The two branches used to be copy-pasted,
-   which is how the digital column ended up with a different check-icon
-   treatment than the commercial one. */
 const POLES = [
   {
     slug: "commercial",
     icon: Handshake,
-    tag: "Performance",
-    accentText: "text-[var(--color-primary-dark)]",
-    accentTag: "bg-[var(--color-commercial-bg)] text-[var(--color-primary-main)]",
-    accentIcon: "text-[var(--color-primary-dark)]",
-    accentIconHover:
-      "group-hover:bg-[var(--color-primary-dark)] group-hover:text-[var(--color-accent-lime)]",
-    accentCheck: "text-[var(--color-primary-main)]",
-    accentWash: "from-[var(--color-commercial-bg)]",
-    accentRule: "decoration-[var(--color-accent-lime)]",
-    accentShadow: "hover:shadow-[0_20px_60px_-15px_rgba(13,51,43,0.3)]",
+    label: "Performance commerciale",
+    description: "Créer des opportunités et les convertir en rendez-vous.",
   },
   {
     slug: "digital",
     icon: Monitor,
-    tag: "Visibilité",
-    accentText: "text-[var(--color-digital-text)]",
-    accentTag: "bg-[var(--color-digital-bg)] text-[var(--color-digital-text)]",
-    accentIcon: "text-[var(--color-digital-text)]",
-    accentIconHover:
-      "group-hover:bg-[var(--color-digital-text)] group-hover:text-white",
-    accentCheck: "text-[var(--color-digital-text)]",
-    accentWash: "from-[var(--color-digital-bg)]",
-    accentRule: "decoration-[var(--color-digital-text)]",
-    accentShadow: "hover:shadow-[0_20px_60px_-15px_rgba(17,85,204,0.28)]",
+    label: "Stratégie digitale",
+    description: "Construire la visibilité, les parcours et les outils.",
   },
 ];
 
-const MegaMenu = ({ id, services, isOpen, onClose }) => {
+export default function MegaMenu({ id, services, isOpen, onClose }) {
   const poles = POLES.map((pole) => ({
     ...pole,
-    service: services.find((s) => s.slug === pole.slug),
+    service: services.find((service) => service.slug === pole.slug),
   })).filter((pole) => pole.service);
 
   if (poles.length === 0) return null;
@@ -49,106 +34,101 @@ const MegaMenu = ({ id, services, isOpen, onClose }) => {
   return (
     <div
       id={id}
-      /* Kept in the DOM so the panel can animate out. `inert` is what keeps
-         its 14 links out of the tab order while it is invisible. */
       inert={!isOpen || undefined}
-      className="fixed top-20 left-0 w-full flex justify-center z-50 pb-8 pointer-events-none"
+      className="pointer-events-none fixed left-0 top-[72px] z-50 flex w-full justify-center px-4 pb-6"
     >
-      {/* The animated surface is the card row, not the full-width frame, so the
-          empty gutters never swallow clicks on the page behind it. */}
       <div
-        className={`t-dropdown t-stagger w-[95vw] max-w-5xl flex flex-col md:flex-row gap-6 p-4 ${
+        className={`t-dropdown t-stagger pointer-events-none w-full max-w-6xl overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#FCFDFC]/98 p-4 shadow-[0_34px_90px_-38px_rgba(13,51,43,0.55)] backdrop-blur-2xl ${
           isOpen ? "is-open is-shown" : ""
         }`}
       >
-        {poles.map((pole, poleIndex) => {
-          const Icon = pole.icon;
-          const { service } = pole;
-          const href = `/services/${pole.slug}`;
+        <div className="grid md:grid-cols-2">
+          {poles.map((pole, poleIndex) => {
+            const Icon = pole.icon;
+            const href = `/services/${pole.slug}`;
 
-          return (
-            <section
-              key={pole.slug}
-              aria-label={`Pôle ${service.title}`}
-              className={`t-stagger-line flex-1 bg-white rounded-3xl p-8 shadow-2xl ${pole.accentShadow} transition-shadow duration-[var(--dropdown-open-dur)] ease-[cubic-bezier(0.22,1,0.36,1)] group ring-1 ring-black/5 relative overflow-hidden`}
-              style={{ "--i": poleIndex }}
-            >
-              <div
-                aria-hidden="true"
-                className={`absolute inset-0 bg-gradient-to-br ${pole.accentWash} via-white to-white`}
-              />
-
-              <div className="relative z-10 flex flex-col h-full">
-                <div className="flex items-start justify-between mb-6">
-                  <span
-                    className={`p-4 bg-white rounded-2xl shadow-sm ring-1 ring-black/5 ${pole.accentIcon} ${pole.accentIconHover} transition-colors duration-[var(--dropdown-open-dur)]`}
-                  >
-                    <Icon size={32} strokeWidth={1.5} aria-hidden="true" />
+            return (
+              <section
+                key={pole.slug}
+                aria-label={pole.label}
+                className={`t-stagger-line p-4 sm:p-5 ${
+                  poleIndex > 0
+                    ? "border-t border-[#0D332B]/10 md:border-l md:border-t-0"
+                    : ""
+                }`}
+                style={{ "--i": poleIndex }}
+              >
+                <div className="flex items-start gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#E3FFC4] text-[#0D332B]">
+                    <Icon size={21} strokeWidth={1.6} aria-hidden="true" />
                   </span>
-                  <span
-                    className={`${pole.accentTag} text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider`}
-                  >
-                    {pole.tag}
-                  </span>
+                  <div>
+                    <Link
+                      href={href}
+                      onClick={onClose}
+                      className="nav-focus group inline-flex items-center gap-2 text-xl font-bold tracking-[-0.025em] text-[#0D332B]"
+                    >
+                      {pole.label}
+                      <ArrowUpRight
+                        size={16}
+                        aria-hidden="true"
+                        className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </Link>
+                    <p className="mt-1 max-w-[42ch] text-sm leading-relaxed text-[#65746F]">
+                      {pole.description}
+                    </p>
+                  </div>
                 </div>
 
-                <h2 className="text-2xl font-bold font-heading tracking-tight mb-6">
-                  <Link
-                    href={href}
-                    onClick={onClose}
-                    className={`nav-focus ${pole.accentText} hover:underline underline-offset-4 ${pole.accentRule} decoration-2`}
-                  >
-                    {service.title}
-                  </Link>
-                </h2>
-
-                <ul className="space-y-1 mb-8 flex-1">
-                  {service.subServices.map((sub, index) => (
+                <ul className="mt-5 grid gap-1 sm:grid-cols-2">
+                  {pole.service.subServices.map((sub, index) => (
                     <li key={sub.slug ?? index}>
                       <Link
                         href={sub.href || href}
                         onClick={onClose}
-                        className="nav-focus flex items-start gap-3 p-3 -mx-3 rounded-xl transition-colors duration-[var(--dropdown-close-dur)] hover:bg-[var(--color-primary-dark)]/5"
+                        className="nav-focus group flex min-h-12 items-center justify-between gap-3 rounded-[14px] px-3 py-2.5 text-sm font-semibold leading-snug text-[#314640] transition-colors duration-300 hover:bg-[#E9FFD2] hover:text-[#0D332B]"
                       >
-                        <CheckCircle2
-                          size={16}
+                        {sub.title}
+                        <ArrowRight
+                          size={15}
                           aria-hidden="true"
-                          className={`${pole.accentCheck} mt-0.5 shrink-0`}
+                          className="shrink-0 text-[#4E8D38] transition-transform duration-300 group-hover:translate-x-1"
                         />
-                        <span className="block">
-                          <span
-                            className={`block font-bold ${pole.accentText} text-sm leading-tight mb-0.5`}
-                          >
-                            {sub.title}
-                          </span>
-                          <span className="block text-xs text-[var(--color-text-muted)] leading-snug">
-                            {sub.description}
-                          </span>
-                        </span>
                       </Link>
                     </li>
                   ))}
                 </ul>
+              </section>
+            );
+          })}
+        </div>
 
-                <Link
-                  href={href}
-                  onClick={onClose}
-                  className={`nav-focus inline-flex items-center gap-2 text-sm font-bold ${pole.accentText} uppercase tracking-wider hover:underline underline-offset-4 decoration-2 ${pole.accentRule} group/cta`}
-                >
-                  Explorer le pôle
-                  <ArrowRight
-                    size={16}
-                    aria-hidden="true"
-                    className="transition-transform duration-[var(--dropdown-open-dur)] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/cta:translate-x-1"
-                  />
-                </Link>
-              </div>
-            </section>
-          );
-        })}
+        <div
+          className="t-stagger-line flex flex-col gap-3 border-t border-[#0D332B]/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+          style={{ "--i": poles.length }}
+        >
+          <p className="text-sm text-[#65746F]">
+            Besoin de relier plusieurs expertises dans une même mission ?
+          </p>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link
+              href="/services"
+              onClick={onClose}
+              className="nav-focus text-sm font-bold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4"
+            >
+              Tous les services
+            </Link>
+            <Link
+              href="/etudes-de-cas"
+              onClick={onClose}
+              className="nav-focus text-sm font-bold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4"
+            >
+              Voir les études de cas
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
-};
-
-export default MegaMenu;
+}

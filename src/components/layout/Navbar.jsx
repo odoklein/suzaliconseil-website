@@ -29,7 +29,6 @@ const HOVER_INTENT_MS = 140;
 export default function Navbar({ services }) {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const { openBooking } = useBooking();
 
@@ -61,37 +60,6 @@ export default function Navbar({ services }) {
   }, []);
 
   useEffect(() => () => clearTimeout(closeTimer.current), []);
-
-  // Route change closes whatever is open.
-  useEffect(() => {
-    closeServices();
-    setIsMobileMenuOpen(false);
-  }, [pathname, closeServices]);
-
-  // Glass state. rAF-throttled and only writes on an actual state flip.
-  useEffect(() => {
-    let frame = 0;
-    let last = window.scrollY > 20;
-    setIsScrolled(last);
-
-    const handleScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const next = window.scrollY > 20;
-        if (next !== last) {
-          last = next;
-          setIsScrolled(next);
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, []);
 
   // Escape closes the open surface and hands focus back to its trigger.
   useEffect(() => {
@@ -163,36 +131,40 @@ export default function Navbar({ services }) {
       </a>
 
       <header
-        className={`navbar-shell fixed w-full z-40 ${
-          isScrolled ? "is-scrolled" : ""
-        } ${isServicesOpen || isMobileMenuOpen ? "is-open" : ""}`}
+        className={`navbar-shell fixed z-40 w-full ${
+          isServicesOpen || isMobileMenuOpen ? "is-open" : ""
+        }`}
       >
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex items-center justify-between h-20">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+          <div className="flex h-[72px] items-center justify-between">
             {/* Logo */}
             <Link
               href="/"
-              aria-label="Suzali Conseil — accueil"
+              aria-label="Suzali Conseil, accueil"
+              onClick={() => {
+                closeServices();
+                setIsMobileMenuOpen(false);
+              }}
               className="nav-focus flex items-center gap-2 group"
             >
               <Image
                 src="/assets/greenlogo.svg"
                 alt="Suzali Conseil"
-                width={180}
+                width={160}
                 height={50}
                 priority
-                className="h-12 w-auto transition-transform duration-300 group-hover:scale-[1.03]"
+                className="h-10 w-auto transition-transform duration-300 ease-[var(--ease-premium)] group-hover:scale-[1.025]"
               />
             </Link>
 
             {/* Desktop navigation */}
             <nav
               aria-label="Navigation principale"
-              className="hidden lg:flex items-center gap-8"
+              className="hidden items-center gap-6 lg:flex xl:gap-7"
             >
               <div
                 ref={servicesWrapRef}
-                className="relative h-20 flex items-center"
+                className="relative flex h-[72px] items-center"
                 onMouseEnter={openServices}
                 onMouseLeave={scheduleCloseServices}
                 onBlur={handleServicesBlur}
@@ -207,7 +179,7 @@ export default function Navbar({ services }) {
                   onClick={() =>
                     isServicesOpen ? closeServices() : openServices()
                   }
-                  className={`nav-link-premium nav-focus flex items-center gap-1 text-[15px] uppercase tracking-wide font-heading ${
+                  className={`nav-link-premium nav-focus flex items-center gap-1.5 text-[14px] font-semibold tracking-[-0.01em] ${
                     isServicesOpen
                       ? "text-[var(--color-primary-main)]"
                       : "text-[var(--color-primary-dark)] hover:text-[var(--color-primary-main)]"
@@ -236,7 +208,7 @@ export default function Navbar({ services }) {
                   key={link.href}
                   href={link.href}
                   aria-current={isCurrent(link.href) ? "page" : undefined}
-                  className="nav-link-premium nav-focus text-[15px] text-[var(--color-primary-dark)] hover:text-[var(--color-primary-main)] uppercase tracking-wide font-heading"
+                  className="nav-link-premium nav-focus text-[14px] font-semibold tracking-[-0.01em] text-[var(--color-primary-dark)] hover:text-[var(--color-primary-main)]"
                 >
                   {link.label}
                 </Link>
@@ -248,7 +220,7 @@ export default function Navbar({ services }) {
               <button
                 type="button"
                 onClick={openBooking}
-                className="nav-cta nav-focus hidden lg:inline-flex items-center gap-2 bg-[var(--color-primary-dark)] hover:bg-[var(--color-primary-main)] text-white hover:text-[var(--color-accent-lime)] px-6 py-2.5 rounded-full font-medium text-sm transition-[background-color,color,transform,box-shadow] duration-[var(--dropdown-open-dur)] ease-[cubic-bezier(0.22,1,0.36,1)] shadow-[0_6px_20px_-8px_rgba(13,51,43,0.6)] hover:shadow-[0_12px_28px_-10px_rgba(13,51,43,0.65)] hover:-translate-y-0.5 group/cta overflow-hidden relative"
+                className="nav-cta nav-focus group/cta relative hidden items-center gap-2 overflow-hidden rounded-full bg-[#B0FF5B] px-5 py-2.5 text-sm font-bold tracking-[-0.01em] text-[#0D332B] shadow-[0_10px_24px_-15px_rgba(13,51,43,0.62)] transition-[background-color,transform,box-shadow] duration-[var(--dropdown-open-dur)] ease-[var(--dropdown-ease)] hover:-translate-y-0.5 hover:bg-[#C8FF8D] hover:shadow-[0_14px_30px_-16px_rgba(13,51,43,0.7)] active:translate-y-px lg:inline-flex"
               >
                 <span className="relative z-10">Planifier un appel</span>
                 <ArrowRight
@@ -268,7 +240,11 @@ export default function Navbar({ services }) {
                 aria-expanded={isMobileMenuOpen}
                 aria-controls={MOBILE_PANEL_ID}
                 onClick={() => setIsMobileMenuOpen((open) => !open)}
-                className="nav-focus lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-full text-[var(--color-primary-dark)] hover:bg-[var(--color-primary-dark)]/5 transition-colors"
+                className={`nav-focus inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-primary-dark)] transition-colors lg:hidden ${
+                  isMobileMenuOpen
+                    ? "bg-[#B0FF5B]"
+                    : "hover:bg-[#B0FF5B]/55"
+                }`}
               >
                 <span
                   className="t-icon-swap"
@@ -285,30 +261,31 @@ export default function Navbar({ services }) {
         {/* Mobile panel */}
         <div
           id={MOBILE_PANEL_ID}
-          className={`nav-mobile-panel t-stagger lg:hidden absolute top-full left-0 w-full bg-white/97 backdrop-blur-xl border-t border-[var(--color-primary-dark)]/8 overflow-hidden ${
+          className={`nav-mobile-panel t-stagger absolute left-0 top-full w-full overflow-hidden border-t border-[var(--color-primary-dark)]/8 bg-[#FCFDFC]/97 backdrop-blur-xl lg:hidden ${
             isMobileMenuOpen ? "is-open is-shown" : ""
           }`}
           style={{ height: "calc(100dvh - var(--nav-h))" }}
         >
           <nav
             aria-label="Navigation mobile"
-            className="p-6 pb-16 flex flex-col gap-6 overflow-y-auto overscroll-contain h-full"
+            className="flex h-full flex-col gap-6 overflow-y-auto overscroll-contain p-6 pb-10"
           >
             <div className="t-stagger-line" style={{ "--i": 0 }}>
-              <h2 className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-[0.14em] mb-3">
-                Services
+              <h2 className="mb-3 text-sm font-bold tracking-[-0.01em] text-[var(--color-primary-dark)]">
+                Nos services
               </h2>
               <ul className="flex flex-col pl-4 border-l border-[var(--color-primary-dark)]/15">
                 {services.map((service) => (
                   <li key={service.id}>
                     <Link
                       href={`/services/${service.slug}`}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       aria-current={
                         isCurrent(`/services/${service.slug}`)
                           ? "page"
                           : undefined
                       }
-                      className="nav-focus flex items-center min-h-11 py-1 font-medium text-[15px] text-[var(--color-text-muted)] hover:text-[var(--color-primary-main)] aria-[current=page]:text-[var(--color-primary-dark)] aria-[current=page]:font-semibold transition-colors"
+                      className="nav-focus flex min-h-11 items-center py-1 text-[15px] font-medium tracking-[-0.01em] text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-primary-main)] aria-[current=page]:font-semibold aria-[current=page]:text-[var(--color-primary-dark)]"
                     >
                       {service.title}
                     </Link>
@@ -328,8 +305,9 @@ export default function Navbar({ services }) {
                 >
                   <Link
                     href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     aria-current={isCurrent(link.href) ? "page" : undefined}
-                    className="nav-focus flex items-center min-h-14 text-lg font-bold text-[var(--color-primary-dark)] uppercase tracking-wide font-heading hover:text-[var(--color-primary-main)] aria-[current=page]:text-[var(--color-primary-main)] transition-colors"
+                    className="nav-focus flex min-h-14 items-center text-lg font-bold tracking-[-0.02em] text-[var(--color-primary-dark)] transition-colors hover:text-[var(--color-primary-main)] aria-[current=page]:text-[var(--color-primary-main)]"
                   >
                     {link.label}
                   </Link>
@@ -343,7 +321,7 @@ export default function Navbar({ services }) {
                 setIsMobileMenuOpen(false);
                 openBooking();
               }}
-              className="nav-focus t-stagger-line mt-auto flex items-center justify-center gap-2 w-full bg-[var(--color-primary-dark)] text-white min-h-14 rounded-full font-bold shadow-[0_10px_30px_-12px_rgba(13,51,43,0.7)] active:scale-[0.99] transition-transform"
+              className="nav-focus t-stagger-line mt-auto flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-[#B0FF5B] font-bold text-[#0D332B] shadow-[0_12px_30px_-16px_rgba(13,51,43,0.62)] transition-transform active:scale-[0.99]"
               style={{ "--i": NAV_LINKS.length + 1 }}
             >
               Planifier un appel

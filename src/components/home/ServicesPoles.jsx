@@ -25,14 +25,14 @@ const ServicesPoles = () => {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
+    <section className="relative overflow-hidden bg-[#FCFDFC] py-20 md:py-28">
       {/* Background Decor - Animated Blobs */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[300px] bg-emerald-50 rounded-full blur-[100px] -translate-y-1/2 opacity-60 pointer-events-none animate-blob-slow" />
-      <div className="absolute top-20 right-1/4 w-[400px] h-[300px] bg-blue-50 rounded-full blur-[100px] opacity-60 pointer-events-none animate-blob-delayed" />
+      <div className="pointer-events-none absolute left-1/4 top-0 h-[260px] w-[460px] -translate-y-1/2 rounded-full bg-[#E3FFC4] opacity-35 blur-[110px]" />
+      <div className="pointer-events-none absolute right-0 top-28 h-[320px] w-[320px] rounded-full bg-[#D7EEE4] opacity-45 blur-[120px]" />
 
       {/* Subtle grid pattern */}
       <div
-        className="absolute inset-0 opacity-[0.015] pointer-events-none"
+        className="pointer-events-none absolute inset-0 opacity-[0.012]"
         style={{
           backgroundImage:
             "linear-gradient(rgba(13,51,43,1) 1px, transparent 1px), linear-gradient(90deg, rgba(13,51,43,1) 1px, transparent 1px)",
@@ -40,18 +40,20 @@ const ServicesPoles = () => {
         }}
       />
 
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <AnimatedSection className="text-center mb-12 md:mb-20 space-y-4 md:space-y-6 max-w-5xl mx-auto">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs md:text-sm font-semibold tracking-wide uppercase">
+        <AnimatedSection className="mb-12 max-w-3xl space-y-4 md:mb-16 md:space-y-5">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
             Nos Expertises
           </span>
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-[#0D332B] tracking-tight leading-[1.1]">
-            Nos Services B2B pour <br className="hidden md:block" />
+          <h2 className="font-heading text-4xl font-bold leading-[1.04] tracking-[-0.04em] text-[#0D332B] sm:text-5xl md:text-6xl">
+            Nos Services B2B pour <br className="hidden" />
             Générer des Leads{" "}
-            <span className="text-gradient-premium">Qualifiés</span>
+            <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
+              Qualifiés
+            </span>
           </h2>
-          <p className="text-gray-500 text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed">
+          <p className="max-w-[62ch] text-lg font-medium leading-relaxed text-[#52635F] md:text-xl">
             Prospection commerciale, téléprospection et outbound marketing : des
             solutions complètes pour remplir votre pipeline commercial en
             France.
@@ -59,47 +61,47 @@ const ServicesPoles = () => {
         </AnimatedSection>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 lg:gap-8">
           {/* COMMERCIAL COLUMN */}
           <AnimatedSection
-            delay={100}
-            className="flex flex-col items-center gap-6 md:gap-8"
+            delay={40}
+            className="flex flex-col items-stretch gap-5 md:col-span-7"
           >
             {/* Card */}
-            <div className="w-full min-h-[480px] md:h-[520px] rounded-[32px] md:rounded-[48px] relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500 md:hover:-translate-y-3 flex flex-col card-glow">
+            <div className="group relative flex min-h-[440px] w-full flex-col overflow-hidden rounded-[28px] border border-[#0D332B]/8 bg-[#D7EEE4] shadow-[0_28px_70px_-50px_rgba(13,51,43,0.72)] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#0D332B]/16 hover:shadow-[0_32px_76px_-48px_rgba(13,51,43,0.65)] md:min-h-[500px]">
               {/* Background Gradient & Texture */}
               <div
-                className="absolute inset-0 bg-gradient-to-b from-[#66D49C] via-[#3DA876] to-[#1A6D48] z-0 animate-gradient-shift"
+                className="absolute inset-0 z-0 bg-gradient-to-br from-[#EAF6F0] via-[#D7EEE4] to-[#BFDCCF]"
                 style={{ backgroundSize: "100% 200%" }}
               />
 
               {/* Animated glow orb */}
-              <div className="absolute -right-20 -top-20 w-[300px] h-[300px] bg-white rounded-full blur-[80px] opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-700 pointer-events-none" />
+              <div className="pointer-events-none absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-[#B0FF5B] opacity-[0.2] blur-[90px]" />
 
               {/* Watermarks */}
-              <div className="absolute -right-10 -top-10 text-white opacity-[0.06] rotate-12 pointer-events-none z-0 hidden sm:block group-hover:opacity-[0.1] transition-opacity duration-500">
+              <div className="pointer-events-none absolute -right-10 -top-10 z-0 hidden rotate-12 text-[#0D332B] opacity-[0.055] transition-opacity duration-300 group-hover:opacity-[0.08] sm:block">
                 <Handshake size={280} strokeWidth={0.5} />
               </div>
 
               {/* Content Container */}
-              <div className="relative z-10 flex-1 flex flex-col items-center justify-between p-6 md:p-8 py-10 md:py-12 text-center">
+              <div className="relative z-10 flex flex-1 flex-col items-start justify-between p-7 text-left md:p-10">
                 {/* Top Text */}
                 <div className="space-y-2 md:space-y-3">
-                  <h3 className="font-heading font-bold text-4xl md:text-6xl text-white drop-shadow-md tracking-tight">
+                  <h3 className="font-heading text-4xl font-bold tracking-[-0.04em] text-[#0D332B] md:text-6xl">
                     Commercial
                   </h3>
-                  <p className="text-green-50 font-medium text-lg md:text-2xl leading-snug px-2">
+                  <p className="text-lg font-medium leading-snug text-[#405A53] md:text-2xl">
                     Une croissance mesurable, <br /> du digital à la vente.
                   </p>
                 </div>
 
                 {/* Tags Cloud */}
-                <div className="flex flex-wrap justify-center content-end gap-2 md:gap-3 mt-6">
+                <div className="mt-6 flex flex-wrap content-end justify-start gap-2 md:gap-3">
                   {commercialTags.map(([tag, href], idx) => (
                     <Link
                       key={href + tag}
                       href={href}
-                      className="tag-interactive bg-white/95 backdrop-blur-sm text-[#1A4D43] font-bold text-xs md:text-base px-4 md:px-5 py-2 md:py-2.5 rounded-full shadow-sm hover:bg-white hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      className="tag-interactive rounded-full border border-[#0D332B]/10 bg-[#FCFDFC]/82 px-4 py-2 text-xs font-bold text-[#173D35] transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-[#0D332B]/22 hover:bg-[#FCFDFC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D332B] md:px-5 md:py-2.5 md:text-sm"
                       style={{ animationDelay: `${idx * 80}ms` }}
                     >
                       {tag}
@@ -112,7 +114,7 @@ const ServicesPoles = () => {
             {/* CTA Button */}
             <Link
               href="/services/commercial"
-              className="group/btn w-full sm:w-auto text-center bg-[#1A4D43] text-white font-bold py-4 px-10 rounded-full shadow-lg hover:bg-[#0D332B] hover:shadow-2xl transition-all uppercase tracking-wide text-sm md:text-base inline-flex items-center justify-center gap-3 hover:-translate-y-0.5"
+              className="group/btn inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[#0D332B] px-7 py-3 text-center text-sm font-bold tracking-[-0.01em] text-[#FCFDFC] shadow-[0_14px_32px_-20px_rgba(13,51,43,0.75)] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#1A4D43] sm:w-auto"
             >
               Découvrir le service
               <ArrowRight
@@ -124,45 +126,45 @@ const ServicesPoles = () => {
 
           {/* DIGITAL COLUMN */}
           <AnimatedSection
-            delay={300}
-            className="flex flex-col items-center gap-6 md:gap-8 mt-8 md:mt-0"
+            delay={80}
+            className="flex flex-col items-stretch gap-5 md:col-span-5"
           >
             {/* Card */}
-            <div className="w-full min-h-[480px] md:h-[520px] rounded-[32px] md:rounded-[48px] relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500 md:hover:-translate-y-3 flex flex-col card-glow">
+            <div className="group relative flex min-h-[440px] w-full flex-col overflow-hidden rounded-[28px] border border-[#0D332B]/8 bg-[#E3FFC4] shadow-[0_28px_70px_-50px_rgba(13,51,43,0.72)] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#0D332B]/16 hover:shadow-[0_32px_76px_-48px_rgba(13,51,43,0.65)] md:min-h-[500px]">
               {/* Background Gradient */}
               <div
-                className="absolute inset-0 bg-gradient-to-b from-[#60A5FA] via-[#3B82F6] to-[#1E40AF] z-0 animate-gradient-shift"
+                className="absolute inset-0 z-0 bg-gradient-to-br from-[#F2FFE4] via-[#E3FFC4] to-[#C8F89A]"
                 style={{ backgroundSize: "100% 200%", animationDelay: "-4s" }}
               />
 
               {/* Animated glow orb */}
-              <div className="absolute -left-20 -bottom-20 w-[300px] h-[300px] bg-white rounded-full blur-[80px] opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-700 pointer-events-none" />
+              <div className="pointer-events-none absolute -bottom-20 -left-20 h-[300px] w-[300px] rounded-full bg-[#FCFDFC] opacity-45 blur-[90px]" />
 
               {/* Watermarks */}
-              <div className="absolute -right-10 -top-10 text-white opacity-[0.06] rotate-12 pointer-events-none z-0 hidden sm:block group-hover:opacity-[0.1] transition-opacity duration-500">
+              <div className="pointer-events-none absolute -right-10 -top-10 z-0 hidden rotate-12 text-[#0D332B] opacity-[0.055] transition-opacity duration-300 group-hover:opacity-[0.08] sm:block">
                 <Monitor size={280} strokeWidth={0.5} />
               </div>
 
               {/* Content Container */}
-              <div className="relative z-10 flex-1 flex flex-col items-center justify-between p-6 md:p-8 py-10 md:py-12 text-center">
+              <div className="relative z-10 flex flex-1 flex-col items-start justify-between p-7 text-left md:p-10">
                 {/* Top Text */}
                 <div className="space-y-2 md:space-y-3">
-                  <h3 className="font-heading font-bold text-4xl md:text-6xl text-white drop-shadow-md tracking-tight">
+                  <h3 className="font-heading text-4xl font-bold tracking-[-0.04em] text-[#0D332B] md:text-6xl">
                     Digital
                   </h3>
-                  <p className="text-blue-50 font-medium text-lg md:text-2xl leading-snug px-2">
+                  <p className="text-lg font-medium leading-snug text-[#405A53] md:text-2xl">
                     Créez une présence digitale qui <br /> attire, engage et
                     convertit.
                   </p>
                 </div>
 
                 {/* Tags Cloud */}
-                <div className="flex flex-wrap justify-center content-end gap-2 md:gap-3 mt-6">
+                <div className="mt-6 flex flex-wrap content-end justify-start gap-2 md:gap-3">
                   {digitalTags.map(([tag, href], idx) => (
                     <Link
                       key={href + tag}
                       href={href}
-                      className="tag-interactive bg-white/95 backdrop-blur-sm text-[#1E40AF] font-bold text-xs md:text-base px-4 md:px-5 py-2 md:py-2.5 rounded-full shadow-sm hover:bg-white hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      className="tag-interactive rounded-full border border-[#0D332B]/10 bg-[#FCFDFC]/70 px-4 py-2 text-xs font-bold text-[#173D35] transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-[#0D332B]/22 hover:bg-[#FCFDFC] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D332B] md:px-5 md:py-2.5 md:text-sm"
                       style={{ animationDelay: `${idx * 80}ms` }}
                     >
                       {tag}
@@ -175,7 +177,7 @@ const ServicesPoles = () => {
             {/* CTA Button */}
             <Link
               href="/services/digital"
-              className="group/btn w-full sm:w-auto text-center bg-[#1E40AF] text-white font-bold py-4 px-10 rounded-full shadow-lg hover:bg-[#172554] hover:shadow-2xl transition-all uppercase tracking-wide text-sm md:text-base inline-flex items-center justify-center gap-3 hover:-translate-y-0.5"
+              className="group/btn inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[#0D332B] px-7 py-3 text-center text-sm font-bold tracking-[-0.01em] text-[#FCFDFC] shadow-[0_14px_32px_-20px_rgba(13,51,43,0.75)] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#1A4D43] sm:w-auto"
             >
               Découvrir le service
               <ArrowRight
@@ -186,11 +188,11 @@ const ServicesPoles = () => {
           </AnimatedSection>
         </div>
 
-        <AnimatedSection delay={200} className="mt-16 md:mt-20">
-          <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
+        <AnimatedSection delay={40} className="mt-16 border-t border-[#0D332B]/12 pt-9 md:mt-20">
+          <p className="text-left text-xs font-bold uppercase tracking-[0.16em] text-[#65746F]">
             Toutes nos expertises en détail
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <div className="mt-6 flex flex-wrap justify-start gap-3">
             {[
               ["Agence de prospection B2B", "/services/commercial"],
               ["Prospection externalisée", "/services/prospection-commerciale-externalisee"],
@@ -206,7 +208,7 @@ const ServicesPoles = () => {
               <Link
                 key={label}
                 href={href}
-                className="rounded-full border border-[#0D332B]/15 bg-white px-5 py-2.5 text-sm font-bold text-[#0D332B] shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#FF6A3D] hover:text-[#C84B25] hover:shadow-md"
+                className="rounded-full border border-[#0D332B]/14 bg-[#FCFDFC] px-5 py-2.5 text-sm font-bold text-[#0D332B] transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-[#4E8D38] hover:bg-[#E9FFD2]"
               >
                 {label}
               </Link>
