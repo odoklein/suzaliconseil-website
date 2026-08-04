@@ -43,8 +43,8 @@ export default function ContactClient() {
       {/* ----------------------------------------------------------------- */}
       {/* 1. HERO SECTION                                                    */}
       {/* ----------------------------------------------------------------- */}
-      <section className="w-full bg-[#F6F7F4] p-3 sm:p-4 lg:p-5">
-        <div className="relative mx-auto min-h-[520px] max-w-[1600px] overflow-hidden rounded-[14px] border border-[#0D332B]/10 bg-[#0D332B] shadow-[0_28px_80px_-48px_rgba(13,51,43,0.78)] md:min-h-[600px]">
+      <section className="w-full bg-[#0D332B]">
+        <div className="relative min-h-[520px] w-full overflow-hidden bg-[#0D332B] md:min-h-[600px]">
           <Image
             src="/images/hero-office.webp"
             alt="Les bureaux de Suzali Conseil baignés de lumière"
@@ -64,22 +64,24 @@ export default function ContactClient() {
           />
 
           <div className="relative z-10 mx-auto flex min-h-[520px] w-full max-w-7xl items-center px-6 py-16 sm:px-8 md:min-h-[600px] md:px-12 lg:px-14">
-            <AnimatedSection className="min-w-0 w-full max-w-[680px] text-left">
-              <h1 className="font-heading text-[2.4rem] font-bold leading-[1.04] tracking-[-0.045em] text-[#F7FAF8] sm:text-5xl lg:text-[4rem]">
+            <div className="min-w-0 w-full max-w-[680px] text-left">
+              <h1
+                className="hero-rise font-heading text-[2.4rem] font-bold leading-[1.04] tracking-[-0.045em] text-[#F7FAF8] sm:text-5xl lg:text-[4rem]"
+                style={{ "--rise-delay": "0ms" }}
+              >
                 Parlons de votre projet
               </h1>
 
-              <p className="mt-6 max-w-[590px] text-base font-medium leading-relaxed text-[#E4ECE8] sm:text-lg lg:text-xl">
+              <p
+                className="hero-rise mt-6 max-w-[590px] text-base font-medium leading-relaxed text-[#E4ECE8] sm:text-lg lg:text-xl"
+                style={{ "--rise-delay": "90ms" }}
+              >
                 Une question stratégique, un besoin d&apos;accompagnement ou une
                 opportunité commerciale ? Notre équipe vous répond rapidement.
               </p>
-            </AnimatedSection>
+            </div>
           </div>
 
-          <div
-            className="pointer-events-none absolute inset-[1px] rounded-[13px] border border-white/12"
-            aria-hidden="true"
-          />
         </div>
       </section>
 

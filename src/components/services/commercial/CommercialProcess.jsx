@@ -1,98 +1,90 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Target, FileCog, Megaphone, Trophy } from "lucide-react";
+import { FileCog, Megaphone, Target, Trophy } from "lucide-react";
+import AnimatedSection from "../../ui/AnimatedSection";
+
+const steps = [
+  {
+    number: "01",
+    title: "Immersion & Ciblage",
+    description:
+      "Nous analysons votre marché, affinons votre ICP (Ideal Customer Profile) et construisons des fichiers de prospection ultra-qualifiés.",
+    icon: Target,
+  },
+  {
+    number: "02",
+    title: "Setup Commercial",
+    description:
+      "Création des scripts de vente, configuration du CRM et mise en place des outils d'automation pour un lancement efficace.",
+    icon: FileCog,
+  },
+  {
+    number: "03",
+    title: "Chasse & Prospection",
+    description:
+      "Nos Business Developers contactent vos prospects (Appels, Emails, LinkedIn) pour décrocher des opportunités et qualifier les leads.",
+    icon: Megaphone,
+  },
+  {
+    number: "04",
+    title: "Closing & Scale",
+    description:
+      "Transformation des leads en clients signés, analyse des KPI et montée en puissance des campagnes pour maximiser le CA.",
+    icon: Trophy,
+  },
+];
 
 export function CommercialProcess() {
-  const steps = [
-    {
-      number: "01",
-      title: "Immersion & Ciblage",
-      description:
-        "Nous analysons votre marché, affinons votre ICP (Ideal Customer Profile) et construisons des fichiers de prospection ultra-qualifiés.",
-      icon: Target,
-    },
-    {
-      number: "02",
-      title: "Setup Commercial",
-      description:
-        "Création des scripts de vente, configuration du CRM et mise en place des outils d'automation pour un lancement efficace.",
-      icon: FileCog,
-    },
-    {
-      number: "03",
-      title: "Chasse & Prospection",
-      description:
-        "Nos Business Developers contactent vos prospects (Appels, Emails, LinkedIn) pour décrocher des opportunités et qualifier les leads.",
-      icon: Megaphone,
-    },
-    {
-      number: "04",
-      title: "Closing & Scale",
-      description:
-        "Transformation des leads en clients signés, analyse des KPI et montée en puissance des campagnes pour maximiser le CA.",
-      icon: Trophy,
-    },
-  ];
-
   return (
-    <section className="py-24 bg-slate-900 text-white overflow-hidden relative">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-[0%] left-[0%] w-[400px] h-[400px] bg-teal-500/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4">
-            Notre Méthode de{" "}
-            <span className="text-emerald-400">Prospection B2B</span>
-          </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Une approche structurée et éprouvée pour garantir des résultats
-            concrets.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className="relative group"
+    <section
+      aria-labelledby="commercial-process-heading"
+      className="bg-[#F6F7F4] px-3 py-10 sm:px-4 sm:py-14 lg:px-5 lg:py-20"
+    >
+      <div className="mx-auto max-w-[1500px] overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#E8EFEB]">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 sm:px-8 md:py-20 lg:grid-cols-[0.76fr_1.24fr] lg:gap-20 lg:px-10 lg:py-24">
+          <AnimatedSection className="self-start lg:sticky lg:top-28">
+            <h2
+              id="commercial-process-heading"
+              className="font-heading text-4xl font-bold leading-[1.03] tracking-[-0.04em] text-[#0D332B] sm:text-5xl"
             >
-              {/* Connector Line (Desktop) */}
-              {index !== steps.length - 1 && (
-                <div className="hidden md:block absolute top-8 left-1/2 w-full h-[2px] bg-slate-800 -z-10">
-                  <div className="absolute inset-0 bg-emerald-500/30 w-0 group-hover:w-full transition-all duration-700 ease-out origin-left" />
-                </div>
-              )}
+              Notre méthode de prospection B2B
+            </h2>
+            <p className="mt-6 max-w-[48ch] text-lg leading-relaxed text-[#52635F]">
+              Une approche structurée et éprouvée pour garantir des résultats
+              concrets.
+            </p>
+          </AnimatedSection>
 
-              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:bg-slate-800 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-2 h-full">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-4xl font-extrabold text-slate-700 group-hover:text-emerald-500/20 transition-colors">
-                    {step.number}
+          <div className="border-t border-[#0D332B]/14">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+
+              return (
+                <AnimatedSection
+                  key={step.number}
+                  delay={index * 70}
+                  className="group grid gap-5 border-b border-[#0D332B]/14 py-8 sm:grid-cols-[auto_1fr] sm:gap-7 sm:py-10"
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#FCFDFC] text-[#0D332B] shadow-[0_12px_28px_-22px_rgba(13,51,43,0.8)] transition-[background-color,transform] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:bg-[#E3FFC4]">
+                    <Icon
+                      size={23}
+                      strokeWidth={1.7}
+                      aria-hidden="true"
+                    />
                   </span>
-                  <div className="w-12 h-12 bg-slate-700/50 rounded-lg flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
-                    <step.icon size={24} />
+
+                  <div>
+                    <h3 className="font-heading text-2xl font-bold tracking-[-0.025em] text-[#0D332B]">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 max-w-[62ch] leading-relaxed text-[#52635F]">
+                      {step.description}
+                    </p>
                   </div>
-                </div>
-
-                <h3 className="font-heading text-xl font-bold text-white mb-3">
-                  {step.title}
-                </h3>
-
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+                </AnimatedSection>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

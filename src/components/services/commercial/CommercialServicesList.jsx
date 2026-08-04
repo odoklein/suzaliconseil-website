@@ -1,17 +1,16 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import {
-  Users,
+  ArrowUpRight,
+  CheckCircle2,
+  Handshake,
+  Mail,
   PhoneCall,
   Target,
-  Mail,
-  CheckCircle2,
-  ArrowRight,
-  Handshake,
+  Users,
 } from "lucide-react";
+import AnimatedSection from "../../ui/AnimatedSection";
 
 const services = [
   {
@@ -126,7 +125,12 @@ const services = [
     href: "/services/fichier-prospection-b2b",
     description:
       "Alimentez vos campagnes avec une base de contacts ciblée, enrichie, vérifiée et préparée pour votre CRM.",
-    features: ["Ciblage ICP", "Données enrichies", "Contrôle qualité", "Livraison CSV ou Excel"],
+    features: [
+      "Ciblage ICP",
+      "Données enrichies",
+      "Contrôle qualité",
+      "Livraison CSV ou Excel",
+    ],
     icon: Target,
   },
   {
@@ -136,7 +140,12 @@ const services = [
     href: "/services/qualification-leads-b2b",
     description:
       "Faites contacter et scorer vos leads avant leur transmission afin que vos vendeurs priorisent les opportunités utiles.",
-    features: ["Appels et relances", "Grille de qualification", "Notes détaillées", "Handoff CRM"],
+    features: [
+      "Appels et relances",
+      "Grille de qualification",
+      "Notes détaillées",
+      "Handoff CRM",
+    ],
     icon: CheckCircle2,
   },
   {
@@ -151,81 +160,101 @@ const services = [
   },
 ];
 
+const spanClasses = [
+  "lg:col-span-7",
+  "lg:col-span-5",
+  "lg:col-span-5",
+  "lg:col-span-7",
+];
+
 export function CommercialServicesList() {
   return (
-    <section className="py-24 bg-white" id="services">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="mb-20 text-center max-w-3xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-heading text-4xl md:text-5xl font-bold text-slate-900 mb-6"
+    <section
+      id="services"
+      aria-labelledby="commercial-services-heading"
+      className="scroll-mt-24 bg-[#F6F7F4] py-16 sm:py-20 lg:py-28"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <AnimatedSection className="max-w-3xl">
+          <h2
+            id="commercial-services-heading"
+            className="font-heading text-4xl font-bold leading-[1.03] tracking-[-0.04em] text-[#0D332B] sm:text-5xl lg:text-[3.6rem]"
           >
-            Nos Solutions de{" "}
-            <span className="text-emerald-700">Prospection B2B</span>
-          </motion.h2>
-          <p className="text-xl text-slate-500">
+            Nos solutions de prospection B2B
+          </h2>
+          <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-[#52635F]">
             Une gamme complète de solutions pour couvrir l&apos;intégralité de
             votre cycle de vente.
           </p>
-        </div>
+        </AnimatedSection>
 
-        <div className="flex flex-col gap-16">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: index * 0.1 }}
-              className={`group flex flex-col ${
-                index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-              } gap-8 md:gap-16 items-center border-b border-slate-100 pb-16 last:border-0`}
-            >
-              {/* Icon / Visual Side */}
-              <div className="w-full md:w-1/3 flex-shrink-0">
-                <div className="bg-emerald-50 rounded-[2rem] p-8 md:p-12 transition-all duration-300 group-hover:bg-emerald-100/50 group-hover:scale-[1.02]">
-                  <div className="w-20 h-20 bg-emerald-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-emerald-600/20">
-                    <service.icon size={40} strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-heading text-2xl font-bold text-emerald-950 mb-2">
-                    {service.title}
-                  </h3>
-                  <div className="font-medium text-emerald-700/80 uppercase tracking-widest text-sm">
+        <div className="mt-12 grid gap-5 lg:grid-cols-12 lg:gap-6">
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            const tinted = index % 4 === 1 || index % 4 === 2;
+
+            return (
+              <AnimatedSection
+                as="article"
+                key={service.id}
+                delay={(index % 2) * 80}
+                className={`${spanClasses[index % spanClasses.length]} group flex min-h-full flex-col rounded-[28px] border border-[#0D332B]/10 ${
+                  tinted ? "bg-[#EAF1ED]" : "bg-[#FCFDFC]"
+                } p-6 transition-[border-color,box-shadow,transform] duration-300 ease-[var(--ease-premium)] hover:-translate-y-1 hover:border-[#4E8D38]/35 hover:shadow-[0_24px_55px_-40px_rgba(13,51,43,0.78)] sm:p-8`}
+              >
+                <div className="flex items-start justify-between gap-6">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-[#E3FFC4] text-[#0D332B] transition-transform duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:rotate-[-2deg]">
+                    <Icon
+                      size={23}
+                      strokeWidth={1.7}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="text-sm font-semibold text-[#4E6A62]">
                     {service.subtitle}
-                  </div>
+                  </span>
                 </div>
-              </div>
 
-              {/* Content Side */}
-              <div className="w-full md:w-2/3 pt-4">
-                <p className="text-lg text-slate-600 leading-relaxed mb-8">
+                <h3 className="mt-7 max-w-[22ch] font-heading text-2xl font-bold leading-tight tracking-[-0.025em] text-[#0D332B] sm:text-3xl">
+                  {service.title}
+                </h3>
+                <p className="mt-4 max-w-[66ch] leading-relaxed text-[#52635F]">
                   {service.description}
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-8">
-                  {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-600">
-                        <CheckCircle2 size={14} strokeWidth={3} />
-                      </div>
-                      <span className="text-slate-700 font-medium">
-                        {feature}
-                      </span>
-                    </div>
+                <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                  {service.features.map((feature) => (
+                    <li
+                      key={feature}
+                      className="flex items-start gap-2.5 text-sm font-semibold leading-relaxed text-[#314640]"
+                    >
+                      <CheckCircle2
+                        size={16}
+                        strokeWidth={1.9}
+                        aria-hidden="true"
+                        className="mt-0.5 shrink-0 text-[#4E8D38]"
+                      />
+                      {feature}
+                    </li>
                   ))}
-                </div>
+                </ul>
 
                 <Link
                   href={service.href}
-                  className="flex items-center gap-2 text-emerald-700 font-bold hover:gap-4 transition-all group-hover:text-emerald-800"
+                  aria-label={`En savoir plus sur ${service.title}`}
+                  className="mt-8 inline-flex min-h-11 w-fit items-center gap-2 whitespace-nowrap font-bold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4 transition-colors duration-300 hover:text-[#3F7131] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D332B]"
                 >
-                  En savoir plus <ArrowRight size={20} />
+                  En savoir plus
+                  <ArrowUpRight
+                    size={17}
+                    strokeWidth={1.9}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </Link>
-              </div>
-            </motion.div>
-          ))}
+              </AnimatedSection>
+            );
+          })}
         </div>
       </div>
     </section>

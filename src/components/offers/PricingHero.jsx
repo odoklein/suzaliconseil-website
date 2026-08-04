@@ -1,18 +1,6 @@
 import Image from "next/image";
 import { ArrowDownRight, CheckCircle2 } from "lucide-react";
 
-/*
- * Objective-first: the old hero asked "Centre de Contact or Solutions
- * Digitales ?", which is the org chart rather than the buyer's question.
- * These chips let someone jump straight to the block matching their goal.
- */
-const OBJECTIVES = [
-  ["Remplir mon agenda", "#parcours"],
-  ["Trouver des contacts", "#catalogue"],
-  ["Lancer des campagnes", "#catalogue"],
-  ["Construire mon site", "#catalogue"],
-];
-
 const OUTCOMES = [
   "Un ciblage B2B adapté à votre marché",
   "Des actions mesurables, de la prospection au suivi",
@@ -22,16 +10,14 @@ const OUTCOMES = [
 const PricingHero = () => {
   return (
     <section className="relative overflow-hidden border-b border-[#0D332B]/10 bg-[#F6F7F4]">
-      <div className="absolute inset-x-0 top-0 h-1.5 bg-[#B0FF5B]" />
-      <div className="pointer-events-none absolute -right-40 top-0 h-[600px] w-[600px] rounded-full bg-emerald-100 opacity-40 blur-[150px]" />
-
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 pb-14 pt-24 md:px-6 md:pb-20 md:pt-32 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-14">
-        <div>
+      <div className="grid lg:min-h-[720px] lg:grid-cols-[minmax(0,1fr)_minmax(0,48vw)]">
+        <div className="flex items-center">
+          <div className="w-full px-4 py-14 sm:px-8 md:px-12 lg:ml-auto lg:max-w-[720px] lg:py-12 lg:pl-8 lg:pr-16 xl:pl-0 xl:pr-20">
           <span className="inline-flex items-center gap-2 rounded-full bg-[#0D332B] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#B0FF5B]">
             Tarifs
           </span>
 
-          <h1 className="mt-6 max-w-3xl font-heading text-4xl font-extrabold leading-[1.03] tracking-[-0.03em] text-[#0D332B] sm:text-5xl lg:text-6xl">
+          <h1 className="mt-6 max-w-3xl font-heading text-4xl font-extrabold leading-[1.03] tracking-[-0.03em] text-[#0D332B] sm:text-5xl lg:text-[3.5rem]">
             Investissez dans ce qui vous apporte des opportunités concrètes.
           </h1>
 
@@ -83,32 +69,16 @@ const PricingHero = () => {
             </a>
           </div>
 
-          {/* Objective shortcuts */}
-          <div className="mt-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#7C9188]">
-              Je cherche à
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {OBJECTIVES.map(([label, href]) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="rounded-full border border-[#0D332B]/12 bg-white px-4 py-2 text-sm font-bold text-[#0D332B] transition-all hover:-translate-y-0.5 hover:border-[#1A6D48] hover:text-[#1A6D48]"
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
           </div>
         </div>
 
-        <div className="relative min-h-[300px] overflow-hidden rounded-[32px] border border-[#0D332B]/10 bg-[#DCE4DD] shadow-[0_22px_55px_rgba(13,51,43,0.12)] sm:min-h-[420px]">
+        <div className="relative min-h-[340px] overflow-hidden border-t border-[#0D332B]/10 bg-[#DCE4DD] sm:min-h-[420px] lg:min-h-full lg:border-l lg:border-t-0">
           <Image
             src="/images/pricing-b2b-strategy.png"
             alt="Deux professionnels préparent une stratégie commerciale B2B"
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 55vw"
+            sizes="(max-width: 1024px) 100vw, 48vw"
             className="object-cover object-center"
           />
         </div>

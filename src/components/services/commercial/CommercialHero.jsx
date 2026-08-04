@@ -1,108 +1,124 @@
-"use client";
-
-import React from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Handshake } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Handshake } from "lucide-react";
+import Breadcrumbs from "../../ui/Breadcrumbs";
 
 export function CommercialHero() {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#F8FAFC]">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] bg-emerald-200/30 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-lime-200/20 rounded-full blur-[100px]" />
-        <div className="absolute top-[20%] left-[15%] w-[10vw] h-[10vw] bg-green-500/10 rounded-full blur-[50px]" />
+    <>
+    <section className="w-full max-w-[100vw] overflow-hidden bg-[#F6F7F4] px-3 pb-10 pt-24 sm:px-4 lg:px-5 lg:pb-12">
+      <div className="mx-auto max-w-7xl px-1 sm:px-2 lg:px-3">
+        <Breadcrumbs
+          items={[
+            { label: "Services", href: "/services" },
+            {
+              label: "Performance commerciale",
+              href: "/services/commercial",
+            },
+          ]}
+        />
       </div>
 
-      {/* Grid Pattern Overlay */}
-      <div
-        className="absolute inset-0 z-0 opacity-[0.4]"
-        style={{
-          backgroundImage: "radial-gradient(#1a4d43 0.5px, transparent 0.5px)",
-          backgroundSize: "24px 24px",
-        }}
-      ></div>
+      <div className="relative mx-auto grid max-w-[1600px] overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#0D332B] shadow-[0_30px_80px_-48px_rgba(13,51,43,0.8)] lg:min-h-[640px] lg:grid-cols-[1.02fr_0.98fr] xl:min-h-[680px]">
+        <div className="relative flex items-center overflow-hidden px-6 py-14 sm:px-10 md:px-14 lg:px-16 lg:py-16 xl:px-20">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-35"
+            aria-hidden="true"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 20% 20%, rgba(176,255,91,0.22), transparent 30%), linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
+              backgroundSize: "auto, 48px 48px, 48px 48px",
+            }}
+          />
 
-      <div className="container relative z-10 mx-auto px-4 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-[#0D332B] text-sm font-bold uppercase tracking-wider mb-8 shadow-sm hover:shadow-md transition-shadow"
-        >
-          <Handshake size={16} />
-          <span>Prospection Commerciale B2B</span>
-        </motion.div>
+          <div className="relative w-full min-w-0 max-w-[680px] text-[#F7FAF8]">
+            <p
+              className="hero-rise flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#C8FF90] sm:text-sm"
+              style={{ "--rise-delay": "0ms" }}
+            >
+              <Handshake size={17} strokeWidth={1.7} aria-hidden="true" />
+              Prospection commerciale B2B
+            </p>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-slate-900 mb-6 tracking-tight leading-[1.1]"
-        >
-          Accélérez votre <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0D332B] to-emerald-600">
-            Prospection B2B
-          </span>
-        </motion.h1>
+            <h1
+              className="hero-rise mt-6 max-w-[650px] font-heading text-[2.55rem] font-bold leading-[1.01] tracking-[-0.048em] text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.3rem]"
+              style={{ "--rise-delay": "70ms" }}
+            >
+              Accélérez votre prospection B2B
+            </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="max-w-2xl mx-auto text-xl text-slate-600 mb-10 leading-relaxed font-light"
-        >
-          De la structuration de votre force de vente à la génération de leads
-          qualifiés, nous déployons les meilleures stratégies de prospection
-          commerciale B2B en France pour booster votre croissance.
-        </motion.p>
+            <p
+              className="hero-rise mt-6 max-w-[62ch] text-base font-medium leading-relaxed text-[#DCE8E3] sm:text-lg"
+              style={{ "--rise-delay": "140ms" }}
+            >
+              De la structuration de votre force de vente à la génération de
+              leads qualifiés.
+            </p>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Link
-            href="/contact"
-            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-[#0D332B] bg-[#B0FF5B] rounded-full text-lg font-bold overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-green-500/30"
-          >
-            <span className="relative z-10">Audit de prospection gratuit</span>
-            <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </Link>
+            <div
+              className="hero-rise mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+              style={{ "--rise-delay": "210ms" }}
+            >
+              <Link
+                href="/contact"
+                className="group inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#B0FF5B] px-6 py-3.5 text-sm font-bold text-[#0D332B] transition-[background-color,transform,box-shadow] duration-300 ease-[var(--ease-premium)] hover:-translate-y-0.5 hover:bg-[#C2FF80] hover:shadow-[0_18px_36px_-18px_rgba(176,255,91,0.7)] active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B0FF5B]"
+              >
+                Audit de prospection gratuit
+                <ArrowRight
+                  size={18}
+                  strokeWidth={1.9}
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Link>
 
-          <Link
-            href="#services"
-            className="px-8 py-4 text-slate-600 font-medium hover:text-[#0D332B] transition-colors flex items-center gap-2"
-          >
-            Découvrir nos solutions
-          </Link>
-        </motion.div>
+              <Link
+                href="#services"
+                className="group inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/25 bg-white/8 px-6 py-3.5 text-sm font-bold text-white transition-[background-color,border-color,transform] duration-300 ease-[var(--ease-premium)] hover:-translate-y-0.5 hover:border-white/45 hover:bg-white/14 active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              >
+                Découvrir nos solutions
+                <ArrowUpRight
+                  size={17}
+                  strokeWidth={1.9}
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="hero-rise relative min-h-[440px] overflow-hidden border-t border-white/10 bg-[#DDE5E1] sm:min-h-[520px] lg:min-h-full lg:border-l lg:border-t-0" style={{ "--rise-delay": "110ms" }}>
+          <Image
+            src="/images/equipeprospection.png"
+            alt="L'équipe de prospection commerciale de Suzali Conseil dans ses bureaux"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 49vw"
+            className="object-cover object-[center_42%] transition-transform duration-700 ease-[var(--ease-premium)] hover:scale-[1.015]"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_65%,rgba(7,34,29,0.2)_100%)]"
+            aria-hidden="true"
+          />
+        </div>
+
+        <div
+          className="pointer-events-none absolute inset-[1px] rounded-[27px] border border-white/10"
+          aria-hidden="true"
+        />
       </div>
-
-      {/* Decorative Floating Elements */}
-      <motion.div
-        animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 left-10 md:left-20 w-16 h-16 bg-white rounded-2xl shadow-lg border border-slate-100 hidden lg:flex items-center justify-center p-4 rotate-[-12deg]"
-      >
-        <span className="text-3xl">📈</span>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, 20, 0] }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-        className="absolute bottom-1/4 right-10 md:right-20 w-20 h-20 bg-white rounded-full shadow-lg border border-slate-100 hidden lg:flex items-center justify-center p-4"
-      >
-        <span className="text-4xl">🤝</span>
-      </motion.div>
     </section>
+
+    <section
+      aria-label="Notre approche commerciale"
+      className="bg-[#F6F7F4] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14"
+    >
+      <p className="mx-auto max-w-5xl font-heading text-2xl font-bold leading-[1.2] tracking-[-0.03em] text-[#0D332B] sm:text-3xl lg:text-4xl">
+        Nous déployons les meilleures stratégies de prospection commerciale B2B
+        en France pour booster votre croissance.
+      </p>
+    </section>
+    </>
   );
 }
