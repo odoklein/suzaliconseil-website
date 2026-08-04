@@ -1,11 +1,9 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  Phone,
-  Mail,
-  Linkedin,
   CheckCircle2,
   Zap,
   Target,
@@ -53,9 +51,13 @@ export default function LeadGenClient() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-[100dvh] overflow-hidden bg-[#F6F7F4] text-[#0D332B]">
       {/* Hero Section - Enhanced */}
-      <section className="relative bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] text-white py-20 sm:py-28 md:py-40 overflow-hidden">
+      <section className="relative overflow-hidden bg-[#F6F7F4] px-3 pb-10 pt-24 text-white sm:px-4 lg:px-5 lg:pb-14">
+        <div className="pointer-events-none absolute bottom-10 right-0 top-24 hidden w-[48%] overflow-hidden rounded-[28px] lg:bottom-14 lg:block">
+          <Image src="/images/equipeprospection.png" alt="" fill priority sizes="48vw" className="object-cover object-[68%_center]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,#0D332B_0%,rgba(13,51,43,0.9)_18%,rgba(13,51,43,0.12)_82%)]" />
+        </div>
         {/* Large Target Watermark */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] scale-[2.5] sm:scale-[3] md:scale-[4] pointer-events-none rotate-12">
           <Target size={400} />
@@ -65,12 +67,12 @@ export default function LeadGenClient() {
         <div className="absolute top-0 right-0 w-[400px] sm:w-[500px] md:w-[600px] h-[400px] sm:h-[500px] md:h-[600px] bg-emerald-500/10 rounded-full -mr-32 sm:-mr-48 md:-mr-64 -mt-32 sm:-mt-48 md:-mt-64 border border-emerald-500/20"></div>
         <div className="absolute bottom-0 left-0 w-[300px] sm:w-[350px] md:w-[400px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#B0FF5B]/5 rounded-full -ml-24 sm:-ml-32 md:-ml-40 -mb-24 sm:-mb-32 md:-mb-40 border border-[#B0FF5B]/10"></div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
+        <div className="relative z-10 mx-auto max-w-[1600px] overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#0D332B]/92 px-6 py-14 shadow-[0_30px_80px_-48px_rgba(13,51,43,0.8)] sm:px-10 md:px-14 lg:min-h-[620px] lg:px-16 lg:py-16 xl:px-20">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl mx-auto lg:mx-0"
+            className="max-w-[680px]"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -83,7 +85,7 @@ export default function LeadGenClient() {
               Garantie
             </motion.div>
 
-            <h1 className="font-heading font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05] tracking-tight">
+            <h1 className="font-heading text-4xl font-bold leading-[1.02] tracking-[-0.048em] sm:text-5xl md:text-6xl xl:text-[4.3rem] mb-6 sm:mb-8">
               Agence{" "}
               <span className="text-[#B0FF5B] drop-shadow-[0_0_15px_rgba(176,255,91,0.3)]">
                 Génération de Leads
@@ -91,7 +93,7 @@ export default function LeadGenClient() {
               B2B Qualifiés France
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-emerald-50/90 mb-8 sm:mb-12 leading-relaxed max-w-3xl font-light">
+            <p className="max-w-[62ch] text-base font-medium leading-relaxed text-[#DCE8E3] sm:text-lg mb-8 sm:mb-10">
               Remplissez votre{" "}
               <strong className="text-[#B0FF5B]">pipeline commercial</strong>{" "}
               avec des prospects B2B ultra-qualifiés et prêts à acheter. Nous
@@ -107,7 +109,7 @@ export default function LeadGenClient() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12 border-t border-white/10 pt-8 sm:pt-10"
+              className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6 sm:grid-cols-4 sm:gap-6 mb-8 sm:mb-10"
             >
               {[
                 { label: "Leads générés clients", value: "15K+" },
@@ -130,14 +132,14 @@ export default function LeadGenClient() {
               <Button
                 href="/contact"
                 variant="primary"
-                className="w-full sm:w-auto bg-[#B0FF5B] hover:bg-white text-[#0D332B] text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 rounded-2xl shadow-2xl shadow-emerald-950/50 transition-all duration-300 hover:scale-105 font-bold"
+                className="w-full sm:w-auto rounded-full bg-[#B0FF5B] px-7 py-3.5 text-sm font-bold text-[#0D332B] shadow-[0_18px_36px_-18px_rgba(176,255,91,0.7)] transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-[#C2FF80] active:translate-y-px"
               >
                 Obtenir un audit gratuit
               </Button>
               <Button
                 href="#processus"
                 variant="outline-light"
-                className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 rounded-2xl border-white/20 hover:bg-white/10 transition-all duration-300"
+                className="w-full sm:w-auto rounded-full border border-white/25 bg-white/8 px-7 py-3.5 text-sm font-bold text-white transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-white/45 hover:bg-white/14 active:translate-y-px"
               >
                 Découvrir notre méthode
               </Button>
@@ -168,12 +170,12 @@ export default function LeadGenClient() {
       </section>
 
       {/* Problem Solver Section - Enhanced */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-32 bg-white relative overflow-hidden">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
         <div className="absolute right-0 bottom-0 opacity-[0.02] pointer-events-none hidden md:block">
           <Search size={500} />
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center">
             <motion.div
               initial="hidden"
@@ -234,7 +236,7 @@ export default function LeadGenClient() {
                   <motion.div
                     key={i}
                     variants={itemVariants}
-                    className="flex gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-white border border-emerald-100 hover:shadow-lg hover:scale-105 transition-all duration-300"
+                    className="group flex gap-4 rounded-[16px] border border-[#0D332B]/10 bg-[#F6F7F4] p-5 transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_34px_-26px_rgba(13,51,43,0.45)]"
                   >
                     <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
                       <item.icon size={20} className="text-emerald-700" />
@@ -340,7 +342,7 @@ export default function LeadGenClient() {
       {/* Method Section - Enhanced */}
       <section
         id="processus"
-        className="py-16 sm:py-20 md:py-24 lg:py-32 bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] text-white relative overflow-hidden"
+        className="relative overflow-hidden bg-[#0D332B] py-20 text-white md:py-28"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <motion.div
@@ -376,7 +378,7 @@ export default function LeadGenClient() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
-            className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-4"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
           >
             {[
               {
@@ -413,14 +415,14 @@ export default function LeadGenClient() {
               <motion.div
                 key={i}
                 variants={itemVariants}
-                className="group p-6 sm:p-8 rounded-3xl bg-white/5 border border-white/10 hover:bg-[#B0FF5B] hover:text-[#0D332B] transition-all duration-500 text-center"
+                className="group rounded-[18px] border border-white/12 bg-white/5 p-6 text-left transition-[background-color,transform] duration-300 hover:-translate-y-1 hover:bg-white/10 sm:p-7"
               >
                 <div className="text-3xl sm:text-4xl font-extrabold font-heading mb-4 sm:mb-6 opacity-20 group-hover:opacity-100 transition-opacity">
                   {step.step}
                 </div>
                 <step.icon
                   size={40}
-                  className="mx-auto mb-4 sm:mb-6 text-[#B0FF5B] group-hover:text-[#0D332B] w-8 h-8 sm:w-10 sm:h-10"
+                  className="mb-4 text-[#B0FF5B] w-8 h-8 sm:w-10 sm:h-10"
                 />
                 <h4 className="font-bold text-base sm:text-lg uppercase tracking-wider mb-2 sm:mb-3">
                   {step.title}
@@ -488,14 +490,14 @@ export default function LeadGenClient() {
       </section>
 
       {/* CTA Final - Enhanced */}
-      <section className="py-16 sm:py-20 md:py-32 lg:py-40 bg-white relative overflow-hidden">
+      <section className="relative overflow-hidden bg-[#F6F7F4] px-3 py-10 sm:px-4 md:py-14 lg:px-5">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
           <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-extrabold font-heading text-[#0D332B] select-none uppercase">
             RESULTS
           </span>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center relative z-10">
+        <div className="relative z-10 mx-auto max-w-[1500px] overflow-hidden rounded-[28px] bg-[#0D332B] px-6 py-16 text-center shadow-[0_30px_75px_-50px_rgba(13,51,43,0.85)] sm:px-10 sm:py-20 lg:px-20 lg:py-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -514,18 +516,18 @@ export default function LeadGenClient() {
               </span>
             </motion.div>
 
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-[#0D332B] mb-6 sm:mb-10 leading-tight px-4">
+            <h2 className="font-heading font-bold text-3xl text-white sm:text-4xl md:text-5xl lg:text-6xl mb-6 sm:mb-10 leading-tight px-4">
               Prêt à Remplir Votre Pipeline Commercial ?
             </h2>
 
-            <p className="text-base sm:text-lg md:text-xl text-slate-500 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4 italic">
+            <p className="text-base text-[#DCE8E3] sm:text-lg md:text-xl mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4 italic">
               &ldquo;Depuis que nous travaillons avec Suzali, notre volume de
               rendez-vous qualifiés a bondi de{" "}
               <strong className="text-emerald-700">150%</strong>. Un partenaire
               stratégique indispensable.&rdquo;
             </p>
-            <p className="text-sm text-slate-400 mb-8 sm:mb-12">
-              — Directeur Commercial, SaaS B2B
+            <p className="text-sm text-white/55 mb-8 sm:mb-12">
+              - Directeur Commercial, SaaS B2B
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-4">

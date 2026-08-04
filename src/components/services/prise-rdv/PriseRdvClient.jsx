@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -51,9 +52,13 @@ export default function PriseRdvClient() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-[100dvh] overflow-hidden bg-[#F6F7F4] text-[#0D332B]">
       {/* Hero Section - Enhanced */}
-      <section className="relative bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] text-white py-20 sm:py-28 md:py-40 overflow-hidden">
+      <section className="relative overflow-hidden bg-[#F6F7F4] px-3 pb-10 pt-24 text-white sm:px-4 lg:px-5 lg:pb-14">
+        <div className="pointer-events-none absolute bottom-10 right-0 top-24 hidden w-[48%] overflow-hidden rounded-[28px] lg:bottom-14 lg:block">
+          <Image src="/images/pricing-b2b-strategy.png" alt="" fill priority sizes="48vw" className="object-cover object-center" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,#0D332B_0%,rgba(13,51,43,0.9)_18%,rgba(13,51,43,0.12)_82%)]" />
+        </div>
         {/* Large Calendar Watermark */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] scale-[2.5] sm:scale-[3] md:scale-[4] pointer-events-none rotate-6">
           <Calendar size={400} />
@@ -63,12 +68,12 @@ export default function PriseRdvClient() {
         <div className="absolute top-0 right-0 w-[400px] sm:w-[500px] md:w-[600px] h-[400px] sm:h-[500px] md:h-[600px] bg-emerald-500/10 rounded-full -mr-32 sm:-mr-48 md:-mr-64 -mt-32 sm:-mt-48 md:-mt-64 border border-emerald-500/20"></div>
         <div className="absolute bottom-0 left-0 w-[300px] sm:w-[350px] md:w-[400px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#B0FF5B]/5 rounded-full -ml-24 sm:-ml-32 md:-ml-40 -mb-24 sm:-mb-32 md:-mb-40 border border-[#B0FF5B]/10"></div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
+        <div className="relative z-10 mx-auto max-w-[1600px] overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#0D332B]/92 px-6 py-14 shadow-[0_30px_80px_-48px_rgba(13,51,43,0.8)] sm:px-10 md:px-14 lg:min-h-[620px] lg:px-16 lg:py-16 xl:px-20">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl mx-auto lg:mx-0"
+            className="max-w-[680px]"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -80,7 +85,7 @@ export default function PriseRdvClient() {
               <span className="hidden xs:inline">Efficacité </span>Commerciale
             </motion.div>
 
-            <h1 className="font-heading font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05] tracking-tight">
+            <h1 className="font-heading text-4xl font-bold leading-[1.02] tracking-[-0.048em] sm:text-5xl md:text-6xl xl:text-[4.3rem] mb-6 sm:mb-8">
               Agence{" "}
               <span className="text-[#B0FF5B] drop-shadow-[0_0_15px_rgba(176,255,91,0.3)]">
                 Prise de Rendez-vous
@@ -88,7 +93,7 @@ export default function PriseRdvClient() {
               B2B Qualifiés France
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-emerald-50/90 mb-8 sm:mb-12 leading-relaxed max-w-3xl font-light">
+            <p className="max-w-[62ch] text-base font-medium leading-relaxed text-[#DCE8E3] sm:text-lg mb-8 sm:mb-10">
               Remplissez votre{" "}
               <strong className="text-[#B0FF5B]">agenda commercial</strong> avec
               des opportunités ultra-qualifiées. Nous identifions les{" "}
@@ -102,14 +107,14 @@ export default function PriseRdvClient() {
               <Button
                 href="/contact"
                 variant="primary"
-                className="w-full sm:w-auto bg-[#B0FF5B] hover:bg-white text-[#0D332B] text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 rounded-2xl shadow-2xl shadow-emerald-950/50 transition-all duration-300 hover:scale-105 font-bold"
+                className="w-full sm:w-auto rounded-full bg-[#B0FF5B] px-7 py-3.5 text-sm font-bold text-[#0D332B] shadow-[0_18px_36px_-18px_rgba(176,255,91,0.7)] transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-[#C2FF80] active:translate-y-px"
               >
                 Remplir mon agenda commercial
               </Button>
               <Button
                 href="#processus"
                 variant="outline-light"
-                className="w-full sm:w-auto text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 rounded-2xl border-white/20 hover:bg-white/10 transition-all duration-300"
+                className="w-full sm:w-auto rounded-full border border-white/25 bg-white/8 px-7 py-3.5 text-sm font-bold text-white transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-white/45 hover:bg-white/14 active:translate-y-px"
               >
                 Découvrir notre méthode
               </Button>
@@ -140,7 +145,7 @@ export default function PriseRdvClient() {
       </section>
 
       {/* Benefits Section - Enhanced */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-32 bg-gradient-to-br from-slate-50 via-white to-slate-50 relative overflow-hidden">
+      <section className="relative overflow-hidden bg-white py-20 md:py-28">
         <div className="absolute left-0 bottom-0 opacity-[0.02] pointer-events-none hidden md:block">
           <LayoutDashboard size={400} />
         </div>
@@ -181,7 +186,7 @@ export default function PriseRdvClient() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"
+            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-[1.08fr_.92fr_1fr_.95fr]"
           >
             {[
               {
@@ -220,7 +225,7 @@ export default function PriseRdvClient() {
                   y: -10,
                   shadow: "0 25px 50px -12px rgba(13, 51, 43, 0.2)",
                 }}
-                className={`p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col border ${item.color} h-full transition-all duration-300`}
+                className={`rounded-[20px] border p-7 sm:p-8 flex flex-col ${item.color} h-full transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_22px_44px_-32px_rgba(13,51,43,0.42)]`}
               >
                 <div
                   className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6 ring-1 ring-black/5 ${item.color.includes("text-[#0D332B]") ? "bg-emerald-50" : "bg-white/10"}`}
@@ -260,7 +265,7 @@ export default function PriseRdvClient() {
       {/* Process Section - Enhanced */}
       <section
         id="processus"
-        className="py-16 sm:py-20 md:py-24 lg:py-32 bg-white relative overflow-hidden"
+        className="relative overflow-hidden bg-[#F6F7F4] py-20 md:py-28"
       >
         <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none -rotate-12 hidden md:block">
           <Target size={500} />
@@ -315,7 +320,7 @@ export default function PriseRdvClient() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex items-start gap-4 sm:gap-6 lg:gap-8 group p-4 sm:p-5 rounded-2xl hover:bg-emerald-50 transition-all duration-300"
+                  className="group flex items-start gap-4 rounded-[16px] border border-transparent p-5 transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-[#0D332B]/10 hover:bg-white sm:gap-6"
                 >
                   <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#0D332B] text-[#B0FF5B] rounded-2xl flex items-center justify-center font-extrabold text-xl sm:text-2xl flex-shrink-0 shadow-lg shadow-emerald-950/20 group-hover:scale-110 transition-transform">
                     {i + 1}
@@ -383,14 +388,14 @@ export default function PriseRdvClient() {
       </section>
 
       {/* CTA Section - Enhanced */}
-      <section className="py-16 sm:py-20 md:py-32 lg:py-40 bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] relative overflow-hidden">
+      <section className="relative overflow-hidden bg-[#F6F7F4] px-3 py-10 sm:px-4 md:py-14 lg:px-5">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none flex items-center justify-center">
           <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-extrabold font-heading text-white select-none uppercase">
             AGENDA
           </span>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center relative z-10">
+        <div className="relative z-10 mx-auto max-w-[1500px] overflow-hidden rounded-[28px] bg-[#0D332B] px-6 py-16 text-center shadow-[0_30px_75px_-50px_rgba(13,51,43,0.85)] sm:px-10 sm:py-20 lg:px-20 lg:py-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
