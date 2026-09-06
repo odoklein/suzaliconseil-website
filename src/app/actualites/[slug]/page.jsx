@@ -5,10 +5,29 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { getPostTheme } from "../../../lib/actualites-theme";
+import { getRelatedServices } from "../../../lib/article-services";
 import ReadingProgress from "./ReadingProgress";
 import { ShareButton, CopyLinkButton } from "./ShareButtons";
 import Breadcrumbs from "../../../components/ui/Breadcrumbs";
 import { createOgImage, SITE_URL } from "../../../lib/seo";
+
+// Prérend les articles publiés au build : sans ça chaque vue tape Neon et la
+// page part en rendu dynamique (aucun en-tête x-nextjs-prerender, ~1 s de TTFB
+// contre ~300 ms sur les pages services). Les articles créés ensuite par le
+// cron restent servis à la demande (dynamicParams est actif par défaut).
+export async function generateStaticParams() {
+  try {
+    const published = await db
+      .select({ slug: posts.slug })
+      .from(posts)
+      .where(isNotNull(posts.publishedAt));
+
+    return published.map(({ slug }) => ({ slug }));
+  } catch (error) {
+    console.error("generateStaticParams actualites a échoué:", error);
+    return [];
+  }
+}
 
 function getArticleSeo(post) {
   return {
@@ -132,15 +151,7 @@ export default async function ActualiteDetailPage({ params }) {
     .limit(4);
 
   const related = relatedPosts.filter((r) => r.slug !== slug).slice(0, 3);
-  const relatedServices = theme === "digital"
-    ? [
-        { href: "/services/digital/seo-acquisition", label: "SEO et acquisition digitale" },
-        { href: "/services/digital/developpement-automatisation", label: "Développement et automatisation" },
-      ]
-    : [
-        { href: "/services/generation-leads-b2b", label: "Génération de leads B2B" },
-        { href: "/services/teleprospection-b2b", label: "Téléprospection B2B" },
-      ];
+  const relatedServices = getRelatedServices(slug, theme);
 
   const jsonLd = {
     "@context": "https://schema.org",

@@ -11,9 +11,13 @@ import Pricing from "../components/home/Pricing";
 import Faq from "../components/home/Faq";
 import { createPageMetadata } from "../lib/seo";
 
+// La marque passe en tête du title : la requête « suzali » sortait en position
+// 2,47 sur 32 impressions avec 0 clic, le nom de marque arrivant après la
+// coupure du SERP. La description mentionne des livrables concrets plutôt que
+// « accompagne les entreprises ».
 export const metadata = createPageMetadata({
-  title: "Agence de prospection B2B en France | Suzali Conseil",
-  description: "Suzali Conseil accompagne les entreprises en prospection B2B, génération de leads et solutions digitales pour développer leur croissance en France.",
+  title: "Suzali Conseil — Agence de prospection B2B en France",
+  description: "Suzali Conseil, agence de prospection B2B : leads qualifiés, prise de rendez-vous décideurs et acquisition digitale pour votre croissance en France.",
   path: "/",
 });
 

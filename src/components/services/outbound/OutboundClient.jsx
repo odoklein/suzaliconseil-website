@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Rocket,
@@ -24,6 +25,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import Button from "../../ui/Button";
+import { OUTBOUND_FAQ } from "./outbound-faq";
 
 export default function OutboundClient() {
   const containerVariants = {
@@ -531,6 +533,212 @@ export default function OutboundClient() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Déroulé d'une mission — contenu de fond : la page plafonnait à 654 mots
+          sur « agence outbound » (85 impressions, position 41,35). */}
+      <section className="bg-[#F6F7F4] px-3 py-16 sm:px-4 sm:py-20 lg:px-5 lg:py-28">
+        <div className="mx-auto max-w-[1600px]">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-12 max-w-3xl sm:mb-16"
+          >
+            <motion.div variants={scaleVariants} className="mb-4 inline-block sm:mb-6">
+              <span className="inline-flex items-center gap-2 rounded-full bg-[#EAF2E5] px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#24573F]">
+                <Network className="h-4 w-4" />
+                Déroulé d&apos;une mission
+              </span>
+            </motion.div>
+
+            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl">
+              Comment se déroule une mission outbound
+            </h2>
+            <p className="max-w-3xl text-base leading-relaxed text-[#416058] sm:text-lg">
+              La plupart des campagnes outbound échouent avant le premier envoi,
+              sur un ciblage trop large ou un message écrit pour l&apos;émetteur
+              plutôt que pour le lecteur. Notre déroulé consacre donc les deux
+              premières semaines au cadrage, pas à l&apos;envoi.
+            </p>
+          </motion.div>
+
+          <motion.ol
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
+          >
+            {[
+              {
+                step: "01",
+                title: "Cadrage et ICP",
+                desc: "Nous définissons votre profil de client idéal à partir de vos affaires signées, pas d'un persona théorique : secteurs qui achètent vite, tailles d'entreprise où votre offre passe, fonctions qui décident réellement du budget.",
+              },
+              {
+                step: "02",
+                title: "Construction du fichier",
+                desc: "Sourcing des comptes et des décideurs, vérification des adresses, enrichissement par signaux d'achat. Un fichier de 500 contacts justes vaut mieux que 5 000 approximatifs : la délivrabilité se joue ici.",
+              },
+              {
+                step: "03",
+                title: "Séquences et lancement",
+                desc: "Rédaction des messages par segment, warm-up des domaines d'envoi, paramétrage des relances. Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous.",
+              },
+              {
+                step: "04",
+                title: "Pilotage et itération",
+                desc: "Revue hebdomadaire des taux de réponse par segment et par message. Ce qui ne convertit pas est réécrit ou coupé ; les rendez-vous qualifiés partent directement dans l'agenda de vos commerciaux.",
+              },
+            ].map((phase) => (
+              <motion.li
+                key={phase.step}
+                variants={itemVariants}
+                className="flex h-full flex-col rounded-[22px] border border-[#0D332B]/10 bg-white p-6 sm:p-8"
+              >
+                <span className="mb-5 font-heading text-3xl font-bold tracking-[-0.04em] text-[#85C947] sm:text-4xl">
+                  {phase.step}
+                </span>
+                <h3 className="mb-3 text-lg font-bold text-[#0D332B] sm:text-xl">
+                  {phase.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-[#416058] sm:text-base">
+                  {phase.desc}
+                </p>
+              </motion.li>
+            ))}
+          </motion.ol>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={containerVariants}
+            className="mt-12 grid gap-8 rounded-[22px] border border-[#0D332B]/10 bg-white p-6 sm:mt-16 sm:p-10 lg:grid-cols-2 lg:gap-12 lg:p-12"
+          >
+            <motion.div variants={itemVariants}>
+              <h3 className="mb-4 font-heading text-2xl font-bold tracking-[-0.03em] text-[#0D332B] sm:text-3xl">
+                À qui s&apos;adresse l&apos;outbound
+              </h3>
+              <p className="mb-4 text-base leading-relaxed text-[#416058]">
+                L&apos;outbound fonctionne quand votre marché est identifiable :
+                un nombre fini d&apos;entreprises que vous savez nommer, un
+                décideur repérable, un panier moyen qui justifie le coût d&apos;un
+                contact direct. C&apos;est le cas des éditeurs de logiciels B2B,
+                des ESN, des cabinets de conseil, des industriels et des
+                prestataires de services aux entreprises.
+              </p>
+              <p className="text-base leading-relaxed text-[#416058]">
+                Il est en revanche le mauvais outil pour un produit à faible
+                panier vendu à un marché de masse : le coût par contact ne se
+                rentabilise pas. Nous vous le dirons pendant l&apos;audit plutôt
+                qu&apos;au troisième mois de campagne.
+              </p>
+            </motion.div>
+
+            <motion.div variants={itemVariants}>
+              <h3 className="mb-4 font-heading text-2xl font-bold tracking-[-0.03em] text-[#0D332B] sm:text-3xl">
+                Prestations complémentaires
+              </h3>
+              <p className="mb-5 text-base leading-relaxed text-[#416058]">
+                L&apos;outbound se combine souvent avec d&apos;autres briques de
+                notre accompagnement commercial, selon l&apos;étape où votre
+                pipeline se bloque :
+              </p>
+              <ul className="space-y-3">
+                {[
+                  {
+                    href: "/services/prospection-commerciale-externalisee",
+                    label: "Prospection commerciale externalisée",
+                    hint: "quand le besoin porte sur l'équipe, pas sur le canal",
+                  },
+                  {
+                    href: "/services/fichier-prospection-b2b",
+                    label: "Fichier de prospection B2B qualifié",
+                    hint: "si le ciblage est le point faible",
+                  },
+                  {
+                    href: "/services/campagnes-email-sms-b2b",
+                    label: "Campagnes email et SMS B2B",
+                    hint: "pour industrialiser le multicanal",
+                  },
+                  {
+                    href: "/services/qualification-leads-b2b",
+                    label: "Qualification de leads B2B",
+                    hint: "quand les leads arrivent mais ne convertissent pas",
+                  },
+                  {
+                    href: "/services/prise-rendez-vous-b2b",
+                    label: "Prise de rendez-vous B2B qualifiés",
+                    hint: "pour remplir l'agenda de vos commerciaux",
+                  },
+                ].map((service) => (
+                  <li key={service.href} className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-1 h-4 w-4 flex-shrink-0 text-[#1A6D48]" />
+                    <span className="text-sm leading-relaxed text-[#416058] sm:text-base">
+                      <Link
+                        href={service.href}
+                        className="font-semibold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4 transition-colors hover:text-[#1A6D48]"
+                      >
+                        {service.label}
+                      </Link>{" "}
+                      — {service.hint}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ — le JSON-LD FAQPage correspondant est émis côté serveur dans
+          src/app/services/outbound-marketing-b2b/page.jsx, à partir du même
+          tableau OUTBOUND_FAQ. */}
+      <section className="bg-white px-3 py-16 sm:px-4 sm:py-20 lg:px-5 lg:py-28">
+        <div className="mx-auto max-w-4xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="mb-10 sm:mb-14"
+          >
+            <motion.div variants={scaleVariants} className="mb-4 inline-block sm:mb-6">
+              <span className="inline-flex items-center gap-2 rounded-full bg-[#EAF2E5] px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#24573F]">
+                <MessagesSquare className="h-4 w-4" />
+                Questions fréquentes
+              </span>
+            </motion.div>
+
+            <h2 className="font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-[#0D332B] sm:text-4xl md:text-5xl">
+              Ce qu&apos;on nous demande le plus souvent
+            </h2>
+          </motion.div>
+
+          <div className="divide-y divide-[#0D332B]/10 border-y border-[#0D332B]/10">
+            {OUTBOUND_FAQ.map((item) => (
+              <details key={item.question} className="group py-5 sm:py-6">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left text-base font-bold text-[#0D332B] transition-colors hover:text-[#1A6D48] sm:text-lg">
+                  <h3 className="text-base font-bold sm:text-lg">
+                    {item.question}
+                  </h3>
+                  <span
+                    aria-hidden="true"
+                    className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[#0D332B]/15 text-[#1A6D48] transition-transform duration-300 group-open:rotate-45"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="mt-4 max-w-[75ch] text-sm leading-relaxed text-[#416058] sm:text-base">
+                  {item.answer}
+                </p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
