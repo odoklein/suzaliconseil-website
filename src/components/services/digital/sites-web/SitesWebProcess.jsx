@@ -64,9 +64,9 @@ export default function SitesWebProcess() {
                     {item.step}
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-slate-900 mb-2">
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">
                       {item.title}
-                    </h4>
+                    </h3>
                     <p className="text-slate-500">{item.txt}</p>
                   </div>
                 </motion.div>

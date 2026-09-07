@@ -30,9 +30,9 @@ export default function StrategieMethodology() {
                 >
                   <BarChart4 size={40} className="text-white" />
                 </motion.div>
-                <h3 className="text-3xl font-bold mb-6">
+                <p className="text-3xl font-bold font-heading mb-6">
                   Pilotage par la Data
-                </h3>
+                </p>
                 <p className="text-slate-300 text-lg leading-relaxed mb-12">
                   L&apos;intuition ne suffit plus. Notre méthodologie{" "}
                   <span className="text-white font-bold">Data-Marketing</span>{" "}
@@ -115,9 +115,9 @@ export default function StrategieMethodology() {
                     {item.step}
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-slate-900 mb-2">
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">
                       {item.title}
-                    </h4>
+                    </h3>
                     <p className="text-slate-500 leading-relaxed">
                       {item.desc}
                     </p>

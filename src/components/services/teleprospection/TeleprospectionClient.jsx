@@ -341,9 +341,9 @@ export default function TeleprospectionClient() {
                       {step.id}
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg sm:text-xl text-[#0D332B] mb-2">
+                      <h3 className="font-bold text-lg sm:text-xl text-[#0D332B] mb-2">
                         {step.title}
-                      </h4>
+                      </h3>
                       <p className="text-sm sm:text-base text-slate-500 leading-relaxed max-w-md">
                         {step.text}
                       </p>

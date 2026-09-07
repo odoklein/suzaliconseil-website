@@ -100,9 +100,9 @@ export default function ContactClient() {
                     <Mail size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-dark text-lg">
+                    <p className="font-bold text-primary-dark text-lg">
                       Email
-                    </h3>
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">
                       Notre canal privilégié
                     </p>
@@ -123,9 +123,9 @@ export default function ContactClient() {
                     <MessageSquare size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-dark text-lg">
+                    <p className="font-bold text-primary-dark text-lg">
                       WhatsApp
-                    </h3>
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">Réponse rapide</p>
                     <a
                       href="https://wa.me/33643638110"
@@ -146,9 +146,9 @@ export default function ContactClient() {
                     <Phone size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-dark text-lg">
+                    <p className="font-bold text-primary-dark text-lg">
                       Téléphone
-                    </h3>
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">
                       Du lundi au vendredi
                     </p>
@@ -169,9 +169,9 @@ export default function ContactClient() {
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-dark text-lg">
+                    <p className="font-bold text-primary-dark text-lg">
                       Adresse
-                    </h3>
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">Siège social</p>
                     <span className="text-primary-main font-medium">
                       10 Rue de la Paix, 75002 Paris
@@ -187,9 +187,9 @@ export default function ContactClient() {
                   <div className="absolute top-0 right-0 w-48 h-48 bg-accent-lime blur-[60px] opacity-20 transform translate-x-10 -translate-y-10 group-hover:opacity-30 transition-opacity duration-500" />
                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary-main blur-[40px] opacity-10 -translate-x-5 translate-y-5" />
 
-                  <h3 className="font-heading font-bold text-2xl mb-4 relative z-10">
+                  <p className="font-heading font-bold text-2xl mb-4 relative z-10">
                     Suzali Conseil
-                  </h3>
+                  </p>
                   <p className="text-white/80 text-sm leading-relaxed mb-8 relative z-10">
                     Nous transformons vos ambitions en résultats concrets grâce
                     à une stratégie sur-mesure.

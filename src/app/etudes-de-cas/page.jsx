@@ -3,7 +3,7 @@ import { createPageMetadata } from "../../lib/seo";
 import { CASE_STUDIES } from "../../lib/case-studies";
 
 export const metadata = createPageMetadata({
-  title: "Études de cas : projets commerciaux et digitaux | Suzali Conseil",
+  title: "Études de cas : projets B2B & digitaux | Suzali Conseil",
   description:
     "Découvrez le contexte, la démarche et les livrables de missions de prospection, développement web et automatisation menées par Suzali Conseil.",
   path: "/etudes-de-cas",

@@ -271,9 +271,9 @@ export default function Navbar({ services }) {
             className="flex h-full flex-col gap-6 overflow-y-auto overscroll-contain p-6 pb-10"
           >
             <div className="t-stagger-line" style={{ "--i": 0 }}>
-              <h2 className="mb-3 text-sm font-bold tracking-[-0.01em] text-[var(--color-primary-dark)]">
+              <p className="mb-3 text-sm font-bold tracking-[-0.01em] text-[var(--color-primary-dark)]">
                 Nos services
-              </h2>
+              </p>
               <ul className="flex flex-col pl-4 border-l border-[var(--color-primary-dark)]/15">
                 {services.map((service) => (
                   <li key={service.id}>

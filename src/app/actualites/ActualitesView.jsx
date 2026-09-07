@@ -225,9 +225,9 @@ function PostCard({ post, index }) {
           <span>{readingTime(post)}</span>
         </div>
 
-        <h3 className="font-heading text-[17px] font-bold text-gray-900 leading-snug mb-2.5 group-hover:text-[#0D332B] transition-colors line-clamp-2">
+        <h2 className="font-heading text-[17px] font-bold text-gray-900 leading-snug mb-2.5 group-hover:text-[#0D332B] transition-colors line-clamp-2">
           {post.title}
-        </h3>
+        </h2>
 
         {post.excerpt && (
           <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-5 flex-1">
@@ -414,9 +414,9 @@ export default function ActualitesView({ posts: initialPosts = [] }) {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
+              <p className="text-lg font-bold text-gray-900 mb-2">
                 Impossible de charger les actualités
-              </h3>
+              </p>
               <p className="text-gray-500 text-sm mb-6">{error}</p>
               <button
                 onClick={() => window.location.reload()}

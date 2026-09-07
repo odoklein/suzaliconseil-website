@@ -110,10 +110,10 @@ const Footer = () => {
 
           {/* Column 2: Services */}
           <div>
-            <h4 className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
+            <p className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#B0FF5B] rounded-full" />
               Expertises
-            </h4>
+            </p>
             <ul className="space-y-4 text-slate-300 text-sm">
               <li>
                 <Link
@@ -160,10 +160,10 @@ const Footer = () => {
 
           {/* Column 3: Entreprise */}
           <div>
-            <h4 className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
+            <p className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#B0FF5B] rounded-full" />
               Agence
-            </h4>
+            </p>
             <ul className="space-y-4 text-slate-300 text-sm">
               <li>
                 <Link
@@ -218,10 +218,10 @@ const Footer = () => {
 
           {/* Column 4: Contact Info */}
           <div>
-            <h4 className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
+            <p className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#B0FF5B] rounded-full" />
               Nous contacter
-            </h4>
+            </p>
             <ul className="space-y-4 text-slate-300 text-sm">
               <li className="flex items-start gap-3 group">
                 <MapPin

@@ -108,9 +108,9 @@ export default function LeadModal({ offer, isOpen, onClose }) {
                     <div className="w-16 h-16 md:w-20 md:h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
                       <CheckCircle size={36} className="text-green-600" />
                     </div>
-                    <h4 className="text-xl md:text-2xl font-bold text-[#0D332B] mb-2 md:mb-3">
+                    <p className="text-xl md:text-2xl font-bold text-[#0D332B] mb-2 md:mb-3">
                       Merci de votre intérêt !
-                    </h4>
+                    </p>
                     <p className="text-sm md:text-base text-gray-500 max-w-xs mx-auto">
                       Nous avons bien reçu votre demande pour l&apos;offre{" "}
                       <strong>{offer.name}</strong>. Notre équipe vous

@@ -6,7 +6,6 @@ export const metadata = createPageMetadata({
   description:
     "Consultez les mentions légales de Suzali Conseil : éditeur, hébergement, contact et propriété intellectuelle.",
   path: "/mentions-legales",
-  robots: { index: false, follow: true },
 });
 
 const sections = [

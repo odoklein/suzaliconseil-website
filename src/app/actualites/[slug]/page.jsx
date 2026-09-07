@@ -386,9 +386,9 @@ export default async function ActualiteDetailPage({ params }) {
               <div className="absolute bottom-[-20%] left-[-15%] w-[50%] h-[50%] rounded-full bg-white/[0.03] blur-2xl" />
             </div>
             <div className="relative z-10">
-              <h3 className="text-2xl md:text-3xl font-heading font-extrabold text-white mb-4">
+              <h2 className="text-2xl md:text-3xl font-heading font-extrabold text-white mb-4">
                 Besoin d&apos;aller plus loin ?
-              </h3>
+              </h2>
               <p className="text-white/70 mb-8 text-lg max-w-xl mx-auto leading-relaxed">
                 Nos experts sont à votre disposition pour discuter de vos enjeux
                 spécifiques et construire une stratégie sur-mesure.
@@ -421,9 +421,9 @@ export default async function ActualiteDetailPage({ params }) {
       {related.length > 0 && (
         <div className="w-full bg-white py-16 border-t border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 className="font-heading text-2xl font-extrabold text-gray-900 mb-8">
+            <h2 className="font-heading text-2xl font-extrabold text-gray-900 mb-8">
               Articles similaires
-            </h3>
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
               {related.map((r) => {
                 const rTheme =
@@ -460,9 +460,9 @@ export default async function ActualiteDetailPage({ params }) {
                             })
                           : ""}
                       </p>
-                      <h4 className="font-heading text-base font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#0D332B] transition-colors">
+                      <h3 className="font-heading text-base font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#0D332B] transition-colors">
                         {r.title}
-                      </h4>
+                      </h3>
                     </div>
                   </Link>
                 );

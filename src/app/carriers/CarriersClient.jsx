@@ -248,9 +248,9 @@ export default function CarriersClient() {
                     <FileText size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-dark text-lg">
+                    <p className="font-bold text-primary-dark text-lg">
                       Processus de recrutement
-                    </h3>
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">
                       Candidature étudiée sous 5 jours ouvrés. Entretien puis
                       proposition si le profil correspond.
@@ -265,9 +265,9 @@ export default function CarriersClient() {
                     <Target size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-dark text-lg">
+                    <p className="font-bold text-primary-dark text-lg">
                       Postes ouverts
-                    </h3>
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">
                       Stratégie commerciale, business développement, marketing
                       digital et conseil croissance.
@@ -282,9 +282,9 @@ export default function CarriersClient() {
                     <Mail size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-dark text-lg">
+                    <p className="font-bold text-primary-dark text-lg">
                       Contact
-                    </h3>
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">
                       Une question sur nos offres ?
                     </p>
@@ -301,9 +301,9 @@ export default function CarriersClient() {
               <AnimatedSection delay={400}>
                 <div className="bg-primary-dark p-8 rounded-[24px] shadow-lg text-white relative overflow-hidden hidden lg:block h-[280px] group">
                   <div className="absolute top-0 right-0 w-48 h-48 bg-accent-lime blur-[60px] opacity-20 transform translate-x-10 -translate-y-10 group-hover:opacity-30 transition-opacity duration-500" />
-                  <h3 className="font-heading font-bold text-2xl mb-4 relative z-10">
+                  <p className="font-heading font-bold text-2xl mb-4 relative z-10">
                     Suzali Conseil
-                  </h3>
+                  </p>
                   <p className="text-white/80 text-sm leading-relaxed mb-8 relative z-10">
                     Rejoignez une équipe qui mise sur l&apos;expertise, la
                     bienveillance et les résultats concrets.
