@@ -18,11 +18,13 @@
     "db:push": "drizzle-kit push",
     "db:migrate-posts": "node ./scripts/migrate-posts-from-supabase-to-neon.mjs",
     "s3:migrate-images": "node ./scripts/migrate-images-to-s3.mjs",
-    "db:seed-projects": "node ./scripts/seed-projects.mjs"
+    "db:seed-projects": "node ./scripts/seed-projects.mjs",
+    "content:generate-targeted": "node ./scripts/generate-targeted-articles.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.972.0",
     "@google/generative-ai": "^0.24.1",
+    "@mistralai/mistralai": "^2.7.0",
     "@neondatabase/serverless": "^1.0.2",
     "basic-ftp": "^5.1.0",
     "cheerio": "^1.1.2",

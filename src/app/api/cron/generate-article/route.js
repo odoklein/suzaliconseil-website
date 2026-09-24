@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../../lib/db";
 import { posts, contentGeneratorSettings } from "../../../../db/schema";
-import { eq, sql } from "drizzle-orm";
-import { generateArticle } from "../../../../lib/gemini.js";
-import { generateFeaturedImage } from "../../../../lib/featured-image.js";
+import { eq, isNotNull, sql } from "drizzle-orm";
+import { generateArticle } from "../../../../lib/ai-writer.js";
+import { notifyArticlePublished } from "../../../../lib/indexnow.js";
 
 /** Vercel Cron envoie Authorization: Bearer <CRON_SECRET> */
 function isAuthorized(request) {
@@ -46,18 +46,15 @@ async function handleCron(request) {
     const recentPosts = await db.select({ title: posts.title }).from(posts).orderBy(sql`created_at DESC`).limit(30);
     const recentTitles = recentPosts.map(p => p.title).join(" | ");
 
-    const article = await generateArticle({ tone, recentTitles });
-    let coverImageUrl = null;
-    try {
-      coverImageUrl = await generateFeaturedImage(
-        article.title,
-        article.slug,
-        article.excerpt,
-        article.content
-      );
-    } catch (imgErr) {
-      console.error("Featured image generation failed:", imgErr);
-    }
+    const targetedPosts = await db
+      .select({ targetKeyword: posts.targetKeyword })
+      .from(posts)
+      .where(isNotNull(posts.targetKeyword));
+    const usedKeywords = new Set(
+      targetedPosts.map((p) => (p.targetKeyword || "").toLowerCase()).filter(Boolean),
+    );
+
+    const article = await generateArticle({ tone, recentTitles, usedKeywords });
 
     const now = new Date();
     const [post] = await db
@@ -69,10 +66,13 @@ async function handleCron(request) {
         seoTitle: article.seoTitle,
         seoDescription: article.seoDescription,
         content: article.content,
-        coverImageUrl,
+        coverImageUrl: null,
         publishedAt: autoPublish ? now : null,
         source: "auto",
         topic: article.topic || "commercial",
+        targetKeyword: article.targetKeyword,
+        metaKeywords: article.metaKeywords,
+        faq: article.faq,
       })
       .returning();
 
@@ -84,12 +84,18 @@ async function handleCron(request) {
       })
       .where(eq(contentGeneratorSettings.id, settings.id));
 
+    if (autoPublish) {
+      // Best-effort : ne bloque jamais la réponse du cron si IndexNow est down.
+      notifyArticlePublished(post.slug).catch(() => {});
+    }
+
     return NextResponse.json({
       ok: true,
       postId: post.id,
       slug: post.slug,
       published: autoPublish,
       title: post.title,
+      targetKeyword: post.targetKeyword,
     });
   } catch (err) {
     console.error("Cron generate-article error:", err);

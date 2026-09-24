@@ -8,9 +8,10 @@ import {
   leads,
   contacts,
 } from "../../../db/schema";
-import { eq } from "drizzle-orm";
-import { generateArticle } from "../../../lib/gemini.js";
+import { eq, isNotNull } from "drizzle-orm";
+import { generateArticle } from "../../../lib/ai-writer.js";
 import { generateFeaturedImage } from "../../../lib/featured-image.js";
+import { notifyArticlePublished } from "../../../lib/indexnow.js";
 
 function slugify(text) {
   return String(text)
@@ -114,43 +115,50 @@ export async function triggerGenerate() {
   const tone = settings.tone || "expert";
   const autoPublish = settings.autoPublish === "true";
 
+  const targetedPosts = await db
+    .select({ targetKeyword: posts.targetKeyword })
+    .from(posts)
+    .where(isNotNull(posts.targetKeyword));
+  const usedKeywords = new Set(
+    targetedPosts.map((p) => (p.targetKeyword || "").toLowerCase()).filter(Boolean),
+  );
+
   let article;
   try {
-    article = await generateArticle({ tone });
+    article = await generateArticle({ tone, usedKeywords });
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    return { error: error.message || "Erreur lors de la génération avec l'API Gemini." };
-  }
-  let coverImageUrl = null;
-  try {
-    coverImageUrl = await generateFeaturedImage(
-      article.title,
-      article.slug,
-      article.excerpt,
-      article.content,
-    );
-  } catch (err) {
-    console.error("Featured image failed:", err);
+    console.error("Mistral API Error:", error);
+    return { error: error.message || "Erreur lors de la génération avec l'API Mistral." };
   }
 
   const now = new Date();
-  await db.insert(posts).values({
-    title: article.title,
-    slug: article.slug,
-    excerpt: article.excerpt,
-    seoTitle: article.seoTitle,
-    seoDescription: article.seoDescription,
-    content: article.content,
-    coverImageUrl,
-    publishedAt: autoPublish ? now : null,
-    source: "auto",
-    topic: article.topic || "commercial",
-  });
+  const [post] = await db
+    .insert(posts)
+    .values({
+      title: article.title,
+      slug: article.slug,
+      excerpt: article.excerpt,
+      seoTitle: article.seoTitle,
+      seoDescription: article.seoDescription,
+      content: article.content,
+      coverImageUrl: null,
+      publishedAt: autoPublish ? now : null,
+      source: "auto",
+      topic: article.topic || "commercial",
+      targetKeyword: article.targetKeyword,
+      metaKeywords: article.metaKeywords,
+      faq: article.faq,
+    })
+    .returning();
 
   await db
     .update(contentGeneratorSettings)
     .set({ lastRunAt: now, updatedAt: now })
     .where(eq(contentGeneratorSettings.id, settings.id));
+
+  if (autoPublish) {
+    notifyArticlePublished(post.slug).catch(() => {});
+  }
 
   revalidatePath("/admin");
   revalidatePath("/actualites");

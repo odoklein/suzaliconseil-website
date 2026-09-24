@@ -151,7 +151,8 @@ export default async function ActualiteDetailPage({ params }) {
     .limit(4);
 
   const related = relatedPosts.filter((r) => r.slug !== slug).slice(0, 3);
-  const relatedServices = getRelatedServices(slug, theme);
+  const relatedServices = getRelatedServices(slug, theme, post.targetKeyword);
+  const faq = Array.isArray(post.faq) ? post.faq.filter((f) => f?.question && f?.answer) : [];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -175,6 +176,29 @@ export default async function ActualiteDetailPage({ params }) {
     articleSection: theme === "digital" ? "Digital & Tech" : "Commercial & Stratégie",
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Actualités", item: `${SITE_URL}/actualites` },
+      { "@type": "ListItem", position: 3, name: post.title, item: `${SITE_URL}/actualites/${slug}` },
+    ],
+  };
+
+  const faqJsonLd =
+    faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((f) => ({
+            "@type": "Question",
+            name: f.question,
+            acceptedAnswer: { "@type": "Answer", text: f.answer },
+          })),
+        }
+      : null;
+
   const accentColor =
     theme === "digital"
       ? { heading: "#0369a1", strong: "#0c4a6e", link: "#0284c7", blockquoteBorder: "#0ea5e9", blockquoteBg: "#f0f9ff", blockquoteText: "#0c4a6e" }
@@ -192,6 +216,16 @@ export default async function ActualiteDetailPage({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
 
       <ReadingProgress theme={theme} />
 
@@ -374,6 +408,38 @@ export default async function ActualiteDetailPage({ params }) {
           </div>
         </div>
       </section>
+
+      {/* FAQ — le JSON-LD FAQPage correspondant est émis plus haut, à partir
+          du même tableau post.faq, pour que balisage et rendu ne divergent
+          jamais. */}
+      {faq.length > 0 && (
+        <section className="w-full bg-white py-12 border-t border-gray-100">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 className="font-heading text-2xl font-extrabold text-gray-900 mb-6">
+              Questions fréquentes
+            </h2>
+            <div className="divide-y divide-gray-100 border-y border-gray-100">
+              {faq.map((item) => (
+                <details key={item.question} className="group py-5">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left font-bold text-gray-900 transition-colors hover:text-[#0D332B]">
+                    <span className="text-base">{item.question}</span>
+                    <span
+                      aria-hidden="true"
+                      className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition-transform duration-300 group-open:rotate-45"
+                      style={{ color: accentColor.link }}
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 max-w-[70ch] text-[15px] leading-relaxed text-gray-600">
+                    {item.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <div className="w-full bg-[#FAFAFA] py-16">

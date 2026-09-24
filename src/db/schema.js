@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, jsonb } from "drizzle-orm/pg-core";
 
 // 0. Clients (for portal – companies we do SDR/meetings for)
 export const clients = pgTable("clients", {
@@ -111,7 +111,10 @@ export const posts = pgTable("posts", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
   source: text("source").default("manual"), // "manual" | "auto"
-  topic: text("topic").default("commercial"), // "commercial" | "digital" (from Gemini when auto-generated)
+  topic: text("topic").default("commercial"), // "commercial" | "digital" (from generation when auto-generated)
+  targetKeyword: text("target_keyword"), // mot-clé principal ciblé (recherche GSC), pour le maillage et l'anti-doublon
+  metaKeywords: text("meta_keywords"), // mots-clés secondaires générés, désormais persistés (auparavant jetés avant l'insert)
+  faq: jsonb("faq"), // [{ question, answer }] généré avec l'article, rendu en FAQPage JSON-LD + accordéon visible
 });
 
 // 9. Content generator settings (singleton for cron + admin)

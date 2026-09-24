@@ -8,6 +8,13 @@
       "when": 1785092815276,
       "tag": "0000_crazy_guardian",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790281552299,
+      "tag": "0001_left_changeling",
+      "breakpoints": true
     }
   ]
 }

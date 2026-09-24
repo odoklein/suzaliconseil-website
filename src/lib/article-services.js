@@ -18,7 +18,7 @@
  * défaut du thème.
  */
 
-const SERVICES = {
+export const SERVICES = {
   generationLeads: {
     href: "/services/generation-leads-b2b",
     label: "Agence de génération de leads B2B",
@@ -117,12 +117,33 @@ const DEFAULT_BY_THEME = {
 };
 
 /**
+ * Mot-clé ciblé (posts.targetKeyword) -> services. Contrairement à
+ * SERVICES_BY_SLUG, cette table n'a pas besoin d'être mise à jour à chaque
+ * nouvel article : elle est écrite une fois par mot-clé cible (voir
+ * PRIORITY_TARGETS dans ai-writer.js) et s'applique à tout article généré
+ * pour ce mot-clé, quel que soit son slug.
+ */
+const SERVICES_BY_KEYWORD = {
+  "agence de génération de leads b2b": [
+    SERVICES.generationLeads,
+    SERVICES.qualificationLeads,
+  ],
+  "prospection commerciale externalisée": [
+    SERVICES.prospectionExternalisee,
+    SERVICES.commercial,
+  ],
+  "agence outbound": [SERVICES.outbound, SERVICES.generationLeads],
+};
+
+/**
  * @param {string} slug slug de l'article affiché
  * @param {'commercial' | 'digital'} theme thème détecté, utilisé en repli
+ * @param {string} [targetKeyword] mot-clé ciblé à la génération, prioritaire sur le slug
  * @returns {{ href: string, label: string }[]}
  */
-export function getRelatedServices(slug, theme) {
+export function getRelatedServices(slug, theme, targetKeyword) {
   return (
+    (targetKeyword && SERVICES_BY_KEYWORD[targetKeyword.toLowerCase()]) ||
     SERVICES_BY_SLUG[slug] ||
     DEFAULT_BY_THEME[theme] ||
     DEFAULT_BY_THEME.commercial
