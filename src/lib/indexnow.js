@@ -15,7 +15,6 @@ import { SITE_URL } from "./seo.js";
  * La clé doit être servie telle quelle sur /{key}.txt (vérification par
  * IndexNow) — voir public/<INDEXNOW_KEY>.txt.
  */
-const INDEXNOW_KEY = process.env.INDEXNOW_KEY;
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
 
 /**
@@ -23,6 +22,11 @@ const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
  * @returns {Promise<{ ok: boolean, status?: number, error?: string }>}
  */
 export async function notifyIndexNow(urls) {
+  // Lu au moment de l'appel, pas à l'import : dans les scripts autonomes,
+  // les imports ES sont évalués avant dotenv.config(), donc une lecture au
+  // niveau module figerait cette valeur à "undefined" (voir le même bug
+  // corrigé sur MODEL_NAME dans ai-writer.js).
+  const INDEXNOW_KEY = process.env.INDEXNOW_KEY;
   if (!INDEXNOW_KEY) {
     return { ok: false, error: "INDEXNOW_KEY is not set" };
   }

@@ -1,8 +1,6 @@
 import { Mistral } from "@mistralai/mistralai";
 import { SERVICES } from "./article-services.js";
 
-const MODEL_NAME = process.env.MISTRAL_MODEL || "mistral-large-latest";
-
 /**
  * Cibles prioritaires : mots-clés réellement présents dans la Search Console
  * (export du 24/09/2026, forts volumes d'impressions, position 40-80, sans
@@ -122,6 +120,7 @@ export async function generateArticle(options = {}) {
     throw new Error("MISTRAL_API_KEY is not set");
   }
   apiKey = apiKey.replace(/[^\x20-\x7E]/g, "").trim();
+  const modelName = process.env.MISTRAL_MODEL || "mistral-large-latest";
 
   const tone = options.tone || "expert";
   const target = options.target || pickNextTarget(options.usedKeywords);
@@ -155,7 +154,7 @@ Contraintes :
 ${linkInstructions}
 - Originalité : ne rédige PAS sur ces sujets déjà traités : ${(options.recentTitles || "").substring(0, 500)}
 - E-E-A-T : montre une expérience terrain (ex. "sur les missions que nous menons...", "en pratique, la plupart des entreprises sous-estiment..."), pas de discours marketing vide.
-- Interdictions strictes : pas de <h1>. Pas de "dans cet article", "en conclusion", "il est important de noter que", "dans le monde d'aujourd'hui".
+- Interdictions strictes : pas de <h1>. Pas de "dans cet article", "en conclusion", "il est important de noter que", "dans le monde d'aujourd'hui". N'écris AUCUNE année (2023, 2024, 2025...) dans le titre, le seoTitle ou l'excerpt : un article daté devient obsolète et faux dès l'année suivante. Si une date est indispensable dans le corps du texte, reste vague ("actuellement", "ces dernières années") plutôt qu'une année en dur.
 - FAQ : génère 4 à 5 questions/réponses courtes et concrètes, au format "People Also Ask" (questions que taperait réellement un utilisateur Google), réponses de 2-4 phrases chacune, sans redite du corps de l'article.
 - Réponds UNIQUEMENT avec un JSON valide, sans markdown ni \`\`\`, avec exactement les clés suivantes :
 
@@ -173,7 +172,7 @@ ${linkInstructions}
   let response;
   try {
     response = await client.chat.complete({
-      model: MODEL_NAME,
+      model: modelName,
       temperature: 0.85,
       responseFormat: { type: "json_object" },
       messages: [{ role: "user", content: prompt }],
@@ -181,7 +180,7 @@ ${linkInstructions}
   } catch (error) {
     console.error("Mistral chat.complete failed:", {
       apiKeyLength: apiKey.length,
-      modelName: MODEL_NAME,
+      modelName,
       errorMsg: error?.message,
     });
     throw error;
@@ -197,7 +196,14 @@ ${linkInstructions}
   if (jsonMatch) raw = jsonMatch[0];
   const data = JSON.parse(raw);
 
-  const title = data.title || "Article B2B";
+  // Filet de sécurité : même sur consigne explicite, le modèle glisse parfois
+  // une année en dur ("guide complet 2024") qui rend le titre daté et faux
+  // dès l'année suivante. On la retire plutôt que de faire confiance au
+  // prompt seul.
+  const stripYear = (text) =>
+    String(text || "").replace(/\s*[:\-–]?\s*\b(20[2-3]\d)\b\s*/g, " ").replace(/\s+/g, " ").trim();
+
+  const title = stripYear(data.title) || "Article B2B";
   const slugified = slugify(title);
   const slugBase = slugified.length > 0 ? slugified : `article-${Date.now().toString(36)}`;
 
@@ -216,9 +222,9 @@ ${linkInstructions}
   return {
     title,
     slug: `${slugBase}-${Date.now().toString(36)}`,
-    seoTitle: truncateAtWord(data.seoTitle || title, 42),
-    seoDescription: truncateAtWord(data.seoDescription || data.excerpt || "", 155),
-    excerpt: data.excerpt || data.seoDescription || "",
+    seoTitle: truncateAtWord(stripYear(data.seoTitle) || title, 42),
+    seoDescription: truncateAtWord(stripYear(data.seoDescription) || stripYear(data.excerpt) || "", 155),
+    excerpt: stripYear(data.excerpt) || stripYear(data.seoDescription) || "",
     content: data.content || "",
     metaKeywords: data.metaKeywords || target.keyword,
     targetKeyword: target.keyword,
