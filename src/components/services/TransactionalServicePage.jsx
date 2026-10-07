@@ -12,8 +12,8 @@ import { SITE_URL } from "../../lib/seo";
 
 const SERVICE_VISUALS = {
   "/services/prospection-commerciale-externalisee": {
-    src: "/images/equipeprospection.png",
-    position: "object-center",
+    src: "/images/manager-prospection-externalisee.webp",
+    position: "object-[center_35%]",
   },
   "/services/fichier-prospection-b2b": {
     src: "/images/services-growth-system.webp",
