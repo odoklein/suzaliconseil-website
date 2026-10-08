@@ -1,35 +1,60 @@
+import { getOffersByIds } from "./offers-catalog.js";
+
+/*
+ * Offres du catalogue rattachées à la prospection externalisée. Les prix
+ * affichés sur la page service et dans sa FAQ sont lus ici plutôt que recopiés,
+ * pour qu'ils ne puissent pas diverger de /offres.
+ */
+export const [GROWTH_STANDARD_OFFER, VENTE_RDV_OFFER] = getOffersByIds([
+  "contact-growth-standard",
+  "contact-vente-rdv",
+]);
+
+/** « /mois + 150 € … » → « par mois + 150 € … », pour une lecture en phrase. */
+export const billingInSentence = (offer) => offer.billing.replace(/^\//, "par ");
+
 export const TRANSACTIONAL_SERVICES = {
   externalisee: {
     path: "/services/prospection-commerciale-externalisee",
     title: "Prospection commerciale externalisée | Suzali Conseil",
     description:
-      "Externalisez votre prospection B2B avec une équipe dédiée au ciblage, aux prises de contact, à la qualification et au reporting commercial.",
+      `Externalisez votre prospection B2B : équipe dédiée, appels, emails et LinkedIn, rendez-vous qualifiés dans votre agenda. Dès ${GROWTH_STANDARD_OFFER.price} par mois. Audit gratuit.`,
     eyebrow: "Force commerciale externalisée",
     h1: "Prospection commerciale externalisée",
     introduction:
-      "Nous cadrons puis exécutons votre prospection B2B comme une extension de votre équipe : ciblage, messages, appels, relances, qualification et transmission dans votre CRM.",
+      "Nous prenons en charge votre prospection B2B de bout en bout : ciblage des décideurs, appels, emails et messages LinkedIn, qualification, puis rendez-vous transmis à vos commerciaux avec leur compte rendu. Une équipe dédiée démarre en quelques jours, sans recrutement de votre côté.",
     suitableFor: [
       "PME qui veulent créer un pipeline sans recruter immédiatement",
       "Équipes commerciales qui manquent de temps pour prospecter",
       "Entreprises qui lancent une nouvelle offre ou un nouveau marché",
+      "Dirigeants qui veulent tester un marché avant d'y affecter des commerciaux",
     ],
     deliverables: [
-      "Ciblage ICP et fichier de contacts validé",
-      "Scripts et séquences adaptés à votre positionnement",
-      "Prospection téléphonique et multicanale",
-      "Qualification, compte rendu et passage de relais CRM",
-      "Reporting régulier sur les actions et résultats",
+      "Ciblage ICP et fichier de contacts vérifié",
+      "Scripts et séquences validés avec vous avant tout envoi",
+      "Prospection par téléphone, email et LinkedIn",
+      "Rendez-vous posés dans l'agenda, avec un briefing avant-vente",
+      "Intégration à votre CRM et historique complet des échanges",
+      "Reporting hebdomadaire et account manager dédié",
     ],
     process: [
-      ["Cadrage", "Objectifs, marché, critères de cible et règles de qualification."],
-      ["Préparation", "Fichier, argumentaire, scripts, séquences et intégration aux outils."],
-      ["Activation", "Prises de contact, relances et qualification par notre équipe."],
-      ["Pilotage", "Analyse des retours, ajustements et transmission des opportunités."],
+      ["Cadrage", "Atelier d'onboarding : client idéal à partir de vos affaires signées, proposition de valeur, critères de qualification et passage de relais."],
+      ["Préparation", "Fichier ciblé et vérifié, scripts d'appel, séquences email et LinkedIn, branchement à votre CRM. Campagnes actives sous 7 jours après validation."],
+      ["Activation", "Appels, emails, messages et relances par notre équipe. Chaque rendez-vous est qualifié selon vos critères, puis posé dans l'agenda avec son compte rendu."],
+      ["Pilotage", "Point hebdomadaire : contacts traités, conversations, objections, rendez-vous. Les messages et segments qui ne convertissent pas sont réécrits ou coupés."],
     ],
+    // Les trois premières questions sont reprises par la FAQ de l'accueil
+    // (index 0 et 1) et celle de /offres (index 0 et 2) : en garder l'ordre.
     faqs: [
-      ["Comment démarre la mission ?", "Un atelier d’onboarding définit votre cible, votre proposition de valeur, les critères de qualification et le passage de relais."],
-      ["Quels canaux sont utilisés ?", "Le dispositif peut associer téléphone, email et LinkedIn selon votre audience, vos données et les règles applicables."],
-      ["Comment suivez-vous les résultats ?", "Vous recevez un reporting sur les contacts traités, conversations, qualifications, objections et rendez-vous obtenus."],
+      ["Comment démarre la mission ?", "Par un atelier d’onboarding qui fixe votre cible, votre proposition de valeur, les critères de qualification et le passage de relais à vos commerciaux. Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous."],
+      ["Quels canaux sont utilisés ?", "Le dispositif associe téléphone, email et LinkedIn selon votre audience, vos données et les règles applicables. Le téléphone reste le canal le plus sûr pour qualifier un besoin ; l'email et LinkedIn ouvrent la porte et préparent l'appel."],
+      ["Comment suivez-vous les résultats ?", "Vous recevez un reporting hebdomadaire sur les contacts traités, les conversations, les qualifications, les objections rencontrées et les rendez-vous obtenus. Un account manager dédié le commente avec vous et ajuste le dispositif."],
+      ["Combien coûte la prospection commerciale externalisée ?", `Chez Suzali Conseil, l'offre Growth Standard coûte ${GROWTH_STANDARD_OFFER.price} ${billingInSentence(GROWTH_STANDARD_OFFER)}. Le forfait couvre l'équipe, le ciblage, les outils et le pilotage ; la part variable ne s'applique qu'aux rendez-vous validés et réellement honorés. Pour un besoin limité à la prise de rendez-vous téléphonique, la Vente au Rendez-Vous démarre à ${VENTE_RDV_OFFER.price} de ${VENTE_RDV_OFFER.billing}.`],
+      ["Externaliser ou recruter un commercial en interne : que choisir ?", "Recruter coûte un salaire chargé, des outils, des données et plusieurs mois de recrutement puis de formation avant un rythme normal, que les résultats suivent ou non. Externaliser démarre en quelques jours avec une méthode et des outils déjà en place. L'interne reste préférable quand la vente demande une expertise produit très pointue dès le premier appel ; beaucoup d'entreprises externalisent pour lancer un marché, puis recrutent une fois le discours validé."],
+      ["En combien de temps arrivent les premiers rendez-vous ?", "Les campagnes sont actives sous 7 jours après validation du ciblage et des messages. Les premiers rendez-vous qualifiés arrivent généralement dans les 30 jours suivant le lancement ; le rythme dépend ensuite de la longueur du cycle de vente de votre marché."],
+      ["Est-ce que je garde la main sur le discours et sur les prospects ?", "Oui. Les scripts et séquences sont validés avec vous avant tout envoi, chaque échange est tracé dans le CRM et chaque rendez-vous arrive avec un compte rendu. Vos commerciaux mènent la vente ; notre équipe ouvre la porte et qualifie."],
+      ["La prospection externalisée est-elle conforme au RGPD ?", "Oui, si elle respecte les règles de la prospection B2B. On peut contacter un professionnel au sujet de son activité, à condition de l'informer de l'origine de ses données et de respecter son droit d'opposition ; par email, le message doit concerner sa fonction et proposer une désinscription simple. Nos fichiers sont sourcés et les demandes d'opposition sont appliquées immédiatement."],
+      ["Quelle différence avec l'outbound marketing ou la prise de rendez-vous ?", "La prospection externalisée désigne le mode de collaboration : une équipe extérieure prend en charge l'ensemble de la démarche. L'outbound marketing désigne les canaux digitaux (cold email, LinkedIn, ABM) et la prise de rendez-vous se concentre sur le remplissage de l'agenda, surtout par téléphone. La prospection externalisée combine les deux."],
     ],
     related: [
       ["/services/commercial", "Solutions de prospection commerciale"],
