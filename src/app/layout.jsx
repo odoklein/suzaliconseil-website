@@ -1,12 +1,26 @@
 import "./globals.css";
 
 import Script from "next/script";
+import { Sora, Geist_Mono } from "next/font/google";
 import LayoutSwitcher from "../components/layout/LayoutSwitcher";
 import { getMegaMenuData } from "../lib/data";
 import { BookingProvider } from "../context/BookingContext";
 import { SITE_URL } from "../lib/seo";
 
 const baseUrl = SITE_URL;
+
+// Self-hosted at build time by next/font: no third-party request, and the
+// size-adjusted fallback keeps layout stable while the webfont swaps in.
+const sora = Sora({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-sora",
+});
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-mono",
+});
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -117,19 +131,12 @@ export default async function RootLayout({ children }) {
   const services = await getMegaMenuData();
 
   return (
-    <html lang="fr">
-      <head>
-        <link rel="preconnect" href="https://api.fontshare.com" />
-        <link
-          rel="preconnect"
-          href="https://cdn.fontshare.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@1&display=swap"
-        />
-      </head>
+    <html
+      lang="fr"
+      className={`${sora.variable} ${geistMono.variable}`}
+      // The js-flag script below adds a "js" class before hydration.
+      suppressHydrationWarning
+    >
       <body className="bg-[#F9FAFB] font-sans text-[#0D332B] antialiased">
         {/* Runs before first paint: marks the document as JS-capable so the
             scroll-reveal styles may hide content they are able to reveal again.

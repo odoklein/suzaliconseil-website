@@ -45,7 +45,7 @@ export function CommercialProcess() {
           <AnimatedSection className="self-start lg:sticky lg:top-28">
             <h2
               id="commercial-process-heading"
-              className="font-heading text-4xl font-bold leading-[1.03] tracking-[-0.04em] text-[#0D332B] sm:text-5xl"
+              className="font-heading text-4xl font-bold leading-[1.03] tracking-tight text-[#0D332B] sm:text-5xl"
             >
               Notre méthode de prospection B2B
             </h2>

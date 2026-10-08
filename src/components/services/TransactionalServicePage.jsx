@@ -83,7 +83,7 @@ export default function TransactionalServicePage({ service }) {
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#B0FF5B]">
                 {service.eyebrow}
               </p>
-              <h1 className="mt-5 max-w-[12ch] font-heading text-4xl font-extrabold leading-[1.03] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+              <h1 className="mt-5 max-w-[12ch] font-heading text-4xl font-extrabold leading-[1.03] tracking-tight sm:text-5xl lg:text-6xl">
                 {service.h1}
               </h1>
               <p className="mt-6 max-w-[60ch] text-base leading-relaxed text-white/76 sm:text-lg">

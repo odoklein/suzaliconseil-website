@@ -102,7 +102,7 @@ function StudyHeading({ study, titleClassName = "" }) {
     <>
       <p className="text-sm font-semibold text-[#4E6A62]">{study.sector}</p>
       <h3
-        className={`mt-3 text-3xl font-bold leading-[1.05] tracking-[-0.035em] text-[#0D332B] ${titleClassName}`}
+        className={`mt-3 text-3xl font-bold leading-[1.05] tracking-tight text-[#0D332B] ${titleClassName}`}
       >
         {study.clientLabel}
       </h3>
@@ -225,7 +225,7 @@ export default function EtudesDeCasClient() {
               <p className="mb-5 text-xs font-bold uppercase tracking-[0.16em] text-[#1A4D43] sm:text-sm">
                 Études de cas
               </p>
-              <h1 className="max-w-[720px] text-4xl font-bold leading-[1.02] tracking-[-0.045em] text-[#0D332B] sm:text-5xl lg:text-[3.5rem] xl:text-[4rem]">
+              <h1 className="max-w-[720px] text-4xl font-bold leading-[1.02] tracking-tight text-[#0D332B] sm:text-5xl lg:text-[3.5rem] xl:text-[4rem]">
                 Nos missions, du défi au livrable.
               </h1>
               <p className="mt-6 max-w-[56ch] text-lg leading-relaxed text-[#52635F]">
@@ -337,7 +337,7 @@ export default function EtudesDeCasClient() {
             <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#E3FFC4] text-[#0D332B]">
               <Layers3 size={24} strokeWidth={1.6} aria-hidden="true" />
             </div>
-            <h2 className="mt-7 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+            <h2 className="mt-7 text-4xl font-bold tracking-tight sm:text-5xl">
               Quand les deux expertises se répondent
             </h2>
             <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-[#52635F]">
@@ -386,7 +386,7 @@ export default function EtudesDeCasClient() {
                 <BriefcaseBusiness size={18} aria-hidden="true" />
                 Performance commerciale
               </div>
-              <h2 className="mt-4 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+              <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
                 Ouvrir les bonnes conversations
               </h2>
               <p className="mt-5 max-w-[52ch] leading-relaxed text-[#52635F]">
@@ -424,7 +424,7 @@ export default function EtudesDeCasClient() {
             <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#E3FFC4] text-[#0D332B]">
               <Workflow size={24} strokeWidth={1.6} aria-hidden="true" />
             </div>
-            <h2 className="mt-7 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+            <h2 className="mt-7 text-4xl font-bold tracking-tight sm:text-5xl">
               Des outils qui tiennent l&apos;activité
             </h2>
             <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-[#52635F]">
@@ -453,7 +453,7 @@ export default function EtudesDeCasClient() {
           <AnimatedSection className="grid items-center gap-8 rounded-[28px] bg-[#E3FFC4] p-7 shadow-[0_28px_70px_-48px_rgba(13,51,43,0.75)] sm:p-10 lg:grid-cols-[1fr_auto] lg:p-14">
             <div>
               <Route size={25} strokeWidth={1.6} aria-hidden="true" />
-              <h2 className="mt-5 max-w-[19ch] text-3xl font-bold tracking-[-0.035em] sm:text-4xl">
+              <h2 className="mt-5 max-w-[19ch] text-3xl font-bold tracking-tight sm:text-4xl">
                 Votre projet ressemble-t-il à l&apos;un de ces parcours ?
               </h2>
               <p className="mt-4 max-w-[58ch] leading-relaxed text-[#40524E]">

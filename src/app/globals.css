@@ -62,10 +62,21 @@
   /* Spacing & Radius */
   --radius-suzali: var(--radius-suzali);
 
-  /* Satoshi is loaded once in the root layout through Fontshare's variable
-     webfont endpoint. System fallbacks keep text visible during the swap. */
-  --font-sans: "Satoshi", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --font-heading: "Satoshi", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  /* Sora + Geist Mono are self-hosted by next/font in the root layout, which
+     sets --font-sora / --font-geist-mono on <html>. */
+  --font-sans: var(--font-sora), "Segoe UI", system-ui, sans-serif;
+  --font-heading: var(--font-sora), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, Consolas, monospace;
+
+  /* Sora runs wider and heavier than Satoshi: its 600 reads like Satoshi's
+     700, so the bold utilities are recalibrated instead of edited per page. */
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 600;
+
+  /* Display tracking tuned for Sora (-0.055em headings, -0.08em for the
+     tightest section titles). */
+  --tracking-tight: -0.055em;
+  --tracking-tighter: -0.08em;
 
   /* Animations */
   --animate-subtle-float: float 6s ease-in-out infinite;
@@ -91,7 +102,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    letter-spacing: -0.01em;
+    /* A constant -0.48px (rem, not em) at every size: Sora's open spacing
+       needs pulling in, and small text must not get cramped. */
+    letter-spacing: -0.03rem;
+    line-height: 1.5;
   }
 
   h1,
@@ -99,9 +113,19 @@
   h3,
   h4 {
     font-family: var(--font-heading);
-    font-weight: 700;
-    letter-spacing: -0.028em;
-    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.055em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  b,
+  strong {
+    font-weight: 600;
   }
 
   /* Fallback sizes only — any explicit text-* utility now takes precedence. */
@@ -121,6 +145,14 @@
 .tabular-figures {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
+}
+
+/* The typography plugin hard-codes 700/800 on article headings. */
+@layer utilities {
+  .prose :where(h1, h2, h3, h4):not(:where([class~="not-prose"] *)) {
+    font-weight: 600;
+    letter-spacing: -0.055em;
+  }
 }
 
 /* Custom selection color */
@@ -566,7 +598,7 @@
   min-height: 48px;
   padding: 12px 24px;
   border-radius: 9999px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.875rem;
   letter-spacing: -0.01em;
   cursor: pointer;

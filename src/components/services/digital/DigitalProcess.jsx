@@ -35,7 +35,7 @@ export function DigitalProcess() {
           <span className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#0D332B] text-[#B0FF5B]">
             <Workflow size={24} strokeWidth={1.6} aria-hidden="true" />
           </span>
-          <h2 className="mt-7 max-w-[11ch] text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+          <h2 className="mt-7 max-w-[11ch] text-4xl font-bold tracking-tight sm:text-5xl">
             Une méthode qui garde le cap.
           </h2>
           <p className="mt-5 max-w-[48ch] text-lg leading-relaxed text-[#40524E]">

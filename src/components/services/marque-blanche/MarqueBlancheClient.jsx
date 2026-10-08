@@ -59,7 +59,7 @@ export default function MarqueBlancheClient() {
               <Lock size={14} className="animate-pulse" /> Partenariat
               Confidentiel
             </div>
-            <h1 className="mt-6 max-w-[650px] font-heading text-[2.55rem] font-bold leading-[1.03] tracking-[-0.048em] text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
+            <h1 className="mt-6 max-w-[650px] font-heading text-[2.55rem] font-bold leading-[1.03] tracking-tight text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
               Vente en{" "}
               <span className="text-[#B0FF5B]">
                 Marque Blanche
@@ -132,7 +132,7 @@ export default function MarqueBlancheClient() {
               viewport={{ once: true }}
               variants={containerVariants}
             >
-              <h2 className="mb-6 font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] sm:text-4xl md:text-5xl lg:text-6xl sm:mb-8">
+              <h2 className="mb-6 font-heading text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl sm:mb-8">
                 Votre Force de Vente Supplétive
               </h2>
               <p className="mb-8 text-lg leading-relaxed text-[#416058] sm:text-xl">
@@ -228,7 +228,7 @@ export default function MarqueBlancheClient() {
         </div>
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="mb-12 max-w-3xl sm:mb-16 lg:mb-20">
-            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
+            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
               Nos Solutions de Vente Outsourcée
             </h2>
             <p className="max-w-2xl text-lg leading-relaxed text-[#416058] sm:text-xl">

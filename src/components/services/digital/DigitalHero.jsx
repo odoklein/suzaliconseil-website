@@ -33,7 +33,7 @@ export function DigitalHero() {
             <p className="mb-5 text-xs font-bold uppercase tracking-[0.16em] text-[#B0FF5B] sm:text-sm">
               Pôle digital
             </p>
-            <h1 className="max-w-[650px] break-words font-heading text-[2.15rem] font-bold leading-[1.04] tracking-[-0.045em] sm:text-5xl sm:leading-[1.02] lg:text-[4rem]">
+            <h1 className="max-w-[650px] break-words font-heading text-[2.15rem] font-bold leading-[1.04] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-[4rem]">
               Le digital qui soutient votre croissance B2B.
             </h1>
             <p className="mt-6 max-w-[580px] text-base font-medium leading-relaxed text-[#E4ECE8] sm:text-lg lg:text-xl">

@@ -177,7 +177,7 @@ export function ServicesHub() {
               <p className="mb-5 text-xs font-bold uppercase tracking-[0.16em] text-[#1A4D43] sm:text-sm">
                 Performance commerciale + stratégie digitale
               </p>
-              <h1 className="max-w-[720px] text-4xl font-bold leading-[1.02] tracking-[-0.045em] text-[#0D332B] sm:text-5xl lg:text-[3.35rem] xl:text-[3.8rem]">
+              <h1 className="max-w-[720px] text-4xl font-bold leading-[1.02] tracking-tight text-[#0D332B] sm:text-5xl lg:text-[3.35rem] xl:text-[3.8rem]">
                 Commercial et digital. Une croissance{" "}
                 <span className="underline decoration-[#B0FF5B] decoration-[0.16em] underline-offset-[0.08em]">
                   mieux alignée.
@@ -284,7 +284,7 @@ export function ServicesHub() {
             <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#0D332B] text-[#B0FF5B]">
               <Handshake size={25} strokeWidth={1.6} aria-hidden="true" />
             </div>
-            <h2 className="mt-7 max-w-[10ch] text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+            <h2 className="mt-7 max-w-[10ch] text-4xl font-bold tracking-tight sm:text-5xl">
               Faire avancer votre pipeline
             </h2>
             <p className="mt-5 max-w-[48ch] text-base leading-relaxed text-[#40524E] md:text-lg">
@@ -362,7 +362,7 @@ export function ServicesHub() {
             <span className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#E3FFC4] text-[#0D332B]">
               <Layers3 size={24} strokeWidth={1.6} aria-hidden="true" />
             </span>
-            <h2 className="mt-6 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+            <h2 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl">
               Une mission, plusieurs expertises
             </h2>
             <p className="mt-5 text-lg leading-relaxed text-[#52635F]">
@@ -408,7 +408,7 @@ export function ServicesHub() {
             <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#E3FFC4] text-[#0D332B] shadow-[0_10px_24px_-18px_rgba(13,51,43,0.65)]">
               <Monitor size={25} strokeWidth={1.6} aria-hidden="true" />
             </div>
-            <h2 className="mt-7 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+            <h2 className="mt-7 text-4xl font-bold tracking-tight sm:text-5xl">
               Construire un digital utile
             </h2>
             <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-[#52635F]">
@@ -468,7 +468,7 @@ export function ServicesHub() {
       <section id="methode" className="scroll-mt-24 bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="max-w-3xl">
-            <h2 className="text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
               De la première question au déploiement
             </h2>
             <p className="mt-5 max-w-[62ch] text-lg leading-relaxed text-[#52635F]">
@@ -507,7 +507,7 @@ export function ServicesHub() {
       <section id="faq" className="scroll-mt-24 bg-[#F6F7F4] py-20 md:py-28">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20 lg:px-8">
           <AnimatedSection className="lg:sticky lg:top-28 lg:self-start">
-            <h2 className="text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
               Questions fréquentes
             </h2>
             <p className="mt-5 max-w-[46ch] leading-relaxed text-[#52635F]">
@@ -580,7 +580,7 @@ export function ServicesHub() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="grid items-center gap-8 rounded-[28px] bg-[#E6FFC8] p-7 shadow-[0_26px_70px_-48px_rgba(13,51,43,0.75)] sm:p-10 lg:grid-cols-[1fr_auto] lg:p-14">
             <div>
-              <h2 className="max-w-[19ch] text-3xl font-bold tracking-[-0.035em] sm:text-4xl">
+              <h2 className="max-w-[19ch] text-3xl font-bold tracking-tight sm:text-4xl">
                 Quel levier faut-il activer en premier ?
               </h2>
               <p className="mt-4 max-w-[58ch] leading-relaxed text-[#40524E]">

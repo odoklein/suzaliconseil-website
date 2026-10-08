@@ -22,7 +22,7 @@ const Projects = ({ projects = [] }) => {
             <span className="inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
               Portfolio
             </span>
-            <h2 className="font-heading text-4xl font-bold leading-[1.06] tracking-[-0.04em] text-[#0D332B] sm:text-5xl lg:text-6xl">
+            <h2 className="font-heading text-4xl font-bold leading-[1.06] tracking-tight text-[#0D332B] sm:text-5xl lg:text-6xl">
               Nos collaborations <br className="hidden sm:block" />
               qui font la{" "}
               <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">

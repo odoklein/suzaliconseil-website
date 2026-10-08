@@ -41,7 +41,7 @@ export function CommercialHero() {
             </p>
 
             <h1
-              className="hero-rise mt-6 max-w-[650px] font-heading text-[2.55rem] font-bold leading-[1.01] tracking-[-0.048em] text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.3rem]"
+              className="hero-rise mt-6 max-w-[650px] font-heading text-[2.55rem] font-bold leading-[1.01] tracking-tight text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.3rem]"
               style={{ "--rise-delay": "70ms" }}
             >
               Accélérez votre prospection B2B

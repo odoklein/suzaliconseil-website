@@ -66,7 +66,7 @@ export default function ContactClient() {
           <div className="relative z-10 mx-auto flex min-h-[520px] w-full max-w-7xl items-center px-6 py-16 sm:px-8 md:min-h-[600px] md:px-12 lg:px-14">
             <div className="min-w-0 w-full max-w-[680px] text-left">
               <h1
-                className="hero-rise font-heading text-[2.4rem] font-bold leading-[1.04] tracking-[-0.045em] text-[#F7FAF8] sm:text-5xl lg:text-[4rem]"
+                className="hero-rise font-heading text-[2.4rem] font-bold leading-[1.04] tracking-tight text-[#F7FAF8] sm:text-5xl lg:text-[4rem]"
                 style={{ "--rise-delay": "0ms" }}
               >
                 Parlons de votre projet

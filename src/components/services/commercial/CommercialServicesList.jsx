@@ -178,7 +178,7 @@ export function CommercialServicesList() {
         <AnimatedSection className="max-w-3xl">
           <h2
             id="commercial-services-heading"
-            className="font-heading text-4xl font-bold leading-[1.03] tracking-[-0.04em] text-[#0D332B] sm:text-5xl lg:text-[3.6rem]"
+            className="font-heading text-4xl font-bold leading-[1.03] tracking-tight text-[#0D332B] sm:text-5xl lg:text-[3.6rem]"
           >
             Nos solutions de prospection B2B
           </h2>

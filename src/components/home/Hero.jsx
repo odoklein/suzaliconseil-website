@@ -31,7 +31,7 @@ export default function Hero() {
         <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-96px)] w-full max-w-7xl items-center px-6 py-14 sm:px-8 md:px-12 md:py-16 lg:px-14">
           <div className="min-w-0 w-full max-w-[680px] text-left text-[#F7FAF8]">
             <h1
-              className="hero-rise max-w-[650px] break-words font-heading text-[2.05rem] font-bold leading-[1.04] tracking-[-0.045em] text-[#F7FAF8] sm:text-5xl sm:leading-[1.02] lg:text-[4rem]"
+              className="hero-rise max-w-[650px] break-words font-heading text-[2.05rem] font-bold leading-[1.04] tracking-tight text-[#F7FAF8] sm:text-5xl sm:leading-[1.02] lg:text-[4rem]"
               style={{ "--rise-delay": "0ms" }}
             >
               Génération de leads B2B en France

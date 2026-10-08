@@ -45,7 +45,7 @@ const ProblemSolution = () => {
               <span className="inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
                 Notre Approche
               </span>
-              <h2 className="font-heading text-4xl font-bold leading-[1.06] tracking-[-0.04em] text-[#0D332B] sm:text-5xl md:text-6xl">
+              <h2 className="font-heading text-4xl font-bold leading-[1.06] tracking-tight text-[#0D332B] sm:text-5xl md:text-6xl">
                 Une équipe qui vous comprend <br className="hidden sm:block" />
                 <span className="text-[#557069]">
                   vous accompagne, et vous fait grandir.
@@ -74,11 +74,11 @@ const ProblemSolution = () => {
             <AnimatedSection delay={40}>
               <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[28px] shadow-[0_28px_70px_-46px_rgba(13,51,43,0.65)]">
                 <Image
-                  src="/images/team.png"
-                  alt="L'équipe Suzali Conseil"
+                  src="/images/equipeweb.png"
+                  alt="L'équipe Suzali Conseil dans ses bureaux"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+                  className="object-cover object-[50%_45%] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
                 />
                 {/* Gradient overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0D332B]/18 via-transparent to-transparent opacity-60" />

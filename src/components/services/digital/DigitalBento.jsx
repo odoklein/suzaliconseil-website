@@ -64,7 +64,7 @@ export function DigitalBento() {
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#1A4D43] sm:text-sm">
             Nos expertises
           </p>
-          <h2 className="mt-5 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
+          <h2 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
             Les bons leviers, au bon moment.
           </h2>
           <p className="mt-5 max-w-[60ch] text-lg leading-relaxed text-[#52635F]">

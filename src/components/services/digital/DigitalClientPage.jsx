@@ -20,7 +20,7 @@ export function DigitalClientPage() {
           <div className="grid items-center gap-8 rounded-[28px] bg-[#E3FFC4] p-7 shadow-[0_28px_70px_-48px_rgba(13,51,43,0.75)] sm:p-10 lg:grid-cols-[1fr_auto] lg:p-14">
             <div>
               <Route size={25} strokeWidth={1.6} aria-hidden="true" />
-              <h2 className="mt-5 max-w-[18ch] text-3xl font-bold tracking-[-0.035em] sm:text-4xl">
+              <h2 className="mt-5 max-w-[18ch] text-3xl font-bold tracking-tight sm:text-4xl">
                 Donnez une direction claire à votre prochain projet digital.
               </h2>
               <p className="mt-4 max-w-[58ch] leading-relaxed text-[#40524E]">

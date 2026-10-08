@@ -47,7 +47,7 @@ const Method = () => {
           <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
             Notre Processus
           </span>
-          <h2 className="mb-4 font-heading text-4xl font-bold tracking-[-0.04em] text-primary-dark sm:text-5xl md:mb-6 lg:text-6xl">
+          <h2 className="mb-4 font-heading text-4xl font-bold tracking-tight text-primary-dark sm:text-5xl md:mb-6 lg:text-6xl">
             Notre{" "}
             <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
               méthode

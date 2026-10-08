@@ -85,7 +85,7 @@ export default function TeleprospectionClient() {
               <span className="hidden xs:inline">Performance </span>Téléphonique
             </motion.div>
 
-            <h1 className="font-heading text-4xl font-bold leading-[1.02] tracking-[-0.048em] sm:text-5xl md:text-6xl xl:text-[4.3rem] mb-6 sm:mb-8">
+            <h1 className="font-heading text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl xl:text-[4.3rem] mb-6 sm:mb-8">
               Agence{" "}
               <span className="text-[#B0FF5B] drop-shadow-[0_0_15px_rgba(176,255,91,0.3)]">
                 Téléprospection

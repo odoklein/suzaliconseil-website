@@ -46,7 +46,7 @@ const ServicesPoles = () => {
           <span className="inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
             Nos Expertises
           </span>
-          <h2 className="font-heading text-4xl font-bold leading-[1.04] tracking-[-0.04em] text-[#0D332B] sm:text-5xl md:text-6xl">
+          <h2 className="font-heading text-4xl font-bold leading-[1.04] tracking-tight text-[#0D332B] sm:text-5xl md:text-6xl">
             Nos Services B2B pour <br className="hidden" />
             Générer des Leads{" "}
             <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
@@ -87,7 +87,7 @@ const ServicesPoles = () => {
               <div className="relative z-10 flex flex-1 flex-col items-start justify-between p-7 text-left md:p-10">
                 {/* Top Text */}
                 <div className="space-y-2 md:space-y-3">
-                  <h3 className="font-heading text-4xl font-bold tracking-[-0.04em] text-[#0D332B] md:text-6xl">
+                  <h3 className="font-heading text-4xl font-bold tracking-tight text-[#0D332B] md:text-6xl">
                     Commercial
                   </h3>
                   <p className="text-lg font-medium leading-snug text-[#405A53] md:text-2xl">
@@ -149,7 +149,7 @@ const ServicesPoles = () => {
               <div className="relative z-10 flex flex-1 flex-col items-start justify-between p-7 text-left md:p-10">
                 {/* Top Text */}
                 <div className="space-y-2 md:space-y-3">
-                  <h3 className="font-heading text-4xl font-bold tracking-[-0.04em] text-[#0D332B] md:text-6xl">
+                  <h3 className="font-heading text-4xl font-bold tracking-tight text-[#0D332B] md:text-6xl">
                     Digital
                   </h3>
                   <p className="text-lg font-medium leading-snug text-[#405A53] md:text-2xl">

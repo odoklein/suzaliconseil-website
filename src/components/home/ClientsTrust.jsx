@@ -3,8 +3,49 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Star } from "lucide-react";
 import AnimatedSection from "../ui/AnimatedSection";
+
+// Public Google Business Profile. Rating and count are shown as-is so the
+// selected quotes below never stand in for the full picture.
+const GOOGLE_REVIEWS_URL =
+  "https://www.google.com/maps?cid=15371480359553245640";
+const GOOGLE_RATING = "4,2";
+const GOOGLE_REVIEW_COUNT = 5;
+
+// Verbatim client reviews from that profile (only obvious typos fixed).
+// Never add reviews written by team members here.
+const googleReviews = [
+  {
+    author: "Raphael D.",
+    date: "avril 2024",
+    quote:
+      "Je suis très satisfait des prestations, je recommande vivement ! Suzali Conseil a répondu aux besoins de notre entreprise pour la génération de leads, le SEO et également pour la mise en relation vente à l'international.",
+  },
+  {
+    author: "Maxim B.",
+    date: "septembre 2023",
+    quote: "Ils ont transformé notre présence en ligne. Hautement recommandé !",
+  },
+  {
+    author: "Badro G.",
+    date: "décembre 2023",
+    quote: "Merci à l'équipe de développement commercial.",
+  },
+];
+
+const Stars = () => (
+  <div className="flex gap-0.5" aria-label="5 étoiles sur 5" role="img">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <Star
+        key={i}
+        size={16}
+        className="fill-[#0D332B] text-[#0D332B]"
+        aria-hidden="true"
+      />
+    ))}
+  </div>
+);
 
 const ClientsTrust = () => {
   const caseStudies = [
@@ -16,8 +57,7 @@ const ClientsTrust = () => {
       statSuffix: "%",
       statNum: "250",
       description: "de rendez-vous qualifiés générés en 3 mois",
-      bgImage:
-        "/images/investissementlocatif.png",
+      bgImage: "/images/investissementlocatif.png",
       href: "/services/prise-rendez-vous-b2b",
     },
     {
@@ -25,8 +65,7 @@ const ClientsTrust = () => {
       service: "Prospection B2B Réseaux Ultra-ciblés",
       stat: "35 RDV",
       description: "générés à partir de 1000 prospects ciblés",
-      bgImage:
-        "/images/velis.png",
+      bgImage: "/images/velis.png",
       href: "/services/prospection-commerciale-externalisee",
     },
     {
@@ -35,8 +74,7 @@ const ClientsTrust = () => {
       stat: "92%",
       description:
         "taux d'ouverture des communications et une gestion des sessions entièrement simplifiée.",
-      bgImage:
-        "/images/zupdeco.png",
+      bgImage: "/images/zupdeco.png",
       href: "/services/digital/developpement-automatisation",
     },
   ];
@@ -52,7 +90,7 @@ const ClientsTrust = () => {
           <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
             Témoignages
           </span>
-          <h2 className="mb-4 font-heading text-4xl font-bold tracking-[-0.04em] text-primary-dark sm:text-5xl lg:text-6xl">
+          <h2 className="mb-4 font-heading text-4xl font-bold tracking-tight text-primary-dark sm:text-5xl lg:text-6xl">
             Ils nous font{" "}
             <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
               confiance
@@ -130,6 +168,65 @@ const ClientsTrust = () => {
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#B0FF5B] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </AnimatedSection>
           ))}
+        </div>
+
+        {/* Google reviews */}
+        <div className="mt-16 md:mt-20">
+          <AnimatedSection className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <h3 className="font-heading text-2xl font-bold tracking-tight text-[#0D332B] md:text-3xl">
+              Ce que disent nos clients
+            </h3>
+            <a
+              href={GOOGLE_REVIEWS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 text-sm font-medium text-[#52635F] transition-colors hover:text-[#0D332B]"
+            >
+              <span className="font-semibold text-[#0D332B]">
+                {GOOGLE_RATING}/5
+              </span>
+              sur Google · {GOOGLE_REVIEW_COUNT} avis
+              <ArrowUpRight
+                size={16}
+                className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {googleReviews.map((review, idx) => (
+              <AnimatedSection
+                key={review.author}
+                delay={idx * 40}
+                className="h-full"
+              >
+                <figure className="flex h-full flex-col justify-between gap-8 rounded-[24px] border border-[#0D332B]/10 bg-white p-7 shadow-[0_24px_60px_-48px_rgba(13,51,43,0.6)] md:p-8">
+                  <div className="space-y-5">
+                    <Stars />
+                    <blockquote className="text-[17px] leading-relaxed text-[#0D332B]">
+                      « {review.quote} »
+                    </blockquote>
+                  </div>
+                  <figcaption className="flex items-center gap-3">
+                    <span
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#E3FFC4] text-sm font-semibold text-[#315B2A]"
+                      aria-hidden="true"
+                    >
+                      {review.author.charAt(0)}
+                    </span>
+                    <span className="flex flex-col">
+                      <span className="text-sm font-semibold text-[#0D332B]">
+                        {review.author}
+                      </span>
+                      <span className="text-xs text-[#52635F]">
+                        Avis Google · {review.date}
+                      </span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </AnimatedSection>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -88,7 +88,7 @@ export default function OutboundClient() {
               Proactive
             </motion.div>
 
-            <h1 className="mt-6 max-w-[670px] font-heading text-[2.55rem] font-bold leading-[1.03] tracking-[-0.048em] text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
+            <h1 className="mt-6 max-w-[670px] font-heading text-[2.55rem] font-bold leading-[1.03] tracking-tight text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
               Agence{" "}
               <span className="text-[#B0FF5B]">
                 Outbound Marketing
@@ -226,7 +226,7 @@ export default function OutboundClient() {
                 </span>
               </motion.div>
 
-              <h2 className="mb-6 font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-[#0D332B] sm:text-4xl md:text-5xl lg:text-6xl sm:mb-8">
+              <h2 className="mb-6 font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:text-4xl md:text-5xl lg:text-6xl sm:mb-8">
                 L&apos;Outbound Marketing B2B : La Prospection Commerciale
                 Intelligente
               </h2>
@@ -367,7 +367,7 @@ export default function OutboundClient() {
               </span>
             </motion.div>
 
-            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
+            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
               Nos Canaux d&apos;Activation Outbound Marketing
             </h2>
             <p className="max-w-3xl text-base leading-relaxed text-[#416058] sm:text-lg md:text-xl">
@@ -554,7 +554,7 @@ export default function OutboundClient() {
               </span>
             </motion.div>
 
-            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl">
+            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl">
               Comment se déroule une mission outbound
             </h2>
             <p className="max-w-3xl text-base leading-relaxed text-[#416058] sm:text-lg">
@@ -599,7 +599,7 @@ export default function OutboundClient() {
                 variants={itemVariants}
                 className="flex h-full flex-col rounded-[22px] border border-[#0D332B]/10 bg-white p-6 sm:p-8"
               >
-                <span className="mb-5 font-heading text-3xl font-bold tracking-[-0.04em] text-[#85C947] sm:text-4xl">
+                <span className="mb-5 font-heading text-3xl font-bold tracking-tight text-[#85C947] sm:text-4xl">
                   {phase.step}
                 </span>
                 <h3 className="mb-3 text-lg font-bold text-[#0D332B] sm:text-xl">
@@ -714,7 +714,7 @@ export default function OutboundClient() {
               </span>
             </motion.div>
 
-            <h2 className="font-heading text-3xl font-bold leading-[1.08] tracking-[-0.04em] text-[#0D332B] sm:text-4xl md:text-5xl">
+            <h2 className="font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:text-4xl md:text-5xl">
               Ce qu&apos;on nous demande le plus souvent
             </h2>
           </motion.div>

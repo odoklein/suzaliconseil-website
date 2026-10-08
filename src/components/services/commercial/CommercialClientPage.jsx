@@ -36,7 +36,7 @@ export function CommercialClientPage() {
             <div className="max-w-[640px] text-[#F7FAF8]">
               <h2
                 id="commercial-cta-heading"
-                className="font-heading text-4xl font-bold leading-[1.03] tracking-[-0.04em] sm:text-5xl lg:text-[3.5rem]"
+                className="font-heading text-4xl font-bold leading-[1.03] tracking-tight sm:text-5xl lg:text-[3.5rem]"
               >
                 Prêt à faire décoller vos ventes ?
               </h2>
