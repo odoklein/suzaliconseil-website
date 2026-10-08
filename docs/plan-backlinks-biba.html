@@ -1,0 +1,503 @@
+<title>Plan backlinks de Biba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; a day-by-day checklist where each platform is a card Biba fills in. Brand = Suzali deep green + lime. */
+:root{
+  --bg:#f5f8f6; --surface:#ffffff; --ink:#0d332b; --muted:#4e6660; --line:#d6e2dd;
+  --brand:#1a4d43; --brand-soft:#e3eee9; --lime:#b0ff5b; --lime-ink:#2d4a00;
+  --warn:#9a4a12; --warn-soft:#fdf0e6; --ok:#1f6f3f; --ok-soft:#e2f4e8; --block:#9b1c2c; --block-soft:#fbe7ea;
+  --font-body:"Manrope","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1a17; --surface:#11241f; --ink:#e4efeb; --muted:#9db3ac; --line:#24403a;
+  --brand:#8fd6c2; --brand-soft:#173530; --lime:#b0ff5b; --lime-ink:#1c2e00;
+  --warn:#f2a36a; --warn-soft:#2e1f12; --ok:#7ad69b; --ok-soft:#14301f; --block:#f08b98; --block-soft:#33161b;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0b1a17; --surface:#11241f; --ink:#e4efeb; --muted:#9db3ac; --line:#24403a;
+  --brand:#8fd6c2; --brand-soft:#173530; --lime:#b0ff5b; --lime-ink:#1c2e00;
+  --warn:#f2a36a; --warn-soft:#2e1f12; --ok:#7ad69b; --ok-soft:#14301f; --block:#f08b98; --block-soft:#33161b;
+  color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;margin:0}
+.wrap{max-width:780px;margin:0 auto;padding:40px 16px 80px;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:2.1rem;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.45rem;font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0}
+a{color:var(--brand);text-underline-offset:3px}
+.eyebrow{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.lead{font-size:1.08rem;color:var(--muted);max-width:62ch}
+header{display:flex;flex-direction:column;gap:14px}
+.progress{display:flex;flex-direction:column;gap:8px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.progress-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.bar{height:10px;background:var(--brand-soft);border-radius:99px;overflow:hidden}
+.bar>span{display:block;height:100%;width:0;background:var(--brand);border-radius:99px;transition:width .4s ease}
+.bar.done>span{background:var(--lime)}
+.num{font-variant-numeric:tabular-nums;font-weight:700}
+.sync{font-size:.8rem;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.sync[data-s="shared"]::before{background:var(--ok)}
+.sync[data-s="local"]::before{background:var(--warn)}
+.sync[data-s="readonly"]::before{background:var(--block)}
+nav.days{display:flex;gap:8px;flex-wrap:wrap}
+nav.days a{flex:1 1 150px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:2px}
+nav.days a:hover{border-color:var(--brand)}
+nav.days small{color:var(--muted);font-size:.8rem}
+section{display:flex;flex-direction:column;gap:16px}
+.prose{display:flex;flex-direction:column;gap:12px;max-width:65ch}
+.callout{background:var(--brand-soft);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.rules{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:r}
+.rules li{counter-increment:r;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.rules li::before{content:counter(r);width:28px;height:28px;border-radius:50%;background:var(--brand);color:var(--bg);font-weight:800;display:grid;place-items:center;font-size:.85rem}
+.rules b{display:block}
+.idcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.idrow{display:grid;grid-template-columns:150px 1fr auto;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
+.idrow:first-child{border-top:0}
+.idrow dt{font-size:.82rem;color:var(--muted);font-weight:600}
+.idrow dd{margin:0;font-family:var(--font-mono);font-size:.9rem;min-width:0;overflow-wrap:anywhere}
+button{font:inherit;cursor:pointer}
+.copy{border:1px solid var(--line);background:transparent;color:var(--brand);border-radius:8px;padding:4px 10px;font-size:.8rem;font-weight:700}
+.copy:hover{background:var(--brand-soft)}
+.copy.is-copied{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
+:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.day-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding-top:8px;border-top:2px solid var(--ink)}
+.day-head .bar{width:160px}
+.day-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:.85rem;color:var(--muted)}
+.task{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.task.is-done{border-color:var(--ok)}
+.task-top{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start}
+.check{appearance:none;width:26px;height:26px;border:2px solid var(--brand);border-radius:8px;margin:0;display:grid;place-items:center;cursor:pointer;background:var(--surface)}
+.check:checked{background:var(--ok);border-color:var(--ok)}
+.check:checked::after{content:"";width:7px;height:13px;border:solid var(--bg);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.task-title{display:flex;flex-direction:column;gap:4px;min-width:0}
+.task.is-done h3{text-decoration:line-through;text-decoration-color:var(--ok);text-decoration-thickness:2px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--brand-soft);color:var(--brand)}
+.chip.opt{background:var(--warn-soft);color:var(--warn)}
+.why{color:var(--muted);font-size:.95rem}
+details{border-top:1px dashed var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:700;color:var(--brand);font-size:.92rem}
+.steps{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{font-weight:800;color:var(--brand)}
+.text-block{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.text-block .label{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.text-block blockquote{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.92rem;white-space:pre-line}
+.stuck{margin-top:12px;background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:.9rem}
+.stuck b{color:var(--warn)}
+.fields{display:grid;grid-template-columns:1fr 200px;gap:10px;padding-top:4px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;font-weight:700;color:var(--muted);min-width:0}
+.fields input,.fields select{font:inherit;font-size:.9rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+.fields input:disabled,.fields select:disabled{opacity:.6}
+.status-pill{justify-self:start;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:99px}
+.lexique{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.lexique div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;font-size:.92rem}
+.lexique b{font-size:1rem}
+footer{font-size:.85rem;color:var(--muted)}
+@media (max-width:560px){
+  h1{font-size:1.7rem}
+  .idrow{grid-template-columns:1fr auto}
+  .idrow dt{grid-column:1/-1}
+  .fields{grid-template-columns:1fr}
+  .day-meta{align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){.bar>span{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Suzali Conseil · SEO · Plan sur 3 jours</span>
+    <h1>Les premiers backlinks de Suzali</h1>
+    <p class="lead">Biba, ce plan te guide pas à pas pour inscrire Suzali Conseil sur 8 sites professionnels. Pas besoin de connaître le SEO : chaque étape dit quoi faire, quoi copier et quoi faire si ça bloque. Coche au fur et à mesure, Odo voit ta progression.</p>
+    <div class="progress">
+      <div class="progress-row">
+        <strong>Progression totale</strong>
+        <span><span class="num" id="total-count">0 / 0</span> tâches</span>
+      </div>
+      <div class="bar" id="total-bar"><span></span></div>
+      <span class="sync" id="sync" data-s="loading">Connexion…</span>
+    </div>
+    <nav class="days" aria-label="Jours">
+      <a href="#avant"><strong>Avant de commencer</strong><small>15 min de lecture</small></a>
+      <a href="#jour1"><strong>Jour 1</strong><small>Préparer + 2 fiches</small></a>
+      <a href="#jour2"><strong>Jour 2</strong><small>Plateformes d'agences</small></a>
+      <a href="#jour3"><strong>Jour 3</strong><small>Annuaires + vérification</small></a>
+    </nav>
+  </header>
+
+  <section id="avant">
+    <span class="eyebrow">À lire avant le jour 1</span>
+    <h2>Pourquoi on fait ça</h2>
+    <div class="prose">
+      <p>Un <b>backlink</b>, c'est un lien vers notre site posé sur un autre site. Pour Google, chaque lien qui vient d'un site sérieux compte comme une recommandation : « ce site existe, il est fiable ».</p>
+      <p>Aujourd'hui, sur des recherches comme <i>« prospection commerciale externalisée »</i> ou <i>« agence de génération de leads B2B »</i>, Google nous affiche en moyenne en <b>position 47, soit la page 5</b>. Il connaît nos pages, mais ne nous fait pas encore assez confiance pour nous mettre devant. Personne ne va en page 5, donc zéro clic.</p>
+      <p>Les fiches que tu vas créer sont nos premières recommandations. En parallèle, on améliore aussi le contenu des pages du site.</p>
+    </div>
+    <div class="callout">
+      <strong>À quoi s'attendre</strong>
+      <p>Rien ne bouge pendant les premières semaines, c'est normal. Google met en général 4 à 8 semaines à repérer et à prendre en compte ces liens. Ton travail est réussi si les fiches sont <b>en ligne, complètes et identiques partout</b>.</p>
+    </div>
+    <h3>Les 6 règles d'or</h3>
+    <ol class="rules">
+      <li><span><b>Les mêmes infos partout, à la virgule près.</b> Nom, adresse, téléphone : copie-les toujours depuis la fiche d'identité ci-dessous, ne les retape pas de mémoire.</span></li>
+      <li><span><b>Un texte différent par site.</b> Chaque plateforme a sa description prête à copier. Ne réutilise jamais le texte d'un autre site : Google n'aime pas les copier-coller.</span></li>
+      <li><span><b>On ne paie rien.</b> Beaucoup de sites proposent des options payantes. On refuse toujours. Si un site bloque sans paiement, note « bloqué, payant » et passe au suivant.</span></li>
+      <li><span><b>Jamais d'avis ni de chiffres inventés.</b> Pas de faux avis clients, pas de résultats qu'on ne peut pas prouver.</span></li>
+      <li><span><b>Toujours le même lien :</b> <code>https://www.suzaliconseil.com</code>, avec « https » et « www ».</span></li>
+      <li><span><b>Bloquée plus de 15 minutes ? On passe.</b> Note ce qui bloque dans la case de la plateforme, passe à la suite et demande à Odo.</span></li>
+    </ol>
+  </section>
+
+  <section id="identite">
+    <span class="eyebrow">À garder ouvert pendant les 3 jours</span>
+    <h2>Fiche d'identité de Suzali</h2>
+    <p class="why">Toujours copier depuis ici. Pour le téléphone, utilise le format français sur les sites français et le format international sur les sites en anglais.</p>
+    <dl class="idcard" id="idcard"></dl>
+  </section>
+
+  <div id="days"></div>
+
+  <section id="lexique">
+    <span class="eyebrow">Mots que tu vas croiser</span>
+    <h2>Petit lexique</h2>
+    <div class="lexique">
+      <div><b>Backlink</b><span>Un lien vers notre site posé sur un autre site. Plus le site est sérieux, plus le lien compte.</span></div>
+      <div><b>Annuaire</b><span>Un site qui liste des entreprises, comme PagesJaunes ou Kompass.</span></div>
+      <div><b>NAP</b><span>Name, Address, Phone. Ce trio doit être strictement identique sur tous les sites.</span></div>
+      <div><b>Dofollow / nofollow</b><span>Certains liens transmettent plus de « confiance » que d'autres. Tu n'as pas à t'en occuper, Odo vérifiera.</span></div>
+      <div><b>Indexation</b><span>Le moment où Google découvre une page et l'ajoute à ses résultats. Ça peut prendre plusieurs semaines.</span></div>
+      <div><b>Search Console</b><span>L'outil de Google où Odo suit nos positions et nos liens. C'est là qu'on verra l'effet de ton travail.</span></div>
+    </div>
+  </section>
+
+  <footer>Plan préparé à partir de la stratégie backlinks du projet. Les identifiants de connexion ne se notent jamais ici : garde-les dans le gestionnaire de mots de passe convenu avec Odo.</footer>
+</div>
+
+<script>
+const ID = [
+  ["Nom", "Suzali Conseil"],
+  ["Forme juridique", "SASU"],
+  ["Adresse", "10 rue de la Paix, 75002 Paris, France"],
+  ["Téléphone (FR)", "07 57 90 24 79"],
+  ["Téléphone (international)", "+33 7 57 90 24 79"],
+  ["Email", "contact@suzaliconseil.com"],
+  ["Site web", "https://www.suzaliconseil.com"],
+  ["SIREN", "992 281 097"],
+  ["SIRET", "992 281 097 00012"],
+  ["Code NAF", "7022Z (Conseil pour les affaires et autres conseils de gestion)"],
+  ["N° TVA", "FR21992281097"],
+  ["Date de création", "08/10/2025"],
+  ["Catégories à choisir", "Prospection commerciale · Génération de leads · Conseil aux entreprises · Marketing B2B"],
+];
+
+const PLATFORM_STATUS = [
+  ["todo","À faire"],["doing","En cours"],["pending","En attente de validation"],["live","En ligne"],["blocked","Bloqué"]
+];
+
+const DAYS = [
+ { id:"jour1", n:1, title:"Préparer le terrain et créer 2 fiches", time:"≈ 2 h 30", tasks:[
+  { id:"d1-lire", title:"Lire « Avant de commencer » et la fiche d'identité", time:"15 min",
+    why:"Pour comprendre à quoi sert ton travail et connaître les 6 règles d'or.",
+    steps:["Lis la partie « Pourquoi on fait ça » en haut de cette page.","Relis les 6 règles d'or. Si une règle n'est pas claire, pose la question à Odo avant de commencer."] },
+  { id:"d1-kit", title:"Préparer ton kit", time:"20 min",
+    why:"Les sites vont te demander un logo, un email et un téléphone. Mieux vaut tout avoir sous la main avant de commencer.",
+    steps:[
+      "Vérifie que tu as accès à la boîte mail contact@suzaliconseil.com. Tous les mails de validation vont arriver là.",
+      "Demande à Odo le logo de Suzali en PNG, en carré, 500 × 500 px minimum. Le site n'a que des fichiers SVG, que beaucoup d'annuaires refusent.",
+      "Demande à Odo qui a le téléphone 07 57 90 24 79. Certains sites envoient un code par SMS ou appellent pour vérifier : cette personne doit être prévenue.",
+      "Demande à Odo les horaires d'ouverture à afficher (par exemple lundi au vendredi, 9 h à 18 h).",
+      "Convenez d'un endroit sûr pour noter les mots de passe des comptes créés (gestionnaire de mots de passe). Jamais dans un mail ni dans cette page."
+    ] },
+  { id:"d1-societe", platform:true, title:"Societe.com", time:"30 min", url:"https://www.societe.com",
+    why:"Annuaire légal très consulté. La fiche de Suzali existe déjà (elle vient du registre du commerce). On vérifie qu'elle est juste et on essaie d'ajouter le site web.",
+    steps:[
+      "Va sur societe.com et cherche le SIREN 992 281 097.",
+      "Vérifie que le nom, l'adresse et l'activité correspondent à la fiche d'identité.",
+      "Cherche sur la fiche un lien du type « Vous êtes le dirigeant ? » ou « Compléter / modifier la fiche ».",
+      "Si c'est possible gratuitement, ajoute le site web, le téléphone, l'email et la description ci-dessous.",
+      "Copie l'adresse de la fiche (la barre d'adresse du navigateur) dans la case « Lien de la fiche »."
+    ],
+    text:"Suzali Conseil (SASU, code NAF 7022Z) accompagne les entreprises B2B dans leur développement commercial : prospection commerciale externalisée, génération de leads, prise de rendez-vous qualifiés et conseil en stratégie commerciale. Basée à Paris, la société intervient auprès des PME et ETI partout en France.",
+    stuck:"Si le site demande une preuve que tu es la dirigeante (Kbis, pièce d'identité du président), ou s'il veut un paiement : choisis le statut « Bloqué », écris la raison dans la note et passe à PagesJaunes. Odo verra avec le président." },
+  { id:"d1-pj", platform:true, title:"PagesJaunes", time:"45 min", url:"https://www.pagesjaunes.fr",
+    why:"Le plus gros annuaire français. Google lui fait très confiance, c'est notre fiche la plus importante.",
+    steps:[
+      "Sur pagesjaunes.fr, cherche « Suzali Conseil » à Paris pour voir si une fiche existe déjà.",
+      "Si elle existe, clique sur le lien pour les professionnels (« C'est votre établissement ? » ou similaire) pour la revendiquer. Sinon, cherche en bas de page le lien pour inscrire gratuitement son entreprise.",
+      "Crée le compte avec l'email contact@suzaliconseil.com.",
+      "Remplis tous les champs en copiant la fiche d'identité : nom, adresse, téléphone (format FR), email, site web.",
+      "Activité : choisis la catégorie la plus proche de « Prospection commerciale » ou « Conseil en marketing ».",
+      "Ajoute les horaires donnés par Odo, le logo PNG et la description ci-dessous.",
+      "Si on te propose une vérification par appel ou SMS, préviens la personne qui a le téléphone avant de lancer l'envoi.",
+      "Refuse toutes les offres payantes (« Premium », « Booster », etc.)."
+    ],
+    text:"Suzali Conseil est une agence de prospection commerciale B2B installée à Paris, dans le 2e arrondissement. Nous prenons en charge la prospection des entreprises qui veulent plus de rendez-vous qualifiés sans recruter : ciblage des décideurs, téléprospection, campagnes email et LinkedIn, qualification des leads et prise de rendez-vous dans l'agenda des commerciaux.\n\nNous travaillons pour des PME, des ETI et des sociétés de services partout en France, avec un reporting clair à chaque étape et une démarche conforme au RGPD.",
+    stuck:"La validation peut prendre quelques jours : c'est normal. Mets le statut « En attente de validation » et passe à la suite." },
+  { id:"d1-bilan", title:"Faire le point de la journée", time:"10 min",
+    why:"Pour qu'Odo sache où tu en es sans avoir à te demander.",
+    steps:["Vérifie que chaque fiche du jour a un statut et, si elle existe, son lien.","Envoie un petit message à Odo : ce qui est fait, ce qui bloque."] }
+ ]},
+ { id:"jour2", n:2, title:"Les plateformes d'agences B2B", time:"≈ 2 h 30", tasks:[
+  { id:"d2-mails", title:"Valider les mails d'hier", time:"10 min",
+    why:"Certains sites envoient un lien de confirmation. Sans clic, la fiche reste invisible.",
+    steps:["Ouvre la boîte contact@suzaliconseil.com (regarde aussi dans les spams).","Clique sur tous les liens de confirmation de Societe.com et PagesJaunes.","Mets à jour les statuts du jour 1 si besoin."] },
+  { id:"d2-sortlist", platform:true, title:"Sortlist", time:"45 min", url:"https://www.sortlist.fr",
+    why:"Une plateforme où les entreprises cherchent une agence. Elle donne un lien vers notre site et peut aussi nous amener des clients.",
+    steps:[
+      "Sur sortlist.fr, cherche le lien pour les agences (« Inscrire mon agence » ou « Vous êtes une agence ? »).",
+      "Crée le compte avec contact@suzaliconseil.com.",
+      "Services à cocher : génération de leads, prospection commerciale, téléprospection, email marketing. Ne coche pas les services que Suzali ne propose pas.",
+      "Localisation : Paris. Zone d'intervention : France.",
+      "Demande à Odo le budget minimum par projet à afficher, puis remplis-le.",
+      "Ajoute le logo, le site web et la description ci-dessous.",
+      "Refuse les offres payantes. Le profil gratuit suffit."
+    ],
+    text:"Suzali Conseil est une agence de génération de leads B2B basée à Paris. Nous construisons et menons des campagnes de prospection outbound pour les équipes commerciales qui manquent de temps ou de bras : définition de la cible idéale, constitution de fichiers de prospection, séquences cold email et LinkedIn, téléprospection et prise de rendez-vous avec des décideurs.\n\nLes campagnes démarrent en général sous 7 jours, et chaque rendez-vous est qualifié selon vos critères avant d'arriver dans votre agenda. Nous proposons aussi la qualification de leads entrants et la vente en marque blanche.",
+    stuck:"Sortlist peut demander des études de cas. N'en invente pas : laisse vide et note-le, Odo les ajoutera à partir de la page Études de cas du site." },
+  { id:"d2-clutch", platform:true, title:"Clutch", time:"45 min", url:"https://clutch.co",
+    why:"Grand site international d'avis sur les agences, très bien vu par Google. Le site est en anglais, la description aussi.",
+    steps:[
+      "Sur clutch.co, clique sur « Get Listed » (inscription gratuite).",
+      "Crée le compte avec contact@suzaliconseil.com.",
+      "Company info : nom, site, adresse, téléphone au format international (+33 7 57 90 24 79), année de création 2025.",
+      "Service lines : choisis surtout « Lead Generation ». Tu peux ajouter « Telemarketing » et « Email Marketing ».",
+      "Demande à Odo la taille minimum de projet et le taux horaire à afficher.",
+      "Ajoute le logo et la description en anglais ci-dessous."
+    ],
+    text:"Suzali Conseil is a Paris-based B2B lead generation agency. We run outsourced sales prospecting for companies selling in France: ideal customer profile definition, prospect lists, cold email and LinkedIn outreach, cold calling and qualified meeting booking with decision-makers.\n\nCampaigns usually go live within 7 days, every meeting is qualified against the client's own criteria, and all outreach follows GDPR rules.",
+    stuck:"Clutch vérifie les profils à la main, ça peut prendre plusieurs jours. Les avis clients viendront plus tard : c'est Odo qui les demandera à de vrais clients." },
+  { id:"d2-crunchbase", platform:true, optional:true, title:"Crunchbase", time:"30 min", url:"https://www.crunchbase.com",
+    why:"Base de données d'entreprises très connue. Seulement si tu as encore de l'énergie aujourd'hui, sinon garde-la pour plus tard.",
+    steps:[
+      "Crée un compte gratuit sur crunchbase.com avec contact@suzaliconseil.com.",
+      "Cherche l'option pour ajouter un profil d'organisation (« Add new profile » puis « Organization »).",
+      "Remplis : nom, site web, date de création (08/10/2025), siège (Paris, France), secteur (Sales, Lead Generation).",
+      "Ajoute la description en anglais ci-dessous et le logo."
+    ],
+    text:"Suzali Conseil is a French B2B sales agency founded in 2025 and based in Paris. It helps companies build a predictable sales pipeline through outsourced prospecting, outbound campaigns (email, LinkedIn and phone) and qualified meeting booking with decision-makers.",
+    stuck:"Crunchbase relit les nouveaux profils avant publication. Mets « En attente de validation »." },
+  { id:"d2-bilan", title:"Faire le point de la journée", time:"10 min",
+    why:"Même chose qu'hier.",
+    steps:["Statut et lien à jour pour chaque plateforme du jour.","Petit message à Odo, avec les questions en attente (budget minimum, taux horaire…)."] }
+ ]},
+ { id:"jour3", n:3, title:"Annuaires B2B et vérification finale", time:"≈ 2 h 30", tasks:[
+  { id:"d3-mails", title:"Valider les mails d'hier", time:"10 min",
+    why:"Comme hier : sans clic de confirmation, la fiche reste invisible.",
+    steps:["Ouvre la boîte contact@ (et les spams), clique les liens de Sortlist, Clutch et Crunchbase.","Mets à jour les statuts."] },
+  { id:"d3-kompass", platform:true, title:"Kompass", time:"30 min", url:"https://fr.kompass.com",
+    why:"Annuaire B2B de référence, consulté par les acheteurs professionnels.",
+    steps:[
+      "Sur fr.kompass.com, cherche d'abord si Suzali existe déjà (SIREN 992 281 097). Si oui, revendique la fiche. Sinon, utilise l'inscription gratuite.",
+      "Remplis tous les champs depuis la fiche d'identité.",
+      "Activités : prospection commerciale, télémarketing, conseil en marketing.",
+      "Ajoute la description ci-dessous et le logo. Refuse les offres payantes."
+    ],
+    text:"Agence parisienne spécialisée dans l'externalisation de la prospection commerciale B2B. Suzali Conseil identifie les décideurs, mène les campagnes d'appels, d'emails et de messages LinkedIn, puis transmet aux équipes de vente des rendez-vous qualifiés.\n\nServices : prospection commerciale externalisée, téléprospection B2B, prise de rendez-vous, qualification de leads, fichiers de prospection et campagnes email et SMS." },
+  { id:"d3-europages", platform:true, title:"Europages", time:"30 min", url:"https://www.europages.fr",
+    why:"Annuaire B2B européen : utile pour être trouvé par des entreprises étrangères qui veulent vendre en France.",
+    steps:[
+      "Sur europages.fr, cherche le lien pour inscrire gratuitement son entreprise.",
+      "Remplis depuis la fiche d'identité. Type d'entreprise : prestataire de services.",
+      "Ajoute la description ci-dessous, le logo et le site web. Refuse les offres payantes."
+    ],
+    text:"Suzali Conseil aide les entreprises françaises et européennes à vendre en France grâce à une prospection B2B menée par une équipe dédiée. Nous prenons en charge le ciblage, les campagnes outbound multicanales (email, LinkedIn, téléphone) et la prise de rendez-vous avec des acheteurs et décideurs français, dans le respect du RGPD." },
+  { id:"d3-indexa", platform:true, title:"Indexa", time:"20 min", url:"https://www.indexa.fr",
+    why:"Annuaire généraliste français, simple et rapide. Bon dernier exercice.",
+    steps:[
+      "Sur indexa.fr, cherche le lien pour ajouter son entreprise gratuitement.",
+      "Remplis depuis la fiche d'identité, catégorie la plus proche de « Marketing » ou « Conseil aux entreprises ».",
+      "Ajoute la description ci-dessous."
+    ],
+    text:"Suzali Conseil, agence de prospection B2B à Paris : génération de leads qualifiés, téléprospection, campagnes outbound et prise de rendez-vous pour les équipes commerciales des PME et ETI." },
+  { id:"d3-verif", title:"Vérifier toutes les fiches en ligne", time:"30 min",
+    why:"Une fiche avec une faute dans l'adresse ou un lien cassé ne sert à rien. C'est l'étape qui fait la qualité du travail.",
+    steps:[
+      "Pour chaque plateforme au statut « En ligne », ouvre le lien de la fiche dans une fenêtre de navigation privée.",
+      "Compare nom, adresse et téléphone avec la fiche d'identité, caractère par caractère.",
+      "Clique sur le lien du site : tu dois arriver sur suzaliconseil.com.",
+      "Corrige ce qui ne va pas, puis note « vérifiée » dans la note."
+    ] },
+  { id:"d3-rapport", title:"Envoyer le bilan à Odo", time:"15 min",
+    why:"Odo va suivre l'arrivée des liens dans la Search Console de Google pendant les semaines qui viennent.",
+    steps:[
+      "Compte les fiches en ligne, en attente et bloquées (tout est dans cette page).",
+      "Envoie à Odo la liste des blocages avec leur raison, et les questions restantes.",
+      "Félicitations, c'est fini ! 🎉"
+    ] }
+ ]}
+];
+
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, attrs={}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else n.setAttribute(k, v);
+  }
+  for (const k of kids) if (k != null) n.append(k);
+  return n;
+};
+
+async function copyText(text, btn){
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const r = document.createRange(); const target = btn.closest(".idrow, .text-block")?.querySelector("dd, blockquote");
+    if (target){ r.selectNodeContents(target); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    btn.textContent = "Sélectionné, fais Ctrl+C"; return;
+  }
+  btn.classList.add("is-copied"); btn.textContent = "Copié";
+  setTimeout(() => { btn.classList.remove("is-copied"); btn.textContent = "Copier"; }, 1600);
+}
+function copyBtn(text){
+  const b = el("button", {class:"copy", type:"button", text:"Copier"});
+  b.addEventListener("click", () => copyText(text, b));
+  return b;
+}
+
+// ---------- render ----------
+const idcard = $("#idcard");
+for (const [k,v] of ID) idcard.append(el("div", {class:"idrow"}, el("dt",{text:k}), el("dd",{text:v}), copyBtn(v)));
+
+const ALL = DAYS.flatMap(d => d.tasks.map(t => ({...t, day:d.id})));
+const daysRoot = $("#days");
+for (const d of DAYS){
+  const sec = el("section", {id:d.id});
+  const meta = el("div", {class:"day-meta"},
+    el("span", {}, el("span",{class:"num", id:`count-${d.id}`, text:"0 / 0"}), " · ", d.time),
+    el("div", {class:"bar", id:`bar-${d.id}`}, el("span")));
+  sec.append(el("div", {class:"day-head"},
+    el("div", {}, el("span",{class:"eyebrow", text:`Jour ${d.n}`}), el("h2",{text:d.title})), meta));
+  for (const t of d.tasks){
+    const card = el("article", {class:"task", id:`t-${t.id}`});
+    const cb = el("input", {type:"checkbox", class:"check", id:`cb-${t.id}`, "aria-label":`Marquer « ${t.title} » comme fait`});
+    const chips = el("div", {class:"chips"}, el("span",{class:"chip", text:t.time}));
+    if (t.optional) chips.append(el("span",{class:"chip opt", text:"Optionnel"}));
+    if (t.platform) chips.append(el("span",{class:"status-pill", id:`pill-${t.id}`}));
+    const titleBox = el("div", {class:"task-title"}, el("label", {for:`cb-${t.id}`}, el("h3",{text:t.title})), chips, el("p",{class:"why", text:t.why}));
+    card.append(el("div", {class:"task-top"}, cb, titleBox));
+
+    const det = el("details", t.platform ? {} : {open:""});
+    det.append(el("summary", {text: t.platform ? "Voir les étapes et le texte à copier" : "Étapes"}));
+    if (t.url) det.append(el("p", {style:"margin-top:10px"}, "Site : ", el("a",{href:t.url, target:"_blank", rel:"noopener", text:t.url.replace("https://","")})));
+    const ol = el("ol", {class:"steps"}); t.steps.forEach(s => ol.append(el("li",{text:s}))); det.append(ol);
+    if (t.text){
+      det.append(el("div", {class:"text-block"},
+        el("div", {class:"label"}, el("strong",{text:`Description pour ${t.title}`}), copyBtn(t.text)),
+        el("blockquote", {text:t.text})));
+    }
+    if (t.stuck) det.append(el("p", {class:"stuck"}, el("b",{text:"Si ça bloque : "}), t.stuck));
+    card.append(det);
+
+    if (t.platform){
+      const sel = el("select", {id:`st-${t.id}`});
+      for (const [v,l] of PLATFORM_STATUS) sel.append(el("option",{value:v, text:l}));
+      card.append(el("div", {class:"fields"},
+        el("label", {for:`url-${t.id}`}, "Lien de la fiche créée", el("input",{type:"url", id:`url-${t.id}`, placeholder:"https://…", inputmode:"url"})),
+        el("label", {for:`st-${t.id}`}, "Statut", sel)));
+      card.append(el("div", {class:"fields", style:"grid-template-columns:1fr"},
+        el("label", {for:`note-${t.id}`}, "Note (ce qui bloque, ce qui reste à faire)", el("input",{type:"text", id:`note-${t.id}`, placeholder:"Ex. : en attente du SMS de validation"}))));
+    }
+    sec.append(card);
+  }
+  daysRoot.append(sec);
+}
+
+// ---------- state ----------
+const state = {}; // id -> {done, url, status, note}
+const get = id => state[id] || {done:false, url:"", status:"todo", note:""};
+const STATUS_STYLE = { todo:["var(--brand-soft)","var(--brand)"], doing:["var(--brand-soft)","var(--brand)"], pending:["var(--warn-soft)","var(--warn)"], live:["var(--ok-soft)","var(--ok)"], blocked:["var(--block-soft)","var(--block)"] };
+
+function paint(){
+  let total=0, done=0;
+  const perDay = {};
+  for (const t of ALL){
+    const s = get(t.id);
+    const card = $(`#t-${t.id}`);
+    const cb = $(`#cb-${t.id}`);
+    if (cb.checked !== !!s.done) cb.checked = !!s.done;
+    card.classList.toggle("is-done", !!s.done);
+    if (t.platform){
+      for (const [k, sel] of [["url",`#url-${t.id}`],["status",`#st-${t.id}`],["note",`#note-${t.id}`]]){
+        const inp = $(sel);
+        if (document.activeElement !== inp && inp.value !== (s[k] || (k==="status"?"todo":""))) inp.value = s[k] || (k==="status"?"todo":"");
+      }
+      const pill = $(`#pill-${t.id}`); const st = s.status || "todo";
+      pill.textContent = PLATFORM_STATUS.find(x => x[0]===st)[1];
+      pill.style.background = STATUS_STYLE[st][0]; pill.style.color = STATUS_STYLE[st][1];
+    }
+    if (!t.optional){ total++; if (s.done) done++; }
+    const pd = perDay[t.day] ||= {total:0, done:0};
+    if (!t.optional){ pd.total++; if (s.done) pd.done++; }
+  }
+  $("#total-count").textContent = `${done} / ${total}`;
+  $("#total-bar > span").style.width = `${total ? done/total*100 : 0}%`;
+  $("#total-bar").classList.toggle("done", total && done===total);
+  for (const d of DAYS){
+    const pd = perDay[d.id];
+    $(`#count-${d.id}`).textContent = `${pd.done} / ${pd.total}`;
+    $(`#bar-${d.id} > span`).style.width = `${pd.total ? pd.done/pd.total*100 : 0}%`;
+    $(`#bar-${d.id}`).classList.toggle("done", pd.done===pd.total);
+  }
+}
+
+// ---------- persistence: shared db, else this device ----------
+const LS_KEY = "suzali-backlinks-biba";
+let mode = "loading"; // shared | local | readonly
+let db = null;
+const queues = {};
+function setSync(m, text){ mode = m; const s = $("#sync"); s.dataset.s = m; s.textContent = text; }
+
+function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {} }
+function loadLocal(){ try { Object.assign(state, JSON.parse(localStorage.getItem(LS_KEY) || "{}")); } catch {} }
+
+function persist(id){
+  if (mode === "readonly") return;
+  if (mode !== "shared"){ saveLocal(); return; }
+  const body = {...get(id), updatedAt: new Date().toISOString()};
+  queues[id] = (queues[id] || Promise.resolve()).then(() => db.collection("taches").doc(id).set(body)).catch(e => {
+    if (e && e.code === "invalid_argument"){ setReadonly(); }
+    else { setSync("local", "Problème de connexion : la dernière modification n'a peut-être pas été enregistrée. Recharge la page."); }
+  });
+}
+function setReadonly(){
+  setSync("readonly", "Lecture seule : tu peux consulter le plan mais pas cocher. Demande à Odo un accès « Contributeur ».");
+  document.querySelectorAll(".task input, .task select").forEach(i => i.disabled = true);
+}
+
+function update(id, patch){ state[id] = {...get(id), ...patch}; paint(); persist(id); }
+
+for (const t of ALL){
+  $(`#cb-${t.id}`).addEventListener("change", e => {
+    const patch = {done: e.target.checked};
+    if (t.platform && e.target.checked && get(t.id).status === "todo") patch.status = "live";
+    update(t.id, patch);
+  });
+  if (t.platform){
+    $(`#st-${t.id}`).addEventListener("change", e => {
+      const status = e.target.value;
+      update(t.id, {status, done: status === "live" ? true : (status === "todo" ? false : get(t.id).done)});
+    });
+    $(`#url-${t.id}`).addEventListener("change", e => update(t.id, {url: e.target.value.trim()}));
+    $(`#note-${t.id}`).addEventListener("change", e => update(t.id, {note: e.target.value.trim()}));
+  }
+}
+
+paint();
+(async () => {
+  try { db = window.claude?.use ? await window.claude.use("db") : null; } catch { db = null; }
+  if (!db){
+    loadLocal(); paint();
+    setSync("local", "Progression enregistrée sur cet appareil seulement");
+    return;
+  }
+  setSync("shared", "Progression partagée avec Odo");
+  db.collection("taches").onSnapshot(snap => {
+    for (const d of snap.docs){ const v = d.data(); if (v) state[d.id] = {done:!!v.done, url:v.url||"", status:v.status||"todo", note:v.note||""}; }
+    paint();
+  }, () => setSync("local", "Connexion perdue : recharge la page pour retrouver la progression partagée."));
+})();
+</script>

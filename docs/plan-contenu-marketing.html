@@ -1,0 +1,505 @@
+<title>Plan contenu de Suzali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; a week-by-week checklist where each article is a card with its brief. Same Suzali palette as the backlinks plan. */
+:root{
+  --bg:#f5f8f6; --surface:#ffffff; --ink:#0d332b; --muted:#4e6660; --line:#d6e2dd;
+  --brand:#1a4d43; --brand-soft:#e3eee9; --lime:#b0ff5b; --lime-ink:#2d4a00;
+  --warn:#9a4a12; --warn-soft:#fdf0e6; --ok:#1f6f3f; --ok-soft:#e2f4e8; --block:#9b1c2c; --block-soft:#fbe7ea;
+  --font-body:"Manrope","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1a17; --surface:#11241f; --ink:#e4efeb; --muted:#9db3ac; --line:#24403a;
+  --brand:#8fd6c2; --brand-soft:#173530; --lime:#b0ff5b; --lime-ink:#1c2e00;
+  --warn:#f2a36a; --warn-soft:#2e1f12; --ok:#7ad69b; --ok-soft:#14301f; --block:#f08b98; --block-soft:#33161b;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0b1a17; --surface:#11241f; --ink:#e4efeb; --muted:#9db3ac; --line:#24403a;
+  --brand:#8fd6c2; --brand-soft:#173530; --lime:#b0ff5b; --lime-ink:#1c2e00;
+  --warn:#f2a36a; --warn-soft:#2e1f12; --ok:#7ad69b; --ok-soft:#14301f; --block:#f08b98; --block-soft:#33161b;
+  color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;margin:0}
+.wrap{max-width:800px;margin:0 auto;padding:40px 16px 80px;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:2.1rem;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.45rem;font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0}
+a{color:var(--brand);text-underline-offset:3px}
+code{font-family:var(--font-mono);font-size:.88em;background:var(--brand-soft);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+.eyebrow{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.lead{font-size:1.08rem;color:var(--muted);max-width:64ch}
+header{display:flex;flex-direction:column;gap:14px}
+.progress{display:flex;flex-direction:column;gap:8px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.progress-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.bar{height:10px;background:var(--brand-soft);border-radius:99px;overflow:hidden}
+.bar>span{display:block;height:100%;width:0;background:var(--brand);border-radius:99px;transition:width .4s ease}
+.bar.done>span{background:var(--lime)}
+.num{font-variant-numeric:tabular-nums;font-weight:700}
+.sync{font-size:.8rem;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.sync[data-s="shared"]::before{background:var(--ok)}
+.sync[data-s="local"]::before{background:var(--warn)}
+.sync[data-s="readonly"]::before{background:var(--block)}
+nav.days{display:flex;gap:8px;flex-wrap:wrap}
+nav.days a{flex:1 1 140px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:2px}
+nav.days a:hover{border-color:var(--brand)}
+nav.days small{color:var(--muted);font-size:.8rem}
+section{display:flex;flex-direction:column;gap:16px}
+.prose{display:flex;flex-direction:column;gap:12px;max-width:66ch}
+.callout{background:var(--brand-soft);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.callout.alert{background:var(--warn-soft)}
+.callout.alert strong{color:var(--warn)}
+.intents{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.intents div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;font-size:.9rem}
+.intents b{font-size:1rem}
+.intents i{color:var(--muted)}
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:620px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+td:first-child{font-weight:700}
+.rules{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:r}
+.rules li{counter-increment:r;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.rules li::before{content:counter(r);width:28px;height:28px;border-radius:50%;background:var(--brand);color:var(--bg);font-weight:800;display:grid;place-items:center;font-size:.85rem}
+.rules b{display:block}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.who div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:4px}
+button{font:inherit;cursor:pointer}
+.copy{border:1px solid var(--line);background:transparent;color:var(--brand);border-radius:8px;padding:4px 10px;font-size:.8rem;font-weight:700}
+.copy:hover{background:var(--brand-soft)}
+.copy.is-copied{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
+:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.day-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding-top:8px;border-top:2px solid var(--ink)}
+.day-head .bar{width:160px}
+.day-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:.85rem;color:var(--muted)}
+.task{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.task.is-done{border-color:var(--ok)}
+.task-top{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start}
+.check{appearance:none;width:26px;height:26px;border:2px solid var(--brand);border-radius:8px;margin:0;display:grid;place-items:center;cursor:pointer;background:var(--surface)}
+.check:checked{background:var(--ok);border-color:var(--ok)}
+.check:checked::after{content:"";width:7px;height:13px;border:solid var(--bg);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.task-title{display:flex;flex-direction:column;gap:4px;min-width:0}
+.task.is-done h3{text-decoration:line-through;text-decoration-color:var(--ok);text-decoration-thickness:2px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--brand-soft);color:var(--brand)}
+.chip.dev{background:var(--warn-soft);color:var(--warn)}
+.why{color:var(--muted);font-size:.95rem}
+details{border-top:1px dashed var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:700;color:var(--brand);font-size:.92rem}
+.steps{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{font-weight:800;color:var(--brand)}
+.brief{display:grid;grid-template-columns:150px 1fr;gap:10px 16px;margin:12px 0 0;font-size:.93rem}
+.brief dt{font-weight:700;color:var(--muted);font-size:.82rem;padding-top:2px}
+.brief dd{margin:0;min-width:0}
+.brief ol,.brief ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.text-block{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.text-block .label{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.text-block blockquote{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.92rem;white-space:pre-line}
+.stuck{margin-top:12px;background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:.9rem}
+.stuck b{color:var(--warn)}
+.fields{display:grid;grid-template-columns:1fr 210px;gap:10px;padding-top:4px}
+.fields.one{grid-template-columns:1fr}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;font-weight:700;color:var(--muted);min-width:0}
+.fields input,.fields select,.fields textarea{font:inherit;font-size:.9rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+.fields textarea{min-height:74px;resize:vertical}
+.fields input:disabled,.fields select:disabled,.fields textarea:disabled{opacity:.6}
+.status-pill{justify-self:start;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:99px}
+footer{font-size:.85rem;color:var(--muted)}
+@media (max-width:560px){
+  h1{font-size:1.7rem}
+  .fields{grid-template-columns:1fr}
+  .who{grid-template-columns:1fr}
+  .brief{grid-template-columns:1fr;gap:2px}
+  .brief dd{margin-bottom:8px}
+  .day-meta{align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){.bar>span{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Suzali Conseil · SEO · Plan contenu sur 3 semaines</span>
+    <h1>Écrire ce que nos clients cherchent vraiment</h1>
+    <p class="lead">Ce plan complète les backlinks. Il guide l'équipe marketing pour publier les 4 contenus qui manquent à Suzali et mettre de l'ordre dans ceux qui existent. Chaque article a son brief : la recherche visée, le plan, les données à trouver et les liens à poser. Cochez au fur et à mesure.</p>
+    <div class="progress">
+      <div class="progress-row">
+        <strong>Progression totale</strong>
+        <span><span class="num" id="total-count">0 / 0</span> tâches</span>
+      </div>
+      <div class="bar" id="total-bar"><span></span></div>
+      <span class="sync" id="sync" data-s="loading">Connexion…</span>
+    </div>
+    <nav class="days" aria-label="Semaines">
+      <a href="#avant"><strong>Avant de commencer</strong><small>20 min de lecture</small></a>
+      <a href="#s1"><strong>Semaine 1</strong><small>Comprendre et ranger</small></a>
+      <a href="#s2"><strong>Semaine 2</strong><small>Prix et vrai coût</small></a>
+      <a href="#s3"><strong>Semaine 3</strong><small>Comparer et choisir</small></a>
+      <a href="#tech"><strong>Côté technique</strong><small>Pour Odo</small></a>
+    </nav>
+  </header>
+
+  <section id="avant">
+    <span class="eyebrow">À lire avant la semaine 1</span>
+    <h2>L'intention de recherche, en 2 minutes</h2>
+    <div class="prose">
+      <p>Derrière chaque recherche Google, il y a une question précise. C'est l'<b>intention de recherche</b>. Google classe en haut les pages qui répondent à cette question-là, pas forcément les pages qui contiennent les bons mots.</p>
+    </div>
+    <div class="intents">
+      <div><b>S'informer</b><i>« comment trouver des clients B2B »</i><span>Un guide pratique.</span></div>
+      <div><b>Comparer</b><i>« meilleures agences de prospection »</i><span>Un comparatif, un classement.</span></div>
+      <div><b>Décider</b><i>« internaliser ou externaliser sa prospection »</i><span>Un calcul, une grille de choix.</span></div>
+      <div><b>Acheter</b><i>« agence prospection B2B Paris »</i><span>Une page service avec contact.</span></div>
+    </div>
+
+    <h3>Ce que Google montre en page 1 sur nos recherches</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Recherche</th><th>Ce qui est en page 1</th><th>Intention réelle</th><th>Ce qui nous manque</th></tr></thead>
+        <tbody>
+          <tr><td>prospection commerciale externalisée</td><td>Guides « interne ou externe ? » (Salesdorado, Le Blog du Dirigeant, Digitiz)</td><td>Décider</td><td>Un vrai calcul du coût interne vs externe</td></tr>
+          <tr><td>agence de génération de leads B2B</td><td>Listes d'agences (Salesdorado, Semrush)</td><td>Comparer</td><td>Un comparatif honnête des agences</td></tr>
+          <tr><td>agence outbound</td><td>Annuaires (La Fabrique du Net, Sortlist, Derrick)</td><td>Comparer</td><td>Être listés dedans (plan backlinks) + comparatif</td></tr>
+          <tr><td>meilleures agences de prospection B2B</td><td>Comparatifs avec prix affichés</td><td>Comparer les prix</td><td>Un article sur les prix</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose">
+      <p>Nos pages services sont des pages « acheter ». Elles ne peuvent pas battre des comparatifs sur des recherches « comparer » ou « décider ». Il nous faut donc des contenus de ce type, qui envoient ensuite le lecteur vers nos pages services.</p>
+    </div>
+
+    <div class="callout alert">
+      <strong>Le deuxième problème : nos pages se font concurrence</strong>
+      <p>Sur « prospection commerciale externalisée », 3 pages Suzali visent la même recherche : la page service, l'article « Prospection commerciale externalisée : guide complet » et l'article « Pourquoi externaliser sa prospection commerciale B2B ? ». Même chose sur « agence de génération de leads B2B » (page service + 2 articles). Google ne sait pas laquelle montrer, alors il n'en met aucune en avant. On appelle ça la <b>cannibalisation</b>. La semaine 1 sert à la régler.</p>
+    </div>
+
+    <h3>Les 7 règles d'écriture</h3>
+    <ol class="rules">
+      <li><span><b>Une recherche = une seule page Suzali.</b> Avant d'écrire, vérifiez qu'aucune page du site ne vise déjà la même recherche.</span></li>
+      <li><span><b>Répondez dans les 3 premières lignes.</b> Si on cherche un prix, le prix arrive tout de suite. Le détail vient après.</span></li>
+      <li><span><b>Chaque chiffre a sa source.</b> Un lien et une date de relevé, notés dans le Google Doc. Pas de source, pas de chiffre.</span></li>
+      <li><span><b>Rien d'invérifiable sur un concurrent.</b> On cite uniquement ce qu'il publie lui-même (prix, services), avec le lien. Jamais de critique ni de note inventée : en France, la publicité comparative doit être objective et vérifiable.</span></li>
+      <li><span><b>Un tableau vaut mieux que 3 paragraphes.</b> Prix, comparaisons, critères : mettez-les en tableau. Google les reprend souvent tels quels.</span></li>
+      <li><span><b>Chaque article envoie vers une page service.</b> Et au moins un ancien article envoie vers le nouveau. Le brief dit lesquels.</span></li>
+      <li><span><b>Pas d'année dans un titre</b> sauf si quelqu'un s'engage à le mettre à jour chaque année. Un « 2024 » dans un titre en 2026, ça fait site abandonné.</span></li>
+    </ol>
+
+    <h3>Qui fait quoi</h3>
+    <div class="who">
+      <div><b>L'équipe marketing</b><span class="why">Collecte les données, rédige dans un Google Doc, relit, puis envoie le lien du Doc à Odo. Personne n'a besoin d'écrire du code.</span></div>
+      <div><b>Odo (avec Claude)</b><span class="why">Met en ligne les articles avec leur FAQ, fait les redirections et ajuste l'outil qui génère les articles automatiques.</span></div>
+    </div>
+  </section>
+
+  <div id="days"></div>
+
+  <footer>Plan établi le 7 octobre 2026 à partir des données Search Console (28 jours au 3 octobre) et des résultats Google sur nos recherches clés. Prochain point : 4 semaines après la publication du dernier article.</footer>
+</div>
+
+<script>
+const ARTICLE_STATUS = [["todo","À faire"],["data","Données collectées"],["writing","En rédaction"],["review","En relecture"],["sent","Envoyé à Odo"],["live","Publié"]];
+const TECH_STATUS = [["todo","À faire"],["doing","En cours"],["live","Fait"],["blocked","Bloqué"]];
+
+const CHECKLIST = `Avant d'envoyer à Odo, vérifier :
+☐ La réponse à la question est dans les 3 premières lignes
+☐ Le titre fait moins de 60 caractères et contient la recherche visée
+☐ Le titre SEO fait 42 caractères maximum (limite de l'admin)
+☐ La description fait entre 130 et 160 caractères
+☐ Chaque chiffre a un lien source et une date de relevé
+☐ Rien de négatif ni d'invérifiable sur un concurrent
+☐ Au moins un tableau
+☐ Les 2 liens vers nos pages services sont en place
+☐ La FAQ a 4 ou 5 questions, avec des réponses de 2 ou 3 phrases
+☐ Une autre personne de l'équipe a relu`;
+
+const WEEKS = [
+ { id:"s1", label:"Semaine 1", title:"Comprendre et ranger l'existant", time:"≈ 3 h", tasks:[
+  { id:"s1-lire", title:"Lire « Avant de commencer »", time:"20 min",
+    why:"Pour comprendre pourquoi on écrit ces 4 contenus-là et pas d'autres.",
+    steps:["Lisez toute la partie du haut, surtout le tableau et l'encadré sur la cannibalisation.","Notez les questions pour Odo avant d'attaquer la suite."] },
+  { id:"s1-serp", title:"Regarder Google avec les yeux d'un client", time:"45 min", track:"note",
+    why:"Le meilleur moyen de comprendre l'intention de recherche, c'est de voir ce que Google propose.",
+    steps:[
+      "Ouvrez une fenêtre de navigation privée et allez sur google.fr.",
+      "Tapez une par une : « prix agence prospection b2b », « internaliser ou externaliser prospection », « meilleures agences prospection b2b », « paiement au rendez-vous prospection », « agence génération de leads b2b ».",
+      "Pour chaque recherche, regardez les 5 premiers résultats. Est-ce un guide, un comparatif, un annuaire ou une page d'agence ? Les prix sont-ils affichés ?",
+      "Notez ce que vous voyez dans la case ci-dessous, en une ligne par recherche.",
+      "Gardez les liens des 2 meilleurs résultats de chaque recherche : ils serviront de modèle (pas de copie !) pour nos articles."
+    ] },
+  { id:"s1-cannib", title:"Trouver la page qui doit garder chaque recherche", time:"45 min", track:"note",
+    why:"Quand plusieurs de nos pages visent la même recherche, il faut en garder une et faire travailler les autres pour elle. Search Console nous dit laquelle Google préfère déjà.",
+    steps:[
+      "Dans Search Console : Performances, période 3 mois, puis « Ajouter un filtre » > Requête > contient « prospection commerciale externalisée ».",
+      "Cliquez sur l'onglet PAGES sous le graphique. Notez chaque page Suzali qui apparaît, avec ses impressions et sa position moyenne.",
+      "Faites pareil pour « génération de leads b2b » et « agence outbound ».",
+      "Notez le tout dans la case ci-dessous. Ne supprimez rien : c'est Odo qui décide des fusions et des redirections avec ces chiffres (voir « Côté technique »)."
+    ],
+    stuck:"Si une requête ne montre aucune page, élargissez la période à 6 mois ou retirez un mot de la recherche." },
+  { id:"s1-titres", title:"Rafraîchir les titres SEO de 4 anciens articles", time:"30 min",
+    why:"Des titres avec « 2024 » ou des Majuscules À Chaque Mot font daté et donnent moins envie de cliquer.",
+    steps:[
+      "Dans l'admin du site, ouvrez chaque article et modifiez seulement son titre SEO. 42 caractères maximum, l'admin refuse au-delà.",
+      "« Cold Emailing B2B France : La Stratégie Gagnante en 2024 » → Cold emailing B2B en France : la méthode",
+      "« Le Fichier Prospection B2B : Clé de Voûte de Votre Croissance » → Fichier de prospection B2B : le guide",
+      "« Génération Leads B2B Industrie : Stratégies d'Impact » → Génération de leads B2B dans l'industrie",
+      "« Prospection commerciale PME : Les Stratégies Incontournables » → Prospection commerciale en PME : méthode",
+      "Ne touchez pas à « Boostez vos ventes B2B… », ni aux articles sur la prospection externalisée ou le choix d'une agence : ils dépendent de la tâche précédente."
+    ] },
+  { id:"s1-bilan", title:"Envoyer les notes de la semaine à Odo", time:"10 min",
+    why:"Odo a besoin de vos relevés Search Console pour décider des fusions avant la semaine 2.",
+    steps:["Envoyez à Odo le lien de cette page : vos notes sont dedans.","Attendez sa décision sur les articles concurrents avant de commencer l'article « vrai coût » de la semaine 2."] }
+ ]},
+ { id:"s2", label:"Semaine 2", title:"Les 2 contenus qui comptent le plus", time:"≈ 7 h", tasks:[
+  { id:"s2-prix", title:"Article : combien coûte une agence de prospection B2B ?", time:"3 h 30", track:"article",
+    why:"C'est la question n° 1 d'un acheteur, et les concurrents en page 1 y répondent avec des prix. Nous, nous n'en parlons nulle part.",
+    brief:{
+      "Recherches visées":"prix agence prospection b2b · tarif prospection commerciale externalisée · coût génération de leads b2b",
+      "Intention":"Comparer les prix avant de demander des devis.",
+      "Titre proposé":"Combien coûte une agence de prospection B2B ? Prix et modèles",
+      "Les 3 premières lignes":"La réponse chiffrée directe : « Comptez entre X et Y € par mois pour un forfait, ou entre X et Y € par rendez-vous qualifié. » Les fourchettes viennent de vos relevés.",
+      "Plan":["La réponse courte : les fourchettes de prix","Les 4 modèles de facturation : forfait mensuel, paiement au rendez-vous, SDR dédié, commission sur les ventes (en tableau)","Ce qui fait varier le prix : cible, canaux, volume, données, durée d'engagement","Les prix affichés par les agences (tableau : agence, modèle, prix, lien, date du relevé)","Les coûts cachés à vérifier : frais de démarrage, fichier de prospects, outils, durée minimum","Et chez Suzali ? (fourchettes validées par le CEO)","FAQ : 4 ou 5 questions"],
+      "Données à trouver":["Les prix publics d'au moins 6 agences, relevés sur leur propre site. Points de départ : Lalaleads, ReCom, Captain Prospect, cités dans les comparatifs en page 1. Vérifiez chaque prix sur le site de l'agence.","Les fourchettes de Suzali, à demander au CEO (c'est dans le bilan SEO)."],
+      "Liens à poser":["Vers /services/prospection-commerciale-externalisee","Vers /services/prise-rendez-vous-b2b","Depuis : l'article « Prospection commerciale externalisée : guide complet »"],
+      "Longueur":"1 500 à 2 000 mots"
+    },
+    stuck:"Une agence n'affiche pas ses prix ? Ne l'inventez pas et ne la mettez pas dans le tableau. Écrivez simplement « sur devis » dans le texte, ou passez à une autre." },
+  { id:"s2-cout", title:"Article : internaliser ou externaliser, le vrai coût", time:"3 h", track:"article",
+    why:"C'est exactement ce que Google montre sur « prospection commerciale externalisée », notre recherche la plus vue. Selon la décision d'Odo (semaine 1), cet article remplacera probablement l'actuel « guide complet ».",
+    brief:{
+      "Recherches visées":"internaliser ou externaliser sa prospection · coût d'un SDR · prospection commerciale externalisée avantages",
+      "Intention":"Décider entre recruter un commercial ou passer par une agence.",
+      "Titre proposé":"Internaliser ou externaliser sa prospection : le vrai coût",
+      "Les 3 premières lignes":"Un commercial junior coûte en réalité bien plus que son salaire (chiffre exact tiré du simulateur Urssaf), et il faut plusieurs mois avant qu'il soit efficace. Une agence coûte X à Y € par mois et démarre en quelques jours.",
+      "Plan":["La réponse courte","Ce que coûte vraiment un commercial en interne : salaire, charges, outils, temps de management, montée en compétence, départs (tableau sur 12 mois)","Ce que coûte une agence (renvoi vers l'article prix)","Exemple chiffré : une PME qui veut 10 rendez-vous par mois, les deux options sur 12 mois","Quand garder la prospection en interne, quand l'externaliser (grille de choix)","Le modèle mixte : une agence pour démarrer, puis un recrutement","FAQ : 4 ou 5 questions"],
+      "Données à trouver":["Le salaire d'un SDR ou business developer junior en France : APEC, Welcome to the Jungle ou Glassdoor. Notez la source.","Le coût employeur réel de ce salaire, avec le simulateur officiel mon-entreprise.urssaf.fr.","Le prix public des outils : LinkedIn Sales Navigator, un outil d'emailing comme Lemlist, un outil de données (liens vers les pages de tarifs).","La durée de montée en compétence d'un commercial : une source sérieuse (étude, article d'un média B2B)."],
+      "Liens à poser":["Vers /services/prospection-commerciale-externalisee (le lien principal)","Vers l'article sur les prix","Depuis : « Pourquoi externaliser sa prospection commerciale B2B ? » si Odo le garde"],
+      "Longueur":"1 800 à 2 200 mots"
+    } },
+  { id:"s2-relecture", title:"Relire les 2 articles en croisé", time:"30 min",
+    why:"Un second regard attrape les chiffres sans source et les phrases floues.",
+    steps:["Chaque personne relit l'article de l'autre avec la checklist ci-dessous.","Corrigez, puis passez le statut de l'article à « Envoyé à Odo » avec le lien du Google Doc."],
+    text:CHECKLIST, textLabel:"Checklist de relecture" }
+ ]},
+ { id:"s3", label:"Semaine 3", title:"Comparer et choisir", time:"≈ 6 h", tasks:[
+  { id:"s3-comparatif", title:"Article : les agences de prospection B2B en France, comparatif", time:"3 h", track:"article",
+    why:"Sur « agence de génération de leads B2B » et « agence outbound », Google ne montre que des comparatifs. Autant publier le nôtre, honnête et sourcé.",
+    brief:{
+      "Recherches visées":"meilleures agences prospection b2b · agence génération de leads b2b comparatif · agence outbound france",
+      "Intention":"Comparer plusieurs agences avant d'en contacter 2 ou 3.",
+      "Titre proposé":"Agences de prospection B2B en France : le comparatif",
+      "Les 3 premières lignes":"Le tableau récapitulatif arrive tout de suite (agence, spécialité, canaux, modèle de prix), avec une phrase qui explique nos critères.",
+      "Plan":["Nos critères de choix, expliqués","Le tableau récapitulatif (8 à 10 agences)","Une courte fiche par agence : pour qui, canaux, prix public s'il existe, lien","Suzali Conseil, présentée comme les autres, avec la mention « c'est nous »","Quelle agence selon votre situation (startup, PME industrielle, grand compte)","FAQ : 4 ou 5 questions"],
+      "Données à trouver":["Pour chaque agence, uniquement ce qu'elle publie elle-même : services, canaux, ville, prix si affiché. Lien vers sa page.","Point de départ : les listes de Salesdorado, La Fabrique du Net et Derrick, en vérifiant chaque info sur le site de l'agence."],
+      "Liens à poser":["Vers /services/generation-leads-b2b","Vers /services/outbound-marketing-b2b","Vers l'article sur les prix"],
+      "Longueur":"2 000 à 2 500 mots"
+    },
+    stuck:"Pas de classement « n° 1, n° 2… », pas de notes sur 5, pas d'avis : on décrit, on ne juge pas. Suzali n'a pas besoin d'être en premier, c'est l'honnêteté du comparatif qui le rend crédible." },
+  { id:"s3-modele", title:"Article : forfait ou paiement au rendez-vous ?", time:"2 h", track:"article",
+    why:"Le dernier doute d'un acheteur avant de signer. Ceux qui cherchent ça sont prêts à acheter.",
+    brief:{
+      "Recherches visées":"paiement au rendez-vous prospection · prospection au rdv qualifié · prise de rendez-vous b2b externalisée",
+      "Intention":"Choisir comment payer son agence.",
+      "Titre proposé":"Forfait ou paiement au rendez-vous : quel modèle choisir ?",
+      "Les 3 premières lignes":"La réponse courte : le paiement au rendez-vous limite le risque, le forfait donne plus de contrôle sur la qualité. Tout dépend de ce qu'on appelle un « rendez-vous qualifié ».",
+      "Plan":["Les 2 modèles expliqués simplement","Avantages et risques de chacun (tableau)","Ce qu'est un rendez-vous qualifié et pourquoi le définir dans le contrat","Calculer son coût par rendez-vous réellement tenu (exemple chiffré)","Quel modèle selon votre situation","FAQ : 4 ou 5 questions"],
+      "Données à trouver":["Les prix au rendez-vous affichés par 3 ou 4 agences (repris de l'article prix).","Les critères de qualification utilisés chez Suzali (à demander au CEO)."],
+      "Liens à poser":["Vers /services/prise-rendez-vous-b2b","Vers /services/qualification-leads-b2b","Vers l'article sur les prix"],
+      "Longueur":"1 200 à 1 600 mots"
+    } },
+  { id:"s3-maillage", title:"Lister les liens à ajouter dans les anciens articles", time:"30 min", track:"note",
+    why:"Un nouvel article sans lien entrant met beaucoup plus de temps à être trouvé par Google.",
+    steps:["Relisez les titres des anciens articles du blog (page Actualités du site).","Pour chaque nouvel article, choisissez 1 ou 2 anciens articles qui devraient renvoyer vers lui, et la phrase où placer le lien.","Notez-les ci-dessous sous la forme : ancien article → nouvel article → phrase. Odo les ajoute."] },
+  { id:"s3-index", title:"Demander à Google de passer sur les nouveaux articles", time:"15 min",
+    why:"Ça accélère la découverte des pages, de quelques jours souvent.",
+    steps:["Une fois les articles en ligne, dans Search Console, collez l'adresse de chaque article dans la barre « Inspecter n'importe quelle URL » en haut.","Cliquez sur « Demander une indexation ». Une fois par article, pas plus."] },
+  { id:"s3-suivi", title:"Prévoir le point à 4 semaines", time:"10 min",
+    why:"Pour savoir ce qui marche et ajuster les prochains contenus.",
+    steps:["Mettez dans l'agenda une date 4 semaines après la dernière publication.","Ce jour-là, dans Search Console > Performances > onglet Pages, notez pour chaque nouvel article ses impressions, ses clics et sa position.","Envoyez ces chiffres à Odo."] }
+ ]},
+ { id:"tech", label:"Côté technique", title:"Pour Odo (avec Claude)", time:"en parallèle", tasks:[
+  { id:"t-cannib", title:"Décider des fusions et faire les redirections", time:"1 h", track:"tech", dev:true,
+    why:"À partir des relevés de la semaine 1 : une seule page Suzali par recherche.",
+    steps:["Pour chaque recherche, garder la page qui a le plus d'impressions et la meilleure position.","Fusionner le contenu utile des autres dans la page gardée, puis rediriger leur adresse (redirection 301) vers elle.","Probable : « Pourquoi externaliser… » fusionné dans l'article « vrai coût », et « Boostez vos ventes B2B… » à arbitrer face à /services/generation-leads-b2b (l'article était mieux classé en septembre)."] },
+  { id:"t-moteur", title:"Réorienter l'outil d'articles automatiques", time:"1 h", track:"tech", dev:true,
+    why:"Ses 3 cibles prioritaires sont les recherches des pages services : c'est lui qui a créé la cannibalisation. Et son pool contient « combien coûte la génération de leads b2b », qui doublonnerait l'article prix.",
+    steps:["Retirer de src/lib/ai-writer.js les mots-clés couverts par une page service ou par ce plan.","Le recentrer sur des questions pratiques (« comment », « exemple », « modèle de… »), qui ne concurrencent aucune page service.","Garder la cadence basse : mieux vaut 1 bon article par semaine que 3 moyens."] },
+  { id:"t-publier", title:"Publier les 4 articles avec leur FAQ", time:"30 min / article", track:"tech", dev:true,
+    why:"L'admin ne permet pas encore d'ajouter une FAQ à un article manuel, et la FAQ est ce qui permet à Google d'afficher les questions sous le résultat.",
+    steps:["Convertir chaque Google Doc en article, FAQ comprise.","Poser les liens listés dans le brief et ceux de la tâche « liens à ajouter ».","Passer le statut de l'article à « Publié » et coller son adresse."] }
+ ]}
+];
+
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, attrs={}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else n.setAttribute(k, v);
+  }
+  for (const k of kids) if (k != null) n.append(k);
+  return n;
+};
+async function copyText(text, btn){
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const target = btn.closest(".text-block")?.querySelector("blockquote");
+    if (target){ const r = document.createRange(); r.selectNodeContents(target); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    btn.textContent = "Sélectionné, faites Ctrl+C"; return;
+  }
+  btn.classList.add("is-copied"); btn.textContent = "Copié";
+  setTimeout(() => { btn.classList.remove("is-copied"); btn.textContent = "Copier"; }, 1600);
+}
+function copyBtn(text){
+  const b = el("button", {class:"copy", type:"button", text:"Copier"});
+  b.addEventListener("click", () => copyText(text, b));
+  return b;
+}
+const listOf = (items, ordered) => { const l = el(ordered ? "ol" : "ul"); items.forEach(i => l.append(el("li",{text:i}))); return l; };
+const statusesFor = t => t.track === "article" ? ARTICLE_STATUS : TECH_STATUS;
+
+// ---------- render ----------
+const ALL = WEEKS.flatMap(w => w.tasks.map(t => ({...t, week:w.id})));
+const root = $("#days");
+for (const w of WEEKS){
+  const sec = el("section", {id:w.id});
+  sec.append(el("div", {class:"day-head"},
+    el("div", {}, el("span",{class:"eyebrow", text:w.label}), el("h2",{text:w.title})),
+    el("div", {class:"day-meta"},
+      el("span", {}, el("span",{class:"num", id:`count-${w.id}`, text:"0 / 0"}), " · ", w.time),
+      el("div", {class:"bar", id:`bar-${w.id}`}, el("span")))));
+  for (const t of w.tasks){
+    const card = el("article", {class:"task", id:`t-${t.id}`});
+    const cb = el("input", {type:"checkbox", class:"check", id:`cb-${t.id}`, "aria-label":`Marquer « ${t.title} » comme fait`});
+    const chips = el("div", {class:"chips"}, el("span",{class:"chip", text:t.time}));
+    if (t.dev) chips.append(el("span",{class:"chip dev", text:"Odo"}));
+    if (t.track === "article" || t.track === "tech") chips.append(el("span",{class:"status-pill", id:`pill-${t.id}`}));
+    card.append(el("div", {class:"task-top"}, cb,
+      el("div", {class:"task-title"}, el("label", {for:`cb-${t.id}`}, el("h3",{text:t.title})), chips, el("p",{class:"why", text:t.why}))));
+
+    const det = el("details", t.brief ? {} : {open:""});
+    det.append(el("summary", {text: t.brief ? "Voir le brief de l'article" : "Étapes"}));
+    if (t.steps){ const ol = listOf(t.steps, true); ol.className = "steps"; det.append(ol); }
+    if (t.brief){
+      const dl = el("dl", {class:"brief"});
+      for (const [k,v] of Object.entries(t.brief)){
+        dl.append(el("dt",{text:k}), el("dd", {}, Array.isArray(v) ? listOf(v, k === "Plan") : v));
+      }
+      det.append(dl);
+    }
+    if (t.text){
+      det.append(el("div", {class:"text-block"},
+        el("div", {class:"label"}, el("strong",{text:t.textLabel || "À copier"}), copyBtn(t.text)),
+        el("blockquote", {text:t.text})));
+    }
+    if (t.stuck) det.append(el("p", {class:"stuck"}, el("b",{text:"Attention : "}), t.stuck));
+    card.append(det);
+
+    if (t.track === "article" || t.track === "tech"){
+      const sel = el("select", {id:`st-${t.id}`});
+      for (const [v,l] of statusesFor(t)) sel.append(el("option",{value:v, text:l}));
+      card.append(el("div", {class:"fields"},
+        el("label", {for:`url-${t.id}`}, t.track === "article" ? "Lien du Google Doc, puis de l'article publié" : "Lien utile (commit, page…)", el("input",{type:"url", id:`url-${t.id}`, placeholder:"https://…", inputmode:"url"})),
+        el("label", {for:`st-${t.id}`}, "Statut", sel)));
+    }
+    if (t.track){
+      const big = t.track === "note";
+      card.append(el("div", {class:"fields one"},
+        el("label", {for:`note-${t.id}`}, big ? "Vos notes" : "Note (ce qui bloque, ce qui reste à faire)",
+          big ? el("textarea",{id:`note-${t.id}`, placeholder:"Une ligne par recherche ou par page…"}) : el("input",{type:"text", id:`note-${t.id}`}))));
+    }
+    sec.append(card);
+  }
+  root.append(sec);
+}
+
+// ---------- state ----------
+const state = {};
+const get = id => state[id] || {done:false, url:"", status:"todo", note:""};
+const STATUS_STYLE = { todo:["var(--brand-soft)","var(--brand)"], data:["var(--brand-soft)","var(--brand)"], writing:["var(--brand-soft)","var(--brand)"], doing:["var(--brand-soft)","var(--brand)"], review:["var(--warn-soft)","var(--warn)"], sent:["var(--warn-soft)","var(--warn)"], live:["var(--ok-soft)","var(--ok)"], blocked:["var(--block-soft)","var(--block)"] };
+
+function paint(){
+  let total=0, done=0; const per = {};
+  for (const t of ALL){
+    const s = get(t.id);
+    const cb = $(`#cb-${t.id}`);
+    if (cb.checked !== !!s.done) cb.checked = !!s.done;
+    $(`#t-${t.id}`).classList.toggle("is-done", !!s.done);
+    for (const [k, id] of [["url",`#url-${t.id}`],["status",`#st-${t.id}`],["note",`#note-${t.id}`]]){
+      const inp = $(id); if (!inp) continue;
+      const v = s[k] || (k === "status" ? "todo" : "");
+      if (document.activeElement !== inp && inp.value !== v) inp.value = v;
+    }
+    const pill = $(`#pill-${t.id}`);
+    if (pill){
+      const st = s.status || "todo";
+      const found = statusesFor(t).find(x => x[0] === st) || statusesFor(t)[0];
+      pill.textContent = found[1];
+      const c = STATUS_STYLE[found[0]] || STATUS_STYLE.todo;
+      pill.style.background = c[0]; pill.style.color = c[1];
+    }
+    total++; if (s.done) done++;
+    const p = per[t.week] ||= {total:0, done:0}; p.total++; if (s.done) p.done++;
+  }
+  $("#total-count").textContent = `${done} / ${total}`;
+  $("#total-bar > span").style.width = `${total ? done/total*100 : 0}%`;
+  $("#total-bar").classList.toggle("done", total > 0 && done === total);
+  for (const w of WEEKS){
+    const p = per[w.id];
+    $(`#count-${w.id}`).textContent = `${p.done} / ${p.total}`;
+    $(`#bar-${w.id} > span`).style.width = `${p.total ? p.done/p.total*100 : 0}%`;
+    $(`#bar-${w.id}`).classList.toggle("done", p.done === p.total);
+  }
+}
+
+const LS_KEY = "suzali-plan-contenu";
+let mode = "loading", db = null;
+const queues = {};
+function setSync(m, text){ mode = m; const s = $("#sync"); s.dataset.s = m; s.textContent = text; }
+function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {} }
+function loadLocal(){ try { Object.assign(state, JSON.parse(localStorage.getItem(LS_KEY) || "{}")); } catch {} }
+function setReadonly(){
+  setSync("readonly", "Lecture seule : vous pouvez consulter le plan mais pas cocher. Demandez à Odo un accès « Contributeur ».");
+  document.querySelectorAll(".task input, .task select, .task textarea").forEach(i => i.disabled = true);
+}
+function persist(id){
+  if (mode === "readonly") return;
+  if (mode !== "shared"){ saveLocal(); return; }
+  const body = {...get(id), updatedAt: new Date().toISOString()};
+  queues[id] = (queues[id] || Promise.resolve()).then(() => db.collection("taches").doc(id).set(body)).catch(e => {
+    if (e && e.code === "invalid_argument") setReadonly();
+    else setSync("local", "Problème de connexion : la dernière modification n'a peut-être pas été enregistrée. Rechargez la page.");
+  });
+}
+function update(id, patch){ state[id] = {...get(id), ...patch}; paint(); persist(id); }
+
+for (const t of ALL){
+  $(`#cb-${t.id}`).addEventListener("change", e => {
+    const patch = {done: e.target.checked};
+    if ((t.track === "article" || t.track === "tech") && e.target.checked) patch.status = "live";
+    update(t.id, patch);
+  });
+  const st = $(`#st-${t.id}`), url = $(`#url-${t.id}`), note = $(`#note-${t.id}`);
+  if (st) st.addEventListener("change", e => {
+    const status = e.target.value;
+    update(t.id, {status, done: status === "live" ? true : (status === "todo" ? false : get(t.id).done)});
+  });
+  if (url) url.addEventListener("change", e => update(t.id, {url: e.target.value.trim()}));
+  if (note) note.addEventListener("change", e => update(t.id, {note: e.target.value.trim()}));
+}
+
+paint();
+(async () => {
+  try { db = window.claude?.use ? await window.claude.use("db") : null; } catch { db = null; }
+  if (!db){ loadLocal(); paint(); setSync("local", "Progression enregistrée sur cet appareil seulement"); return; }
+  setSync("shared", "Progression partagée avec toute l'équipe");
+  db.collection("taches").onSnapshot(snap => {
+    for (const d of snap.docs){ const v = d.data(); if (v) state[d.id] = {done:!!v.done, url:v.url||"", status:v.status||"todo", note:v.note||""}; }
+    paint();
+  }, () => setSync("local", "Connexion perdue : rechargez la page pour retrouver la progression partagée."));
+})();
+</script>

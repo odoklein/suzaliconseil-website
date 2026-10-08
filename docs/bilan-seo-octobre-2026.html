@@ -1,0 +1,167 @@
+<title>Bilan SEO d'octobre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: one narrow reading column, a short memo for the CEO. Suzali deep green, lime only on the "today" marker. */
+:root{
+  --bg:#f5f8f6; --surface:#ffffff; --ink:#0d332b; --muted:#4e6660; --line:#d6e2dd;
+  --brand:#1a4d43; --brand-soft:#e3eee9; --lime:#b0ff5b; --up:#1f6f3f; --down:#9b1c2c;
+  --font:"Manrope","Avenir Next","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1a17; --surface:#11241f; --ink:#e4efeb; --muted:#9db3ac; --line:#24403a;
+  --brand:#8fd6c2; --brand-soft:#173530; --lime:#b0ff5b; --up:#7ad69b; --down:#f08b98; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0b1a17; --surface:#11241f; --ink:#e4efeb; --muted:#9db3ac; --line:#24403a;
+  --brand:#8fd6c2; --brand-soft:#173530; --lime:#b0ff5b; --up:#7ad69b; --down:#f08b98; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;margin:0}
+.wrap{max-width:720px;margin:0 auto;padding:48px 16px 72px;display:flex;flex-direction:column;gap:44px}
+h1,h2{margin:0;line-height:1.2;text-wrap:balance}
+h1{font-size:2rem;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.25rem;font-weight:800}
+p{margin:0}
+.eyebrow{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.muted{color:var(--muted)}
+section{display:flex;flex-direction:column;gap:14px}
+header{display:flex;flex-direction:column;gap:12px}
+.summary{background:var(--brand-soft);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;font-size:1.05rem}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.kpi{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.kpi b{font-size:1.6rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi span{font-size:.82rem;color:var(--muted)}
+.kpi em{font-style:normal;font-size:.78rem;font-weight:700}
+.up{color:var(--up)} .down{color:var(--down)}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.timeline li{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.timeline li:first-child{border-top:0}
+.timeline time{font-weight:800;font-size:.9rem;color:var(--brand)}
+.timeline li.now time{color:var(--ink)}
+.timeline li.now time::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lime);margin-right:7px;vertical-align:1px;box-shadow:0 0 0 2px var(--brand)}
+.timeline strong{display:block}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 8px;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:480px;height:auto}
+.chart text{font-family:var(--font);fill:var(--muted);font-size:12px}
+.chart .lbl{fill:var(--ink);font-weight:700;font-size:13px}
+.chart .val{fill:var(--ink);font-weight:800;font-size:13px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.95rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+td:first-child{font-weight:700}
+.plan{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.asks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.asks li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.asks b{display:block}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:560px){
+  h1{font-size:1.6rem}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .timeline li{grid-template-columns:1fr;gap:2px}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Suzali Conseil · Référencement Google · 6 octobre 2026</span>
+    <h1>Où en est le SEO de Suzali</h1>
+    <div class="summary">
+      <p>Le site a perdu du terrain en août à cause de la migration. La refonte de début septembre a stoppé la chute : nous sommes remontés de la <b>66e à la 47e place</b> en moyenne sur Google.</p>
+      <p>Google nous montre maintenant sur nos vrais métiers, mais encore trop loin (page 5) pour générer des clics. Objectif : <b>page 1 sur des recherches clés d'ici le printemps 2027</b>.</p>
+    </div>
+  </header>
+
+  <section>
+    <span class="eyebrow">Depuis la refonte · 6 sept. au 3 oct.</span>
+    <h2>Les chiffres aujourd'hui</h2>
+    <div class="kpis">
+      <div class="kpi"><span>Position moyenne</span><b>47</b><em class="up">66 avant la refonte</em></div>
+      <div class="kpi"><span>Affichages Google</span><b>722</b><em class="up">× 2 sur la période</em></div>
+      <div class="kpi"><span>Clics</span><b>14</b><em class="muted">surtout « suzali »</em></div>
+      <div class="kpi"><span>Taux de clic</span><b>1,9 %</b><em class="muted">normal en page 5</em></div>
+    </div>
+    <p class="muted">La moitié des affichages vient déjà de recherches commerciales, pas de notre nom : « prospection externalisée », « agence de génération de leads B2B », « agence outbound ». Ce sont des clients potentiels qui cherchent ce que nous vendons. Il faut maintenant monter assez haut pour qu'ils cliquent.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Le contexte</span>
+    <h2>Ce qui s'est passé</h2>
+    <ol class="timeline">
+      <li><time>Février</time><div><strong>Migration vers le nouveau site</strong><span class="muted">Google garde en mémoire environ 113 000 anciennes adresses de l'ancien site WordPress qui n'existent plus. C'est normal après une migration, elles s'effacent avec le temps.</span></div></li>
+      <li><time>Août</time><div><strong>Chute : de la 43e à la 66e place</strong><span class="muted">Cause trouvée : 9 anciens articles, dont un classé 10e sur Google, menaient vers des pages d'erreur.</span></div></li>
+      <li><time>Début sept.</time><div><strong>Refonte SEO</strong><span class="muted">Les 9 articles redirigés vers les bonnes pages, des articles 3 fois plus rapides à charger, des liens entre les articles et les pages services, et une page « agence outbound » enrichie (de 650 à 1 550 mots, avec une FAQ).</span></div></li>
+      <li><time>Fin sept.</time><div><strong>Publication d'articles automatisée</strong><span class="muted">Les articles visent désormais les vraies recherches de nos prospects, avec une FAQ lisible par Google.</span></div></li>
+      <li class="now"><time>Aujourd'hui</time><div><strong>Remontée à la 47e place</strong><span class="muted">La chute est enrayée, la tendance est à la hausse.</span></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">La suite</span>
+    <h2>Les 3 chantiers en cours</h2>
+    <ol class="plan">
+      <li><b>Enrichir les pages qui vendent.</b> La page « prospection commerciale externalisée » est la plus vue mais la plus courte. On la réécrit en premier.</li>
+      <li><b>Publier ce que les acheteurs lisent.</b> Sur nos recherches clés, Google met en avant des comparatifs et des guides de prix, pas des pages d'agences. On publie donc 4 contenus : prix d'une agence de prospection, interne ou externe, comparatif des agences, forfait ou paiement au rendez-vous.</li>
+      <li><b>Gagner la confiance de Google.</b> Inscription de Suzali sur 8 annuaires et plateformes reconnus (PagesJaunes, Sortlist, Clutch, Kompass…), menée par Biba en 3 jours.</li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Projection</span>
+    <h2>Où on peut arriver</h2>
+    <div class="chart" role="img" aria-label="Clics Google par mois : 14 aujourd'hui, 25 à 40 attendus fin décembre 2026, 90 à 150 attendus au printemps 2027">
+      <svg viewBox="0 0 600 236"xmlns="http://www.w3.org/2000/svg">
+        <!-- scale: 0..160 clicks -> x 150..580 (2.6875 px per click) -->
+        <g stroke="var(--line)" stroke-width="1">
+          <line x1="150" y1="20" x2="150" y2="190"/>
+          <line x1="284.4" y1="20" x2="284.4" y2="190" stroke-dasharray="3 4"/>
+          <line x1="418.8" y1="20" x2="418.8" y2="190" stroke-dasharray="3 4"/>
+          <line x1="553.1" y1="20" x2="553.1" y2="190" stroke-dasharray="3 4"/>
+        </g>
+        <text x="150" y="210" text-anchor="middle">0</text>
+        <text x="284.4" y="210" text-anchor="middle">50</text>
+        <text x="418.8" y="210" text-anchor="middle">100</text>
+        <text x="553.1" y="210" text-anchor="middle">150</text>
+        <text x="590" y="228" text-anchor="end">clics par mois</text>
+
+        <text class="lbl" x="0" y="48">Aujourd'hui</text>
+        <text x="0" y="64">octobre 2026</text>
+        <rect x="150" y="40" width="37.6" height="18" rx="4" fill="var(--brand)"/>
+        <text class="val" x="196" y="54">14</text>
+
+        <text class="lbl" x="0" y="103">Fin décembre</text>
+        <text x="0" y="119">dans 3 mois</text>
+        <rect x="217.2" y="95" width="40.3" height="18" rx="4" fill="var(--brand)" opacity=".55"/>
+        <text class="val" x="266" y="109">25 à 40</text>
+
+        <text class="lbl" x="0" y="158">Printemps 2027</text>
+        <text x="0" y="174">dans 6 mois</text>
+        <rect x="391.9" y="150" width="161.2" height="18" rx="4" fill="var(--brand)" opacity=".55"/>
+        <text class="val" x="390" y="143" text-anchor="start">90 à 150</text>
+      </svg>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Horizon</th><th>Position visée</th><th>Affichages / mois</th><th>Clics / mois</th><th>Demandes de contact</th></tr></thead>
+        <tbody>
+          <tr><td>Aujourd'hui</td><td>47 (page 5)</td><td>≈ 720</td><td>≈ 14</td><td>~0</td></tr>
+          <tr><td>Fin décembre 2026</td><td>15 à 25 (pages 2-3)</td><td>1 500 à 2 000</td><td>25 à 40</td><td>0 à 1</td></tr>
+          <tr><td>Printemps 2027</td><td>Top 10 sur 2-3 recherches clés</td><td>3 000 à 5 000</td><td>90 à 150</td><td>1 à 4</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">Ce sont des estimations, pas des promesses : Google ne garantit aucun classement. Elles supposent que les 3 chantiers soient menés d'ici mi-novembre. Les clics sont calculés à partir des taux de clic habituels selon la position. Les demandes de contact supposent que 1 à 3 % des visiteurs d'une page service B2B remplissent le formulaire, ce qui est la norme. Pour une société créée en 2025, dont le site est encore peu cité par d'autres sites, il faut en général 3 à 6 mois pour atteindre la page 1.</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Pour avancer plus vite</span>
+    <h2>Ce dont on a besoin de toi</h2>
+    <ul class="asks">
+      <li><b>2 ou 3 avis clients</b>Des avis de vrais clients sur Clutch et Sortlist. C'est ce qui pèse le plus sur ces plateformes.</li>
+      <li><b>Le feu vert pour afficher des fourchettes de prix</b>C'est ce que les acheteurs cherchent, et ce que publient les concurrents qui sont en page 1.</li>
+      <li><b>Une validation en tant que dirigeant</b>Societe.com et quelques annuaires demandent le président ou un Kbis pour modifier la fiche.</li>
+      <li><b>1 ou 2 études de cas chiffrées et vérifiables</b>Elles servent à la fois au site, aux annuaires et aux comparatifs.</li>
+    </ul>
+  </section>
+
+  <footer>Source : Google Search Console (suzaliconseil.com), 28 derniers jours au 3 octobre 2026, et audits du 7 septembre et du 24 septembre 2026. Prochain point : début novembre.</footer>
+</div>

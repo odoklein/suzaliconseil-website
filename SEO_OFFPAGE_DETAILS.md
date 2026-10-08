@@ -11,13 +11,13 @@ Ce document contient les informations spécifiques et les descriptions optimisé
 - **SIRET :** 992 281 097 00012
 - **Code APE (NAF) :** 7022Z (Conseil pour les affaires et autres conseils de gestion)
 - **RCS :** Paris B 992 281 097
-- **Numéro TVA :** FR06992281097
+- **Numéro TVA :** FR21992281097
 - **Adresse :** 10 RUE DE LA PAIX, 75002 PARIS, France
 - **Téléphone :** +33757902479
 - **Email :** contact@suzaliconseil.com
 - **Site Web :** https://www.suzaliconseil.com
 - **Président :** M. Hichem Hammouche
-- **Date de création :** 10/06/2024
+- **Date de création :** 08/10/2025
 
 ---
 
@@ -68,7 +68,7 @@ Suzali Conseil est une société de conseil pour les affaires et autres conseils
 ### 7. Crunchbase (Focus Tech & Innovation)
 
 **Description :**
-Suzali Conseil is a strategic consulting agency at the intersection of sales and technology. Founded in 2024 and headquartered in Paris, Suzali helps businesses scale by implementing advanced outbound sales cycles and digital transformation frameworks. The agency focuses on leveraging AI and automation to streamline lead generation and customer acquisition processes for modern B2B enterprises.
+Suzali Conseil is a strategic consulting agency at the intersection of sales and technology. Founded in 2025 and headquartered in Paris, Suzali helps businesses scale by implementing advanced outbound sales cycles and digital transformation frameworks. The agency focuses on leveraging AI and automation to streamline lead generation and customer acquisition processes for modern B2B enterprises.
 
 ---
 
