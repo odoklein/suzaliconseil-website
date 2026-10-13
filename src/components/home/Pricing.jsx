@@ -1,15 +1,16 @@
-"use client";
-
-import React from "react";
 import Link from "next/link";
 import { Check, ArrowRight, ArrowUpRight } from "lucide-react";
-import AnimatedSection from "../ui/AnimatedSection";
+import Marker from "./kit/Marker";
+import Reveal from "./kit/Reveal";
+import SectionHead from "./kit/SectionHead";
 import { getOffersByIds } from "../../lib/offers-catalog";
 
 /*
  * Three entry-level price points lifted straight from the offer catalogue,
  * ordered low → high so the page shows an affordable starting point before
  * the retainer. Editing a price in offers-catalog.js updates this section too.
+ * They sit on one sheet, separated by hairlines, so they read as one menu
+ * rather than three competing cards; the recommended offer is the inked column.
  */
 const FEATURED = getOffersByIds([
   "file-starter-500",
@@ -19,158 +20,119 @@ const FEATURED = getOffersByIds([
 
 const Pricing = () => {
   return (
-    <section className="relative overflow-hidden bg-[#EAF2EE] py-20 md:py-28">
-      {/* Ambient decor */}
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[380px] w-[680px] -translate-x-1/2 rounded-full bg-[#CFE6DA] opacity-55 blur-[150px]" />
-      <div className="pointer-events-none absolute bottom-0 right-1/4 h-[360px] w-[360px] rounded-full bg-[#B0FF5B] opacity-[0.1] blur-[160px]" />
-      <div className="pointer-events-none absolute inset-0 bg-dots opacity-[0.012]" />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <AnimatedSection className="mb-12 max-w-3xl space-y-4 md:mb-16 md:space-y-5">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
-            Tarifs
-          </span>
-          <h2 className="font-heading text-4xl font-bold leading-[1.04] tracking-tight text-[#0D332B] sm:text-5xl md:text-6xl">
-            Des budgets clairs,{" "}
-            <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
-              dès le départ
-            </span>.
-          </h2>
-          <p className="max-w-2xl text-lg font-medium leading-relaxed text-[#52635F] md:text-xl">
+    <section className="bg-[#F6F7F4] py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <SectionHead
+            className="lg:col-span-7"
+            title={
+              <>
+                Des budgets clairs, <Marker>dès le départ</Marker>.
+              </>
+            }
+          />
+          <Reveal
+            as="p"
+            delay={160}
+            className="max-w-[44ch] text-lg leading-relaxed text-[#4E605B] lg:col-span-5 lg:pb-2"
+          >
             Testez une cible, remplissez un agenda ou pilotez toute votre
             acquisition : trois points d&apos;entrée, sans engagement caché.
-          </p>
-        </AnimatedSection>
+          </Reveal>
+        </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12">
+        <Reveal
+          variant="focus"
+          className="mt-14 grid grid-cols-1 overflow-hidden rounded-[22px] bg-[#FCFDFC] ring-1 ring-[#0D332B]/10 md:mt-20 lg:grid-cols-3"
+        >
           {FEATURED.map((offer, idx) => {
-            const isHighlighted = Boolean(offer.highlight);
+            const inked = Boolean(offer.highlight);
 
             return (
-              <AnimatedSection
+              <article
                 key={offer.id}
-                delay={idx * 40}
-                className={`relative flex flex-col rounded-[28px] border border-[#0D332B]/8 p-8 shadow-[0_24px_64px_-50px_rgba(13,51,43,0.68)] transition-[border-color,box-shadow,transform] duration-300 lg:p-9 ${idx === 0 ? "lg:col-span-4" : idx === 1 ? "lg:col-span-5" : "lg:col-span-3"}
-                  ${
-                    isHighlighted
-                      ? "bg-[#E3FFC4] text-[#0D332B] lg:-translate-y-2 hover:lg:-translate-y-3"
-                      : "bg-[#FCFDFC] text-[#0D332B] hover:-translate-y-1 hover:border-[#0D332B]/16 hover:shadow-[0_28px_70px_-48px_rgba(13,51,43,0.62)]"
-                  }
-                `}
+                className={`relative flex flex-col p-8 lg:p-10 ${
+                  inked
+                    ? "bg-[#0D332B] text-[#F7FAF8]"
+                    : `text-[#0D332B] ${idx > 0 ? "border-t border-[#0D332B]/10 lg:border-l lg:border-t-0" : ""}`
+                }`}
               >
-                {/* Recommended ribbon */}
-                {isHighlighted && offer.tag && (
-                  <div className="absolute -top-px left-1/2 -translate-x-1/2">
-                    <div className="bg-[#0D332B] text-[#B0FF5B] text-[11px] font-bold px-5 py-1.5 rounded-b-xl tracking-wider uppercase">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="font-heading text-2xl font-semibold tracking-[-0.035em]">{offer.name}</h3>
+                  {inked && offer.tag && (
+                    <span className="chip-status shrink-0" data-step="2">
                       {offer.tag}
-                    </div>
-                  </div>
-                )}
-
-                <div className={isHighlighted ? "mt-4" : ""}>
-                  <h3 className="font-heading font-bold text-xl md:text-2xl tracking-tight text-[#0D332B]">
-                    {offer.name}
-                  </h3>
-
-                  <div className="mt-5 flex flex-wrap items-baseline gap-x-2">
-                    <span className="tabular-figures font-heading font-extrabold text-4xl lg:text-5xl tracking-tight text-[#0D332B]">
-                      {offer.price}
                     </span>
-                    {offer.billing && (
-                      <span
-                        className={`font-medium text-sm ${
-                          isHighlighted ? "text-[#0D332B]/60" : "text-gray-400"
-                        }`}
-                      >
-                        {offer.billing}
-                      </span>
-                    )}
-                  </div>
-
-                  <p
-                    className={`mt-4 text-sm leading-relaxed ${
-                      isHighlighted ? "text-[#0D332B]/75" : "text-gray-500"
-                    }`}
-                  >
-                    {offer.description}
-                  </p>
+                  )}
                 </div>
 
-                <div
-                  className={`h-px my-8 ${
-                    isHighlighted ? "bg-[#0D332B]/15" : "bg-gray-100"
+                <p
+                  className={`mt-8 font-heading text-[clamp(3rem,4.6vw,4.25rem)] font-semibold leading-none tracking-[-0.05em] tabular-nums ${
+                    inked ? "text-[#F7FAF8]" : "text-[#0D332B]"
                   }`}
-                />
+                >
+                  {offer.price}
+                </p>
+                {offer.billing && (
+                  <p className={`mt-3 font-mono text-[13px] ${inked ? "text-[#B9CBC4]" : "text-[#4E605B]"}`}>
+                    {offer.billing}
+                  </p>
+                )}
 
-                {/* Features */}
-                <ul className="space-y-4 flex-1">
+                <p className={`mt-6 text-[15px] leading-relaxed ${inked ? "text-[#CFDDD7]" : "text-[#4E605B]"}`}>
+                  {offer.description}
+                </p>
+
+                <ul className={`mt-8 flex-1 border-t pt-6 ${inked ? "border-white/12" : "border-[#0D332B]/10"}`}>
                   {offer.features?.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <span
-                        className={`mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
-                          isHighlighted ? "bg-[#0D332B]/10" : "bg-emerald-50"
-                        }`}
-                      >
-                        <Check
-                          size={12}
-                          strokeWidth={3}
-                          className="text-[#0D332B]"
-                        />
-                      </span>
-                      <span
-                        className={`text-sm font-medium leading-snug ${
-                          isHighlighted ? "text-[#0D332B]/90" : "text-gray-600"
-                        }`}
-                      >
+                    <li key={feature} className="flex items-start gap-3 py-2">
+                      <Check
+                        size={16}
+                        strokeWidth={2.75}
+                        aria-hidden="true"
+                        className={`mt-0.5 shrink-0 ${inked ? "text-[#B0FF5B]" : "text-[#4E8D38]"}`}
+                      />
+                      <span className={`text-[15px] leading-snug ${inked ? "text-[#E4ECE8]" : "text-[#2C4640]"}`}>
                         {feature}
                       </span>
                     </li>
                   ))}
                 </ul>
 
-                {/* CTA — deep-links to the matching service page */}
                 {offer.serviceHref && (
                   <Link
                     href={offer.serviceHref}
-                    className={`group/btn mt-10 inline-flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-sm uppercase tracking-wider transition-all duration-300
-                      ${
-                        isHighlighted
-                          ? "bg-[#0D332B] text-white hover:bg-[#174A3E]"
-                          : "border border-[#0D332B]/16 bg-[#FCFDFC] text-[#0D332B] hover:border-[#0D332B]/38 hover:bg-[#E9FFD2]"
-                      }
-                    `}
+                    className={`group/btn mt-10 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold tracking-[-0.01em] transition-colors duration-300 ${
+                      inked
+                        ? "bg-[#B0FF5B] text-[#0D332B] hover:bg-[#C8FF8D]"
+                        : "border border-[#0D332B]/20 text-[#0D332B] hover:border-[#0D332B] hover:bg-[#0D332B] hover:text-[#F7FAF8]"
+                    }`}
                   >
                     En savoir plus
-                    <ArrowRight
-                      size={16}
-                      className="group-hover/btn:translate-x-1 transition-transform"
-                    />
+                    <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
                   </Link>
                 )}
-              </AnimatedSection>
+              </article>
             );
           })}
-        </div>
+        </Reveal>
 
-        {/* Catalogue link */}
-        <AnimatedSection delay={120} className="mt-12 text-left md:mt-14">
+        <Reveal delay={120} className="mt-12 flex flex-col gap-4 md:mt-14 md:flex-row md:items-center md:gap-8">
           <Link
             href="/offres"
-            className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-[#0D332B] px-7 py-3 text-sm font-bold tracking-[-0.01em] text-[#FCFDFC] shadow-[0_14px_32px_-20px_rgba(13,51,43,0.75)] transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#1A4D43] md:text-base"
+            className="group inline-flex min-h-12 items-center gap-3 self-start rounded-full bg-[#0D332B] px-7 py-3 text-sm font-semibold tracking-[-0.01em] text-[#F7FAF8] transition-colors duration-300 hover:bg-[#1A4D43] md:text-base"
           >
             Voir toutes nos offres et tarifs
             <ArrowUpRight
               size={18}
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             />
           </Link>
-          <p className="mt-4 max-w-3xl text-sm text-[#65746F]">
+          <p className="max-w-3xl text-sm text-[#4E605B]">
             Fichiers B2B, rendez-vous qualifiés, campagnes email et SMS, sites
             web, SEO et automatisation.
           </p>
-        </AnimatedSection>
+        </Reveal>
       </div>
     </section>
   );

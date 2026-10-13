@@ -138,6 +138,19 @@ export default async function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body className="bg-[#F9FAFB] font-sans text-[#0D332B] antialiased">
+        <div
+          hidden
+          dangerouslySetInnerHTML={{
+            __html: `<!--
+THESIS: The homepage is the agenda Suzali fills. It refuses the agency default of pastel cards, blurred blobs and pill labels; proof is shown as a pipeline at work.
+OWN-WORLD: Deep green #0d332b chapters alternating with paper #f6f7f4; lime #b0ff5b only for what is booked, active or actionable. Hairline time grids, status chips, ledgers of links, Sora display at -0.045em, Geist Mono for times and prices.
+STORY: A B2B decision-maker sees meetings landing in a week, understands the two poles, follows the method, checks proof and prices, then books a call.
+FIRST VIEWPORT: Headline left at ~5.5rem with the two CTAs under it; the SuzaLink board right, filling Mon-Fri as leads go Contacté to RDV planifié.
+FORM: Established-world elevation (no concept roll: brand palette and type are commitments in PRODUCT.md). Lenis smooth scroll, scroll-linked method rail, pinned horizontal projects track.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->`,
+          }}
+        />
         {/* Runs before first paint: marks the document as JS-capable so the
             scroll-reveal styles may hide content they are able to reveal again.
             Placed in <body>, not <head>, because React 19 treats <head> as a

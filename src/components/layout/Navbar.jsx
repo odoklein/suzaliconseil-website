@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ChevronDown, Menu, X, ArrowRight } from "lucide-react";
 import MegaMenu from "./MegaMenu";
 import { useBooking } from "../../context/BookingContext";
+import { startSmoothScroll, stopSmoothScroll } from "../../lib/smooth-scroll";
 
 /* One source of truth: the desktop bar and the mobile panel read the same list,
    so a new route can never appear in one and not the other. */
@@ -112,8 +113,10 @@ export default function Navbar({ services }) {
     if (!isMobileMenuOpen) return;
     const { overflow } = document.body.style;
     document.body.style.overflow = "hidden";
+    stopSmoothScroll();
     return () => {
       document.body.style.overflow = overflow;
+      startSmoothScroll();
     };
   }, [isMobileMenuOpen]);
 
@@ -268,6 +271,7 @@ export default function Navbar({ services }) {
         >
           <nav
             aria-label="Navigation mobile"
+            data-lenis-prevent
             className="flex h-full flex-col gap-6 overflow-y-auto overscroll-contain p-6 pb-10"
           >
             <div className="t-stagger-line" style={{ "--i": 0 }}>

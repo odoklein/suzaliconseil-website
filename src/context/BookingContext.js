@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { startSmoothScroll, stopSmoothScroll } from "../lib/smooth-scroll";
 
 const BookingContext = createContext({
   openBooking: () => {},
@@ -17,11 +18,13 @@ export function BookingProvider({ children }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      stopSmoothScroll();
     } else {
       document.body.style.overflow = "unset";
     }
     return () => {
       document.body.style.overflow = "unset";
+      startSmoothScroll();
     };
   }, [isOpen]);
 
@@ -35,6 +38,7 @@ export function BookingProvider({ children }) {
       <AnimatePresence>
         {isOpen && (
           <div
+            data-lenis-prevent
             className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 perspective-1000"
             role="dialog"
             aria-modal="true"

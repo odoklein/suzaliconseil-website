@@ -1,10 +1,13 @@
 "use client";
 
-import React from "react";
-import AnimatedSection from "../ui/AnimatedSection";
-import MagneticButton from "../ui/MagneticButton";
-import { useBooking } from "../../context/BookingContext";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import MagneticButton from "../ui/MagneticButton";
+import Marker from "./kit/Marker";
+import SectionHead from "./kit/SectionHead";
+import Reveal from "./kit/Reveal";
+import { useBooking } from "../../context/BookingContext";
 
 const steps = [
   {
@@ -33,86 +36,87 @@ const steps = [
   },
 ];
 
-const Method = () => {
-  const { openBooking } = useBooking();
+/* A step lights its marker once the reading line (mid-screen) reaches it. */
+function Step({ step }) {
+  const ref = useRef(null);
+  const reached = useInView(ref, { once: true, margin: "0px 0px -50% 0px" });
 
   return (
-    <section className="relative overflow-hidden bg-[#FCFDFC] py-20 md:py-28">
-      {/* Background decorations */}
-      <div className="pointer-events-none absolute left-0 top-0 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E3FFC4] opacity-35 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-0 right-0 h-[300px] w-[300px] translate-x-1/2 translate-y-1/2 rounded-full bg-[#D7EEE4] opacity-55 blur-[110px]" />
+    <li ref={ref} className="relative pb-14 pl-16 last:pb-0 md:pl-24">
+      <span
+        className={`absolute left-0 top-0 flex h-11 w-11 items-center justify-center rounded-full font-mono text-sm font-semibold transition-colors duration-500 md:left-2 ${
+          reached
+            ? "bg-[#B0FF5B] text-[#0D332B]"
+            : "bg-[#FCFDFC] text-[#4E605B] ring-1 ring-[#0D332B]/15"
+        }`}
+      >
+        {step.number}
+      </span>
+      <h3
+        className={`font-heading text-[clamp(1.6rem,2.6vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.04em] transition-colors duration-500 ${
+          reached ? "text-[#0D332B]" : "text-[#0D332B]/55"
+        }`}
+      >
+        {step.title}
+      </h3>
+      <p className="mt-4 max-w-[52ch] text-base leading-relaxed text-[#4E605B] md:text-lg">
+        {step.description}
+      </p>
+    </li>
+  );
+}
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="mb-12 max-w-3xl md:mb-16">
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#E3FFC4] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#315B2A] md:text-sm">
-            Notre Processus
-          </span>
-          <h2 className="mb-4 font-heading text-4xl font-bold tracking-tight text-primary-dark sm:text-5xl md:mb-6 lg:text-6xl">
-            Notre{" "}
-            <span className="underline decoration-[#B0FF5B] decoration-[8px] underline-offset-[-4px] [text-decoration-skip-ink:none]">
-              méthode
-            </span>
-          </h2>
-          <p className="max-w-3xl text-base leading-relaxed text-text-muted md:text-xl">
-            Chez Suzali Conseil, chaque projet suit une méthode claire — testée
-            sur des centaines de campagnes B2B. Un process transparent, pensé
-            pour transformer vos objectifs en résultats.
-          </p>
-        </AnimatedSection>
+const Method = () => {
+  const { openBooking } = useBooking();
+  const listRef = useRef(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ["start 50%", "end 50%"],
+  });
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-12">
-          {steps.map((step, idx) => (
-            <AnimatedSection
-              key={step.number}
-              delay={idx * 40}
-              className={`group relative overflow-hidden rounded-[28px] border border-[#0D332B]/8 p-7 text-[#0D332B] shadow-[0_24px_58px_-48px_rgba(13,51,43,0.7)] transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#0D332B]/16 hover:shadow-[0_28px_64px_-46px_rgba(13,51,43,0.62)] md:p-9 ${idx === 0 || idx === 3 ? "bg-[#E3FFC4] lg:col-span-5" : "bg-[#F0F3F1] lg:col-span-7"}`}
-            >
-              {/* Large Number Background Opacity */}
-              <div className="pointer-events-none absolute right-0 top-0 select-none p-4 font-heading text-7xl font-bold leading-none text-[#0D332B] opacity-[0.035] transition-opacity duration-300 group-hover:opacity-[0.06] md:p-8 md:text-9xl">
-                {step.number}
-              </div>
+  return (
+    <section className="bg-[#F6F7F4] py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+          <div className="h-fit lg:sticky lg:top-32 lg:col-span-5">
+            <SectionHead
+              title={
+                <>
+                  Notre <Marker>méthode</Marker>
+                </>
+              }
+              intro="Chez Suzali Conseil, chaque projet suit une méthode claire — testée sur des centaines de campagnes B2B. Un process transparent, pensé pour transformer vos objectifs en résultats."
+            />
+            <Reveal delay={220} className="mt-10">
+              <MagneticButton onClick={openBooking} variant="primary">
+                <span className="inline-flex items-center gap-3 whitespace-nowrap">
+                  Audit gratuit de prospection
+                  <ArrowRight size={20} aria-hidden="true" />
+                </span>
+              </MagneticButton>
+            </Reveal>
+          </div>
 
-              {/* Animated gradient border on hover */}
-              <div
-                className="pointer-events-none absolute inset-0 rounded-[28px] opacity-0"
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(176,255,91,0.15), transparent, rgba(176,255,91,0.1))",
-                }}
-              />
-
-              <div className="relative z-10 flex flex-col h-full">
-                {/* Number Box with glow */}
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#0D332B] font-heading text-lg font-bold text-[#B0FF5B] transition-transform duration-300 group-hover:-translate-y-0.5 md:h-14 md:w-14 md:text-xl">
-                  {step.number}
-                </div>
-
-                <h3 className="mb-3 font-heading text-xl font-bold text-[#0D332B] md:mb-4 md:text-2xl">
-                  {step.title}
-                </h3>
-
-                <p className="text-sm leading-relaxed text-[#52635F] md:text-base">
-                  {step.description}
-                </p>
-              </div>
-
-              {/* Bottom Gradient Line Effect */}
-              <div className="absolute bottom-0 left-0 h-1 w-full bg-[#B0FF5B] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-            </AnimatedSection>
-          ))}
+          <div className="relative lg:col-span-7 lg:pt-3">
+            {/* Rail: the hairline is the plan, the lime fill is how far you've read. */}
+            <span
+              className="absolute bottom-[calc(100%-1.4rem)] left-[1.375rem] top-0 w-px bg-[#0D332B]/15 md:left-[1.875rem]"
+              aria-hidden="true"
+            />
+            <motion.span
+              className="absolute bottom-0 left-[1.375rem] top-0 w-[3px] -translate-x-px origin-top rounded-full bg-[#B0FF5B] md:left-[1.875rem]"
+              style={reduceMotion ? { scaleY: 1 } : { scaleY: progress }}
+              aria-hidden="true"
+            />
+            <ol ref={listRef} className="relative">
+              {steps.map((step) => (
+                <Step key={step.number} step={step} />
+              ))}
+            </ol>
+          </div>
         </div>
-
-        {/* CTA below method */}
-        <AnimatedSection delay={120} className="mt-12 text-left md:mt-14">
-          <MagneticButton
-            onClick={openBooking}
-            variant="primary"
-            className="inline-flex items-center gap-3"
-          >
-            Audit gratuit de prospection
-            <ArrowRight size={20} />
-          </MagneticButton>
-        </AnimatedSection>
       </div>
     </section>
   );

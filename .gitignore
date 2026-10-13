@@ -44,3 +44,7 @@ temp_*/
 finovate/
 
 .vercel
+
+# Local tooling output
+.playwright-mcp/
+brag-output*/

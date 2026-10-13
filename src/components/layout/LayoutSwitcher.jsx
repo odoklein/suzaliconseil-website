@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import SmoothScroll from "./SmoothScroll";
 
 export default function LayoutSwitcher({ children, services }) {
   const pathname = usePathname();
@@ -14,6 +15,7 @@ export default function LayoutSwitcher({ children, services }) {
 
   return (
     <>
+      <SmoothScroll />
       <Navbar services={services} />
       <main id="main" className="min-h-[100dvh] pt-[72px]">
         {children}
