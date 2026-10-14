@@ -1,13 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  Code2,
-  Compass,
-  Palette,
-  Search,
-  Workflow,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { ParallaxImage, Reveal, SectionHead } from "../../kit";
 
 const services = [
   {
@@ -15,115 +8,89 @@ const services = [
     description:
       "Prioriser les canaux, les messages et les investissements autour d'objectifs business clairs.",
     href: "/services/digital/strategie-digitale",
-    icon: Compass,
-    className: "md:col-span-7",
-    image: "/images/services-growth-system.webp",
-    alt: "Une composition représentant un système de croissance connecté",
   },
   {
     title: "Sites web et e-commerce",
     description:
       "Créer des expériences rapides, accessibles et pensées pour guider chaque visiteur vers l'action.",
     href: "/services/digital/sites-web-ecommerce",
-    icon: Code2,
-    className: "md:col-span-5",
   },
   {
     title: "SEO et acquisition",
     description:
       "Développer une acquisition durable avec le référencement, le contenu et les campagnes ciblées.",
     href: "/services/digital/seo-acquisition",
-    icon: Search,
-    className: "md:col-span-4",
   },
   {
     title: "Branding et identité",
     description:
       "Clarifier votre positionnement et construire une identité cohérente à chaque point de contact.",
     href: "/services/digital/branding-identite",
-    icon: Palette,
-    className: "md:col-span-4",
-    image: "/projects/zupdeco.jpg",
-    alt: "Projet digital réalisé par Suzali Conseil",
   },
   {
     title: "Développement et automatisation",
     description:
       "Connecter vos outils et automatiser les tâches qui ralentissent vos équipes.",
     href: "/services/digital/developpement-automatisation",
-    icon: Workflow,
-    className: "md:col-span-4",
   },
 ];
 
+/*
+ * The five expertises as an editorial spread: one image held on the left,
+ * the services as ledger rows on the right (each row links to its page).
+ */
 export function DigitalBento() {
   return (
-    <section id="expertises" className="scroll-mt-24 bg-[#F6F7F4] py-20 md:py-28">
+    <section id="expertises" className="scroll-mt-24 bg-[#FCFDFC] py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#1A4D43] sm:text-sm">
-            Nos expertises
-          </p>
-          <h2 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
-            Les bons leviers, au bon moment.
-          </h2>
-          <p className="mt-5 max-w-[60ch] text-lg leading-relaxed text-[#52635F]">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <SectionHead className="lg:col-span-7" title="Les bons leviers, au bon moment." />
+          <Reveal
+            as="p"
+            delay={160}
+            className="max-w-[46ch] text-lg leading-relaxed text-[#4E605B] lg:col-span-5 lg:pb-2"
+          >
             Chaque mission part de votre réalité commerciale, de vos outils et
             de la prochaine décision à faire avancer.
-          </p>
+          </Reveal>
         </div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-12 md:gap-6">
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-              <Link
-                key={service.href}
-                href={service.href}
-                className={`group relative min-h-[300px] overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#FCFDFC] p-7 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#0D332B]/25 hover:shadow-[0_24px_60px_-44px_rgba(13,51,43,0.6)] sm:p-8 ${service.className}`}
-              >
-                {service.image ? (
-                  <>
-                    <Image
-                      src={service.image}
-                      alt={service.alt}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 58vw"
-                      className="object-cover transition-transform duration-700 ease-[var(--ease-premium)] group-hover:scale-[1.03]"
-                    />
-                    <div
-                      aria-hidden="true"
-                      className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,34,29,0.93)_0%,rgba(7,34,29,0.68)_48%,rgba(7,34,29,0.24)_100%)]"
-                    />
-                  </>
-                ) : null}
-                <div
-                  className={`relative flex h-full min-h-[244px] flex-col ${service.image ? "text-[#F8FBF9]" : "text-[#0D332B]"}`}
+        <div className="mt-14 grid gap-10 md:mt-20 lg:grid-cols-12 lg:gap-16">
+          <Reveal variant="focus" className="lg:col-span-5">
+            <div className="lg:sticky lg:top-32">
+              <ParallaxImage
+                src="/images/services-growth-system.webp"
+                alt="Une composition représentant un système de croissance connecté"
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="aspect-[4/3] rounded-[18px] bg-[#1A4D43] shadow-[0_50px_90px_-40px_rgba(13,51,43,0.35)] lg:aspect-[4/5]"
+              />
+            </div>
+          </Reveal>
+
+          <ul className="border-t border-[#0D332B]/14 lg:col-span-7">
+            {services.map((service, i) => (
+              <Reveal as="li" key={service.href} delay={Math.min(i, 5) * 60}>
+                <Link
+                  href={service.href}
+                  className="ledger-row group flex items-start justify-between gap-6 border-b border-[#0D332B]/14 px-1 py-7 outline-none focus-visible:ring-2 focus-visible:ring-[#0D332B] md:px-3 md:py-9"
                 >
-                  <span
-                    className={`flex h-11 w-11 items-center justify-center rounded-[14px] ${service.image ? "bg-[#B0FF5B] text-[#0D332B]" : "bg-[#E3FFC4] text-[#0D332B]"}`}
-                  >
-                    <Icon size={21} strokeWidth={1.7} aria-hidden="true" />
-                  </span>
-                  <ArrowUpRight
-                    size={19}
-                    aria-hidden="true"
-                    className={`absolute right-0 top-0 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 ${service.image ? "text-[#B0FF5B]" : "text-[#1A4D43]"}`}
-                  />
-                  <div className="mt-auto max-w-[34rem]">
-                    <h3 className="text-2xl font-bold tracking-[-0.025em]">
+                  <div className="min-w-0">
+                    <h3 className="font-heading text-[1.4rem] font-semibold leading-tight tracking-[-0.03em] text-[#0D332B] md:text-[1.75rem]">
                       {service.title}
                     </h3>
-                    <p
-                      className={`mt-3 max-w-[48ch] leading-relaxed ${service.image ? "text-[#E4ECE8]" : "text-[#52635F]"}`}
-                    >
+                    <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-[#4E605B] md:text-base">
                       {service.description}
                     </p>
                   </div>
-                </div>
-              </Link>
-            );
-          })}
+                  <ArrowUpRight
+                    size={22}
+                    aria-hidden="true"
+                    className="mt-1 shrink-0 text-[#0D332B] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
-import React from "react";
 import { createPageMetadata } from "../../lib/seo";
+import { PageHero } from "../../components/kit";
 
 export const metadata = createPageMetadata({
   title: "Mentions légales | Suzali Conseil",
@@ -61,7 +61,7 @@ const sections = [
             <strong>Email :</strong>{" "}
             <a
               href="mailto:contact@suzaliconseil.com"
-              className="text-[#1a4d43] font-medium underline hover:text-[#B0FF5B] transition-colors"
+              className="font-medium text-[#0D332B] underline decoration-[#B0FF5B] decoration-2 underline-offset-4 transition-colors duration-300 hover:decoration-[#0D332B]"
             >
               contact@suzaliconseil.com
             </a>
@@ -70,7 +70,7 @@ const sections = [
             <strong>Téléphone :</strong>{" "}
             <a
               href="tel:+33757902479"
-              className="text-[#1a4d43] font-medium underline hover:text-[#B0FF5B] transition-colors"
+              className="font-medium text-[#0D332B] underline decoration-[#B0FF5B] decoration-2 underline-offset-4 transition-colors duration-300 hover:decoration-[#0D332B]"
             >
               +33 7 57 90 24 79
             </a>
@@ -115,7 +115,7 @@ const sections = [
           concernant en écrivant à :{" "}
           <a
             href="mailto:contact@suzaliconseil.com"
-            className="text-[#1a4d43] font-medium underline hover:text-[#B0FF5B] transition-colors"
+            className="font-medium text-[#0D332B] underline decoration-[#B0FF5B] decoration-2 underline-offset-4 transition-colors duration-300 hover:decoration-[#0D332B]"
           >
             contact@suzaliconseil.com
           </a>
@@ -140,44 +140,31 @@ const sections = [
 
 export default function MentionsLegalesPage() {
   return (
-    <main className="min-h-screen bg-[#F9FAFB]">
-      <section className="py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-dots" />
-        <div className="container mx-auto px-4 max-w-3xl relative z-10">
-          <div className="inline-block px-6 py-2 rounded-full bg-[#B0FF5B] text-[#0D332B] font-bold text-xs md:text-sm uppercase tracking-wider mb-6">
-            Légal
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0D332B] font-heading leading-tight mb-4">
-            Mentions Légales
-          </h1>
-          <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-            Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004
-            pour la confiance dans l&apos;économie numérique (LCEN), il est
-            porté à la connaissance des utilisateurs du site Suzali Conseil les
-            présentes mentions légales.
-          </p>
-        </div>
-      </section>
+    <div className="w-full bg-[#F6F7F4]">
+      <PageHero
+        title="Mentions Légales"
+        intro="Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN), il est porté à la connaissance des utilisateurs du site Suzali Conseil les présentes mentions légales."
+        className="lg:[&_.hero-stage>div:last-child]:min-h-[420px]"
+      />
 
-      <section className="pb-20 md:pb-28 px-4">
-        <div className="container mx-auto max-w-3xl">
-          <div className="space-y-12">
-            {sections.map((section, index) => (
-              <article
-                key={index}
-                className="bg-white rounded-[24px] p-6 md:p-8 shadow-sm border border-gray-100"
-              >
-                <h2 className="font-heading font-bold text-xl text-[#0D332B] mb-4 border-b border-[#B0FF5B]/30 pb-2">
-                  {section.title}
-                </h2>
-                <div className="text-[#0D332B]/90 leading-relaxed text-base">
-                  {section.content}
-                </div>
-              </article>
-            ))}
-          </div>
+      {/* A plain reading body: sections on hairlines, title left, text right. */}
+      <section className="w-full px-4 pb-24 pt-14 sm:px-6 md:pb-32 md:pt-20 lg:px-8">
+        <div className="mx-auto max-w-5xl border-t border-[#0D332B]/14">
+          {sections.map((section) => (
+            <article
+              key={section.title}
+              className="grid gap-4 border-b border-[#0D332B]/14 py-10 md:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] md:gap-12 md:py-14"
+            >
+              <h2 className="font-heading text-[1.3rem] font-semibold leading-tight tracking-[-0.03em] text-[#0D332B] md:text-[1.6rem]">
+                {section.title}
+              </h2>
+              <div className="max-w-[62ch] text-base leading-relaxed text-[#0D332B]/90 md:text-[17px] [&_strong]:font-semibold [&_strong]:text-[#0D332B]">
+                {section.content}
+              </div>
+            </article>
+          ))}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

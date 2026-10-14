@@ -137,7 +137,7 @@ export default async function RootLayout({ children }) {
       // The js-flag script below adds a "js" class before hydration.
       suppressHydrationWarning
     >
-      <body className="bg-[#F9FAFB] font-sans text-[#0D332B] antialiased">
+      <body className="bg-[#F6F7F4] font-sans text-[#0D332B] antialiased">
         <div
           hidden
           dangerouslySetInnerHTML={{

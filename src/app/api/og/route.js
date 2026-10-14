@@ -5,9 +5,10 @@ export const runtime = "edge";
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const title = (searchParams.get("title") || "Suzali Conseil").slice(0, 90);
-  const isDigital = searchParams.get("theme") === "digital";
-  const accent = isDigital ? "#38bdf8" : "#66D49C";
-  const background = isDigital ? "#0c4a6e" : "#0D332B";
+  // One cabinet, one card: both pôles share the ink ground and lime signal.
+  // `theme` is still accepted so existing URLs keep resolving.
+  const accent = "#B0FF5B";
+  const background = "#0D332B";
 
   return new ImageResponse(
     (
@@ -61,7 +62,7 @@ export async function GET(request) {
           </div>
           <div
             style={{
-              color: "#d1fae5",
+              color: "#B9CBC4",
               display: "flex",
               fontSize: 25,
               marginTop: 34,

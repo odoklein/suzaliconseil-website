@@ -1,629 +1,319 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { Check } from "lucide-react";
+import MagneticButton from "../../ui/MagneticButton";
 import {
-  Rocket,
-  Target,
-  Mail,
-  Linkedin,
-  MousePointer2,
-  BarChart,
-  MessagesSquare,
-  CheckCircle2,
-  Zap,
-  Globe,
-  PieChart,
-  Network,
-  TrendingUp,
-  Users,
-  Award,
-  Shield,
-  Clock,
-  Sparkles,
-} from "lucide-react";
-import Button from "../../ui/Button";
+  PageHero,
+  ClosingCta,
+  SectionHead,
+  Reveal,
+  LedgerList,
+  FaqList,
+} from "../../kit";
+import FigureStrip from "../commercial-b/FigureStrip";
+import { MethodSection } from "../../kit";
 import { OUTBOUND_FAQ } from "./outbound-faq";
 
+const CONTAINER = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
+
+const FIGURES = [
+  { value: "2 semaines", label: "De cadrage avant le premier envoi" },
+  { value: "4 canaux", label: "Email, LinkedIn, téléphone et SMS dans une séquence" },
+  { value: "1:1", label: "Account manager dédié à votre compte" },
+  { value: "Hebdo", label: "Reporting par segment : ouvertures, réponses, RDV" },
+];
+
+const PILLARS = [
+  {
+    title: "Ciblage Laser B2B",
+    description:
+      "Sourcing décideurs par secteur d'activité, taille entreprise, technologie utilisée et signaux d'achat.",
+  },
+  {
+    title: "Personnalisation IA",
+    description:
+      "Variables dynamiques et copywriting adaptatif pour chaque prospect via Sales Intelligence avancée.",
+  },
+  {
+    title: "Délivrabilité Premium",
+    description:
+      "Warm-up domaines, rotation IP, monitoring SMTP quotidien pour maximiser l'inbox placement.",
+  },
+  {
+    title: "Analytics Temps Réel",
+    description:
+      "KPIs transparents : taux ouverture, clics, réponses positives et opportunités commerciales générées.",
+  },
+];
+
+const QUALITIES = [
+  { label: "Scalable", desc: "Croissance illimitée" },
+  { label: "Précis", desc: "Ciblage ABM" },
+  { label: "Direct", desc: "Contact décideurs" },
+  { label: "Mesuré", desc: "Indicateurs suivis chaque semaine" },
+];
+
+const METRIC_LABELS = {
+  open: "Ouverture",
+  response: "Réponse",
+  accept: "Acceptation",
+  conversion: "Conversion",
+  deal: "Panier moyen",
+};
+
+const CHANNELS = [
+  {
+    title: "Cold Emailing 2.0",
+    subtitle: "Prospection Email Automatisée",
+    desc: "Dépassez la simple prospection par email. Nous créons des campagnes d'emailing de masse personnalisées avec un copywriting persuasif qui génère des réponses et des rendez-vous qualifiés.",
+    points: [
+      "Spintax & Variables dynamiques personnalisées",
+      "Séquences de relances automatiques intelligentes",
+      "Tracking premium et optimisation anti-spam",
+      "A/B testing objets et contenus",
+    ],
+    tracked: ["open", "response"],
+  },
+  {
+    title: "LinkedIn Automation",
+    subtitle: "Social Selling B2B",
+    desc: "Transformez LinkedIn en machine de prospection commerciale. Séquences InMail ciblées, connection requests personnalisées et nurturing automatisé pour engager vos prospects B2B.",
+    points: [
+      "Optimisation profil Sales Navigator",
+      "Sourcing décideurs Sales Navigator",
+      "Séquences multi-touchpoints synchronisées",
+      "Social Selling Score optimization",
+    ],
+    tracked: ["accept", "response"],
+  },
+  {
+    title: "Account-Based Marketing",
+    subtitle: "Stratégie ABM Premium",
+    desc: "Le service premium pour les cycles de vente complexes. Nous ciblons spécifiquement vos comptes stratégiques avec du contenu personnalisé et un suivi multi-canal orchestré.",
+    points: [
+      "IP-Tracking & Retargeting publicitaire",
+      "Contenu personnalisé par compte cible",
+      "Alignement Marketing-Sales parfait",
+      "Intent data & buying signals",
+    ],
+    tracked: ["conversion", "deal"],
+  },
+];
+
+const COMMITMENTS = [
+  { title: "Cadrage d'abord", desc: "Deux semaines avant le premier envoi" },
+  { title: "Conformité RGPD", desc: "Désinscription simple, oppositions appliquées immédiatement" },
+  { title: "Objectifs écrits", desc: "Fixés au cadrage, revus chaque semaine" },
+  { title: "Account Manager", desc: "Expert dédié à votre compte" },
+];
+
+const PHASES = [
+  {
+    title: "Cadrage et ICP",
+    description:
+      "Nous définissons votre profil de client idéal à partir de vos affaires signées, pas d'un persona théorique : secteurs qui achètent vite, tailles d'entreprise où votre offre passe, fonctions qui décident réellement du budget.",
+  },
+  {
+    title: "Construction du fichier",
+    description:
+      "Sourcing des comptes et des décideurs, vérification des adresses, enrichissement par signaux d'achat. Un fichier de 500 contacts justes vaut mieux que 5 000 approximatifs : la délivrabilité se joue ici.",
+  },
+  {
+    title: "Séquences et lancement",
+    description:
+      "Rédaction des messages par segment, warm-up des domaines d'envoi, paramétrage des relances. Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous.",
+  },
+  {
+    title: "Pilotage et itération",
+    description:
+      "Revue hebdomadaire des taux de réponse par segment et par message. Ce qui ne convertit pas est réécrit ou coupé ; les rendez-vous qualifiés partent directement dans l'agenda de vos commerciaux.",
+  },
+];
+
+const COMPLEMENTS = [
+  {
+    href: "/services/prospection-commerciale-externalisee",
+    title: "Prospection commerciale externalisée",
+    description: "Quand le besoin porte sur l'équipe, pas sur le canal.",
+  },
+  {
+    href: "/services/fichier-prospection-b2b",
+    title: "Fichier de prospection B2B qualifié",
+    description: "Si le ciblage est le point faible.",
+  },
+  {
+    href: "/services/campagnes-email-sms-b2b",
+    title: "Campagnes email et SMS B2B",
+    description: "Pour industrialiser le multicanal.",
+  },
+  {
+    href: "/services/qualification-leads-b2b",
+    title: "Qualification de leads B2B",
+    description: "Quand les leads arrivent mais ne convertissent pas.",
+  },
+  {
+    href: "/services/prise-rendez-vous-b2b",
+    title: "Prise de rendez-vous B2B qualifiés",
+    description: "Pour remplir l'agenda de vos commerciaux.",
+  },
+];
+
 export default function OutboundClient() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
-  const scaleVariants = {
-    hidden: { scale: 0.9, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: { duration: 0.5 },
-    },
-  };
-
   return (
-    <div className="min-h-screen bg-[#F6F7F4]">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#F6F7F4] px-3 pb-6 pt-24 sm:px-4 sm:pb-8 lg:px-5">
-        {/* Watermark Logo */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] scale-[2.5] sm:scale-[3] md:scale-[3.5] pointer-events-none rotate-12">
-          <Rocket size={400} />
-        </div>
+    <div className="min-h-screen bg-[#F6F7F4] text-[#0D332B]">
+      <PageHero
+        title="Agence Outbound Marketing B2B & Prospection Digitale"
+        intro={
+          <p>
+            Passez de l&apos;attente passive à la{" "}
+            <strong>conquête systématique</strong>. Nous combinons{" "}
+            <strong>Sales Intelligence</strong>, automatisation marketing
+            avancée, <strong>Account-Based Marketing (ABM)</strong> et
+            copywriting persuasif pour remplir votre pipeline de{" "}
+            <strong>leads B2B qualifiés</strong>, suivis contact par contact.
+          </p>
+        }
+        meta="Conforme RGPD · Cadrage en deux semaines · Sans engagement"
+        image="/images/equipeprospection.png"
+        imageAlt="L'équipe de prospection commerciale de Suzali Conseil dans ses bureaux"
+        imagePosition="center 42%"
+        actions={
+          <>
+            <MagneticButton href="/contact" variant="primary" className="w-full whitespace-nowrap sm:w-auto">
+              Lancer ma stratégie outbound
+            </MagneticButton>
+            <MagneticButton href="#canaux" variant="outline-light" className="w-full whitespace-nowrap sm:w-auto">
+              Explorer nos leviers
+            </MagneticButton>
+          </>
+        }
+      />
 
-        {/* Enhanced Geometric Decor */}
-        <div className="absolute top-0 right-0 w-[400px] sm:w-[500px] md:w-[600px] h-[400px] sm:h-[500px] md:h-[600px] bg-emerald-500/10 rounded-full -mr-32 sm:-mr-48 md:-mr-64 -mt-32 sm:-mt-48 md:-mt-64 border border-emerald-500/20"></div>
-        <div className="absolute bottom-0 left-0 w-[300px] sm:w-[350px] md:w-[400px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#B0FF5B]/5 rounded-full -ml-24 sm:-ml-32 md:-ml-48 -mb-24 sm:-mb-32 md:-mb-48 border border-[#B0FF5B]/10"></div>
+      <FigureStrip items={FIGURES} />
 
-        <div className="relative z-10 mx-auto grid max-w-[1600px] overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#0D332B] shadow-[0_30px_80px_-48px_rgba(13,51,43,0.8)] lg:min-h-[650px] lg:grid-cols-[1.06fr_0.94fr]">
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative flex min-w-0 flex-col items-start justify-center px-6 py-14 sm:px-10 md:px-14 lg:px-16 lg:py-16 xl:px-20"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#C8FF90] sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.16em]"
-            >
-              <Zap size={12} className="sm:w-3.5 sm:h-3.5 animate-pulse" />
-              <span className="hidden xs:inline">Stratégie de </span>Croissance
-              Proactive
-            </motion.div>
-
-            <h1 className="mt-6 max-w-[670px] font-heading text-[2.55rem] font-bold leading-[1.03] tracking-tight text-[#F7FAF8] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
-              Agence{" "}
-              <span className="text-[#B0FF5B]">
-                Outbound Marketing
-              </span>{" "}
-              B2B & Prospection Digitale
-            </h1>
-
-            <p className="mb-8 mt-6 max-w-[62ch] text-base font-medium leading-relaxed text-[#DCE8E3] sm:mb-9 sm:text-lg">
-              Passez de l&apos;attente passive à la{" "}
-              <strong className="text-[#B0FF5B]">conquête systématique</strong>.
-              Nous combinons <strong>Sales Intelligence</strong>, automatisation
-              marketing avancée, <strong>Account-Based Marketing (ABM)</strong>{" "}
-              et copywriting persuasif pour remplir votre pipeline de{" "}
-              <strong>leads B2B qualifiés</strong> et maximiser votre ROI
-              commercial.
-            </p>
-
-            <div className="mb-8 flex flex-col gap-3 sm:mb-9 sm:flex-row sm:items-center">
-              <Button
-                href="/contact"
-                variant="primary"
-                className="w-full rounded-full bg-[#B0FF5B] px-6 py-3.5 text-sm font-bold text-[#0D332B] shadow-[0_18px_36px_-18px_rgba(176,255,91,0.7)] transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-[#C2FF80] active:translate-y-px sm:w-auto"
-              >
-                Lancer ma stratégie outbound
-              </Button>
-              <Button
-                href="#canaux"
-                variant="outline-light"
-                className="w-full rounded-full border border-white/25 bg-white/8 px-6 py-3.5 text-sm font-bold text-white transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-white/45 hover:bg-white/14 active:translate-y-px sm:w-auto"
-              >
-                Explorer nos leviers
-              </Button>
-            </div>
-
-            {/* Trust Badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="flex flex-wrap items-center gap-x-5 gap-y-3 text-xs font-medium text-[#DCE8E3]/75 sm:text-sm"
-            >
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-[#B0FF5B]" />
-                <span>Certifié RGPD</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-[#B0FF5B]" />
-                <span>+200 clients satisfaits</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#B0FF5B]" />
-                <span>Résultats sous 90 jours</span>
-              </div>
-            </motion.div>
-            </motion.div>
-          <div className="relative min-h-[360px] overflow-hidden border-t border-white/10 bg-[#DDE5E1] sm:min-h-[460px] lg:min-h-full lg:border-l lg:border-t-0">
-            <Image
-              src="/images/equipeprospection.png"
-              alt="L'équipe de prospection commerciale de Suzali Conseil dans ses bureaux"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 46vw"
-              className="object-cover object-[center_42%]"
+      {/* L'outbound, la méthode */}
+      <section className="bg-[#F6F7F4] py-24 md:py-32">
+        <div className={`${CONTAINER} grid gap-14 lg:grid-cols-12 lg:gap-16`}>
+          <div className="lg:col-span-5">
+            <SectionHead
+              size="md"
+              title="L'Outbound Marketing B2B : La Prospection Commerciale Intelligente"
             />
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(7,34,29,0.35)_100%)]" />
-          </div>
-          <div className="pointer-events-none absolute inset-[1px] rounded-[27px] border border-white/10" aria-hidden="true" />
-        </div>
-      </section>
-
-      {/* Stats Section - Enhanced */}
-      <section className="border-y border-[#0D332B]/10 bg-[#0D332B] py-8 sm:py-10 md:py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center"
-          >
-            {[
-              {
-                label: "Pipeline généré clients",
-                value: "30M€+",
-                icon: TrendingUp,
-              },
-              { label: "Taux de réponse moyen", value: "18%", icon: BarChart },
-              { label: "Emails prospection envoyés", value: "1M+", icon: Mail },
-              {
-                label: "Entreprises B2B accompagnées",
-                value: "200+",
-                icon: Users,
-              },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                variants={itemVariants}
-                className="space-y-2 border-l border-white/12 px-4 first:border-l-0 sm:px-6"
-              >
-                <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 text-[#B0FF5B] mx-auto mb-2" />
-                <div className="text-[#B0FF5B] text-2xl sm:text-3xl md:text-4xl font-bold font-heading">
-                  {stat.value}
-                </div>
-                <div className="text-emerald-50/50 text-[10px] sm:text-xs md:text-sm font-medium uppercase tracking-wide px-2">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Philosophy Section - Enhanced */}
-      <section className="relative overflow-hidden bg-[#F6F7F4] py-16 sm:py-20 md:py-24 lg:py-32">
-        {/* Background Watermark */}
-        <div className="absolute right-0 bottom-0 opacity-[0.02] text-[#0D332B] pointer-events-none translate-x-1/4 translate-y-1/4 hidden md:block">
-          <BarChart size={600} />
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={containerVariants}
+            <Reveal
+              as="p"
+              delay={140}
+              className="mt-6 max-w-[58ch] text-lg leading-relaxed text-[#4E605B] [&_strong]:font-semibold [&_strong]:text-[#0D332B]"
             >
-              <motion.div
-                variants={scaleVariants}
-                className="mb-4 inline-block sm:mb-6"
-              >
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#E1F0D0] px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#24573F]">
-                  <Target className="w-4 h-4" />
-                  Méthodologie Éprouvée
-                </span>
-              </motion.div>
+              Le <strong>marketing entrant (inbound)</strong> est saturé. Pour
+              dominer votre marché, vous devez maîtriser l&apos;
+              <strong>outbound marketing</strong> : ciblage précis via{" "}
+              <strong>Account-Based Marketing (ABM)</strong>, prospection
+              multi-canal synchronisée et messages hyper-personnalisés grâce à
+              la <strong>Sales Intelligence</strong>.
+            </Reveal>
 
-              <h2 className="mb-6 font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:text-4xl md:text-5xl lg:text-6xl sm:mb-8">
-                L&apos;Outbound Marketing B2B : La Prospection Commerciale
-                Intelligente
-              </h2>
-
-              <p className="mb-6 text-lg leading-relaxed text-[#416058] sm:mb-8 sm:text-xl">
-                Le <strong>marketing entrant (inbound)</strong> est saturé. Pour
-                dominer votre marché, vous devez maîtriser l&apos;
-                <strong>outbound marketing</strong> : ciblage précis via{" "}
-                <strong>Account-Based Marketing (ABM)</strong>, prospection
-                multi-canal synchronisée et messages hyper-personnalisés grâce à
-                la <strong>Sales Intelligence</strong>.
-              </p>
-
-              <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-                {[
-                  {
-                    title: "Ciblage Laser B2B",
-                    desc: "Sourcing décideurs par secteur d'activité, taille entreprise, technologie utilisée et signaux d'achat.",
-                    icon: Target,
-                  },
-                  {
-                    title: "Personnalisation IA",
-                    desc: "Variables dynamiques et copywriting adaptatif pour chaque prospect via Sales Intelligence avancée.",
-                    icon: Sparkles,
-                  },
-                  {
-                    title: "Délivrabilité Premium",
-                    desc: "Warm-up domaines, rotation IP, monitoring SMTP quotidien pour maximiser l'inbox placement.",
-                    icon: Shield,
-                  },
-                  {
-                    title: "Analytics Temps Réel",
-                    desc: "KPIs transparents : taux ouverture, clics, réponses positives et opportunités commerciales générées.",
-                    icon: BarChart,
-                  },
-                ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    variants={itemVariants}
-                    className="group flex gap-3 rounded-2xl border border-[#0D332B]/10 bg-white p-4 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#85C947]/70 hover:shadow-[0_18px_36px_-28px_rgba(13,51,43,0.55)] sm:gap-4 sm:p-5"
-                  >
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#EAF2E5] transition-colors duration-300 group-hover:bg-[#D9EDC5] sm:h-12 sm:w-12">
-                      <item.icon size={20} className="text-[#1A6D48]" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-[#0D332B] mb-1 text-sm sm:text-base">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs leading-snug text-[#587069] sm:text-sm">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-              className="relative grid grid-cols-2 gap-3 sm:gap-4"
-            >
-              {[
-                {
-                  label: "Scalable",
-                  icon: Globe,
-                  color: "bg-emerald-50 text-emerald-700",
-                  desc: "Croissance illimitée",
-                },
-                {
-                  label: "Précis",
-                  icon: Target,
-                  color:
-                    "bg-emerald-600 text-white shadow-2xl shadow-emerald-500/30",
-                  desc: "Ciblage ABM",
-                },
-                {
-                  label: "Direct",
-                  icon: MessagesSquare,
-                  color: "bg-[#0D332B] text-white",
-                  desc: "Contact décideurs",
-                },
-                {
-                  label: "ROI-Focused",
-                  icon: PieChart,
-                  color: "bg-emerald-50 text-emerald-700",
-                  desc: "Performance mesurée",
-                },
-              ].map((box, i) => (
-                <motion.div
-                  key={i}
-                  variants={scaleVariants}
-                  whileHover={{ y: -6 }}
-                  className={`${box.color} flex aspect-square flex-col items-center justify-center rounded-[22px] border border-emerald-100/10 p-6 text-center shadow-[0_18px_36px_-30px_rgba(13,51,43,0.45)] transition-transform duration-300 sm:p-8 lg:p-10`}
+            <Reveal delay={220} as="dl" className="mt-10 grid grid-cols-2 border-t border-[#0D332B]/14">
+              {QUALITIES.map((q, i) => (
+                <div
+                  key={q.label}
+                  className={`border-b border-[#0D332B]/14 py-5 ${i % 2 === 1 ? "border-l pl-5" : "pr-5"}`}
                 >
-                  <box.icon
-                    size={40}
-                    strokeWidth={1.5}
-                    className="mb-3 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12"
-                  />
-                  <h4 className="font-bold text-base sm:text-lg lg:text-xl uppercase tracking-widest mb-1 sm:mb-2">
-                    {box.label}
-                  </h4>
-                  <p className="text-[10px] sm:text-xs opacity-70 font-medium">
-                    {box.desc}
-                  </p>
-                </motion.div>
+                  <dt className="font-heading text-[1.3rem] font-semibold tracking-[-0.03em] text-[#0D332B]">
+                    {q.label}
+                  </dt>
+                  <dd className="mt-1 text-sm text-[#4E605B]">{q.desc}</dd>
+                </div>
               ))}
-            </motion.div>
+            </Reveal>
           </div>
+
+          <LedgerList items={PILLARS} className="lg:col-span-7 lg:mt-3" />
         </div>
       </section>
 
-      {/* Channels Section - Enhanced */}
-      <section id="canaux" className="relative overflow-hidden bg-white py-16 sm:py-20 md:py-24 lg:py-32">
-        {/* Network Watermark */}
-        <div className="absolute left-0 top-0 opacity-[0.03] text-emerald-900 pointer-events-none -translate-x-1/3 hidden lg:block">
-          <Network size={500} />
-        </div>
+      {/* Canaux */}
+      <section id="canaux" className="scroll-mt-24 bg-[#0D332B] py-24 text-[#F7FAF8] md:py-32">
+        <div className={CONTAINER}>
+          <SectionHead
+            tone="ink"
+            className="max-w-4xl"
+            title="Nos Canaux d'Activation Outbound Marketing"
+            intro={
+              <>
+                Nous déployons les meilleurs leviers de{" "}
+                <strong className="font-semibold text-[#F7FAF8]">Growth Hacking B2B</strong> et de{" "}
+                <strong className="font-semibold text-[#F7FAF8]">prospection digitale</strong> pour créer un
+                système d&apos;acquisition client prévisible et scalable.
+              </>
+            }
+          />
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="mb-12 max-w-3xl sm:mb-16 lg:mb-20"
-          >
-            <motion.div
-              variants={scaleVariants}
-              className="inline-block mb-4 sm:mb-6"
-            >
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#EAF2E5] px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#24573F]">
-                <Rocket className="w-4 h-4" />
-                Leviers d&apos;Acquisition
-              </span>
-            </motion.div>
-
-            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
-              Nos Canaux d&apos;Activation Outbound Marketing
-            </h2>
-            <p className="max-w-3xl text-base leading-relaxed text-[#416058] sm:text-lg md:text-xl">
-              Nous déployons les meilleurs leviers de{" "}
-              <strong>Growth Hacking B2B</strong> et de{" "}
-              <strong>prospection digitale</strong> pour créer un système
-              d&apos;acquisition client prévisible et scalable.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6"
-          >
-            {[
-              {
-                title: "Cold Emailing 2.0",
-                subtitle: "Prospection Email Automatisée",
-                icon: Mail,
-                desc: "Dépassez la simple prospection par email. Nous créons des campagnes d'emailing de masse personnalisées avec un copywriting persuasif qui génère des réponses et des rendez-vous qualifiés.",
-                points: [
-                  "Spintax & Variables dynamiques personnalisées",
-                  "Séquences de relances automatiques intelligentes",
-                  "Tracking premium et optimisation anti-spam",
-                  "A/B testing objets et contenus",
-                ],
-                metrics: { open: "35-45%", response: "5-8%" },
-              },
-              {
-                title: "LinkedIn Automation",
-                subtitle: "Social Selling B2B",
-                icon: Linkedin,
-                desc: "Transformez LinkedIn en machine de prospection commerciale. Séquences InMail ciblées, connection requests personnalisées et nurturing automatisé pour engager vos prospects B2B.",
-                points: [
-                  "Optimisation profil Sales Navigator",
-                  "Sourcing décideurs Sales Navigator",
-                  "Séquences multi-touchpoints synchronisées",
-                  "Social Selling Score optimization",
-                ],
-                metrics: { accept: "30-40%", response: "10-15%" },
-              },
-              {
-                title: "Account-Based Marketing",
-                subtitle: "Stratégie ABM Premium",
-                icon: MousePointer2,
-                desc: "Le service premium pour les cycles de vente complexes. Nous ciblons spécifiquement vos comptes stratégiques avec du contenu personnalisé et un suivi multi-canal orchestré.",
-                points: [
-                  "IP-Tracking & Retargeting publicitaire",
-                  "Contenu personnalisé par compte cible",
-                  "Alignement Marketing-Sales parfait",
-                  "Intent data & buying signals",
-                ],
-                metrics: { conversion: "3-5x", deal: "+40%" },
-              },
-            ].map((canal, i) => (
-              <motion.article
-                key={i}
-                variants={itemVariants}
-                whileHover={{ y: -6 }}
-                className={`group flex h-full flex-col rounded-[22px] border border-[#0D332B]/10 bg-[#F6F7F4] p-6 transition-[transform,border-color,box-shadow] duration-300 hover:border-[#85C947]/70 hover:shadow-[0_24px_48px_-34px_rgba(13,51,43,0.5)] sm:p-8 lg:p-10 ${i === 0 ? "lg:col-span-7" : i === 1 ? "lg:col-span-5" : "sm:col-span-2 lg:col-span-12"}`}
+          <ul className="mt-14 border-t border-white/12 md:mt-20">
+            {CHANNELS.map((canal, i) => (
+              <Reveal
+                as="li"
+                key={canal.title}
+                delay={i * 80}
+                className="grid gap-8 border-b border-white/12 py-10 md:py-14 lg:grid-cols-12 lg:gap-16"
               >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#DCEFC7] text-[#1A6D48] transition-transform duration-300 group-hover:scale-105 sm:mb-8 sm:h-16 sm:w-16">
-                  <canal.icon size={32} className="w-6 h-6 sm:w-8 sm:h-8" />
+                <div className="lg:col-span-6">
+                  <h3 className="font-heading text-[clamp(1.6rem,2.6vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-[#F7FAF8]">
+                    {canal.title}
+                  </h3>
+                  <p className="mt-2 text-base text-[#B9CBC4]">{canal.subtitle}</p>
+                  <p className="mt-6 max-w-[54ch] text-base leading-relaxed text-[#CFDDD7] md:text-lg">
+                    {canal.desc}
+                  </p>
+                  <p className="mt-6 font-mono text-[0.78rem] text-[#B9CBC4]">
+                    Suivi chaque semaine :{" "}
+                    {canal.tracked
+                      .map((key) => METRIC_LABELS[key])
+                      .join(" · ")}
+                  </p>
                 </div>
-
-                <div className="mb-2">
-                  <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#1A6D48]">
-                    {canal.subtitle}
-                  </span>
-                </div>
-                <h3 className="mb-3 text-xl font-bold text-[#0D332B] transition-colors group-hover:text-[#1A6D48] sm:mb-4 sm:text-2xl">
-                  {canal.title}
-                </h3>
-                <p className="mb-6 flex-1 text-sm leading-relaxed text-[#416058] sm:mb-8 sm:text-base">
-                  {canal.desc}
-                </p>
-
-                {/* Metrics */}
-                <div className="mb-6 rounded-2xl border border-[#0D332B]/10 bg-white p-4 sm:mb-8">
-                  <div className="text-xs font-bold text-emerald-900 mb-2 uppercase tracking-wide">
-                    Performances moyennes :
-                  </div>
-                  <div className="flex flex-wrap gap-3 text-xs">
-                    {Object.entries(canal.metrics).map(([key, value]) => (
-                      <div key={key} className="flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                        <span className="text-slate-600">
-                          {key === "open"
-                            ? "Ouverture"
-                            : key === "response"
-                              ? "Réponse"
-                              : key === "accept"
-                                ? "Acceptation"
-                                : key === "conversion"
-                                  ? "Conversion"
-                                  : "Deal size"}
-                          :{" "}
-                          <strong className="text-emerald-700">{value}</strong>
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <ul className="space-y-2 border-t border-[#0D332B]/10 pt-6 sm:space-y-3">
-                  {canal.points.map((p, j) => (
-                    <li
-                      key={j}
-                      className="text-xs sm:text-sm text-emerald-800 font-semibold flex items-start gap-2"
-                    >
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#1A6D48]" />
-                      <span>{p}</span>
+                <ul className="border-t border-white/12 lg:col-span-6 lg:mt-2">
+                  {canal.points.map((p) => (
+                    <li key={p} className="flex items-start gap-3.5 border-b border-white/12 py-4">
+                      <Check size={17} strokeWidth={2.75} aria-hidden="true" className="mt-1 shrink-0 text-[#B0FF5B]" />
+                      <span className="text-base leading-relaxed text-[#E4ECE8]">{p}</span>
                     </li>
                   ))}
                 </ul>
-              </motion.article>
+              </Reveal>
             ))}
-          </motion.div>
+          </ul>
 
-          {/* Additional Value Props */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
-          >
-            {[
-              {
-                icon: Clock,
-                title: "Déploiement Rapide",
-                desc: "Campagnes actives sous 7 jours",
-              },
-              {
-                icon: Shield,
-                title: "Conformité RGPD",
-                desc: "100% conforme réglementation",
-              },
-              {
-                icon: TrendingUp,
-                title: "ROI Garanti",
-                desc: "Objectifs contractualisés",
-              },
-              {
-                icon: Users,
-                title: "Account Manager",
-                desc: "Expert dédié à votre compte",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                variants={itemVariants}
-                className="border-l border-[#0D332B]/15 p-4 first:border-l-0 sm:p-6"
+          <dl className="mt-14 grid grid-cols-1 gap-y-8 sm:grid-cols-2 md:mt-20 lg:grid-cols-4">
+            {COMMITMENTS.map((item, i) => (
+              <Reveal
+                key={item.title}
+                delay={i * 70}
+                className="border-t border-white/12 pt-5 sm:pr-6"
               >
-                <item.icon className="mb-4 h-10 w-10 text-[#1A6D48] sm:h-12 sm:w-12" />
-                <h4 className="font-bold text-[#0D332B] mb-2 text-sm sm:text-base">
-                  {item.title}
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-500">{item.desc}</p>
-              </motion.div>
+                <dt className="text-base font-semibold tracking-[-0.015em] text-[#F7FAF8]">{item.title}</dt>
+                <dd className="mt-1.5 text-sm text-[#B9CBC4]">{item.desc}</dd>
+              </Reveal>
             ))}
-          </motion.div>
+          </dl>
         </div>
       </section>
 
       {/* Déroulé d'une mission — contenu de fond : la page plafonnait à 654 mots
           sur « agence outbound » (85 impressions, position 41,35). */}
-      <section className="bg-[#F6F7F4] px-3 py-16 sm:px-4 sm:py-20 lg:px-5 lg:py-28">
-        <div className="mx-auto max-w-[1600px]">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="mb-12 max-w-3xl sm:mb-16"
-          >
-            <motion.div variants={scaleVariants} className="mb-4 inline-block sm:mb-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#EAF2E5] px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#24573F]">
-                <Network className="h-4 w-4" />
-                Déroulé d&apos;une mission
-              </span>
-            </motion.div>
+      <MethodSection
+        ground="bg-[#F6F7F4]"
+        title="Comment se déroule une mission outbound"
+        intro="La plupart des campagnes outbound échouent avant le premier envoi, sur un ciblage trop large ou un message écrit pour l'émetteur plutôt que pour le lecteur. Notre déroulé consacre donc les deux premières semaines au cadrage, pas à l'envoi."
+        steps={PHASES}
+      />
 
-            <h2 className="mb-4 font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:mb-6 sm:text-4xl md:text-5xl">
-              Comment se déroule une mission outbound
-            </h2>
-            <p className="max-w-3xl text-base leading-relaxed text-[#416058] sm:text-lg">
-              La plupart des campagnes outbound échouent avant le premier envoi,
-              sur un ciblage trop large ou un message écrit pour l&apos;émetteur
-              plutôt que pour le lecteur. Notre déroulé consacre donc les deux
-              premières semaines au cadrage, pas à l&apos;envoi.
-            </p>
-          </motion.div>
-
-          <motion.ol
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
-          >
-            {[
-              {
-                step: "01",
-                title: "Cadrage et ICP",
-                desc: "Nous définissons votre profil de client idéal à partir de vos affaires signées, pas d'un persona théorique : secteurs qui achètent vite, tailles d'entreprise où votre offre passe, fonctions qui décident réellement du budget.",
-              },
-              {
-                step: "02",
-                title: "Construction du fichier",
-                desc: "Sourcing des comptes et des décideurs, vérification des adresses, enrichissement par signaux d'achat. Un fichier de 500 contacts justes vaut mieux que 5 000 approximatifs : la délivrabilité se joue ici.",
-              },
-              {
-                step: "03",
-                title: "Séquences et lancement",
-                desc: "Rédaction des messages par segment, warm-up des domaines d'envoi, paramétrage des relances. Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous.",
-              },
-              {
-                step: "04",
-                title: "Pilotage et itération",
-                desc: "Revue hebdomadaire des taux de réponse par segment et par message. Ce qui ne convertit pas est réécrit ou coupé ; les rendez-vous qualifiés partent directement dans l'agenda de vos commerciaux.",
-              },
-            ].map((phase) => (
-              <motion.li
-                key={phase.step}
-                variants={itemVariants}
-                className="flex h-full flex-col rounded-[22px] border border-[#0D332B]/10 bg-white p-6 sm:p-8"
-              >
-                <span className="mb-5 font-heading text-3xl font-bold tracking-tight text-[#85C947] sm:text-4xl">
-                  {phase.step}
-                </span>
-                <h3 className="mb-3 text-lg font-bold text-[#0D332B] sm:text-xl">
-                  {phase.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-[#416058] sm:text-base">
-                  {phase.desc}
-                </p>
-              </motion.li>
-            ))}
-          </motion.ol>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="mt-12 grid gap-8 rounded-[22px] border border-[#0D332B]/10 bg-white p-6 sm:mt-16 sm:p-10 lg:grid-cols-2 lg:gap-12 lg:p-12"
-          >
-            <motion.div variants={itemVariants}>
-              <h3 className="mb-4 font-heading text-2xl font-bold tracking-[-0.03em] text-[#0D332B] sm:text-3xl">
-                À qui s&apos;adresse l&apos;outbound
-              </h3>
-              <p className="mb-4 text-base leading-relaxed text-[#416058]">
+      {/* À qui s'adresse l'outbound + prestations complémentaires */}
+      <section className="border-t border-[#0D332B]/10 bg-[#FCFDFC] py-24 md:py-32">
+        <div className={CONTAINER}>
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+            <SectionHead size="md" className="lg:col-span-5" title="À qui s'adresse l'outbound" />
+            <Reveal delay={140} className="max-w-[62ch] space-y-5 text-lg leading-relaxed text-[#4E605B] lg:col-span-7 lg:pt-3">
+              <p>
                 L&apos;outbound fonctionne quand votre marché est identifiable :
                 un nombre fini d&apos;entreprises que vous savez nommer, un
                 décideur repérable, un panier moyen qui justifie le coût d&apos;un
@@ -631,194 +321,48 @@ export default function OutboundClient() {
                 des ESN, des cabinets de conseil, des industriels et des
                 prestataires de services aux entreprises.
               </p>
-              <p className="text-base leading-relaxed text-[#416058]">
+              <p>
                 Il est en revanche le mauvais outil pour un produit à faible
                 panier vendu à un marché de masse : le coût par contact ne se
                 rentabilise pas. Nous vous le dirons pendant l&apos;audit plutôt
                 qu&apos;au troisième mois de campagne.
               </p>
-            </motion.div>
+            </Reveal>
+          </div>
 
-            <motion.div variants={itemVariants}>
-              <h3 className="mb-4 font-heading text-2xl font-bold tracking-[-0.03em] text-[#0D332B] sm:text-3xl">
-                Prestations complémentaires
-              </h3>
-              <p className="mb-5 text-base leading-relaxed text-[#416058]">
-                L&apos;outbound se combine souvent avec d&apos;autres briques de
-                notre accompagnement commercial, selon l&apos;étape où votre
-                pipeline se bloque :
-              </p>
-              <ul className="space-y-3">
-                {[
-                  {
-                    href: "/services/prospection-commerciale-externalisee",
-                    label: "Prospection commerciale externalisée",
-                    hint: "quand le besoin porte sur l'équipe, pas sur le canal",
-                  },
-                  {
-                    href: "/services/fichier-prospection-b2b",
-                    label: "Fichier de prospection B2B qualifié",
-                    hint: "si le ciblage est le point faible",
-                  },
-                  {
-                    href: "/services/campagnes-email-sms-b2b",
-                    label: "Campagnes email et SMS B2B",
-                    hint: "pour industrialiser le multicanal",
-                  },
-                  {
-                    href: "/services/qualification-leads-b2b",
-                    label: "Qualification de leads B2B",
-                    hint: "quand les leads arrivent mais ne convertissent pas",
-                  },
-                  {
-                    href: "/services/prise-rendez-vous-b2b",
-                    label: "Prise de rendez-vous B2B qualifiés",
-                    hint: "pour remplir l'agenda de vos commerciaux",
-                  },
-                ].map((service) => (
-                  <li key={service.href} className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-1 h-4 w-4 flex-shrink-0 text-[#1A6D48]" />
-                    <span className="text-sm leading-relaxed text-[#416058] sm:text-base">
-                      <Link
-                        href={service.href}
-                        className="font-semibold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4 transition-colors hover:text-[#1A6D48]"
-                      >
-                        {service.label}
-                      </Link>{" "}
-                      — {service.hint}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </motion.div>
+          <div className="mt-20 md:mt-28">
+            <h3 className="font-heading text-[1.4rem] font-semibold tracking-[-0.03em] text-[#0D332B] md:text-[1.6rem]">
+              Prestations complémentaires
+            </h3>
+            <p className="mt-3 max-w-[58ch] text-base leading-relaxed text-[#4E605B] md:text-[17px]">
+              L&apos;outbound se combine souvent avec d&apos;autres briques de
+              notre accompagnement commercial, selon l&apos;étape où votre
+              pipeline se bloque :
+            </p>
+            <LedgerList items={COMPLEMENTS} className="mt-8" />
+          </div>
         </div>
       </section>
 
       {/* FAQ — le JSON-LD FAQPage correspondant est émis côté serveur dans
           src/app/services/outbound-marketing-b2b/page.jsx, à partir du même
-          tableau OUTBOUND_FAQ. */}
-      <section className="bg-white px-3 py-16 sm:px-4 sm:py-20 lg:px-5 lg:py-28">
-        <div className="mx-auto max-w-4xl">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="mb-10 sm:mb-14"
-          >
-            <motion.div variants={scaleVariants} className="mb-4 inline-block sm:mb-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#EAF2E5] px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#24573F]">
-                <MessagesSquare className="h-4 w-4" />
-                Questions fréquentes
-              </span>
-            </motion.div>
+          tableau OUTBOUND_FAQ : FaqList n'en émet donc pas un second. */}
+      <FaqList title="Ce qu'on nous demande le plus souvent" jsonLd={false} items={OUTBOUND_FAQ} />
 
-            <h2 className="font-heading text-3xl font-bold leading-[1.08] tracking-tight text-[#0D332B] sm:text-4xl md:text-5xl">
-              Ce qu&apos;on nous demande le plus souvent
-            </h2>
-          </motion.div>
-
-          <div className="divide-y divide-[#0D332B]/10 border-y border-[#0D332B]/10">
-            {OUTBOUND_FAQ.map((item) => (
-              <details key={item.question} className="group py-5 sm:py-6">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-left text-base font-bold text-[#0D332B] transition-colors hover:text-[#1A6D48] sm:text-lg">
-                  <h3 className="text-base font-bold sm:text-lg">
-                    {item.question}
-                  </h3>
-                  <span
-                    aria-hidden="true"
-                    className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[#0D332B]/15 text-[#1A6D48] transition-transform duration-300 group-open:rotate-45"
-                  >
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 max-w-[75ch] text-sm leading-relaxed text-[#416058] sm:text-base">
-                  {item.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section - Enhanced */}
-      <section className="py-16 sm:py-20 md:py-32 lg:py-40 bg-gradient-to-br from-[#0D332B] via-[#0F3D31] to-[#0D332B] relative overflow-hidden">
-        {/* Animated Background Text Watermark */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-[0.05] whitespace-nowrap select-none pointer-events-none">
-          <span className="text-[15vw] sm:text-[18vw] md:text-[20vw] font-extrabold uppercase font-heading text-white">
-            LEAD GEN
-          </span>
-        </div>
-
-        {/* Animated gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#B0FF5B]/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-block mb-6 sm:mb-8"
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#B0FF5B]/20 border border-[#B0FF5B]/30 text-[#B0FF5B] text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-4 h-4" />
-                Offre Limitée
-              </span>
-            </motion.div>
-
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white mb-6 sm:mb-10 leading-tight px-4">
-              Passez de la Défense <br className="hidden sm:block" /> à
-              l&apos;Attaque Commerciale
-            </h2>
-
-            <p className="text-base sm:text-lg md:text-xl text-emerald-50/80 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4">
-              Audit gratuit de votre stratégie outbound actuelle + Plan
-              d&apos;action personnalisé pour générer vos premiers leads
-              qualifiés sous 30 jours.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-4">
-              <Button
-                href="/contact"
-                variant="primary"
-                className="w-full sm:w-auto bg-[#B0FF5B] hover:bg-white text-[#0D332B] px-10 sm:px-12 py-5 sm:py-6 text-lg sm:text-xl rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300 font-bold"
-              >
-                Démarrer mon audit outbound gratuit
-              </Button>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-emerald-50/50 font-medium tracking-wide px-4"
-            >
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#B0FF5B]" />
-                Accompagnement 100% sur mesure
-              </span>
-              <span className="hidden sm:inline">•</span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#B0FF5B]" />
-                Résultats garantis sous 90 jours
-              </span>
-              <span className="hidden sm:inline">•</span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#B0FF5B]" />
-                Sans engagement
-              </span>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <ClosingCta
+        title="Passez de l'attente à la prospection active"
+        intro={
+          <>
+            Audit gratuit de votre stratégie outbound actuelle + Plan
+            d&apos;action personnalisé : cible, messages, canaux et rythme
+            d&apos;envoi.
+            <span className="mt-5 block font-mono text-[0.8rem] leading-relaxed text-[#B9CBC4]">
+              Accompagnement sur mesure · Reporting hebdomadaire · Sans engagement
+            </span>
+          </>
+        }
+        primary={{ label: "Démarrer mon audit outbound gratuit", href: "/contact" }}
+      />
     </div>
   );
 }

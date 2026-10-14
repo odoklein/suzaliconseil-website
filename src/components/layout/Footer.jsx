@@ -8,77 +8,28 @@ import {
   MapPin,
   Mail,
   Phone,
-  ArrowUpRight,
 } from "lucide-react";
 
 import { usePathname } from "next/navigation";
-import { useBooking } from "../../context/BookingContext";
+import ClosingCta from "../kit/ClosingCta";
 
 const Footer = () => {
   const pathname = usePathname();
-  const { openBooking } = useBooking();
 
-  const getFooterColor = () => {
-    if (pathname?.includes("/services/digital/strategie-digitale"))
-      return "bg-[#0b1d4e]";
-    if (pathname?.includes("/services/digital/sites-web-ecommerce"))
-      return "bg-[#4f3ef1]";
-    if (pathname?.includes("/services/digital/seo-acquisition"))
-      return "bg-[#08364e]";
-    if (pathname?.includes("/services/digital/branding-identite"))
-      return "bg-[#2e1065]";
-    if (pathname?.includes("/services/digital/developpement-automatisation"))
-      return "bg-[#091627]";
-    if (pathname === "/services/digital") return "bg-[#0f172a]";
-    return "bg-[#0D332B]";
-  };
-
-  /* Check if we are on a page that already has its own CTA or doesn't need this generic banner */
+  /* Pages that end on their own ClosingCta (tailored copy) skip the default one. */
   const hideGlobalCTA =
     pathname?.startsWith("/services") ||
     pathname === "/contact" ||
     pathname === "/equipe" ||
     pathname === "/offres" ||
+    pathname === "/etudes-de-cas" ||
+    pathname === "/carriers" ||
     pathname?.startsWith("/portal");
 
   return (
-    <footer
-      className={`${getFooterColor()} text-white pt-0 pb-10 transition-colors duration-500 footer-animated relative overflow-hidden`}
-    >
-      {/* CTA Banner - Hidden on pages that have their own targeted CTAs to avoid duplication */}
-      {!hideGlobalCTA && (
-        <div className="relative py-16 md:py-24 overflow-hidden">
-          {/* Background glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#B0FF5B] rounded-full blur-[150px] opacity-[0.06] pointer-events-none" />
-
-          <div className="container mx-auto px-4 max-w-7xl text-center relative z-10">
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight mb-4 md:mb-6">
-              Prêt à accélérer <br className="hidden sm:block" />
-              votre <span className="text-[#B0FF5B]">croissance</span> ?
-            </h2>
-            <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-              Réservez un appel stratégique gratuit avec notre équipe. En 30
-              minutes, nous identifions vos opportunités de croissance.
-            </p>
-            <button
-              onClick={openBooking}
-              className="group inline-flex items-center gap-3 bg-[#B0FF5B] text-[#0D332B] font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-[0_8px_30px_rgba(176,255,91,0.3)] transition-all duration-300 hover:-translate-y-0.5 text-sm md:text-base uppercase tracking-wide"
-            >
-              Planifier un appel stratégique
-              <ArrowUpRight
-                size={18}
-                className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-              />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Separator line */}
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-16" />
-      </div>
-
+    <>
+    {!hideGlobalCTA && <ClosingCta />}
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0D332B] pb-10 pt-20 text-[#F7FAF8]">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Column 1: Brand */}
@@ -92,7 +43,7 @@ const Footer = () => {
                 className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
-            <p className="text-slate-300 text-sm leading-relaxed max-w-xs">
+            <p className="text-[#B9CBC4] text-sm leading-relaxed max-w-xs">
               Votre partenaire de croissance, alliant expertise commerciale et
               stratégie digitale pour des résultats concrets.
             </p>
@@ -110,11 +61,10 @@ const Footer = () => {
 
           {/* Column 2: Services */}
           <div>
-            <p className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[#B0FF5B] rounded-full" />
+            <p className="mb-6 font-heading text-base font-semibold tracking-[-0.02em] text-[#F7FAF8]">
               Expertises
             </p>
-            <ul className="space-y-4 text-slate-300 text-sm">
+            <ul className="space-y-4 text-[#B9CBC4] text-sm">
               <li>
                 <Link
                   href="/services/commercial"
@@ -160,11 +110,10 @@ const Footer = () => {
 
           {/* Column 3: Entreprise */}
           <div>
-            <p className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[#B0FF5B] rounded-full" />
+            <p className="mb-6 font-heading text-base font-semibold tracking-[-0.02em] text-[#F7FAF8]">
               Agence
             </p>
-            <ul className="space-y-4 text-slate-300 text-sm">
+            <ul className="space-y-4 text-[#B9CBC4] text-sm">
               <li>
                 <Link
                   href="/etudes-de-cas"
@@ -218,11 +167,10 @@ const Footer = () => {
 
           {/* Column 4: Contact Info */}
           <div>
-            <p className="font-heading font-bold text-lg mb-6 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[#B0FF5B] rounded-full" />
+            <p className="mb-6 font-heading text-base font-semibold tracking-[-0.02em] text-[#F7FAF8]">
               Nous contacter
             </p>
-            <ul className="space-y-4 text-slate-300 text-sm">
+            <ul className="space-y-4 text-[#B9CBC4] text-sm">
               <li className="flex items-start gap-3 group">
                 <MapPin
                   size={18}
@@ -263,7 +211,7 @@ const Footer = () => {
         </div>
 
         {/* Separator */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#B9CBC4]/80">
           <p>
             © {new Date().getFullYear()} Suzali Conseil. Tous droits réservés.
           </p>
@@ -272,12 +220,13 @@ const Footer = () => {
               href="/mentions-legales"
               className="hover:text-white transition-colors"
             >
-              Mentions Légales
+              Mentions légales
             </Link>
           </div>
         </div>
       </div>
     </footer>
+    </>
   );
 };
 

@@ -3,11 +3,11 @@
 import {
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
 } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import useSafeReducedMotion from "../../lib/useSafeReducedMotion";
 
 const MotionLink = motion.create(Link);
 
@@ -25,7 +25,7 @@ export default function MagneticButton({
   ...props
 }) {
   const ref = useRef(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSafeReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 280, damping: 24, mass: 0.45 });
@@ -52,6 +52,7 @@ export default function MagneticButton({
     "outline-light": "magnetic-btn-outline-light",
     outline: "magnetic-btn-outline",
     lime: "magnetic-btn-lime",
+    ink: "magnetic-btn-ink",
   };
 
   const combinedClasses = `magnetic-btn ${variants[variant] || variants.primary} ${className}`;

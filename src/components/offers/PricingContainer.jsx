@@ -2,52 +2,28 @@
 
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  BarChart3,
-  Check,
-  Database,
-  Headphones,
-  Mail,
-  Monitor,
-  PhoneCall,
-  Plus,
-  Radio,
-  Send,
-  Sparkles,
-  Target,
-  Zap,
-} from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Check, Plus } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import LeadModal from "./LeadModal";
 import EstimateBar from "./EstimateBar";
+import { Reveal, SectionHead } from "../kit";
+import useSafeReducedMotion from "../../lib/useSafeReducedMotion";
 import { OFFER_CATEGORIES, getOfferCount } from "../../lib/offers-catalog";
 import { CADENCE_LABEL, getPricing } from "../../lib/offers-pricing-meta";
 
-const SECTION_ICONS = {
-  rdv: PhoneCall,
-  files: Database,
-  "sms-email": Send,
-  "digital-grid": Monitor,
-};
-
-const OFFER_ICONS = [Target, Zap, Mail, Radio, BarChart3, Headphones];
-
-/* Cadence chip colours — lime family throughout; orange stays reserved for
-   the "Recommandé" ribbon so it keeps its signal value. */
-const CADENCE_STYLE = {
-  "one-shot": "bg-[#EAF7E4] text-[#1A6D48]",
-  monthly: "bg-[#E3F2FD] text-[#1155CC]",
-  usage: "bg-[#F3EDFB] text-[#6B3FA0]",
-  quote: "bg-[#F1F3F2] text-[#546A62]",
-};
-
+/*
+ * The catalogue as a price ledger: one hairline row per offer, grouped by
+ * section. Inside each section the highlighted offer is the inked row (the
+ * homepage's "inked column", turned sideways), so the eye lands on one offer
+ * per section instead of a wall of identical cards. Lime stays on the
+ * actionable: the inked row's main button and the active estimate toggles.
+ */
 export default function PricingContainer() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("contact");
   const [selectedSectionId, setSelectedSectionId] = useState("all");
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [estimateIds, setEstimateIds] = useState([]);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSafeReducedMotion();
 
   const selectedCategory = useMemo(
     () =>
@@ -76,302 +52,121 @@ export default function PricingContainer() {
     );
   }, []);
 
+  const closeLead = useCallback(() => setSelectedOffer(null), []);
+
+  const filters = [
+    { id: "all", title: "Toutes les offres" },
+    ...selectedCategory.sections.map(({ id, title }) => ({ id, title })),
+  ];
+
   return (
     <div className="w-full">
-      {/* ---------------------------------------------------------------- */}
-      {/* Segmented control                                                */}
-      {/* ---------------------------------------------------------------- */}
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="flex flex-col items-center gap-5 text-center">
-          <span className="inline-flex items-center rounded-full bg-[#EAF7E4] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#1A6D48]">
-            Construisez votre dispositif
-          </span>
-          <h2 className="max-w-2xl font-heading text-3xl font-extrabold leading-[1.08] tracking-[-0.025em] text-[#0D332B] md:text-5xl">
-            Choisissez ce que vous voulez obtenir, pas seulement une prestation.
-          </h2>
-          <p className="max-w-[62ch] text-base leading-7 text-[#416058]">
-            Comparez les offres selon votre objectif : générer des leads B2B,
-            obtenir des rendez-vous, convertir plus de trafic ou structurer
-            votre écosystème digital.
-          </p>
-        </div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          title="Choisissez ce que vous voulez obtenir, pas seulement une prestation."
+          intro="Comparez les offres selon votre objectif : générer des leads B2B, obtenir des rendez-vous, convertir plus de trafic ou structurer votre écosystème digital."
+          size="md"
+          className="max-w-4xl"
+        />
 
-        <div
-          role="tablist"
-          aria-label="Catégories d'offres"
-          className="mx-auto mt-9 flex w-full max-w-xl rounded-full border border-[#0D332B]/10 bg-white p-1.5 shadow-[0_10px_30px_rgba(13,51,43,0.06)]"
+        {/* Category switch + section filter */}
+        <Reveal
+          delay={200}
+          className="mt-14 flex flex-col gap-5 border-b border-[#0D332B]/12 pb-5 md:mt-16 lg:flex-row lg:items-center lg:justify-between"
         >
-          {OFFER_CATEGORIES.map((category) => {
-            const isActive = selectedCategory.id === category.id;
-            const Icon = category.id === "contact" ? Headphones : Monitor;
+          <div
+            role="tablist"
+            aria-label="Catégories d'offres"
+            className="flex w-full rounded-full border border-[#0D332B]/14 bg-[#F6F7F4] p-1 sm:w-auto"
+          >
+            {OFFER_CATEGORIES.map((category) => {
+              const isActive = selectedCategory.id === category.id;
 
-            return (
-              <button
-                key={category.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => handleCategoryChange(category.id)}
-                className="relative flex-1 rounded-full px-3 py-3 text-sm font-extrabold transition-colors"
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="category-pill"
-                    transition={
-                      reduceMotion
-                        ? { duration: 0 }
-                        : { type: "spring", stiffness: 380, damping: 32 }
-                    }
-                    className="absolute inset-0 rounded-full bg-[#0D332B]"
-                  />
-                )}
-                <span
-                  className={`relative z-10 flex items-center justify-center gap-2 ${
-                    isActive ? "text-white" : "text-[#416058]"
+              return (
+                <button
+                  key={category.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => handleCategoryChange(category.id)}
+                  className={`flex min-h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-semibold tracking-[-0.01em] transition-colors duration-300 sm:flex-none sm:px-5 ${
+                    isActive
+                      ? "bg-[#0D332B] text-[#F7FAF8]"
+                      : "text-[#4E605B] hover:text-[#0D332B]"
                   }`}
                 >
-                  <Icon size={17} strokeWidth={2.2} />
                   {category.label}
                   <span
-                    className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                      isActive
-                        ? "bg-white/15 text-[#B0FF5B]"
-                        : "bg-[#F1F3F2] text-[#7C9188]"
+                    className={`font-mono text-[11px] tabular-nums ${
+                      isActive ? "text-[#B9CBC4]" : "text-[#4E605B]/80"
                     }`}
                   >
                     {getOfferCount(category.id)}
                   </span>
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Section filters */}
-        <div
-          className="mt-6 flex justify-start gap-2 overflow-x-auto pb-2 md:justify-center"
-          aria-label="Filtrer les offres"
-        >
-          <button
-            type="button"
-            onClick={() => setSelectedSectionId("all")}
-            aria-pressed={selectedSectionId === "all"}
-            className={`shrink-0 rounded-full border px-4 py-2 text-sm font-bold transition-all active:scale-[0.98] ${
-              selectedSectionId === "all"
-                ? "border-[#1A6D48] bg-[#EAF7E4] text-[#1A6D48]"
-                : "border-[#0D332B]/10 bg-white text-[#416058] hover:border-[#1A6D48]/50"
-            }`}
-          >
-            Toutes les offres
-          </button>
-          {selectedCategory.sections.map((section) => (
-            <button
-              key={section.id}
-              type="button"
-              onClick={() => setSelectedSectionId(section.id)}
-              aria-pressed={selectedSectionId === section.id}
-              className={`shrink-0 rounded-full border px-4 py-2 text-sm font-bold transition-all active:scale-[0.98] ${
-                selectedSectionId === section.id
-                  ? "border-[#1A6D48] bg-[#EAF7E4] text-[#1A6D48]"
-                  : "border-[#0D332B]/10 bg-white text-[#416058] hover:border-[#1A6D48]/50"
-              }`}
-            >
-              {section.title}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ---------------------------------------------------------------- */}
-      {/* Catalogue                                                        */}
-      {/* ---------------------------------------------------------------- */}
-      <div className="mx-auto mt-12 max-w-7xl px-4 md:px-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`${selectedCategory.id}-${selectedSectionId}`}
-            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="space-y-16"
-          >
-            {visibleSections.map((section) => {
-              const SectionIcon = SECTION_ICONS[section.id] || Sparkles;
-
-              return (
-                <section key={section.id} className="scroll-mt-24">
-                  <div className="mb-7 max-w-3xl">
-                    <div className="flex items-center gap-3 text-[#1A6D48]">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EAF7E4]">
-                        <SectionIcon size={18} strokeWidth={2} />
-                      </span>
-                      <span className="text-[11px] font-bold uppercase tracking-[0.14em]">
-                        {section.eyebrow}
-                      </span>
-                    </div>
-                    <h3 className="mt-4 font-heading text-2xl font-extrabold leading-[1.1] tracking-[-0.02em] text-[#0D332B] md:text-4xl">
-                      {section.title}
-                    </h3>
-                    <p className="mt-3 max-w-[62ch] text-base leading-7 text-[#416058]">
-                      {section.description}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-                    {section.offers.map((offer, index) => {
-                      const OfferIcon = OFFER_ICONS[index % OFFER_ICONS.length];
-                      const pricing = getPricing(offer.id);
-                      const isQuote = pricing.cadence === "quote";
-                      const isSelected = estimateIds.includes(offer.id);
-
-                      return (
-                        <motion.article
-                          key={offer.id}
-                          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, amount: 0.15 }}
-                          transition={{
-                            duration: 0.28,
-                            delay: reduceMotion ? 0 : index * 0.04,
-                          }}
-                          className={`flex flex-col rounded-[28px] border bg-white p-6 transition-all duration-300 ${
-                            isSelected
-                              ? "border-[#1A6D48] shadow-[0_18px_40px_-18px_rgba(26,109,72,0.45)]"
-                              : offer.highlight
-                                ? "border-[#FF6A3D]/40 shadow-[0_12px_30px_rgba(13,51,43,0.07)]"
-                                : "border-[#0D332B]/10 shadow-[0_12px_30px_rgba(13,51,43,0.05)] hover:border-[#0D332B]/25"
-                          }`}
-                        >
-                          <div className="flex items-start justify-between gap-3">
-                            <span
-                              className={`flex h-11 w-11 items-center justify-center rounded-xl ${
-                                offer.highlight
-                                  ? "bg-[#0D332B] text-[#B0FF5B]"
-                                  : "bg-[#EFF3F0] text-[#0D332B]"
-                              }`}
-                            >
-                              <OfferIcon size={20} strokeWidth={2} />
-                            </span>
-
-                            <div className="flex flex-wrap items-center justify-end gap-1.5">
-                              {/* Unit chip — makes the six pricing units legible */}
-                              <span
-                                className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${CADENCE_STYLE[pricing.cadence]}`}
-                              >
-                                {CADENCE_LABEL[pricing.cadence]}
-                              </span>
-                              {offer.tag && (
-                                <span className="rounded-full bg-[#FF6A3D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                                  {offer.tag}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-
-                          <div className="mt-6">
-                            <h4 className="font-heading text-xl font-extrabold leading-tight tracking-[-0.015em] text-[#0D332B]">
-                              {offer.name}
-                            </h4>
-                            <p className="mt-3 text-sm leading-6 text-[#416058]">
-                              {offer.description}
-                            </p>
-                          </div>
-
-                          <div className="mt-6 border-t border-[#0D332B]/10 pt-5">
-                            {!isQuote && (
-                              <p className="text-xs font-bold text-[#7C9188]">
-                                À partir de
-                              </p>
-                            )}
-                            <div className="mt-1 flex flex-wrap items-end gap-x-2 gap-y-1">
-                              <span className="tabular-figures font-heading text-3xl font-extrabold tracking-[-0.03em] text-[#0D332B]">
-                                {offer.price}
-                              </span>
-                              <span className="pb-1 text-sm font-semibold text-[#416058]">
-                                {offer.billing}
-                              </span>
-                            </div>
-                            {offer.subscription && (
-                              <p className="mt-3 rounded-xl bg-[#EAF7E4] px-3 py-2 text-xs font-bold leading-5 text-[#1A6D48]">
-                                {offer.subscription}
-                              </p>
-                            )}
-                          </div>
-
-                          <div className="mt-5 flex-1">
-                            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#0D332B]">
-                              Ce que vous obtenez
-                            </p>
-                            <ul className="mt-3 space-y-2.5">
-                              {offer.features.map((feature) => (
-                                <li
-                                  key={feature}
-                                  className="flex items-start gap-3 text-sm leading-5 text-[#416058]"
-                                >
-                                  <Check
-                                    size={16}
-                                    className="mt-0.5 shrink-0 text-[#1A6D48]"
-                                    strokeWidth={2.6}
-                                  />
-                                  <span>{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* Estimator toggle */}
-                          <button
-                            type="button"
-                            onClick={() => toggleEstimate(offer.id)}
-                            aria-pressed={isSelected}
-                            className={`mt-6 flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold transition-all active:scale-[0.98] ${
-                              isSelected
-                                ? "border-[#1A6D48] bg-[#EAF7E4] text-[#1A6D48]"
-                                : "border-[#0D332B]/12 bg-white text-[#416058] hover:border-[#1A6D48]/60 hover:text-[#1A6D48]"
-                            }`}
-                          >
-                            {isSelected ? (
-                              <>
-                                <Check size={16} strokeWidth={2.6} />
-                                Ajouté à l&apos;estimation
-                              </>
-                            ) : (
-                              <>
-                                <Plus size={16} strokeWidth={2.6} />
-                                Ajouter à mon estimation
-                              </>
-                            )}
-                          </button>
-
-                          {/* CTA split by intent */}
-                          <button
-                            type="button"
-                            onClick={() => setSelectedOffer(offer)}
-                            className={`mt-3 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-extrabold transition-all active:scale-[0.98] ${
-                              offer.highlight
-                                ? "bg-[#0D332B] text-white hover:bg-[#174A3E]"
-                                : "bg-[#B0FF5B] text-[#0D332B] hover:bg-[#9BEA45]"
-                            }`}
-                          >
-                            {isQuote ? "Demander un devis" : "Démarrer"}
-                            <ArrowRight size={17} />
-                          </button>
-
-                          {offer.serviceHref && (
-                            <Link
-                              href={offer.serviceHref}
-                              className="mt-3 text-center text-sm font-bold text-[#416058] underline decoration-[#1A6D48]/40 underline-offset-4 transition-colors hover:text-[#1A6D48]"
-                            >
-                              Voir le détail du service
-                            </Link>
-                          )}
-                        </motion.article>
-                      );
-                    })}
-                  </div>
-                </section>
+                </button>
               );
             })}
+          </div>
+
+          <div
+            className="-mx-4 flex gap-1 overflow-x-auto px-4 sm:mx-0 sm:px-0"
+            role="group"
+            aria-label="Filtrer les offres"
+          >
+            {filters.map((filter) => {
+              const isActive = selectedSectionId === filter.id;
+              return (
+                <button
+                  key={filter.id}
+                  type="button"
+                  onClick={() => setSelectedSectionId(filter.id)}
+                  aria-pressed={isActive}
+                  className={`min-h-11 shrink-0 whitespace-nowrap px-3 text-sm font-semibold tracking-[-0.01em] underline-offset-[7px] transition-colors duration-300 ${
+                    isActive
+                      ? "text-[#0D332B] underline decoration-[#B0FF5B] decoration-[3px]"
+                      : "text-[#4E605B] hover:text-[#0D332B]"
+                  }`}
+                >
+                  {filter.title}
+                </button>
+              );
+            })}
+          </div>
+        </Reveal>
+
+        {/* Catalogue */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={`${selectedCategory.id}-${selectedSectionId}`}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduceMotion ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {visibleSections.map((section) => (
+              <section key={section.id} className="mt-16 scroll-mt-24 md:mt-20">
+                <div className="grid gap-4 lg:grid-cols-12 lg:items-end lg:gap-8">
+                  <h3 className="font-heading text-[clamp(1.7rem,2.8vw,2.4rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-[#0D332B] lg:col-span-5">
+                    {section.title}
+                  </h3>
+                  <p className="max-w-[58ch] text-base leading-relaxed text-[#4E605B] lg:col-span-7">
+                    {section.description}
+                  </p>
+                </div>
+
+                <ul className="mt-8 border-t border-[#0D332B]/14">
+                  {section.offers.map((offer) => (
+                    <OfferRow
+                      key={offer.id}
+                      offer={offer}
+                      isSelected={estimateIds.includes(offer.id)}
+                      onToggle={toggleEstimate}
+                      onRequest={setSelectedOffer}
+                    />
+                  ))}
+                </ul>
+              </section>
+            ))}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -385,9 +180,148 @@ export default function PricingContainer() {
 
       <LeadModal
         isOpen={!!selectedOffer}
-        onClose={() => setSelectedOffer(null)}
+        onClose={closeLead}
         offer={selectedOffer || {}}
       />
     </div>
+  );
+}
+
+function OfferRow({ offer, isSelected, onToggle, onRequest }) {
+  const pricing = getPricing(offer.id);
+  const isQuote = pricing.cadence === "quote";
+  const inked = Boolean(offer.highlight);
+
+  const muted = inked ? "text-[#B9CBC4]" : "text-[#4E605B]";
+  const strong = inked ? "text-[#F7FAF8]" : "text-[#0D332B]";
+
+  return (
+    <li
+      className={
+        inked
+          ? "my-4 rounded-[22px] bg-[#0D332B] shadow-[0_50px_90px_-50px_rgba(13,51,43,0.55)]"
+          : "border-b border-[#0D332B]/14"
+      }
+    >
+      <article
+        className={`grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-10 ${
+          inked ? "p-6 sm:p-8 lg:p-10" : "px-1 py-8 md:px-3 md:py-10"
+        }`}
+      >
+        {/* Name, unit, pitch */}
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <h4 className={`font-heading text-[1.45rem] font-semibold leading-tight tracking-[-0.03em] md:text-[1.6rem] ${strong}`}>
+              {offer.name}
+            </h4>
+            {offer.tag && (
+              <span className="chip-status" data-step={inked ? "2" : "1"}>
+                {offer.tag}
+              </span>
+            )}
+          </div>
+          <p className={`mt-2 font-mono text-[12px] ${muted}`}>{CADENCE_LABEL[pricing.cadence]}</p>
+          <p className={`mt-4 max-w-[46ch] text-[15px] leading-relaxed ${inked ? "text-[#CFDDD7]" : "text-[#4E605B]"}`}>
+            {offer.description}
+          </p>
+          {offer.serviceHref && (
+            <Link
+              href={offer.serviceHref}
+              className={`group/link mt-5 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold tracking-[-0.01em] underline decoration-[2px] underline-offset-[6px] transition-colors ${
+                inked
+                  ? "text-[#F7FAF8] decoration-[#B0FF5B]/60 hover:decoration-[#B0FF5B]"
+                  : "text-[#0D332B] decoration-[#0D332B]/25 hover:decoration-[#0D332B]"
+              }`}
+            >
+              Voir le détail du service
+              <ArrowUpRight
+                size={15}
+                aria-hidden="true"
+                className={`transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 ${
+                  inked ? "text-[#B0FF5B]" : ""
+                }`}
+              />
+            </Link>
+          )}
+        </div>
+
+        {/* What you get */}
+        <div className="min-w-0">
+          <p className={`text-sm font-semibold ${strong}`}>Ce que vous obtenez</p>
+          <ul className="mt-2">
+            {offer.features.map((feature) => (
+              <li key={feature} className="flex items-start gap-3 py-1.5">
+                <Check
+                  size={16}
+                  strokeWidth={2.75}
+                  aria-hidden="true"
+                  className={`mt-0.5 shrink-0 ${inked ? "text-[#B0FF5B]" : "text-[#4E8D38]"}`}
+                />
+                <span className={`text-[15px] leading-snug ${inked ? "text-[#E4ECE8]" : "text-[#2C4640]"}`}>
+                  {feature}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Price and actions */}
+        <div className={`flex min-w-0 flex-col border-t pt-6 lg:border-t-0 lg:pt-0 ${inked ? "border-white/12" : "border-[#0D332B]/10"}`}>
+          {!isQuote && <p className={`text-sm ${muted}`}>À partir de</p>}
+          <p className={`mt-1 font-heading text-[clamp(2.4rem,3.6vw,3.2rem)] font-semibold leading-none tracking-[-0.05em] tabular-nums ${strong}`}>
+            {offer.price}
+          </p>
+          <p className={`mt-3 font-mono text-[13px] leading-snug tabular-nums ${muted}`}>{offer.billing}</p>
+          {offer.subscription && (
+            <p className={`mt-1.5 font-mono text-[12px] leading-snug tabular-nums ${muted}`}>
+              {offer.subscription}
+            </p>
+          )}
+
+          <div className="mt-7 flex flex-col gap-2.5">
+            <button
+              type="button"
+              onClick={() => onRequest(offer)}
+              className={`group/btn inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold tracking-[-0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+                inked
+                  ? "bg-[#B0FF5B] text-[#0D332B] hover:bg-[#C8FF8D] focus-visible:ring-[#B0FF5B] focus-visible:ring-offset-[#0D332B]"
+                  : "bg-[#0D332B] text-[#F7FAF8] hover:bg-[#1A4D43] focus-visible:ring-[#0D332B]"
+              }`}
+            >
+              {isQuote ? "Demander un devis" : "Démarrer"}
+              <ArrowRight size={16} aria-hidden="true" className="transition-transform group-hover/btn:translate-x-1" />
+            </button>
+
+            {/* Estimator toggle */}
+            <button
+              type="button"
+              onClick={() => onToggle(offer.id)}
+              aria-pressed={isSelected}
+              className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold tracking-[-0.01em] transition-colors duration-300 ${
+                inked
+                  ? isSelected
+                    ? "border-[#B0FF5B]/50 bg-[#B0FF5B]/15 text-[#B0FF5B]"
+                    : "border-white/25 text-[#F7FAF8] hover:border-white/50 hover:bg-white/10"
+                  : isSelected
+                    ? "border-[#0D332B] bg-[#E3FFC4] text-[#0D332B]"
+                    : "border-[#0D332B]/20 text-[#0D332B] hover:border-[#0D332B]/50 hover:bg-[#F6F7F4]"
+              }`}
+            >
+              {isSelected ? (
+                <>
+                  <Check size={16} strokeWidth={2.75} aria-hidden="true" />
+                  Ajouté à l&apos;estimation
+                </>
+              ) : (
+                <>
+                  <Plus size={16} strokeWidth={2.5} aria-hidden="true" />
+                  Ajouter à mon estimation
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </article>
+    </li>
   );
 }

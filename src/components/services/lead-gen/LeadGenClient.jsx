@@ -1,558 +1,199 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
+import MagneticButton from "../../ui/MagneticButton";
 import {
-  CheckCircle2,
-  Zap,
-  Target,
-  BarChart3,
-  TrendingUp,
-  Search,
-  Database,
-  Layers,
-  ShieldCheck,
-  Users,
-  Award,
-  Clock,
-  Sparkles,
-  Filter,
-  UserCheck,
-  Megaphone,
-} from "lucide-react";
-import Button from "../../ui/Button";
+  PageHero,
+  ClosingCta,
+  SectionHead,
+  LedgerList,
+  Marker,
+  Reveal,
+  MethodRail,
+  FigureRow,
+} from "../../kit";
+import PipelinePanel from "../commercial-shared/PipelinePanel";
+import HeroNotes from "../commercial-shared/HeroNotes";
+
+const BREADCRUMBS = [
+  { label: "Services", href: "/services" },
+  { label: "Commercial", href: "/services/commercial" },
+  { label: "Génération de leads B2B", href: "/services/generation-leads-b2b" },
+];
+
+// Offer terms from the catalogue, the same on every commercial page.
+const FIGURES = [
+  { value: "7 jours", label: "Pour lancer la campagne après validation du ciblage" },
+  { value: "4 canaux", label: "Email, LinkedIn, téléphone et SMS dans une séquence" },
+  { value: "5 appels", label: "Maximum par lead, sur 10 jours, pour le qualifier" },
+  { value: "Hebdo", label: "Reporting et point avec votre account manager" },
+];
+
+const LEVERS = [
+  {
+    title: "Ciblage ICP Granulaire",
+    description:
+      "Définition précise de votre Ideal Customer Profile : secteur, taille, technologie, budget, signaux d'achat.",
+  },
+  {
+    title: "Sourcing Multicanal Synchronisé",
+    description:
+      "Cold emailing, LinkedIn Sales Navigator, téléprospection et retargeting publicitaire orchestrés.",
+  },
+  {
+    title: "Qualification BANT Stricte",
+    description:
+      "Budget, Authority, Need, Timeline : seuls les prospects matures passent à votre équipe commerciale.",
+  },
+  {
+    title: "Objectifs écrits au cadrage",
+    description:
+      "Volume visé, critères de qualification et rythme de reporting sont fixés ensemble avant le premier envoi, puis revus chaque semaine.",
+  },
+];
+
+const ENGINE = [
+  { title: "Sourcing Data", text: "Base enrichie et vérifiée en temps réel via Sales Intelligence." },
+  {
+    title: "Multi-Canal",
+    text: (
+      <>
+        Email, LinkedIn et téléphone combinés dans{" "}
+        <strong className="font-semibold text-[#F7FAF8]">une même séquence</strong>.
+      </>
+    ),
+  },
+  { title: "Qualification", text: "Zéro lead froid. Seuls les décideurs intéressés." },
+  { title: "Suivi CRM", text: "Chaque contact et chaque échange tracés dans SuzaLink CRM." },
+];
+
+const STEPS = [
+  { title: "ICP & Persona", description: "Définition de votre client idéal et segmentation comportementale" },
+  { title: "Data Sourcing", description: "Extraction et enrichissement de bases de données B2B qualifiées" },
+  { title: "Activation", description: "Lancement des campagnes multicanales synchronisées" },
+  { title: "Qualification", description: "Scoring BANT et validation de l'intérêt commercial" },
+  { title: "Closing Sync", description: "Transfert CRM et accompagnement de vos commerciaux" },
+];
+
+const COMMITMENTS = [
+  { value: "7 jours", label: "Lancement", note: "Après validation du ciblage et des messages" },
+  { value: "1:1", label: "Account Manager", note: "Expert dédié à votre compte" },
+  { value: "7 €", label: "Par lead qualifié", note: "Offre Qualification de leads, dès 100 leads" },
+  { value: "Hebdo", label: "Reporting", note: "Volumes, réponses et rendez-vous" },
+];
+
+const STRONG = "font-semibold text-[#0D332B]";
 
 export default function LeadGenClient() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
-  const scaleVariants = {
-    hidden: { scale: 0.9, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: { duration: 0.5 },
-    },
-  };
-
   return (
-    <div className="min-h-[100dvh] overflow-hidden bg-[#F6F7F4] text-[#0D332B]">
-      {/* Hero Section - Enhanced */}
-      <section className="relative overflow-hidden bg-[#F6F7F4] px-3 pb-10 pt-24 text-white sm:px-4 lg:px-5 lg:pb-14">
-        <div className="pointer-events-none absolute bottom-10 right-0 top-24 hidden w-[48%] overflow-hidden rounded-[28px] lg:bottom-14 lg:block">
-          <Image src="/images/equipeprospection.png" alt="" fill priority sizes="48vw" className="object-cover object-[68%_center]" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#0D332B_0%,rgba(13,51,43,0.9)_18%,rgba(13,51,43,0.12)_82%)]" />
-        </div>
-        {/* Large Target Watermark */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] scale-[2.5] sm:scale-[3] md:scale-[4] pointer-events-none rotate-12">
-          <Target size={400} />
-        </div>
+    <div className="bg-[#F6F7F4] text-[#0D332B]">
+      <PageHero
+        title="Agence Génération de Leads B2B Qualifiés France"
+        breadcrumbs={BREADCRUMBS}
+        intro={
+          <p>
+            Remplissez votre <strong>pipeline commercial</strong> avec des prospects B2B
+            ultra-qualifiés et prêts à acheter. Nous déployons les meilleures stratégies de{" "}
+            <strong>sourcing multicanal</strong>, <strong>qualification BANT</strong> et{" "}
+            <strong>lead nurturing</strong> pour alimenter vos commerciaux en opportunités réelles.
+          </p>
+        }
+        actions={
+          <>
+            <MagneticButton href="/contact" variant="primary" className="w-full whitespace-nowrap sm:w-auto">
+              Obtenir un audit gratuit
+            </MagneticButton>
+            <MagneticButton href="#processus" variant="outline-light" className="w-full whitespace-nowrap sm:w-auto">
+              Découvrir notre méthode
+            </MagneticButton>
+          </>
+        }
+        image="/images/equipeprospection.png"
+        imageAlt="Trois membres de l'équipe de prospection dans l'open space, dont un au casque"
+        imagePosition="68% center"
+      >
+        <HeroNotes items={["Conformité RGPD", "Démarrage sous 7 jours", "Sans engagement"]} />
+      </PageHero>
 
-        {/* Enhanced Geometric Decor */}
-        <div className="absolute top-0 right-0 w-[400px] sm:w-[500px] md:w-[600px] h-[400px] sm:h-[500px] md:h-[600px] bg-emerald-500/10 rounded-full -mr-32 sm:-mr-48 md:-mr-64 -mt-32 sm:-mt-48 md:-mt-64 border border-emerald-500/20"></div>
-        <div className="absolute bottom-0 left-0 w-[300px] sm:w-[350px] md:w-[400px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#B0FF5B]/5 rounded-full -ml-24 sm:-ml-32 md:-ml-40 -mb-24 sm:-mb-32 md:-mb-40 border border-[#B0FF5B]/10"></div>
+      {/* The challenge: four levers as ledger rows, the pipeline they feed beside them. */}
+      <section className="bg-[#F6F7F4] py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHead
+            className="max-w-4xl"
+            title={
+              <>
+                Le Défi de la <Marker>Génération</Marker> de Leads B2B en France
+              </>
+            }
+            intro={
+              <>
+                Vos commerciaux perdent du temps sur des{" "}
+                <strong className={STRONG}>prospects qui n&apos;achèteront pas</strong>. Nous transformons ce temps en{" "}
+                <strong className={STRONG}>opportunités commerciales concrètes</strong> grâce à notre
+                méthodologie éprouvée de <strong className={STRONG}>lead generation B2B</strong>.
+              </>
+            }
+          />
 
-        <div className="relative z-10 mx-auto max-w-[1600px] overflow-hidden rounded-[28px] border border-[#0D332B]/10 bg-[#0D332B]/92 px-6 py-14 shadow-[0_30px_80px_-48px_rgba(13,51,43,0.8)] sm:px-10 md:px-14 lg:min-h-[620px] lg:px-16 lg:py-16 xl:px-20">
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-[680px]"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-[#B0FF5B] text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-6 sm:mb-8"
-            >
-              <Zap size={12} className="sm:w-3.5 sm:h-3.5 animate-pulse" />
-              <span className="hidden xs:inline">Pipeline </span>Croissance
-              Garantie
-            </motion.div>
+          <div className="mt-14 grid gap-14 md:mt-20 lg:grid-cols-12 lg:gap-16">
+            <LedgerList items={LEVERS} className="lg:col-span-7" />
 
-            <h1 className="font-heading text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl xl:text-[4.3rem] mb-6 sm:mb-8">
-              Agence{" "}
-              <span className="text-[#B0FF5B] drop-shadow-[0_0_15px_rgba(176,255,91,0.3)]">
-                Génération de Leads
-              </span>{" "}
-              B2B Qualifiés France
-            </h1>
+            <Reveal variant="focus" className="h-fit lg:sticky lg:top-32 lg:col-span-5">
+              <PipelinePanel>
+                <ul className="grid gap-x-6 sm:grid-cols-2">
+                  {ENGINE.map((item) => (
+                    <li key={item.title} className="border-t border-white/12 py-4">
+                      <span className="block text-[15px] font-semibold tracking-[-0.01em]">
+                        {item.title}
+                      </span>
+                      <span className="mt-1 block text-[13px] leading-relaxed text-[#B9CBC4]">
+                        {item.text}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </PipelinePanel>
+            </Reveal>
+          </div>
 
-            <p className="max-w-[62ch] text-base font-medium leading-relaxed text-[#DCE8E3] sm:text-lg mb-8 sm:mb-10">
-              Remplissez votre{" "}
-              <strong className="text-[#B0FF5B]">pipeline commercial</strong>{" "}
-              avec des prospects B2B ultra-qualifiés et prêts à acheter. Nous
-              déployons les meilleures stratégies de{" "}
-              <strong>sourcing multicanal</strong>,{" "}
-              <strong>qualification BANT</strong> et{" "}
-              <strong>lead nurturing</strong> pour garantir votre ROI et
-              accélérer votre croissance.
-            </p>
-
-            {/* Quick Stats in Hero */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6 sm:grid-cols-4 sm:gap-6 mb-8 sm:mb-10"
-            >
-              {[
-                { label: "Leads générés clients", value: "15K+" },
-                { label: "ROI moyen garanti", value: "3.5x" },
-                { label: "Taux qualification", value: "85%" },
-                { label: "Experts dédiés", value: "15+" },
-              ].map((stat, i) => (
-                <div key={i} className="text-center sm:text-left">
-                  <div className="text-[#B0FF5B] text-xl sm:text-2xl md:text-3xl font-bold font-heading">
-                    {stat.value}
-                  </div>
-                  <div className="text-white/40 text-[9px] sm:text-[10px] uppercase font-bold tracking-widest">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-8 sm:mb-12">
-              <Button
-                href="/contact"
-                variant="primary"
-                className="w-full sm:w-auto rounded-full bg-[#B0FF5B] px-7 py-3.5 text-sm font-bold text-[#0D332B] shadow-[0_18px_36px_-18px_rgba(176,255,91,0.7)] transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-[#C2FF80] active:translate-y-px"
-              >
-                Obtenir un audit gratuit
-              </Button>
-              <Button
-                href="#processus"
-                variant="outline-light"
-                className="w-full sm:w-auto rounded-full border border-white/25 bg-white/8 px-7 py-3.5 text-sm font-bold text-white transition-[background-color,border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-white/45 hover:bg-white/14 active:translate-y-px"
-              >
-                Découvrir notre méthode
-              </Button>
-            </div>
-
-            {/* Trust Badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm text-emerald-50/60"
-            >
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#B0FF5B]" />
-                <span>Conformité RGPD</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-[#B0FF5B]" />
-                <span>Certification qualité ISO</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#B0FF5B]" />
-                <span>Leads sous 30 jours</span>
-              </div>
-            </motion.div>
-          </motion.div>
+          <FigureRow items={FIGURES} className="mt-16 md:mt-24" />
         </div>
       </section>
 
-      {/* Problem Solver Section - Enhanced */}
-      <section className="relative overflow-hidden bg-white py-20 md:py-28">
-        <div className="absolute right-0 bottom-0 opacity-[0.02] pointer-events-none hidden md:block">
-          <Search size={500} />
-        </div>
-
+      {/* Process: five steps on the rail, the commitments beside them. */}
+      <section
+        id="processus"
+        className="scroll-mt-24 border-t border-[#0D332B]/10 bg-[#FCFDFC] py-24 md:py-32"
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20 items-center">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={containerVariants}
-            >
-              <motion.div
-                variants={scaleVariants}
-                className="inline-block mb-4 sm:mb-6"
-              >
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
-                  <Megaphone className="w-4 h-4" />
-                  Le Défi B2B Français
-                </span>
-              </motion.div>
+          <SectionHead
+            className="max-w-4xl"
+            title="Notre Processus de Lead Generation en 5 Étapes"
+            intro={
+              <>
+                Une méthodologie <strong className={STRONG}>data-driven</strong> pour transformer vos
+                données en <strong className={STRONG}>contrats signés</strong>.
+              </>
+            }
+          />
 
-              <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#0D332B] mb-6 sm:mb-8 leading-tight">
-                Le Défi de la Génération de Leads B2B en France
-              </h2>
-
-              <p className="text-lg sm:text-xl text-slate-500 mb-6 sm:mb-8 font-light leading-relaxed">
-                <strong className="text-slate-700">
-                  60% du temps commercial
-                </strong>{" "}
-                est gaspillé en prospection non qualifiée. Nous transformons
-                cette perte en{" "}
-                <strong className="text-emerald-700">
-                  opportunités commerciales concrètes
-                </strong>{" "}
-                grâce à notre méthodologie éprouvée de{" "}
-                <strong>lead generation B2B</strong>.
-              </p>
-
-              <div className="space-y-4 sm:space-y-6">
-                {[
-                  {
-                    title: "Ciblage ICP Granulaire",
-                    desc: "Définition précise de votre Ideal Customer Profile : secteur, taille, technologie, budget, signaux d'achat.",
-                    icon: Target,
-                  },
-                  {
-                    title: "Sourcing Multicanal Synchronisé",
-                    desc: "Cold emailing, LinkedIn Sales Navigator, téléprospection et retargeting publicitaire orchestrés.",
-                    icon: Layers,
-                  },
-                  {
-                    title: "Qualification BANT Stricte",
-                    desc: "Budget, Authority, Need, Timeline : seuls les prospects matures passent à votre équipe commerciale.",
-                    icon: Filter,
-                  },
-                  {
-                    title: "Garantie Résultats Contractuelle",
-                    desc: "Objectifs de volume et qualité définis ensemble. Pas de résultats = remboursement ou prolongation gratuite.",
-                    icon: ShieldCheck,
-                  },
-                ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    variants={itemVariants}
-                    className="group flex gap-4 rounded-[16px] border border-[#0D332B]/10 bg-[#F6F7F4] p-5 transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_34px_-26px_rgba(13,51,43,0.45)]"
-                  >
-                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                      <item.icon size={20} className="text-emerald-700" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-[#0D332B] mb-1 text-sm sm:text-base">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-500 leading-snug">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-              className="relative"
-            >
-              <div className="grid grid-cols-2 gap-4 sm:gap-6">
-                <div className="space-y-4 sm:space-y-6 pt-8 sm:pt-12">
-                  <motion.div
-                    variants={scaleVariants}
-                    className="bg-[#0D332B] p-6 sm:p-8 rounded-3xl text-white shadow-2xl hover:scale-105 transition-transform duration-300"
-                  >
-                    <Database
-                      size={40}
-                      className="text-[#B0FF5B] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10"
-                    />
-                    <h4 className="font-bold text-lg sm:text-xl mb-2">
-                      Sourcing Data
-                    </h4>
-                    <p className="text-xs sm:text-sm text-emerald-50/60 leading-relaxed italic">
-                      Base enrichie et vérifiée en temps réel via Sales
-                      Intelligence.
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    variants={scaleVariants}
-                    className="bg-emerald-50 p-6 sm:p-8 rounded-3xl border border-emerald-100 hover:scale-105 transition-transform duration-300"
-                  >
-                    <Layers
-                      size={40}
-                      className="text-emerald-700 mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10"
-                    />
-                    <h4 className="font-bold text-[#0D332B] text-lg sm:text-xl mb-2">
-                      Multi-Canal
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-light">
-                      Email, LinkedIn et Téléphone combinés pour{" "}
-                      <strong>3x plus d&apos;impact</strong>.
-                    </p>
-                  </motion.div>
-                </div>
-
-                <div className="space-y-4 sm:space-y-6">
-                  <motion.div
-                    variants={scaleVariants}
-                    className="bg-emerald-600 p-6 sm:p-8 rounded-3xl text-white shadow-xl shadow-emerald-500/30 hover:scale-105 transition-transform duration-300"
-                  >
-                    <Target
-                      size={40}
-                      className="text-white mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10"
-                    />
-                    <h4 className="font-bold text-lg sm:text-xl mb-2">
-                      Qualification
-                    </h4>
-                    <p className="text-xs sm:text-sm text-emerald-50/80 leading-relaxed uppercase tracking-tighter font-bold">
-                      Zéro lead froid. Seuls les décideurs intéressés.
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    variants={scaleVariants}
-                    className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-lg hover:scale-105 transition-transform duration-300"
-                  >
-                    <TrendingUp
-                      size={40}
-                      className="text-emerald-700 mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10"
-                    />
-                    <h4 className="font-bold text-[#0D332B] text-lg sm:text-xl mb-2">
-                      ROI Boost
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium">
-                      Réduction{" "}
-                      <strong className="text-emerald-700">massive</strong> de
-                      votre CAC.
-                    </p>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
+          <div className="mt-14 grid gap-14 md:mt-20 lg:grid-cols-12 lg:gap-16">
+            <MethodRail steps={STEPS} ground="bg-[#FCFDFC]" className="lg:col-span-7 lg:pt-3" />
+            <FigureRow
+              items={COMMITMENTS}
+              layout="stack"
+              className="h-fit lg:sticky lg:top-32 lg:col-span-5"
+            />
           </div>
         </div>
       </section>
 
-      {/* Method Section - Enhanced */}
-      <section
-        id="processus"
-        className="relative overflow-hidden bg-[#0D332B] py-20 text-white md:py-28"
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="text-center mb-12 sm:mb-16 lg:mb-20"
-          >
-            <motion.div
-              variants={scaleVariants}
-              className="inline-block mb-4 sm:mb-6"
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#B0FF5B]/20 border border-[#B0FF5B]/30 text-[#B0FF5B] text-xs font-bold uppercase tracking-wider">
-                <Zap className="w-4 h-4" />
-                Méthodologie Éprouvée
-              </span>
-            </motion.div>
-
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-6">
-              Notre Processus de Lead Generation en 5 Étapes
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-emerald-50/60 max-w-3xl mx-auto font-light leading-relaxed">
-              Une méthodologie{" "}
-              <strong className="text-[#B0FF5B]">data-driven</strong> pour
-              transformer vos données en{" "}
-              <strong className="text-[#B0FF5B]">contrats signés</strong>.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
-          >
-            {[
-              {
-                step: "01",
-                title: "ICP & Persona",
-                icon: Target,
-                desc: "Définition de votre client idéal et segmentation comportementale",
-              },
-              {
-                step: "02",
-                title: "Data Sourcing",
-                icon: Database,
-                desc: "Extraction et enrichissement de bases de données B2B qualifiées",
-              },
-              {
-                step: "03",
-                title: "Activation",
-                icon: Zap,
-                desc: "Lancement des campagnes multicanales synchronisées",
-              },
-              {
-                step: "04",
-                title: "Qualification",
-                icon: UserCheck,
-                desc: "Scoring BANT et validation de l'intérêt commercial",
-              },
-              {
-                step: "05",
-                title: "Closing Sync",
-                icon: CheckCircle2,
-                desc: "Transfert CRM et accompagnement de vos commerciaux",
-              },
-            ].map((step, i) => (
-              <motion.div
-                key={i}
-                variants={itemVariants}
-                className="group rounded-[18px] border border-white/12 bg-white/5 p-6 text-left transition-[background-color,transform] duration-300 hover:-translate-y-1 hover:bg-white/10 sm:p-7"
-              >
-                <div className="text-3xl sm:text-4xl font-extrabold font-heading mb-4 sm:mb-6 opacity-20 group-hover:opacity-100 transition-opacity">
-                  {step.step}
-                </div>
-                <step.icon
-                  size={40}
-                  className="mb-4 text-[#B0FF5B] w-8 h-8 sm:w-10 sm:h-10"
-                />
-                <h4 className="font-bold text-base sm:text-lg uppercase tracking-wider mb-2 sm:mb-3">
-                  {step.title}
-                </h4>
-                <p className="text-xs sm:text-sm opacity-70 group-hover:opacity-100 leading-snug">
-                  {step.desc}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Additional Stats */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="mt-12 sm:mt-16 lg:mt-20 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"
-          >
-            {[
-              {
-                icon: Clock,
-                title: "Déploiement Express",
-                desc: "Premiers leads sous 14 jours",
-                metric: "14j",
-              },
-              {
-                icon: BarChart3,
-                title: "Taux Conversion",
-                desc: "Lead → Opportunité",
-                metric: "35%",
-              },
-              {
-                icon: Users,
-                title: "Account Manager",
-                desc: "Expert dédié à votre compte",
-                metric: "1:1",
-              },
-              {
-                icon: Award,
-                title: "Satisfaction Client",
-                desc: "Note moyenne clients",
-                metric: "4.9/5",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                variants={itemVariants}
-                className="text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
-              >
-                <item.icon className="w-10 h-10 sm:w-12 sm:h-12 text-[#B0FF5B] mx-auto mb-4" />
-                <div className="text-2xl sm:text-3xl font-bold text-[#B0FF5B] mb-2">
-                  {item.metric}
-                </div>
-                <h4 className="font-bold text-white mb-2 text-sm sm:text-base">
-                  {item.title}
-                </h4>
-                <p className="text-xs sm:text-sm text-emerald-50/50">
-                  {item.desc}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Final - Enhanced */}
-      <section className="relative overflow-hidden bg-[#F6F7F4] px-3 py-10 sm:px-4 md:py-14 lg:px-5">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center">
-          <span className="text-[15vw] sm:text-[18vw] md:text-[25vw] font-extrabold font-heading text-[#0D332B] select-none uppercase">
-            RESULTS
-          </span>
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-[1500px] overflow-hidden rounded-[28px] bg-[#0D332B] px-6 py-16 text-center shadow-[0_30px_75px_-50px_rgba(13,51,43,0.85)] sm:px-10 sm:py-20 lg:px-20 lg:py-24">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-block mb-6 sm:mb-8"
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-4 h-4" />
-                Audit Gratuit
-              </span>
-            </motion.div>
-
-            <h2 className="font-heading font-bold text-3xl text-white sm:text-4xl md:text-5xl lg:text-6xl mb-6 sm:mb-10 leading-tight px-4">
-              Prêt à Remplir Votre Pipeline Commercial ?
-            </h2>
-
-            <p className="text-base text-[#DCE8E3] sm:text-lg md:text-xl mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4 italic">
-              &ldquo;Depuis que nous travaillons avec Suzali, notre volume de
-              rendez-vous qualifiés a bondi de{" "}
-              <strong className="text-emerald-700">150%</strong>. Un partenaire
-              stratégique indispensable.&rdquo;
-            </p>
-            <p className="text-sm text-white/55 mb-8 sm:mb-12">
-              - Directeur Commercial, SaaS B2B
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-4">
-              <Button
-                href="/contact"
-                variant="primary"
-                className="w-full sm:w-auto bg-[#0D332B] text-[#B0FF5B] hover:bg-[#B0FF5B] hover:text-[#0D332B] px-10 sm:px-16 py-5 sm:py-6 text-lg sm:text-xl rounded-2xl shadow-2xl transition-all font-bold hover:scale-105 duration-300"
-              >
-                Démarrer mon audit gratuit
-              </Button>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="mt-8 sm:mt-12 flex flex-wrap justify-center gap-4 sm:gap-8 items-center opacity-40 grayscale px-4"
-            >
-              <div className="font-bold text-[#0D332B] text-xs sm:text-sm">
-                TRUSTED BY 200+ B2B COMPANIES
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <ClosingCta
+        title="Prêt à remplir votre pipeline commercial ?"
+        intro="Un audit gratuit de votre prospection actuelle : votre cible, vos messages, vos canaux. Vous repartez avec un plan, que vous travailliez avec nous ou non."
+        primary={{ label: "Démarrer mon audit gratuit", href: "/contact" }}
+        slotLabel="Audit gratuit"
+        slotMeta="offert"
+      />
     </div>
   );
 }

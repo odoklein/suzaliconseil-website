@@ -3,41 +3,35 @@ import { ArrowUpRight } from "lucide-react";
 import Reveal from "./kit/Reveal";
 import SectionHead from "./kit/SectionHead";
 
+// Commitments a client can check in the first month, taken from the offers
+// themselves (delays, pricing, reporting) rather than unmeasured percentages.
 const stats = [
   {
-    prefix: "+",
-    suffix: "%",
-    numericValue: "320",
-    title: "Taux de réponse en prospection",
+    figure: "7 jours",
+    title: "Du ciblage validé aux premiers appels",
     description:
-      "Des campagnes pilotées par data qui captent l'attention et remplissent votre agenda commercial.",
-    href: "/services/outbound-marketing-b2b",
+      "Le fichier, les scripts et les séquences sont validés avec vous, puis la campagne démarre dans la semaine.",
+    href: "/services/prospection-commerciale-externalisee",
   },
   {
-    prefix: "- ",
-    suffix: "%",
-    numericValue: "60",
-    title: "Temps passé sur la qualification",
+    figure: "150 €",
+    title: "Par rendez-vous validé et honoré",
     description:
-      "Des workflows automatisés et des scripts IA qui filtrent vos leads avant même le premier appel.",
-    href: "/services/qualification-leads-b2b",
-  },
-  {
-    prefix: "+",
-    suffix: "%",
-    numericValue: "45",
-    title: "Conversion des rendez-vous en ventes",
-    description:
-      "Des séquences de suivi précises et un reporting clair pour transformer vos échanges en revenus.",
+      "La part variable ne suit que les rendez-vous réellement tenus. Un prospect qui ne se présente pas n'est pas facturé.",
     href: "/services/prise-rendez-vous-b2b",
   },
   {
-    prefix: "- ",
-    suffix: "%",
-    numericValue: "40",
-    title: "Coût d'acquisition par lead",
+    figure: "4 canaux",
+    title: "Dans une même séquence",
     description:
-      "Une stratégie basée sur la donnée et l'itération continue pour maximiser chaque euro investi.",
+      "Téléphone, email, SMS et LinkedIn pilotés ensemble, et suivis contact par contact dans SuzaLink CRM.",
+    href: "/services/outbound-marketing-b2b",
+  },
+  {
+    figure: "Hebdo",
+    title: "Un point et un reporting chaque semaine",
+    description:
+      "Appels passés, contacts joints, rendez-vous posés, objections entendues : votre account manager vous les présente.",
     href: "/services/generation-leads-b2b",
   },
 ];
@@ -52,10 +46,10 @@ const Results = () => {
           className="max-w-4xl"
           title={
             <>
-              Des Résultats Concrets. Des Gains Réels.
+              Ce que vous pouvez vérifier dès le premier mois.
             </>
           }
-          intro="Des améliorations prouvées sur vos taux de conversion, votre productivité et vos coûts d'acquisition."
+          intro="Pas de pourcentage impossible à contrôler : un délai, un prix et un suivi écrits dans chaque mission."
         />
 
         <ul className="mt-16 border-b border-white/12 md:mt-20">
@@ -65,10 +59,8 @@ const Results = () => {
                 href={stat.href}
                 className="ledger-row on-ink group grid grid-cols-1 items-baseline gap-4 border-t border-white/12 px-1 py-9 outline-none focus-visible:ring-2 focus-visible:ring-[#B0FF5B] md:grid-cols-[minmax(19rem,auto)_minmax(0,1fr)_minmax(0,1.1fr)_2.5rem] md:gap-10 md:py-11"
               >
-                <span className="font-heading text-[clamp(3.4rem,6vw,5.5rem)] font-semibold leading-none tracking-[-0.05em] text-[#F7FAF8] tabular-nums">
-                  {stat.prefix.trim() === "-" ? "−" : stat.prefix}
-                  {stat.numericValue}
-                  {stat.suffix}
+                <span className="font-heading text-[clamp(2.8rem,5vw,4.6rem)] font-semibold leading-none tracking-[-0.05em] text-[#F7FAF8] tabular-nums">
+                  {stat.figure}
                 </span>
                 <h3 className="font-heading text-2xl font-semibold leading-tight tracking-[-0.035em] md:text-[1.75rem]">
                   {stat.title}

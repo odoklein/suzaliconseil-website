@@ -1,100 +1,73 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Search, Map, Briefcase } from "lucide-react";
+import { Marker, Reveal, SectionHead } from "../../../kit";
+
+const pillars = [
+  {
+    title: "Diagnostic & Audit 360",
+    desc: "Nous identifions précisément vos freins à la croissance (dette technique, UX défaillante, acquisition coûteuse) pour les éliminer.",
+    key: "Clarté",
+  },
+  {
+    title: "Feuille de Route Opérationnelle",
+    desc: "Pas de slides inutiles. Un plan d'action priorisé (Quick Wins vs Projets de Fond) aligné sur vos objectifs business.",
+    key: "Direction",
+  },
+  {
+    title: "Direction Digitale Externalisée",
+    desc: "Nos experts seniors pilotent votre transformation. Nous devenons votre Chief Digital Officer (CDO) à la demande.",
+    key: "Pilotage",
+  },
+];
 
 export default function StrategieChallenges() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
   return (
-    <section className="py-24 bg-slate-50 relative overflow-hidden">
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={containerVariants}
-          className="text-center mb-20"
+    <section className="bg-[#FCFDFC] py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          size="md"
+          className="max-w-[54rem]"
+          title={
+            <>
+              Le digital n&apos;est plus une option, c&apos;est une bataille de{" "}
+              <Marker>vitesse</Marker>
+            </>
+          }
+        />
+        <Reveal
+          as="p"
+          delay={140}
+          className="mt-6 max-w-[58ch] text-lg leading-relaxed text-[#4E605B] md:text-xl"
         >
-          <h2 className="font-heading font-bold text-3xl sm:text-5xl text-slate-900 mb-6">
-            Le digital n&apos;est plus une option, <br />
-            c&apos;est une{" "}
-            <span className="text-blue-600">bataille de vitesse</span>
-          </h2>
-          <p className="text-xl text-slate-600 max-w-4xl mx-auto font-light leading-relaxed">
-            La plupart des entreprises échouent leur transformation car elles
-            isolent les leviers (un site par ci, du SEO par là).
-            <br />
-            <strong>Sans vision unifiée, vous brûlez votre budget.</strong>
-          </p>
-        </motion.div>
+          La plupart des entreprises échouent leur transformation car elles
+          isolent les leviers (un site par ci, du SEO par là).{" "}
+          <strong className="font-semibold text-[#0D332B]">
+            Sans vision unifiée, vous brûlez votre budget.
+          </strong>
+        </Reveal>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-3 gap-8"
-        >
-          {[
-            {
-              title: "Diagnostic & Audit 360",
-              desc: "Nous identifions précisément vos freins à la croissance (dette technique, UX défaillante, acquisition coûteuse) pour les éliminer.",
-              icon: Search,
-              key: "Clarté",
-            },
-            {
-              title: "Feuille de Route Opérationnelle",
-              desc: "Pas de slides inutiles. Un plan d'action priorisé (Quick Wins vs Projets de Fond) aligné sur vos objectifs business.",
-              icon: Map,
-              key: "Direction",
-            },
-            {
-              title: "Direction Digitale Externalisée",
-              desc: "Nos experts seniors pilotent votre transformation. Nous devenons votre Chief Digital Officer (CDO) à la demande.",
-              icon: Briefcase,
-              key: "Pilotage",
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="bg-white p-10 rounded-3xl shadow-lg border border-slate-100 hover:shadow-2xl transition-all duration-300 relative group"
+        <ul className="mt-14 border-t border-[#0D332B]/14 md:mt-20">
+          {pillars.map((item, i) => (
+            <Reveal
+              as="li"
+              key={item.title}
+              delay={i * 60}
+              className="grid gap-3 border-b border-[#0D332B]/14 px-1 py-7 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-baseline md:gap-10 md:px-3 md:py-9"
             >
-              <motion.div
-                whileHover={{ rotate: 5, scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-8 group-hover:bg-blue-600 group-hover:text-white transition-colors"
-              >
-                <item.icon size={32} />
-              </motion.div>
-              <h3 className="font-bold text-2xl text-slate-900 mb-4">
+              <h3 className="font-heading text-[1.35rem] font-semibold leading-tight tracking-[-0.03em] text-[#0D332B] md:text-[1.7rem]">
                 {item.title}
               </h3>
-              <p className="text-slate-500 leading-relaxed mb-8">{item.desc}</p>
-              <div className="text-xs font-bold text-blue-600 uppercase tracking-widest border-t border-slate-100 pt-6">
-                Objectif : {item.key}
+              <div>
+                <p className="max-w-[56ch] text-[15px] leading-relaxed text-[#4E605B] md:text-base">
+                  {item.desc}
+                </p>
+                <p className="mt-3 font-mono text-[0.75rem] tracking-normal text-[#4E605B]/90">
+                  Objectif : {item.key}
+                </p>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
-        </motion.div>
+        </ul>
       </div>
     </section>
   );
