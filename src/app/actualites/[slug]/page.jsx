@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { getPostTheme } from "../../../lib/actualites-theme";
 import { getRelatedServices } from "../../../lib/article-services";
+import { TRANSACTIONAL_SERVICES } from "../../../lib/transactional-services";
 import ReadingProgress from "./ReadingProgress";
 import { ShareButton, CopyLinkButton } from "./ShareButtons";
 import { PageHero, SectionHead, LedgerList, FaqList } from "../../../components/kit";
@@ -31,9 +32,21 @@ export async function generateStaticParams() {
   }
 }
 
+// Titres des pages services transactionnelles, tels qu'ils s'affichent dans la
+// SERP. Un article dont le seoTitle (+ « | Suzali Conseil ») les reprend à
+// l'identique crée un doublon de <title> entre /actualites/… et /services/….
+const SERVICE_TITLES = new Set(
+  Object.values(TRANSACTIONAL_SERVICES).map((service) => service.title.toLowerCase()),
+);
+
 function getArticleSeo(post) {
+  const seoTitle =
+    post.seoTitle && !SERVICE_TITLES.has(`${post.seoTitle} | Suzali Conseil`.toLowerCase())
+      ? post.seoTitle
+      : null;
+
   return {
-    title: post.seoTitle || post.title,
+    title: seoTitle || post.title,
     description:
       post.seoDescription ||
       post.excerpt ||
