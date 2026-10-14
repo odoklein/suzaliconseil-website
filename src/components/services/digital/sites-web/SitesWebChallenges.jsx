@@ -1,130 +1,88 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import {
-  Monitor,
-  ShoppingCart,
-  Layers,
-  Layout,
-  Rocket,
-  ShieldCheck,
-} from "lucide-react";
+import { Marker, Reveal, SectionHead } from "../../../kit";
+
+const offers = [
+  {
+    title: "Sites Vitrine Premium",
+    desc: "Design sur-mesure pour sublimer votre image de marque. Animations fluides, navigation intuitive et storytelling impactant.",
+    tech: "WordPress / Next.js",
+  },
+  {
+    title: "E-commerce Shopify & B2B",
+    desc: "Boutiques performantes optimisées pour la conversion. Paiement sécurisé, gestion des stocks et UX sans friction.",
+    tech: "Shopify Plus / Woo",
+  },
+  {
+    title: "Applications Web (SaaS)",
+    desc: "Plateformes métiers complexes (Dashboard, CRM, Intranet) avec une interface utilisateur digne des meilleures startups.",
+    tech: "React / Node",
+  },
+  {
+    title: "Refonte & Migration",
+    desc: "Modernisation de sites existants sans perte de SEO. Migration de CMS et refonte graphique complète.",
+    tech: "SEO Preserve",
+  },
+  {
+    title: "SEO Technique & Perf",
+    desc: "Optimisation des Core Web Vitals : images, code et hébergement réglés pour un chargement rapide.",
+    tech: "Lighthouse",
+  },
+  {
+    title: "Maintenance & Sécurité",
+    desc: "Surveillance continue, mises à jour de sécurité et sauvegardes quotidiennes. Dormez sur vos deux oreilles.",
+    tech: "Supervision",
+  },
+];
 
 export default function SitesWebChallenges() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
   return (
-    <section className="py-24 bg-slate-50 relative overflow-hidden">
-      <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={containerVariants}
-          className="text-center mb-20"
-        >
-          <h2 className="font-heading font-bold text-3xl sm:text-5xl text-slate-900 mb-6">
-            Votre site web est votre <br />
-            <span className="text-indigo-600">meilleur commercial</span>
-          </h2>
-          <p className="text-xl text-slate-600 max-w-4xl mx-auto font-light leading-relaxed">
+    <section className="bg-[#FCFDFC] py-24 md:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <SectionHead
+            className="lg:col-span-7"
+            title={
+              <>
+                Votre site web est votre meilleur <Marker>commercial</Marker>
+              </>
+            }
+          />
+          <Reveal
+            as="p"
+            delay={160}
+            className="max-w-[46ch] text-lg leading-relaxed text-[#4E605B] lg:col-span-5 lg:pb-2"
+          >
             53% des visiteurs quittent un site qui met plus de 3 secondes à
-            charger.
-            <br />
-            <strong>
+            charger.{" "}
+            <strong className="font-semibold text-[#0D332B]">
               Ne laissez pas la technique ruiner votre image de marque.
             </strong>
-          </p>
-        </motion.div>
+          </Reveal>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-3 gap-8"
-          id="portfolio"
-        >
-          {[
-            {
-              title: "Sites Vitrine Premium",
-              desc: "Design sur-mesure pour sublimer votre image de marque. Animations fluides, navigation intuitive et storytelling impactant.",
-              icon: Monitor,
-              tech: "WordPress / Next.js",
-            },
-            {
-              title: "E-commerce Shopify & B2B",
-              desc: "Boutiques performantes optimisées pour la conversion. Paiement sécurisé, gestion des stocks et UX sans friction.",
-              icon: ShoppingCart,
-              tech: "Shopify Plus / Woo",
-            },
-            {
-              title: "Applications Web (SaaS)",
-              desc: "Plateformes métiers complexes (Dashboard, CRM, Intranet) avec une interface utilisateur digne des meilleures startups.",
-              icon: Layers,
-              tech: "React / Node",
-            },
-            {
-              title: "Refonte & Migration",
-              desc: "Modernisation de sites existants sans perte de SEO. Migration de CMS et refonte graphique complète.",
-              icon: Layout,
-              tech: "SEO Preserve",
-            },
-            {
-              title: "SEO Technique & Perf",
-              desc: "Optimisation Core Web Vitals pour plaire à Google. Temps de chargement < 1s garanti.",
-              icon: Rocket,
-              tech: "LightHouse 100",
-            },
-            {
-              title: "Maintenance & Sécurité",
-              desc: "Surveillance 24/7, mises à jour de sécurité et sauvegardes quotidiennes. Dormez sur vos deux oreilles.",
-              icon: ShieldCheck,
-              tech: "SLA 99.9%",
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="bg-white p-10 rounded-3xl shadow-lg border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
+        <ul id="portfolio" className="mt-14 scroll-mt-28 border-t border-[#0D332B]/14 md:mt-20">
+          {offers.map((item, i) => (
+            <Reveal
+              as="li"
+              key={item.title}
+              delay={Math.min(i, 5) * 60}
+              className="grid gap-3 border-b border-[#0D332B]/14 px-1 py-7 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-baseline md:gap-10 md:px-3 md:py-9"
             >
-              <div className="absolute top-0 right-0 p-6 opacity-30">
-                <span className="text-xs font-mono bg-indigo-50 px-2 py-1 rounded text-indigo-800 font-bold">
-                  {item.tech}
-                </span>
-              </div>
-              <motion.div
-                whileHover={{ rotate: 5, scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-8 group-hover:bg-indigo-600 group-hover:text-white transition-colors"
-              >
-                <item.icon size={32} />
-              </motion.div>
-              <h3 className="font-bold text-2xl text-slate-900 mb-4">
+              <h3 className="font-heading text-[1.35rem] font-semibold leading-tight tracking-[-0.03em] text-[#0D332B] md:text-[1.7rem]">
                 {item.title}
               </h3>
-              <p className="text-slate-500 leading-relaxed mb-6">{item.desc}</p>
-              <div className="w-8 h-1 bg-indigo-500 rounded-full group-hover:w-16 transition-all duration-300"></div>
-            </motion.div>
+              <div>
+                <p className="max-w-[56ch] text-[15px] leading-relaxed text-[#4E605B] md:text-base">
+                  {item.desc}
+                </p>
+                <p className="mt-3 font-mono text-[0.75rem] tracking-normal text-[#4E605B]/90">
+                  {item.tech}
+                </p>
+              </div>
+            </Reveal>
           ))}
-        </motion.div>
+        </ul>
       </div>
     </section>
   );

@@ -13,17 +13,17 @@ export default function Button({
 }) {
   // Base styles shared by all buttons
   const baseStyles =
-    "inline-flex items-center justify-center px-8 py-4 rounded-full transition-all duration-300 font-medium text-lg uppercase tracking-wide min-w-[200px]";
+    "inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-semibold tracking-[-0.01em] transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]";
 
   // Variant-specific styles
   const variants = {
     primary:
-      "bg-[#B0FF5B] text-[#0D332B] hover:bg-[#a0eb50] hover:scale-105 transform shadow-lg hover:shadow-xl font-bold",
+      "bg-[#B0FF5B] text-[#0D332B] hover:bg-[#C8FF8D] shadow-[0_12px_30px_-18px_rgba(13,51,43,0.72)]",
     outline:
-      "border-2 border-[#1A4D43] text-[#1A4D43] hover:bg-[#1A4D43] hover:text-[#B0FF5B] font-bold",
+      "border border-[#0D332B]/25 text-[#0D332B] hover:border-[#0D332B]/50 hover:bg-white",
     "outline-light":
-      "border-2 border-white/20 text-white hover:bg-white hover:text-[#0D332B] font-bold backdrop-blur-sm",
-    default: "bg-primary text-white hover:bg-primary/90",
+      "border border-white/25 text-[#F7FAF8] hover:border-white/50 hover:bg-white/10",
+    default: "bg-[#0D332B] text-[#F7FAF8] hover:bg-[#1A4D43]",
   };
 
   const combinedClasses = `${baseStyles} ${variants[variant] || variants.default} ${className || ""}`;

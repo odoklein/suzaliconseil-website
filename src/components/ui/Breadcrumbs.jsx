@@ -45,12 +45,12 @@ export default function Breadcrumbs({ items }) {
       />
 
       {/* Visual Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="w-full text-sm text-gray-500 mb-6 flex overflow-x-auto whitespace-nowrap hide-scrollbar">
+      <nav aria-label="Breadcrumb" className="w-full text-sm text-[#4E605B] mb-6 flex overflow-x-auto whitespace-nowrap hide-scrollbar">
         <ol className="flex items-center space-x-2">
           <li>
             <Link 
               href="/"
-              className="text-gray-400 hover:text-[#0D332B] transition-colors flex items-center"
+              className="text-[#4E605B] hover:text-[#0D332B] transition-colors flex items-center"
               aria-label="Accueil"
             >
               <Home size={14} />
@@ -62,7 +62,7 @@ export default function Breadcrumbs({ items }) {
             
             return (
               <li key={item.href} className="flex items-center space-x-2">
-                <ChevronRight size={14} className="text-gray-300 flex-shrink-0" />
+                <ChevronRight size={14} className="text-[#4E605B]/50 flex-shrink-0" />
                 {isLast ? (
                   <span className="text-[#0D332B] font-medium truncate max-w-[200px] md:max-w-xs" aria-current="page">
                     {item.label}

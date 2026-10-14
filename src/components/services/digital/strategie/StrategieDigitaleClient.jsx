@@ -8,7 +8,7 @@ import StrategieCTA from "./StrategieCTA";
 
 export default function StrategieDigitaleClient() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen w-full overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
       <StrategieHero />
       <StrategieChallenges />
       <StrategieMethodology />

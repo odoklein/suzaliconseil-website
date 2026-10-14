@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function ReadingProgress({ theme }) {
+export default function ReadingProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -18,9 +18,9 @@ export default function ReadingProgress({ theme }) {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-[3px] z-[60]">
+    <div className="pointer-events-none fixed left-0 top-0 z-[60] h-[3px] w-full" aria-hidden="true">
       <div
-        className={`h-full transition-[width] duration-150 ease-out ${theme === "digital" ? "bg-sky-500" : "bg-emerald-500"}`}
+        className="h-full bg-[#0D332B] transition-[width] duration-150 ease-out"
         style={{ width: `${progress}%` }}
       />
     </div>

@@ -8,7 +8,7 @@ import SitesWebCTA from "./SitesWebCTA";
 
 export default function SitesWebClient() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen w-full overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
       <SitesWebHero />
       <SitesWebChallenges />
       <SitesWebProcess />

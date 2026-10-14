@@ -1,18 +1,23 @@
 "use client";
 
-import React from "react";
 import DevHero from "./DevHero";
 import DevSolutions from "./DevSolutions";
 import DevMethodology from "./DevMethodology";
-import DevCTA from "./DevCTA";
+import { ClosingCta } from "../../../kit";
 
 export default function DeveloppementAutoClient() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="w-full bg-[#F6F7F4]">
       <DevHero />
       <DevSolutions />
       <DevMethodology />
-      <DevCTA />
+      <ClosingCta
+        title="Prêt à passer au stade supérieur ?"
+        intro="Discutez faisabilité technique avec notre CTO. Nous transformons vos contraintes métiers en opportunités digitales."
+        primary={{ label: "Consultation technique offerte", href: "/contact" }}
+        slotLabel="Consultation technique"
+        slotMeta="offerte"
+      />
     </div>
   );
 }

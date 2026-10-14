@@ -1,16 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  CheckCircle2,
-  Handshake,
-  Mail,
-  PhoneCall,
-  Target,
-  Users,
-} from "lucide-react";
-import AnimatedSection from "../../ui/AnimatedSection";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal, SectionHead } from "../../kit";
 
 const services = [
   {
@@ -26,7 +18,6 @@ const services = [
       "Qualification structurée",
       "Passage de relais CRM",
     ],
-    icon: Handshake,
   },
   {
     id: "lead-gen",
@@ -41,7 +32,6 @@ const services = [
       "Qualification des prospects",
       "Scoring prédictif",
     ],
-    icon: Target,
   },
   {
     id: "telepro",
@@ -56,7 +46,6 @@ const services = [
       "Gestion d'agenda CRM",
       "Relance systématique",
     ],
-    icon: PhoneCall,
   },
   {
     id: "rdv",
@@ -71,7 +60,6 @@ const services = [
       "Rappels automatiques",
       "Briefing avant-vente",
     ],
-    icon: CheckCircle2,
   },
   {
     id: "outbound",
@@ -86,7 +74,6 @@ const services = [
       "Social Selling",
       "Tracking de conversion",
     ],
-    icon: Mail,
   },
   {
     id: "closing",
@@ -101,7 +88,6 @@ const services = [
       "Négociation commerciale",
       "Signature de contrats",
     ],
-    icon: Users,
   },
   {
     id: "white-label",
@@ -114,9 +100,8 @@ const services = [
       "Closing externalisé confidentiel",
       "Account Management dédié",
       "Intégration CRM totale",
-      " Reporting de performance",
+      "Reporting de performance",
     ],
-    icon: Handshake,
   },
   {
     id: "prospect-file",
@@ -131,7 +116,6 @@ const services = [
       "Contrôle qualité",
       "Livraison CSV ou Excel",
     ],
-    icon: Target,
   },
   {
     id: "lead-qualification",
@@ -146,7 +130,6 @@ const services = [
       "Notes détaillées",
       "Handoff CRM",
     ],
-    icon: CheckCircle2,
   },
   {
     id: "email-sms",
@@ -156,15 +139,7 @@ const services = [
     description:
       "Activez vos segments avec des séquences email et SMS adaptées, des relances ciblées et un suivi de campagne clair.",
     features: ["Segmentation", "Copywriting", "Séquences de relance", "Reporting"],
-    icon: Mail,
   },
-];
-
-const spanClasses = [
-  "lg:col-span-7",
-  "lg:col-span-5",
-  "lg:col-span-5",
-  "lg:col-span-7",
 ];
 
 export function CommercialServicesList() {
@@ -172,90 +147,53 @@ export function CommercialServicesList() {
     <section
       id="services"
       aria-labelledby="commercial-services-heading"
-      className="scroll-mt-24 bg-[#F6F7F4] py-16 sm:py-20 lg:py-28"
+      className="scroll-mt-24 border-t border-[#0D332B]/10 bg-[#FCFDFC] py-24 md:py-32"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="max-w-3xl">
-          <h2
-            id="commercial-services-heading"
-            className="font-heading text-4xl font-bold leading-[1.03] tracking-tight text-[#0D332B] sm:text-5xl lg:text-[3.6rem]"
-          >
-            Nos solutions de prospection B2B
-          </h2>
-          <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-[#52635F]">
-            Une gamme complète de solutions pour couvrir l&apos;intégralité de
-            votre cycle de vente.
-          </p>
-        </AnimatedSection>
+        <SectionHead
+          className="max-w-4xl"
+          title={<span id="commercial-services-heading">Nos solutions de prospection B2B</span>}
+          intro="Une gamme complète de solutions pour couvrir l'intégralité de votre cycle de vente."
+        />
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-12 lg:gap-6">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            const tinted = index % 4 === 1 || index % 4 === 2;
-
-            return (
-              <AnimatedSection
-                as="article"
-                key={service.id}
-                delay={(index % 2) * 80}
-                className={`${spanClasses[index % spanClasses.length]} group flex min-h-full flex-col rounded-[28px] border border-[#0D332B]/10 ${
-                  tinted ? "bg-[#EAF1ED]" : "bg-[#FCFDFC]"
-                } p-6 transition-[border-color,box-shadow,transform] duration-300 ease-[var(--ease-premium)] hover:-translate-y-1 hover:border-[#4E8D38]/35 hover:shadow-[0_24px_55px_-40px_rgba(13,51,43,0.78)] sm:p-8`}
+        {/* One hairline row per solution: the whole row links to its page. */}
+        <ul className="mt-14 border-t border-[#0D332B]/14 md:mt-20">
+          {services.map((service, i) => (
+            <Reveal as="li" key={service.id} delay={Math.min(i, 5) * 60}>
+              <Link
+                href={service.href}
+                className="ledger-row group flex items-start justify-between gap-6 border-b border-[#0D332B]/14 px-1 py-7 outline-none focus-visible:ring-2 focus-visible:ring-[#0D332B] md:px-3 md:py-9"
               >
-                <div className="flex items-start justify-between gap-6">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-[#E3FFC4] text-[#0D332B] transition-transform duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-0.5 group-hover:rotate-[-2deg]">
-                    <Icon
-                      size={23}
-                      strokeWidth={1.7}
-                      aria-hidden="true"
-                    />
-                  </span>
-                  <span className="text-sm font-semibold text-[#4E6A62]">
-                    {service.subtitle}
-                  </span>
+                <div className="grid min-w-0 flex-1 gap-3 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-10">
+                  <div className="min-w-0">
+                    <h3 className="font-heading text-[1.35rem] font-semibold leading-tight tracking-[-0.03em] text-[#0D332B] md:text-[1.6rem]">
+                      {service.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm font-medium text-[#4E605B]">{service.subtitle}</p>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="max-w-[60ch] text-[15px] leading-relaxed text-[#4E605B] md:text-base">
+                      {service.description}
+                    </p>
+                    <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-[0.75rem] tracking-normal text-[#4E605B]/90">
+                      {service.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2">
+                          <span className="h-1 w-1 rounded-full bg-[#0D332B]/40" aria-hidden="true" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-
-                <h3 className="mt-7 max-w-[22ch] font-heading text-2xl font-bold leading-tight tracking-[-0.025em] text-[#0D332B] sm:text-3xl">
-                  {service.title}
-                </h3>
-                <p className="mt-4 max-w-[66ch] leading-relaxed text-[#52635F]">
-                  {service.description}
-                </p>
-
-                <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
-                  {service.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="flex items-start gap-2.5 text-sm font-semibold leading-relaxed text-[#314640]"
-                    >
-                      <CheckCircle2
-                        size={16}
-                        strokeWidth={1.9}
-                        aria-hidden="true"
-                        className="mt-0.5 shrink-0 text-[#4E8D38]"
-                      />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href={service.href}
-                  aria-label={`En savoir plus sur ${service.title}`}
-                  className="mt-8 inline-flex min-h-11 w-fit items-center gap-2 whitespace-nowrap font-bold text-[#0D332B] underline decoration-[#85C947] decoration-2 underline-offset-4 transition-colors duration-300 hover:text-[#3F7131] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D332B]"
-                >
-                  En savoir plus
-                  <ArrowUpRight
-                    size={17}
-                    strokeWidth={1.9}
-                    aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </Link>
-              </AnimatedSection>
-            );
-          })}
-        </div>
+                <ArrowUpRight
+                  size={22}
+                  aria-hidden="true"
+                  className="mt-1 shrink-0 text-[#0D332B] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );

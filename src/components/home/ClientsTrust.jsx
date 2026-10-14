@@ -32,31 +32,35 @@ const googleReviews = [
   },
 ];
 
+// Told by the work, never by a figure: PRODUCT.md (2026-08-01) rules out
+// metrics for these cases. Only clients cleared for public naming appear.
 const caseStudies = [
   {
     company: "Investissement Locatif",
-    service: "Vente d'Appartements Luxe",
-    stat: "+250%",
-    description: "de rendez-vous qualifiés générés en 3 mois",
-    bgImage: "/images/investissementlocatif.png",
-    href: "/services/prise-rendez-vous-b2b",
-  },
-  {
-    company: "Velis Conseil",
-    service: "Prospection B2B Réseaux Ultra-ciblés",
-    stat: "35 RDV",
-    description: "générés à partir de 1000 prospects ciblés",
-    bgImage: "/images/velis.png",
-    href: "/services/prospection-commerciale-externalisee",
-  },
-  {
-    company: "ZUP&CO",
-    service: "Automatisation SAS pour l'engagement étudiant",
-    stat: "92%",
+    service: "Téléprospection · Tunnel de réservation",
+    headline: "De l'appel à la réservation, un seul parcours.",
     description:
-      "taux d'ouverture des communications et une gestion des sessions entièrement simplifiée.",
-    bgImage: "/images/zupdeco.png",
-    href: "/services/digital/developpement-automatisation",
+      "Une campagne de téléprospection et le tunnel de réservation en ligne qui la reçoit, construits ensemble.",
+    bgImage: "/projects/investissementLocatif.png",
+    href: "/etudes-de-cas#investissement-locatif",
+  },
+  {
+    company: "ZupDeCo",
+    service: "Automatisation · CRM",
+    headline: "Des rappels de session qui partent seuls.",
+    description:
+      "L'automatisation des rappels SMS, branchée sur le CRM qui suit élèves et tuteurs.",
+    bgImage: "/projects/zupdeco.jpg",
+    href: "/etudes-de-cas#zupdeco",
+  },
+  {
+    company: "NeoTrace",
+    service: "Tableau de bord · Alertes",
+    headline: "L'anomalie se voit avant l'appel du client.",
+    description:
+      "Un tableau de bord de tracking colis, avec des alertes automatiques quand une livraison dérape.",
+    bgImage: "/projects/neotrace.png",
+    href: "/etudes-de-cas#neotrace",
   },
 ];
 
@@ -94,10 +98,10 @@ function CaseFile({ study, idx }) {
             <p className="mt-3 text-sm font-medium text-[#B9CBC4]">{study.service}</p>
           </div>
           <div>
-            <p className="font-heading text-[clamp(4rem,8vw,7rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-[#F7FAF8]">
-              {study.stat}
+            <p className="max-w-[14ch] font-heading text-[clamp(2.2rem,4vw,3.4rem)] font-semibold leading-[1] tracking-[-0.045em] text-[#F7FAF8]">
+              {study.headline}
             </p>
-            <p className="mt-4 max-w-[36ch] text-lg leading-snug text-[#E4ECE8]">{study.description}</p>
+            <p className="mt-5 max-w-[40ch] text-lg leading-snug text-[#B9CBC4]">{study.description}</p>
           </div>
         </div>
         <div className="relative min-h-[240px] overflow-hidden md:min-h-0">
@@ -127,7 +131,7 @@ const ClientsTrust = () => {
               Ils nous font confiance
             </>
           }
-          intro="Des entreprises ambitieuses qui ont transformé leur croissance avec Suzali Conseil."
+          intro="Trois missions racontées par ce qui a été livré : le problème de départ, la démarche, l'outil en production."
         />
 
         <ul className="mt-14 flex flex-col gap-6 md:mt-20">

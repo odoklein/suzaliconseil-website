@@ -18,7 +18,7 @@
   --color-white: #ffffff;
 
   /* Backgrounds */
-  --color-bg-light: #f9fafb;
+  --color-bg-light: #f6f7f4;
   --background: var(--color-bg-light);
   --foreground: var(--color-text-main);
 
@@ -681,14 +681,26 @@
 }
 
 /* Lime Magnetic */
+/* Same as primary: lime is one flat signal, never a gradient or a glow. */
 .magnetic-btn-lime {
-  background: linear-gradient(135deg, #b0ff5b 0%, #d4ff9d 100%);
+  background: #b0ff5b;
   color: var(--color-primary-dark);
-  box-shadow: 0 4px 20px rgba(176, 255, 91, 0.25);
+  box-shadow: 0 12px 30px -18px rgba(13, 51, 43, 0.72);
 }
 
 .magnetic-btn-lime:hover {
-  box-shadow: 0 8px 35px rgba(176, 255, 91, 0.4);
+  background: #c8ff8d;
+}
+
+/* Ink: the primary action on paper. */
+.magnetic-btn-ink {
+  background: var(--ink, #0d332b);
+  color: #f7faf8;
+  box-shadow: 0 14px 30px -20px rgba(13, 51, 43, 0.8);
+}
+
+.magnetic-btn-ink:hover {
+  background: #1a4d43;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1235,6 +1247,133 @@
   animation-delay: var(--rise-delay, 0ms);
 }
 
+/* Hero headline: kinetic type, each word rising out of its own line mask.
+   Transform only, so the h1 is painted (and counted for LCP) from frame one. */
+.hero-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for descenders under the 0.96 line-height. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.hero-word-inner {
+  display: inline-block;
+  transform-origin: 0% 100%;
+  animation: hero-word-in 1s var(--ease-premium) both;
+  animation-delay: var(--word-delay, 0ms);
+}
+@keyframes hero-word-in {
+  from {
+    transform: translateY(105%) rotate(5deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Supporting copy comes into focus rather than sliding as another block. */
+.hero-focus {
+  animation: hero-focus-in 0.9s var(--ease-premium) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+@keyframes hero-focus-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+/* Agenda hairlines: drawn top-down on load, then lit around the cursor. */
+.hero-grid {
+  mask-image: linear-gradient(to bottom, black 0%, transparent 85%);
+  animation: hero-grid-draw 1.6s var(--ease-premium) both;
+}
+@keyframes hero-grid-draw {
+  from {
+    mask-size: 100% 0%;
+    mask-repeat: no-repeat;
+  }
+  to {
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+  }
+}
+.hero-grid-lit {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-premium);
+  mask-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    black 0%,
+    transparent 100%
+  );
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-stage:hover .hero-grid-lit {
+    opacity: 0.2;
+  }
+}
+
+/* Hero agenda: the week drawn on the ink itself, dissolving at its edges so
+   it reads as part of the ground, not a panel placed on it. */
+.agenda-field {
+  --agenda-row: 2.9rem;
+  mask-image: radial-gradient(140% 120% at 30% 40%, black 55%, transparent 100%);
+}
+@media (min-width: 1024px) {
+  .agenda-field {
+    --agenda-row: 3.7rem;
+  }
+}
+/* The "now" line: a hairline brightest at its head, fading down the day. */
+.agenda-now {
+  background: linear-gradient(to bottom, rgba(247, 250, 248, 0.85), rgba(247, 250, 248, 0) 100%);
+}
+.agenda-now::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f7faf8;
+}
+
+.count-roll {
+  animation: count-roll 0.45s var(--ease-premium) both;
+}
+@keyframes count-roll {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Empty week slots ink themselves in, cascading diagonally across the week. */
+.slot-in {
+  animation: slot-in 0.6s var(--ease-premium) both;
+  animation-delay: var(--slot-delay, 0ms);
+}
+@keyframes slot-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /* 20. REDUCED MOTION                                                          */
 /* -------------------------------------------------------------------------- */
@@ -1254,7 +1393,11 @@
 
   /* Never leave revealed content stranded in its hidden state. */
   .js .reveal-init,
-  .hero-rise {
+  .hero-rise,
+  .hero-focus,
+  .hero-word-inner,
+  .count-roll,
+  .slot-in {
     opacity: 1 !important;
     transform: none !important;
   }

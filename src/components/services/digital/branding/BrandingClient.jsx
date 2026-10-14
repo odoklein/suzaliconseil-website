@@ -1,18 +1,23 @@
 "use client";
 
-import React from "react";
 import BrandingHero from "./BrandingHero";
 import BrandingServices from "./BrandingServices";
 import BrandingPhilosophy from "./BrandingPhilosophy";
-import BrandingCTA from "./BrandingCTA";
+import { ClosingCta } from "../../../kit";
 
 export default function BrandingClient() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="w-full bg-[#F6F7F4]">
       <BrandingHero />
       <BrandingServices />
       <BrandingPhilosophy />
-      <BrandingCTA />
+      <ClosingCta
+        title="Révélez le potentiel de votre marque"
+        intro="Votre image actuelle reflète-t-elle vraiment la qualité de vos services ? Si la réponse est non, parlons-en."
+        primary={{ label: "Booking direction artistique", href: "/contact" }}
+        slotLabel="Direction artistique"
+        slotMeta="sur rendez-vous"
+      />
     </div>
   );
 }

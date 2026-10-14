@@ -7,7 +7,6 @@ async function optimizeImages() {
   
   const files = [
     'public/images/Gemini_Generated_Image_7r0ynp7r0ynp7r0y (2).png',
-    'public/images/team.png',
     'public/assets/hichem-hammouche.png',
     'public/assets/antoine-hallab.png',
     'public/assets/aurelia-bemer.png',
