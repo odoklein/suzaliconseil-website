@@ -1397,24 +1397,17 @@
   }
 }
 
-/* Then the deal: its slot is ticked, and the contract is signed by hand. */
-.agenda-check,
-.agenda-sign,
-.agenda-flourish {
+/* Then the deal: its slot is ticked, and the contract is signed by hand (the
+   pen itself is driven from AgendaField, chained to the end of the sweep). */
+.agenda-check {
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
 }
 .agenda-play .agenda-check {
   animation: agenda-draw 0.3s var(--ease-draw) calc(var(--end) + 0.15s) both;
 }
-.agenda-play .agenda-sign-label {
-  animation: agenda-settle 0.3s ease-out calc(var(--end) + 0.35s) both;
-}
-.agenda-play .agenda-sign {
-  animation: agenda-draw 0.9s var(--ease-draw) calc(var(--end) + 0.45s) both;
-}
-.agenda-play .agenda-flourish {
-  animation: agenda-draw 0.3s var(--ease-out-strong) calc(var(--end) + 1.3s) both;
+.agenda-signed {
+  animation: agenda-settle 0.3s ease-out both;
 }
 @keyframes agenda-draw {
   from {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import useSafeReducedMotion from "../../lib/useSafeReducedMotion";
 
 /*
@@ -42,26 +42,91 @@ const TIMELINE = {
   "--end": `${START_MS + SWEEP_MS}ms`,
 };
 
-// A hand-drawn signature and its underline (viewBox 0 0 120 40).
+// A hand-written signature and its underline (viewBox 0 0 140 44).
 const SIGNATURE =
-  "M6 27 C10 12 17 7 19 15 C21 23 13 33 20 30 C27 27 31 10 36 13 C40 16 33 30 40 27 C46 24 49 15 53 17 C57 19 52 28 58 26 C63 24 66 16 70 18 C74 20 69 28 75 26 C80 24 83 14 88 16 C92 18 88 27 94 25 C99 23 103 15 108 13";
-const FLOURISH = "M14 35 C40 31 76 30 114 27";
+  "M8 30 C6 18 12 8 18 10 C24 12 16 30 22 32 C26 33 28 20 32 14 C34 26 34 31 38 30 C42 29 44 20 46 18 C46 26 48 31 52 29 C56 27 56 20 60 20 C64 20 62 30 67 29 C72 28 74 16 78 8 C76 18 74 28 80 29 C86 30 88 20 92 21 C96 22 92 29 97 29 C103 29 108 18 114 17 C120 16 118 26 124 24 C128 23 131 19 134 16";
+const FLOURISH = "M12 38 C45 33 90 33 132 30";
+const SIGN_DELAY_MS = 350; // after the sweep, the check lands first
+const SIGN_MS = 1100;
+const FLOURISH_MS = 260;
 
 export default function AgendaField() {
   const ref = useRef(null);
+  const signRef = useRef(null);
+  const flourishRef = useRef(null);
+  const nibRef = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
   const reduceMotion = useSafeReducedMotion();
   const [count, setCount] = useState(0);
+  // idle → signing (the pen is writing) → signed
+  const [ink, setInk] = useState("idle");
 
   // Reduced motion shows the finished week, and the contract, straight away.
   const play = inView && !reduceMotion;
   const shown = play || reduceMotion;
   const booked = reduceMotion ? MEETINGS.length : count;
+  const signed = reduceMotion || ink === "signed";
 
   // A booking counts the moment its slot starts painting, not on a timer.
   const onBook = (e) => {
     if (e.target === e.currentTarget) setCount((c) => c + 1);
   };
+  // The signature waits for the week to be full, whatever the frame rate.
+  const onSweepEnd = (e) => {
+    if (e.target === e.currentTarget) setInk("signing");
+  };
+
+  // The pen writes the signature: the stroke is revealed along its real
+  // length and a nib rides its tip, then the underline is struck.
+  useLayoutEffect(() => {
+    if (ink !== "signing") return;
+    const sign = signRef.current;
+    const flourish = flourishRef.current;
+    const nib = nibRef.current;
+    if (!sign || !flourish || !nib || !sign.animate) {
+      setInk("signed");
+      return;
+    }
+    const reveal = (path, duration, delay, easing) => {
+      const len = path.getTotalLength();
+      return path.animate(
+        [
+          { strokeDasharray: `${len} ${len}`, strokeDashoffset: len },
+          { strokeDasharray: `${len} ${len}`, strokeDashoffset: 0 },
+        ],
+        { duration, delay, easing, fill: "both" },
+      );
+    };
+    const len = sign.getTotalLength();
+    const stroke = reveal(sign, SIGN_MS, SIGN_DELAY_MS, "cubic-bezier(0.65, 0, 0.35, 1)");
+    const underline = reveal(flourish, FLOURISH_MS, SIGN_DELAY_MS + SIGN_MS - 60, "cubic-bezier(0.23, 1, 0.32, 1)");
+
+    let frame;
+    const follow = () => {
+      const p = stroke.effect.getComputedTiming().progress;
+      const writing = p !== null && p > 0 && p < 1;
+      if (writing) {
+        const pt = sign.getPointAtLength(p * len);
+        nib.setAttribute("transform", `translate(${pt.x} ${pt.y})`);
+      }
+      nib.style.opacity = writing ? "1" : "0";
+      frame = requestAnimationFrame(follow);
+    };
+    frame = requestAnimationFrame(follow);
+
+    let cancelled = false;
+    Promise.all([stroke.finished, underline.finished])
+      .then(() => !cancelled && setInk("signed"))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+      nib.style.opacity = "0";
+      // Once signed, dropping the animations leaves the full stroke in place.
+      stroke.cancel();
+      underline.cancel();
+    };
+  }, [ink]);
 
   return (
     <figure ref={ref} className={`w-full ${play ? "agenda-play" : ""}`} style={TIMELINE}>
@@ -149,7 +214,7 @@ export default function AgendaField() {
             style={{ left: "calc(2.6rem + 0.5rem)" }}
             aria-hidden="true"
           >
-            <div className="agenda-sweep absolute inset-0">
+            <div className="agenda-sweep absolute inset-0" onAnimationEnd={onSweepEnd}>
               <div className="agenda-now absolute inset-y-0 left-0 w-px" />
             </div>
           </div>
@@ -172,35 +237,38 @@ export default function AgendaField() {
         {/* The contract line. Its space is always reserved, so nothing shifts
             when the signature arrives. */}
         <div className="w-[8.5rem] shrink-0 sm:w-[10.5rem]" role="img" aria-label="Contrat signé avec le DG">
-          <svg viewBox="0 0 120 40" className="h-9 w-full text-[#B0FF5B] sm:h-10" aria-hidden="true">
-            {shown && (
-              <>
-                <path
-                  className="agenda-sign"
-                  d={SIGNATURE}
-                  pathLength="1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  className="agenda-flourish"
-                  d={FLOURISH}
-                  pathLength="1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeOpacity="0.55"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                />
-              </>
-            )}
+          <svg
+            viewBox="0 0 140 44"
+            className={`h-10 w-full overflow-visible text-[#B0FF5B] sm:h-11 ${reduceMotion || ink !== "idle" ? "" : "opacity-0"}`}
+            aria-hidden="true"
+          >
+            <path
+              ref={signRef}
+              d={SIGNATURE}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              ref={flourishRef}
+              d={FLOURISH}
+              fill="none"
+              stroke="currentColor"
+              strokeOpacity="0.55"
+              strokeWidth="1.3"
+              strokeLinecap="round"
+            />
+            {/* The pen: a bright tip with a soft halo, riding the stroke. */}
+            <g ref={nibRef} style={{ opacity: 0 }}>
+              <circle r="5.5" fill="currentColor" opacity="0.2" />
+              <circle r="2.1" fill="#F7FAF8" />
+            </g>
           </svg>
           <div className="flex justify-between border-t border-[#F7FAF8]/15 pt-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-[#B9CBC4]">
-            <span className={shown ? "agenda-sign-label" : "opacity-0"}>Signé · {DEAL.short}</span>
-            <span className={shown ? "agenda-sign-label" : "opacity-0"}>Ven.</span>
+            <span className={signed ? "agenda-signed" : "opacity-0"}>Signé · {DEAL.short}</span>
+            <span className={signed ? "agenda-signed" : "opacity-0"}>Ven.</span>
           </div>
         </div>
       </div>
