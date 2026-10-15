@@ -1346,6 +1346,85 @@
   background: #f7faf8;
 }
 
+/* Hero agenda timeline. Nothing moves until .agenda-play is set, so without it
+   (reduced motion) every element simply sits in its finished state. Every
+   step is transform, opacity, clip or stroke: compositor work only, no layout.
+   --start / --sweep / --end come from AgendaField, the one source of timing. */
+.agenda-play {
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-draw: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* The line travels at the speed of time: linear, then fades as Friday ends. */
+.agenda-play .agenda-sweep {
+  animation: agenda-sweep var(--sweep) linear var(--start) both;
+}
+@keyframes agenda-sweep {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  5%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* A booked slot is painted left to right as the line crosses it; its text
+   settles a beat later. */
+.agenda-play .agenda-booked {
+  animation: agenda-paint 0.34s var(--ease-out-strong) var(--at) both;
+}
+@keyframes agenda-paint {
+  from {
+    clip-path: inset(0 100% 0 0 round 10px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 10px);
+  }
+}
+.agenda-play .agenda-label {
+  animation: agenda-settle 0.26s ease-out calc(var(--at) + 0.12s) both;
+}
+@keyframes agenda-settle {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+
+/* Then the deal: its slot is ticked, and the contract is signed by hand. */
+.agenda-check,
+.agenda-sign,
+.agenda-flourish {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.agenda-play .agenda-check {
+  animation: agenda-draw 0.3s var(--ease-draw) calc(var(--end) + 0.15s) both;
+}
+.agenda-play .agenda-sign-label {
+  animation: agenda-settle 0.3s ease-out calc(var(--end) + 0.35s) both;
+}
+.agenda-play .agenda-sign {
+  animation: agenda-draw 0.9s var(--ease-draw) calc(var(--end) + 0.45s) both;
+}
+.agenda-play .agenda-flourish {
+  animation: agenda-draw 0.3s var(--ease-out-strong) calc(var(--end) + 1.3s) both;
+}
+@keyframes agenda-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 .count-roll {
   animation: count-roll 0.45s var(--ease-premium) both;
 }
