@@ -1,3 +1,29 @@
+import { readFileSync } from "node:fs";
+
+// Ancien slug d'article -> nouveau slug, alimenté par scripts/migrate-post-slugs.mjs.
+// Lu au build : après une migration, il faut committer ce fichier et redéployer.
+function loadSlugRedirects() {
+  try {
+    return JSON.parse(
+      readFileSync(new URL("./src/data/slug-redirects.json", import.meta.url), "utf8"),
+    );
+  } catch {
+    return {};
+  }
+}
+
+const slugRedirects = loadSlugRedirects();
+
+/** Évite les chaînes de redirections : une cible déjà migrée est remplacée par son nouveau slug. */
+function remapArticleDestination(redirect) {
+  const prefix = "/actualites/";
+  if (!redirect.destination.startsWith(prefix)) return redirect;
+  const slug = redirect.destination.slice(prefix.length);
+  return slugRedirects[slug]
+    ? { ...redirect, destination: `${prefix}${slugRedirects[slug]}` }
+    : redirect;
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -53,7 +79,7 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return [
+    const configured = [
       {
         source: "/:path*",
         has: [
@@ -130,13 +156,38 @@ const nextConfig = {
         destination: "/actualites/prospection-commerciale-pme-les-strategies-incontournables-mmix31os",
         permanent: true,
       },
-      // Example of old service page redirect if slug changed:
-      // {
-      //   source: '/old-service-page',
-      //   destination: '/services/commercial',
-      //   permanent: true,
-      // }
+      // URLs WordPress sans équivalent (archives, taxonomies, auteurs, flux) :
+      // Google les a encore en mémoire et recevait un 404.
+      {
+        source: "/category/:path*",
+        destination: "/actualites",
+        permanent: true,
+      },
+      {
+        source: "/tag/:path*",
+        destination: "/actualites",
+        permanent: true,
+      },
+      {
+        source: "/author/:path*",
+        destination: "/equipe",
+        permanent: true,
+      },
+      {
+        source: "/feed/:path*",
+        destination: "/actualites",
+        permanent: true,
+      },
     ];
+
+    // Anciens slugs d'articles migrés (suffixe aléatoire retiré) -> nouveaux slugs.
+    const migratedArticles = Object.entries(slugRedirects).map(([from, to]) => ({
+      source: `/actualites/${from}`,
+      destination: `/actualites/${to}`,
+      permanent: true,
+    }));
+
+    return [...configured.map(remapArticleDestination), ...migratedArticles];
   },
 };
 

@@ -63,9 +63,11 @@ export async function generateMetadata({ params }) {
     .where(eq(posts.slug, slug))
     .limit(1);
 
-  if (!post) {
+  // Un brouillon (publishedAt nul) se comporte comme un article inexistant.
+  if (!post || !post.publishedAt) {
     return {
       title: "Article non trouvé | Suzali Conseil",
+      robots: { index: false, follow: false },
     };
   }
 
@@ -109,7 +111,7 @@ export default async function ActualiteDetailPage({ params }) {
     .where(eq(posts.slug, slug))
     .limit(1);
 
-  if (!post) {
+  if (!post || !post.publishedAt) {
     notFound();
   }
 
