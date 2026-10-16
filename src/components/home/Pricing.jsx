@@ -4,6 +4,7 @@ import Marker from "./kit/Marker";
 import Reveal from "./kit/Reveal";
 import SectionHead from "./kit/SectionHead";
 import { getOffersByIds } from "../../lib/offers-catalog";
+import { serviceLabel } from "../../lib/article-services";
 
 /*
  * Three entry-level price points lifted straight from the offer catalogue,
@@ -102,14 +103,14 @@ const Pricing = () => {
                 {offer.serviceHref && (
                   <Link
                     href={offer.serviceHref}
-                    className={`group/btn mt-10 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold tracking-[-0.01em] transition-colors duration-300 ${
+                    className={`group/btn mt-10 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-center text-sm font-semibold leading-snug tracking-[-0.01em] transition-colors duration-300 ${
                       inked
                         ? "bg-[#B0FF5B] text-[#0D332B] hover:bg-[#C8FF8D]"
                         : "border border-[#0D332B]/20 text-[#0D332B] hover:border-[#0D332B] hover:bg-[#0D332B] hover:text-[#F7FAF8]"
                     }`}
                   >
-                    En savoir plus
-                    <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
+                    {serviceLabel(offer.serviceHref)}
+                    <ArrowRight size={16} aria-hidden="true" className="shrink-0 transition-transform group-hover/btn:translate-x-1" />
                   </Link>
                 )}
               </article>

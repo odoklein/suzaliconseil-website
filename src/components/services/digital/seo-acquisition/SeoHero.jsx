@@ -12,11 +12,11 @@ const KPIS = [
 export default function SeoHero() {
   return (
     <PageHero
-      title="Dominez Votre Marché avec une Acquisition Digitale Imparable"
+      title="Agence d'acquisition digitale B2B : SEO et Google Ads"
       breadcrumbs={[
         { label: "Services", href: "/services" },
         { label: "Digital", href: "/services/digital" },
-        { label: "SEO & acquisition", href: "/services/digital/seo-acquisition" },
+        { label: "Acquisition digitale et SEO", href: "/services/digital/seo-acquisition" },
       ]}
       intro={
         <p>

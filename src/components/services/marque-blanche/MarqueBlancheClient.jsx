@@ -55,7 +55,12 @@ export default function MarqueBlancheClient() {
   return (
     <div className="min-h-screen bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Vente en Marque Blanche B2B Expert"
+        title="Force de vente externalisée en marque blanche"
+        breadcrumbs={[
+          { label: "Services", href: "/services" },
+          { label: "Prospection commerciale", href: "/services/commercial" },
+          { label: "Force de vente externalisée", href: "/services/vente-marque-blanche" },
+        ]}
         intro="Déléguez votre closing à des professionnels de la vente. Nous agissons en votre nom, avec vos outils, pour transformer vos opportunités en contrats signés."
         image="/images/equipeprospection.png"
         imageAlt="L'équipe de prospection commerciale de Suzali Conseil dans ses bureaux"

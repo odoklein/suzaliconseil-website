@@ -5,9 +5,10 @@ import { getOffersByIds } from "./offers-catalog.js";
  * affichés sur la page service et dans sa FAQ sont lus ici plutôt que recopiés,
  * pour qu'ils ne puissent pas diverger de /offres.
  */
-export const [GROWTH_STANDARD_OFFER, VENTE_RDV_OFFER] = getOffersByIds([
+export const [GROWTH_STANDARD_OFFER, VENTE_RDV_OFFER, FILE_STARTER_OFFER] = getOffersByIds([
   "contact-growth-standard",
   "contact-vente-rdv",
+  "file-starter-500",
 ]);
 
 /** « /mois + 150 € … » → « par mois + 150 € … », pour une lecture en phrase. */
@@ -18,7 +19,7 @@ export const TRANSACTIONAL_SERVICES = {
     path: "/services/prospection-commerciale-externalisee",
     title: "Prospection commerciale externalisée | Suzali Conseil",
     description:
-      `Externalisez votre prospection B2B : équipe dédiée, appels, emails et LinkedIn, rendez-vous qualifiés dans votre agenda. Dès ${GROWTH_STANDARD_OFFER.price} par mois. Audit gratuit.`,
+      `Externalisez votre prospection B2B : équipe dédiée, appels, emails et LinkedIn, rendez-vous qualifiés dans votre agenda. Dès ${GROWTH_STANDARD_OFFER.price}/mois. Audit gratuit.`,
     eyebrow: "Force commerciale externalisée",
     h1: "Prospection commerciale externalisée",
     introduction:
@@ -67,7 +68,7 @@ export const TRANSACTIONAL_SERVICES = {
     path: "/services/fichier-prospection-b2b",
     title: "Fichier de prospection B2B qualifié | Suzali Conseil",
     description:
-      "Obtenez un fichier de prospection B2B ciblé, vérifié et enrichi selon votre ICP, livré en CSV ou Excel et prêt à intégrer dans votre CRM.",
+      `Fichier de prospection B2B ciblé sur votre ICP, vérifié et dédoublonné, livré en CSV ou Excel pour votre CRM. Dès ${FILE_STARTER_OFFER.price} les ${FILE_STARTER_OFFER.billing}. Commandez-le.`,
     eyebrow: "Data B2B exploitable",
     h1: "Fichier de prospection B2B qualifié",
     introduction:
@@ -145,7 +146,7 @@ export const TRANSACTIONAL_SERVICES = {
     path: "/services/campagnes-email-sms-b2b",
     title: "Campagnes email et SMS B2B multicanales | Suzali Conseil",
     description:
-      "Activez vos prospects avec des campagnes email et SMS B2B segmentées, des séquences adaptées, des relances ciblées et un reporting clair.",
+      "Campagnes email et SMS B2B : segmentation, séquences rédigées pour chaque cible, relances et reporting des réponses utiles. Activez votre fichier.",
     eyebrow: "Activation multicanale",
     h1: "Campagnes email et SMS B2B",
     introduction:

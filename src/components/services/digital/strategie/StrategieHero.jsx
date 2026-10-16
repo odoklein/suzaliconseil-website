@@ -14,7 +14,12 @@ const stats = [
 export default function StrategieHero() {
   return (
     <PageHero
-      title="Conseil en Stratégie Digitale & Transformation Numérique"
+      title="Conseil en stratégie marketing digitale B2B"
+      breadcrumbs={[
+        { label: "Services", href: "/services" },
+        { label: "Digital", href: "/services/digital" },
+        { label: "Stratégie digitale", href: "/services/digital/strategie-digitale" },
+      ]}
       intro={
         <p>
           Nous aidons les PME et ETI à <strong>sécuriser leur croissance</strong>{" "}

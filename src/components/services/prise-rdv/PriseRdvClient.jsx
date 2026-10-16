@@ -16,7 +16,7 @@ import HeroNotes from "../commercial-shared/HeroNotes";
 
 const BREADCRUMBS = [
   { label: "Services", href: "/services" },
-  { label: "Commercial", href: "/services/commercial" },
+  { label: "Prospection commerciale", href: "/services/commercial" },
   { label: "Prise de rendez-vous B2B", href: "/services/prise-rendez-vous-b2b" },
 ];
 
@@ -82,7 +82,7 @@ export default function PriseRdvClient() {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Agence Prise de Rendez-vous B2B Qualifiés France"
+        title="Prise de rendez-vous B2B qualifiés"
         breadcrumbs={BREADCRUMBS}
         intro={
           <p>

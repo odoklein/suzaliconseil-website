@@ -142,7 +142,8 @@ export default function MentionsLegalesPage() {
   return (
     <div className="w-full bg-[#F6F7F4]">
       <PageHero
-        title="Mentions Légales"
+        title="Mentions légales"
+        breadcrumbs={[{ label: "Mentions légales", href: "/mentions-legales" }]}
         intro="Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN), il est porté à la connaissance des utilisateurs du site Suzali Conseil les présentes mentions légales."
         className="lg:[&_.hero-stage>div:last-child]:min-h-[420px]"
       />

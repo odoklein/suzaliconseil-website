@@ -10,7 +10,11 @@ export function DigitalHero() {
 
   return (
     <PageHero
-      title="Le digital qui soutient votre croissance B2B."
+      title="Agence digitale B2B pour soutenir votre croissance"
+      breadcrumbs={[
+        { label: "Services", href: "/services" },
+        { label: "Digital", href: "/services/digital" },
+      ]}
       intro="Stratégie, sites web, acquisition et automatisation pour faire de chaque point de contact un levier de croissance."
       image="/images/equipeweb.png"
       imageAlt="L'équipe digitale de Suzali Conseil au travail"

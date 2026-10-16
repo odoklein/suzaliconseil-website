@@ -10,6 +10,7 @@ import { Reveal, SectionHead } from "../kit";
 import useSafeReducedMotion from "../../lib/useSafeReducedMotion";
 import { OFFER_CATEGORIES, getOfferCount } from "../../lib/offers-catalog";
 import { CADENCE_LABEL, getPricing } from "../../lib/offers-pricing-meta";
+import { serviceLabel } from "../../lib/article-services";
 
 /*
  * The catalogue as a price ledger: one hairline row per offer, grouped by
@@ -233,7 +234,7 @@ function OfferRow({ offer, isSelected, onToggle, onRequest }) {
                   : "text-[#0D332B] decoration-[#0D332B]/25 hover:decoration-[#0D332B]"
               }`}
             >
-              Voir le détail du service
+              {serviceLabel(offer.serviceHref)}
               <ArrowUpRight
                 size={15}
                 aria-hidden="true"

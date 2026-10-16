@@ -141,9 +141,13 @@ const VALUE_POINTS = [
 const INLINE_LINK =
   "font-semibold text-[#0D332B] underline decoration-[#B0FF5B] decoration-[3px] underline-offset-4 transition-colors hover:decoration-[#0D332B]";
 
+// answerText : la réponse en texte brut pour le JSON-LD FAQPage, identique à
+// la réponse affichée (liens mis à part).
 const FAQ = [
   {
     question: "Par quel service commencer si le besoin touche plusieurs sujets ?",
+    answerText:
+      "Commencez par un échange de cadrage. Nous pouvons ensuite associer le pôle commercial et le conseil en stratégie digitale autour d'un même plan d'action.",
     answer: (
       <p>
         Commencez par un échange de cadrage. Nous pouvons ensuite associer le{" "}
@@ -160,6 +164,8 @@ const FAQ = [
   },
   {
     question: "Pouvez-vous prendre en charge l'exécution ?",
+    answerText:
+      "Oui. Nous pouvons opérer votre prospection externalisée, renforcer votre force de vente ou livrer un dispositif digital complet.",
     answer: (
       <p>
         Oui. Nous pouvons opérer votre{" "}
@@ -172,6 +178,8 @@ const FAQ = [
   },
   {
     question: "Comment suivons-nous l'avancement ?",
+    answerText:
+      "Le rythme, les livrables et les indicateurs sont définis au démarrage. Vous disposez ensuite de points réguliers et d'une vue partagée sur les actions en cours.",
     answer: (
       <p>
         Le rythme, les livrables et les indicateurs sont définis au démarrage. Vous
@@ -182,6 +190,8 @@ const FAQ = [
   },
   {
     question: "Intervenez-vous aussi sur une mission ponctuelle ?",
+    answerText:
+      "Oui. Audit, landing page, fichier qualifié, campagne ou automatisation peuvent être engagés séparément. La page Offres et tarifs présente les principaux formats.",
     answer: (
       <p>
         Oui. Audit, landing page, fichier qualifié, campagne ou automatisation
@@ -195,6 +205,8 @@ const FAQ = [
   },
   {
     question: "Où voir des missions déjà réalisées ?",
+    answerText:
+      "Nos études de cas détaillent le contexte, la démarche et les livrables de missions commerciales, digitales et mixtes.",
     answer: (
       <p>
         Nos{" "}
@@ -214,7 +226,7 @@ export function ServicesHub() {
   return (
     <div className="w-full overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Commercial et digital. Une croissance mieux alignée."
+        title="Services B2B : prospection commerciale et digital"
         intro="Nous alignons acquisition, vente, expérience et outils pour transformer vos objectifs B2B en actions pilotables."
         breadcrumbs={[{ label: "Services", href: "/services" }]}
         actions={
@@ -402,10 +414,9 @@ export function ServicesHub() {
         </div>
       </section>
 
-      {/* FAQPage JSON-LD is emitted by app/services/page.jsx. */}
+      {/* FaqList émet le FAQPage à partir des questions affichées (answerText). */}
       <div id="faq" className="scroll-mt-24">
         <FaqList
-          jsonLd={false}
           intro="Vous hésitez entre plusieurs accompagnements ? Ces réponses vous aideront à choisir un premier point d'entrée."
           items={FAQ}
         />

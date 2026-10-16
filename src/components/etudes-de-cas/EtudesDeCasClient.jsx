@@ -251,7 +251,7 @@ export default function EtudesDeCasClient() {
   return (
     <div className="w-full bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Nos missions, du défi au livrable."
+        title="Études de cas : nos missions B2B, du défi au livrable"
         intro="Découvrez le contexte, les décisions et les livrables de missions qui relient acquisition, vente et outils."
         breadcrumbs={[{ label: "Études de cas", href: "/etudes-de-cas" }]}
         actions={
@@ -265,7 +265,7 @@ export default function EtudesDeCasClient() {
           </>
         }
         image="/projects/investissementLocatif.png"
-        imageAlt="Projet Investissement Locatif"
+        imageAlt="Aperçu du projet Investissement Locatif mené par Suzali Conseil"
         imagePosition="top"
         imageCaption="Une campagne et son parcours digital conçus comme un seul système."
         align="start"
@@ -318,7 +318,6 @@ export default function EtudesDeCasClient() {
                 key={study.id}
                 study={study}
                 reverse={index % 2 === 1}
-                eager={index === 0}
               />
             ))}
           </div>

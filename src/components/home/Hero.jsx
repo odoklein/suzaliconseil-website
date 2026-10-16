@@ -7,7 +7,9 @@ import AgendaField from "./AgendaField";
 import useSafeReducedMotion from "../../lib/useSafeReducedMotion";
 import { useBooking } from "../../context/BookingContext";
 
-const HEADLINE = "Génération de leads B2B en France";
+// Même mot-clé que le <title> : « génération de leads B2B » a sa propre page
+// (/services/generation-leads-b2b), que l'accueil ne doit pas concurrencer.
+const HEADLINE = "Agence de prospection B2B en France";
 const WORD_STAGGER_MS = 65;
 
 const GRID_STYLE = {

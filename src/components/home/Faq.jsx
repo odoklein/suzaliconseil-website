@@ -3,6 +3,8 @@ import { ArrowRight, Plus } from "lucide-react";
 import Reveal from "./kit/Reveal";
 import SectionHead from "./kit/SectionHead";
 import { TRANSACTIONAL_SERVICES } from "../../lib/transactional-services";
+import { faqSchema } from "../../lib/structured-data";
+import JsonLd from "../seo/JsonLd";
 
 /*
  * Questions are pulled from the service pages themselves so the homepage and
@@ -12,7 +14,7 @@ import { TRANSACTIONAL_SERVICES } from "../../lib/transactional-services";
  */
 const SELECTED = [
   { service: "externalisee", index: 0, label: "Prospection externalisée" },
-  { service: "externalisee", index: 1, label: "Outbound marketing B2B" },
+  { service: "externalisee", index: 1, label: "Prospection externalisée" },
   { service: "qualification", index: 0, label: "Qualification de leads B2B" },
   { service: "fichier", index: 1, label: "Fichier de prospection B2B" },
   { service: "campagnes", index: 2, label: "Campagnes email et SMS B2B" },
@@ -25,26 +27,10 @@ const ENTRIES = SELECTED.map(({ service, index, label }) => {
   return { question, answer, href: source.path, label };
 });
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: ENTRIES.map(({ question, answer }) => ({
-    "@type": "Question",
-    name: question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: answer,
-    },
-  })),
-};
-
 const Faq = () => {
   return (
     <section className="border-t border-[#0D332B]/10 bg-[#F6F7F4] py-24 md:py-32">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLd data={faqSchema(ENTRIES, "/")} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-12 lg:gap-16">

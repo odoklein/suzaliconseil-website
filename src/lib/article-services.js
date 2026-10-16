@@ -71,6 +71,15 @@ export const SERVICES = {
   },
 };
 
+const LABEL_BY_HREF = Object.fromEntries(
+  Object.values(SERVICES).map(({ href, label }) => [href, label]),
+);
+
+/** Ancre descriptive d'un lien vers une page service (jamais « En savoir plus »). */
+export function serviceLabel(href) {
+  return LABEL_BY_HREF[href] ?? "Voir le service";
+}
+
 /** slug d'article -> services les plus proches de son intention de recherche */
 const SERVICES_BY_SLUG = {
   "boostez-vos-ventes-b2b-agence-generation-leads-paris-expert-mm4molzg": [

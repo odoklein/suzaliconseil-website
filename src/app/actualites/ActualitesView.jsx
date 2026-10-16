@@ -174,7 +174,8 @@ export default function ActualitesView({ posts: initialPosts = [] }) {
   return (
     <div className="w-full bg-[#F6F7F4]">
       <PageHero
-        title="Actualités & Insights"
+        title="Guides et actualités de la prospection B2B"
+        breadcrumbs={[{ label: "Actualités", href: "/actualites" }]}
         intro="Décryptages, stratégies et retours d'expérience pour accélérer votre performance commerciale et digitale."
       >
         {!loading && !error && list.length > 0 && (

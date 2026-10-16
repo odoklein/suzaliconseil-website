@@ -138,7 +138,8 @@ export default function ContactClient() {
   return (
     <div className="w-full bg-[#F6F7F4]">
       <PageHero
-        title="Parlons de votre projet"
+        title="Contactez notre agence de prospection B2B"
+        breadcrumbs={[{ label: "Contact", href: "/contact" }]}
         intro="Une question stratégique, un besoin d'accompagnement ou une opportunité commerciale ? Notre équipe vous répond rapidement."
         aside={form}
         align="start"

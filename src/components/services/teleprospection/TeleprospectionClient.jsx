@@ -16,7 +16,7 @@ import HeroNotes from "../commercial-shared/HeroNotes";
 
 const BREADCRUMBS = [
   { label: "Services", href: "/services" },
-  { label: "Commercial", href: "/services/commercial" },
+  { label: "Prospection commerciale", href: "/services/commercial" },
   { label: "Téléprospection B2B", href: "/services/teleprospection-b2b" },
 ];
 
@@ -84,7 +84,7 @@ export default function TeleprospectionClient() {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Agence Téléprospection B2B & Prise de RDV France"
+        title="Agence de téléprospection B2B en France"
         breadcrumbs={BREADCRUMBS}
         intro={
           <p>

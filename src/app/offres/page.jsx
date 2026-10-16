@@ -7,11 +7,12 @@ import PricingFaq from "../../components/offers/PricingFaq";
 import MagneticButton from "../../components/ui/MagneticButton";
 import { PageHero, ClosingCta } from "../../components/kit";
 import { createPageMetadata } from "../../lib/seo";
+import { FILE_STARTER_OFFER } from "../../lib/transactional-services";
 
 export const metadata = createPageMetadata({
   title: "Tarifs de prospection et services B2B | Suzali Conseil",
   description:
-    "Comparez nos offres de prospection commerciale B2B, prise de rendez-vous qualifiés, génération de leads, site web, SEO, CRM et automatisation.",
+    `Tarifs de prospection B2B : fichiers dès ${FILE_STARTER_OFFER.price}, rendez-vous qualifiés, génération de leads, site web, SEO et automatisation. Estimez votre budget en ligne.`,
   path: "/offres",
   keywords: [
     "tarif prospection B2B",
@@ -41,7 +42,8 @@ export default function OffresPage() {
   return (
     <main className="min-h-screen overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Investissez dans ce qui vous apporte des opportunités concrètes."
+        title="Nos offres et tarifs de prospection B2B"
+        breadcrumbs={[{ label: "Offres et tarifs", href: "/offres" }]}
         intro="Prospection commerciale, rendez-vous qualifiés, génération de leads, sites web, SEO et automatisation CRM : choisissez le levier qui fait avancer votre acquisition et votre conversion."
         meta={
           <span className="tabular-nums">

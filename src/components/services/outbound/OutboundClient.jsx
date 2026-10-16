@@ -162,7 +162,12 @@ export default function OutboundClient() {
   return (
     <div className="min-h-screen bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Agence Outbound Marketing B2B & Prospection Digitale"
+        title="Agence outbound B2B : des rendez-vous avec vos décideurs"
+        breadcrumbs={[
+          { label: "Services", href: "/services" },
+          { label: "Prospection commerciale", href: "/services/commercial" },
+          { label: "Agence outbound B2B", href: "/services/outbound-marketing-b2b" },
+        ]}
         intro={
           <p>
             Passez de l&apos;attente passive à la{" "}

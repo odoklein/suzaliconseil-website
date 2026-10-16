@@ -10,14 +10,19 @@ import Projects from "../components/home/Projects";
 import Pricing from "../components/home/Pricing";
 import Faq from "../components/home/Faq";
 import { createPageMetadata } from "../lib/seo";
+import { professionalServiceSchema } from "../lib/structured-data";
+import JsonLd from "../components/seo/JsonLd";
 
-// La marque passe en tête du title : la requête « suzali » sortait en position
-// 2,47 sur 32 impressions avec 0 clic, le nom de marque arrivant après la
-// coupure du SERP. La description mentionne des livrables concrets plutôt que
-// « accompagne les entreprises ».
+// Mot-clé en tête, marque en fin (règle commune à tout le site). À 52
+// caractères, « Suzali Conseil » reste avant la coupure du SERP : c'était la
+// raison de l'ancien ordre (requête « suzali », position 2,47, 0 clic).
+// La description garde la marque en premier mot pour les requêtes de marque.
+const DESCRIPTION =
+  "Suzali Conseil, agence de prospection B2B : génération de leads, rendez-vous qualifiés avec vos décideurs et acquisition digitale. Réservez un appel.";
+
 export const metadata = createPageMetadata({
-  title: "Suzali Conseil — Agence de prospection B2B en France",
-  description: "Suzali Conseil, agence de prospection B2B : leads qualifiés, prise de rendez-vous décideurs et acquisition digitale pour votre croissance en France.",
+  title: "Agence de prospection B2B en France | Suzali Conseil",
+  description: DESCRIPTION,
   path: "/",
 });
 
@@ -39,6 +44,7 @@ export default async function Home() {
    */
   return (
     <>
+      <JsonLd data={professionalServiceSchema({ description: DESCRIPTION })} />
       <Hero />
       <ClientLogos />
       <ServicesPoles />
