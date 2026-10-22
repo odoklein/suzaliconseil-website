@@ -14,6 +14,8 @@ import MagneticButton from "../../../components/ui/MagneticButton";
 import CoverImage from "../_components/CoverImage";
 import ArticleRow from "../_components/ArticleRow";
 import { createOgImage, SITE_URL } from "../../../lib/seo";
+import { blogPostingSchema, faqSchema } from "../../../lib/structured-data";
+import JsonLd from "../../../components/seo/JsonLd";
 
 // Prérend les articles publiés au build : sans ça chaque vue tape Neon et la
 // page part en rendu dynamique (aucun en-tête x-nextjs-prerender, ~1 s de TTFB
@@ -166,40 +168,20 @@ export default async function ActualiteDetailPage({ params }) {
   const relatedServices = getRelatedServices(slug, theme, post.targetKeyword);
   const faq = Array.isArray(post.faq) ? post.faq.filter((f) => f?.question && f?.answer) : [];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${SITE_URL}/actualites/${slug}`,
-    },
-    headline: post.title,
-    description: excerptText,
-    image:
-      post.coverImageUrl ||
-      createOgImage(post.title, theme).url,
-    datePublished: post.publishedAt || post.createdAt,
-    dateModified: post.updatedAt || post.publishedAt || post.createdAt,
-    author: {
-      "@type": "Organization",
-      name: "Suzali Conseil",
-    },
-    wordCount: post.content ? post.content.split(/\s+/).length : 0,
-    articleSection: theme === "digital" ? "Digital & Tech" : "Commercial & Stratégie",
-  };
-
-  const faqJsonLd =
-    faq.length > 0
-      ? {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faq.map((f) => ({
-            "@type": "Question",
-            name: f.question,
-            acceptedAnswer: { "@type": "Answer", text: f.answer },
-          })),
-        }
-      : null;
+  const articleUrl = `${SITE_URL}/actualites/${slug}`;
+  const structuredData = [
+    blogPostingSchema({
+      url: articleUrl,
+      headline: post.title,
+      description: excerptText,
+      image: post.coverImageUrl || createOgImage(post.title, theme).url,
+      datePublished: post.publishedAt,
+      dateModified: post.updatedAt,
+      section: theme === "digital" ? "Digital & Tech" : "Commercial & Stratégie",
+      wordCount,
+    }),
+    faq.length > 0 && faqSchema(faq, `/actualites/${slug}`),
+  ];
 
   const safeContent =
     typeof post.content === "string"
@@ -214,16 +196,9 @@ export default async function ActualiteDetailPage({ params }) {
 
   return (
     <article className="w-full bg-[#F6F7F4] font-sans">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      {faqJsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
-      )}
+      {/* BlogPosting (+ FAQPage si l'article a une FAQ visible). Le
+          BreadcrumbList vient du fil d'Ariane de PageHero. */}
+      <JsonLd data={structuredData} />
 
       <ReadingProgress />
 

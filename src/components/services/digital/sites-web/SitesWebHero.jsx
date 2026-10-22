@@ -13,7 +13,12 @@ const proofs = [
 export default function SitesWebHero() {
   return (
     <PageHero
-      title="Création Sites Web & E-commerce Haute Performance"
+      title="Création de sites web et e-commerce B2B"
+      breadcrumbs={[
+        { label: "Services", href: "/services" },
+        { label: "Digital", href: "/services/digital" },
+        { label: "Sites web et e-commerce", href: "/services/digital/sites-web-ecommerce" },
+      ]}
       intro={
         <p>
           Des expériences digitales d&apos;exception, conçues pour dominer

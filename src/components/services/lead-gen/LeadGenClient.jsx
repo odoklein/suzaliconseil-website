@@ -16,7 +16,7 @@ import HeroNotes from "../commercial-shared/HeroNotes";
 
 const BREADCRUMBS = [
   { label: "Services", href: "/services" },
-  { label: "Commercial", href: "/services/commercial" },
+  { label: "Prospection commerciale", href: "/services/commercial" },
   { label: "Génération de leads B2B", href: "/services/generation-leads-b2b" },
 ];
 
@@ -87,7 +87,7 @@ export default function LeadGenClient() {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Agence Génération de Leads B2B Qualifiés France"
+        title="Agence de génération de leads B2B qualifiés"
         breadcrumbs={BREADCRUMBS}
         intro={
           <p>

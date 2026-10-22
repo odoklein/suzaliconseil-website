@@ -1,12 +1,29 @@
 import { CommercialClientPage } from "../../../components/services/commercial/CommercialClientPage";
+import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
+import { serviceSchema } from "../../../lib/structured-data";
 
-export const metadata = createPageMetadata({
-  title: "Prospection Commerciale B2B en France | Suzali",
-  description: "Confiez votre prospection B2B à une équipe qui cible, contacte et qualifie vos futurs clients pour créer des opportunités commerciales.",
+const PAGE = {
+  title: "Prospection commerciale B2B en France | Suzali Conseil",
+  description:
+    "Prospection externalisée, téléprospection, outbound et prise de rendez-vous : une équipe cible, contacte et qualifie vos prospects B2B. Audit gratuit.",
   path: "/services/commercial",
-});
+};
+
+export const metadata = createPageMetadata(PAGE);
 
 export default function CommercialPage() {
-  return <CommercialClientPage />;
+  return (
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Solutions de prospection commerciale B2B",
+          serviceType: "Prospection commerciale B2B",
+          description: PAGE.description,
+          path: PAGE.path,
+        })}
+      />
+      <CommercialClientPage />
+    </>
+  );
 }

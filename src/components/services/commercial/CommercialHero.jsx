@@ -5,11 +5,11 @@ export function CommercialHero() {
   return (
     <>
       <PageHero
-        title="Accélérez votre prospection B2B"
+        title="Solutions de prospection commerciale B2B"
         intro="De la structuration de votre force de vente à la génération de leads qualifiés."
         breadcrumbs={[
           { label: "Services", href: "/services" },
-          { label: "Performance commerciale", href: "/services/commercial" },
+          { label: "Prospection commerciale", href: "/services/commercial" },
         ]}
         actions={
           <>

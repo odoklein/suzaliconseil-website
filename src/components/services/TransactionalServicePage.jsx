@@ -2,7 +2,8 @@ import MagneticButton from "../ui/MagneticButton";
 import { PageHero, ClosingCta, SectionHead, LedgerList, FaqList } from "../kit";
 import CheckRows from "./commercial-b/CheckRows";
 import { MethodSection } from "../kit";
-import { SITE_URL } from "../../lib/seo";
+import JsonLd from "../seo/JsonLd";
+import { faqSchema, serviceSchema } from "../../lib/structured-data";
 
 /*
  * Gabarit des pages services « transactionnelles » (fichier, qualification,
@@ -12,58 +13,44 @@ import { SITE_URL } from "../../lib/seo";
 const SERVICE_VISUALS = {
   "/services/prospection-commerciale-externalisee": {
     src: "/images/manager-prospection-externalisee.webp",
+    alt: "Manager en costume dans un open space équipé de postes de travail",
     position: "center 35%",
   },
   "/services/fichier-prospection-b2b": {
     src: "/images/services-growth-system.webp",
+    alt: "Composition architecturale représentant deux expertises qui convergent vers une trajectoire commune",
     position: "center",
   },
   "/services/qualification-leads-b2b": {
     src: "/images/hero-office.webp",
+    alt: "Open space lumineux avec postes de travail et vue sur la ville",
     position: "center",
   },
   "/services/campagnes-email-sms-b2b": {
     src: "/images/actualites/dashboard-commercial.png",
+    alt: "Dirigeant consultant un tableau de bord commercial avec pipeline et taux de conversion",
     position: "center",
   },
 };
 
 export default function TransactionalServicePage({ service }) {
   const visual = SERVICE_VISUALS[service.path] ?? SERVICE_VISUALS["/services/prospection-commerciale-externalisee"];
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: service.faqs.map(([question, answer]) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: service.h1,
-    description: service.description,
-    url: `${SITE_URL}${service.path}`,
-    provider: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: "Suzali Conseil",
-    },
-    areaServed: { "@type": "Country", name: "France" },
-    serviceType: service.h1,
-  };
 
   return (
     <main className="overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
       {/* FAQPage émis ici : FaqList est rendu plus bas avec jsonLd={false}. */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      <JsonLd
+        data={[
+          serviceSchema({
+            name: service.h1,
+            description: service.description,
+            path: service.path,
+          }),
+          faqSchema(
+            service.faqs.map(([question, answer]) => ({ question, answer })),
+            service.path,
+          ),
+        ]}
       />
 
       <PageHero
@@ -71,10 +58,11 @@ export default function TransactionalServicePage({ service }) {
         intro={service.introduction}
         breadcrumbs={[
           { label: "Services", href: "/services" },
-          { label: "Commercial", href: "/services/commercial" },
+          { label: "Prospection commerciale", href: "/services/commercial" },
           { label: service.h1, href: service.path },
         ]}
         image={visual.src}
+        imageAlt={visual.alt}
         imagePosition={visual.position}
         actions={
           <>

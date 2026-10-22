@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRef } from "react";
 import { ChevronRight } from "lucide-react";
 import AgendaGrid from "./AgendaGrid";
+import JsonLd from "../seo/JsonLd";
+import { breadcrumbSchema } from "../../lib/structured-data";
 
 const WORD_STAGGER_MS = 55;
 
@@ -126,11 +128,13 @@ export default function PageHero({
               {aside ?? (
                 <figure>
                   <div className="relative aspect-[4/3] overflow-hidden rounded-[18px] bg-[#1A4D43] shadow-[0_50px_90px_-40px_rgba(0,0,0,0.6)] lg:aspect-[5/6] lg:max-h-[600px]">
+                    {/* Image du premier écran : souvent le LCP sur mobile. */}
                     <Image
                       src={image}
                       alt={imageAlt}
                       fill
                       priority
+                      fetchPriority="high"
                       sizes="(min-width: 1024px) 40vw, 100vw"
                       className="object-cover"
                       style={{ objectPosition: imagePosition }}
@@ -149,29 +153,11 @@ export default function PageHero({
   );
 }
 
-/* Breadcrumbs drawn on the ink: same trail and JSON-LD as <Breadcrumbs />. */
+/* Breadcrumbs drawn on the ink, with their BreadcrumbList JSON-LD (server HTML). */
 function InkCrumbs({ items }) {
-  const base = "https://suzaliconseil.com";
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: base },
-      ...items.map((item, i) => ({
-        "@type": "ListItem",
-        position: i + 2,
-        name: item.label,
-        item: `${base}${item.href}`,
-      })),
-    ],
-  };
-
   return (
     <nav aria-label="Fil d'Ariane" className="hero-focus mb-8 lg:mb-10">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      <JsonLd data={breadcrumbSchema(items)} />
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#B9CBC4]">
         <li>
           <Link href="/" className="rounded transition-colors hover:text-[#F7FAF8]">

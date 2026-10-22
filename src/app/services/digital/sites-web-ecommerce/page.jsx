@@ -1,14 +1,29 @@
 import SitesWebClient from "../../../../components/services/digital/sites-web/SitesWebClient";
+import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
+import { serviceSchema } from "../../../../lib/structured-data";
 
-export const metadata = createPageMetadata({
-  title: "Agence web et e-commerce B2B | Suzali Conseil",
+const PAGE = {
+  title: "Création de sites web et e-commerce B2B | Suzali Conseil",
   description:
-    "Créez un site web ou e-commerce rapide, accessible et pensé pour convertir, avec une architecture adaptée à votre activité et à vos clients B2B.",
+    "Création de sites web et e-commerce B2B rapides, accessibles et pensés pour convertir, avec un SEO intégré dès la maquette. Estimez le prix de votre site.",
   path: "/services/digital/sites-web-ecommerce",
-  theme: "digital",
-});
+};
+
+export const metadata = createPageMetadata({ ...PAGE, theme: "digital" });
 
 export default function SitesWebEcommercePage() {
-  return <SitesWebClient />;
+  return (
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Création de sites web et e-commerce B2B",
+          serviceType: "Création de site web",
+          description: PAGE.description,
+          path: PAGE.path,
+        })}
+      />
+      <SitesWebClient />
+    </>
+  );
 }

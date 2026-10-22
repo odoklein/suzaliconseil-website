@@ -35,7 +35,7 @@ const allExpertises = [
   ["Force de vente externalisée", "/services/vente-marque-blanche"],
 ];
 
-function Pole({ tone, title, line, tags, href, className, delay }) {
+function Pole({ tone, title, line, tags, href, cta, className, delay }) {
   const onInk = tone === "ink";
   return (
     <Reveal
@@ -88,8 +88,8 @@ function Pole({ tone, title, line, tags, href, className, delay }) {
             : "bg-[#0D332B] text-[#F7FAF8] hover:bg-[#1A4D43]"
         }`}
       >
-        Découvrir le service
-        <ArrowRight size={18} className="transition-transform group-hover/btn:translate-x-1" />
+        {cta}
+        <ArrowRight size={18} aria-hidden="true" className="transition-transform group-hover/btn:translate-x-1" />
       </Link>
     </Reveal>
   );
@@ -126,6 +126,7 @@ const ServicesPoles = () => {
             line="Une croissance mesurable, du digital à la vente."
             tags={commercialTags}
             href="/services/commercial"
+            cta="Nos solutions de prospection B2B"
             className="md:col-span-7"
             delay={0}
           />
@@ -135,6 +136,7 @@ const ServicesPoles = () => {
             line="Créez une présence digitale qui attire, engage et convertit."
             tags={digitalTags}
             href="/services/digital"
+            cta="Notre agence digitale B2B"
             className="md:col-span-5"
             delay={120}
           />

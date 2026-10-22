@@ -8,11 +8,11 @@ const ATTRIBUTES = ["Élégance", "Cohérence", "Impact", "Intemporalité"];
 export default function BrandingHero() {
   return (
     <PageHero
-      title="Création d'Identité Visuelle & Stratégie de Marque"
+      title="Branding et identité visuelle B2B"
       breadcrumbs={[
         { label: "Services", href: "/services" },
         { label: "Digital", href: "/services/digital" },
-        { label: "Branding & identité", href: "/services/digital/branding-identite" },
+        { label: "Branding et identité visuelle", href: "/services/digital/branding-identite" },
       ]}
       intro={
         <p>

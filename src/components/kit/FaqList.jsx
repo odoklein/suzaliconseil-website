@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import Reveal from "../home/kit/Reveal";
 import SectionHead from "../home/kit/SectionHead";
+import JsonLd from "../seo/JsonLd";
+import { faqSchema } from "../../lib/structured-data";
 
 /*
  * FaqList - the homepage FAQ, reusable: a sticky heading on the left, native
@@ -20,24 +22,18 @@ export default function FaqList({
   contactLink = true,
   className = "",
 }) {
-  const schema = jsonLd && {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: items.map(({ question, answer, answerText }) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answerText ?? String(answer) },
-    })),
-  };
+  const schema =
+    jsonLd &&
+    faqSchema(
+      items.map(({ question, answer, answerText }) => ({
+        question,
+        answer: answerText ?? String(answer),
+      })),
+    );
 
   return (
     <section className={`border-t border-[#0D332B]/10 bg-[#F6F7F4] py-24 md:py-32 ${className}`}>
-      {schema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      )}
+      {schema && <JsonLd data={schema} />}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-12 lg:gap-16">
           <div className="mb-12 h-fit lg:sticky lg:top-32 lg:col-span-5 lg:mb-0">

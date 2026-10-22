@@ -8,7 +8,7 @@ const STACK = ["Next.js 14", "Python / Django", "OpenAI API", "AWS / Vercel", "n
 export default function DevHero() {
   return (
     <PageHero
-      title="Développement Web & Automatisation IA Sur-Mesure"
+      title="Développement web et automatisation IA sur mesure"
       breadcrumbs={[
         { label: "Services", href: "/services" },
         { label: "Digital", href: "/services/digital" },

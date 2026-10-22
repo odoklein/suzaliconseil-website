@@ -1,14 +1,29 @@
 import StrategieDigitaleClient from "../../../../components/services/digital/strategie/StrategieDigitaleClient";
+import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
+import { serviceSchema } from "../../../../lib/structured-data";
 
-export const metadata = createPageMetadata({
-  title: "Stratégie marketing digitale B2B | Suzali Conseil",
+const PAGE = {
+  title: "Conseil en stratégie marketing digitale B2B | Suzali Conseil",
   description:
-    "Structurez votre stratégie digitale B2B avec un audit, une feuille de route priorisée et des indicateurs clairs pour piloter votre acquisition.",
+    "Conseil en stratégie digitale B2B : audit, feuille de route priorisée et indicateurs clairs pour piloter votre acquisition. Demandez un diagnostic offert.",
   path: "/services/digital/strategie-digitale",
-  theme: "digital",
-});
+};
+
+export const metadata = createPageMetadata({ ...PAGE, theme: "digital" });
 
 export default function StrategieDigitalePage() {
-  return <StrategieDigitaleClient />;
+  return (
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Conseil en stratégie marketing digitale B2B",
+          serviceType: "Conseil en stratégie digitale",
+          description: PAGE.description,
+          path: PAGE.path,
+        })}
+      />
+      <StrategieDigitaleClient />
+    </>
+  );
 }

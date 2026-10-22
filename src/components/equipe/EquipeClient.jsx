@@ -189,7 +189,8 @@ export default function EquipeClient() {
   return (
     <main className="w-full bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Les têtes pensantes de votre croissance"
+        title="Notre équipe commerciale et digitale"
+        breadcrumbs={[{ label: "Équipe", href: "/equipe" }]}
         intro="Chaque membre de notre équipe s'engage à vous accompagner avec rigueur et efficacité, pour accélérer vos performances et sécuriser vos investissements digitaux."
         size="xl"
       />

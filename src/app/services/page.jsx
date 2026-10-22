@@ -1,11 +1,17 @@
 import { ServicesHub } from "../../components/services/ServicesHub";
-import { createPageMetadata } from "../../lib/seo";
+import JsonLd from "../../components/seo/JsonLd";
+import { createPageMetadata, SITE_URL } from "../../lib/seo";
+import { serviceSchema } from "../../lib/structured-data";
+
+const PAGE = {
+  title: "Services B2B : prospection et digital | Suzali Conseil",
+  description:
+    "Prospection B2B, prise de rendez-vous, génération de leads, sites web, SEO et automatisation, pilotés par une seule équipe. Planifiez un appel de cadrage.",
+  path: "/services",
+};
 
 export const metadata = createPageMetadata({
-  title: "Services de croissance B2B en France | Suzali Conseil",
-  description:
-    "Prospection B2B, prise de rendez-vous, stratégie digitale, sites web, SEO, branding et automatisation réunis dans un accompagnement pilotable.",
-  path: "/services",
+  ...PAGE,
   keywords: [
     "services croissance B2B",
     "prospection commerciale externalisée",
@@ -17,78 +23,36 @@ export const metadata = createPageMetadata({
   ],
 });
 
+// Le FAQPage est émis par la FAQ affichée (ServicesHub > FaqList).
 const servicesSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Service",
-      name: "Services de croissance B2B",
-      provider: {
-        "@type": "Organization",
-        name: "Suzali Conseil",
-        url: "https://suzaliconseil.com",
-      },
-      areaServed: {
-        "@type": "Country",
-        name: "France",
-      },
-      url: "https://suzaliconseil.com/services",
-      hasOfferCatalog: {
+  ...serviceSchema({
+    name: "Services de prospection commerciale et digitale B2B",
+    serviceType: "Prospection commerciale et marketing digital B2B",
+    description: PAGE.description,
+    path: PAGE.path,
+  }),
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Expertises commerciales et digitales",
+    itemListElement: [
+      {
         "@type": "OfferCatalog",
-        name: "Expertises commerciales et digitales",
-        itemListElement: [
-          {
-            "@type": "OfferCatalog",
-            name: "Performance commerciale",
-            url: "https://suzaliconseil.com/services/commercial",
-          },
-          {
-            "@type": "OfferCatalog",
-            name: "Stratégie digitale",
-            url: "https://suzaliconseil.com/services/digital",
-          },
-        ],
+        name: "Prospection commerciale B2B",
+        url: `${SITE_URL}/services/commercial`,
       },
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Par quel service commencer si le besoin touche plusieurs sujets ?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Un échange de cadrage permet de réunir les expertises commerciales et digitales autour d'un même plan d'action.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Suzali Conseil peut-il prendre en charge l'exécution ?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Oui. Suzali Conseil peut opérer la prospection externalisée, renforcer la force de vente ou livrer un dispositif digital complet.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Suzali Conseil intervient-il sur des missions ponctuelles ?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Oui. Un audit, une landing page, un fichier qualifié, une campagne ou une automatisation peuvent être engagés séparément.",
-          },
-        },
-      ],
-    },
-  ],
+      {
+        "@type": "OfferCatalog",
+        name: "Agence digitale B2B",
+        url: `${SITE_URL}/services/digital`,
+      },
+    ],
+  },
 };
 
 export default function ServicesPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
-      />
+      <JsonLd data={servicesSchema} />
       <ServicesHub />
     </>
   );

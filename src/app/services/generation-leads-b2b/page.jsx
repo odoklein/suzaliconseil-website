@@ -1,12 +1,29 @@
 import LeadGenClient from "../../../components/services/lead-gen/LeadGenClient";
+import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
+import { serviceSchema } from "../../../lib/structured-data";
 
-export const metadata = createPageMetadata({
+const PAGE = {
   title: "Agence de génération de leads B2B | Suzali Conseil",
-  description: "Identifiez et qualifiez les bons prospects B2B grâce à une prospection multicanale pilotée par vos objectifs, votre marché et votre cycle de vente.",
+  description:
+    "Agence de génération de leads B2B : ciblage ICP, prospection multicanale et qualification BANT pour alimenter vos commerciaux. Demandez un audit gratuit.",
   path: "/services/generation-leads-b2b",
-});
+};
+
+export const metadata = createPageMetadata(PAGE);
 
 export default function GenerationLeadsB2BPage() {
-  return <LeadGenClient />;
+  return (
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Agence de génération de leads B2B qualifiés",
+          serviceType: "Génération de leads B2B",
+          description: PAGE.description,
+          path: PAGE.path,
+        })}
+      />
+      <LeadGenClient />
+    </>
+  );
 }

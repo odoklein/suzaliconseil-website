@@ -326,7 +326,8 @@ export default function CarriersClient() {
   return (
     <div className="w-full bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
-        title="Rejoignez notre équipe"
+        title="Carrières : rejoignez l'équipe Suzali Conseil"
+        breadcrumbs={[{ label: "Carrières", href: "/carriers" }]}
         intro="Nous recrutons des profils passionnés par la croissance B2B, la stratégie commerciale et le digital. Vous avez l'envie de construire avec nous ?"
         actions={
           <MagneticButton

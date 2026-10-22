@@ -1,14 +1,29 @@
 import DeveloppementAutoClient from "../../../../components/services/digital/developpement-auto/DeveloppementAutoClient";
+import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
+import { serviceSchema } from "../../../../lib/structured-data";
 
-export const metadata = createPageMetadata({
+const PAGE = {
   title: "Développement et automatisation IA | Suzali Conseil",
   description:
-    "Développez vos outils métier, intégrations et automatisations IA pour fiabiliser vos processus, gagner du temps et soutenir votre croissance.",
+    "Développement web et automatisation IA sur mesure : outils métier, intégrations CRM et workflows qui fiabilisent vos processus. Parlons de votre projet.",
   path: "/services/digital/developpement-automatisation",
-  theme: "digital",
-});
+};
+
+export const metadata = createPageMetadata({ ...PAGE, theme: "digital" });
 
 export default function DeveloppementAutomatisationPage() {
-  return <DeveloppementAutoClient />;
+  return (
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Développement web et automatisation IA sur mesure",
+          serviceType: "Développement et automatisation",
+          description: PAGE.description,
+          path: PAGE.path,
+        })}
+      />
+      <DeveloppementAutoClient />
+    </>
+  );
 }

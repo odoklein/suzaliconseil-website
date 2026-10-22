@@ -69,3 +69,96 @@ Manual actions still open: slug migration (backup, test on the `slug-test` copy,
 1. Follow `docs/slug-migration-runbook.md`: back up, test on a copy, then run on production.
 2. **Commit `src/data/slug-redirects.json` and redeploy**, otherwise the old URLs 404 until the next deploy.
 3. Search Console: request indexing for the new article URLs.
+## B7 + B8: On-page SEO and structured data (2026-10-16), branch `seo/B7-B8-onpage`
+
+No URL changed, so no new redirects. All visible text is in French.
+
+### Titles, descriptions, H1 (24 indexable pages)
+
+Every page now has a unique `<title>` of 50 to 60 characters (keyword first, ending `| Suzali Conseil`), a unique description of 140 to 155 characters that ends on a call to action, and exactly one H1 containing the main keyword, in sentence case (the Title Case keyword strings are gone). Keywords follow the Phase 4 table, so each service page already targets its intent.
+
+| Page | New H1 | Title (chars) |
+|---|---|---:|
+| `/` | Agence de prospection B2B en France (was « Génération de leads B2B en France », which competed with the lead-gen page) | 52 |
+| `/services` | Services B2B : prospection commerciale et digital | 54 |
+| `/services/commercial` | Solutions de prospection commerciale B2B | 54 |
+| `/services/outbound-marketing-b2b` | Agence outbound B2B : des rendez-vous avec vos décideurs | 60 |
+| `/services/generation-leads-b2b` | Agence de génération de leads B2B qualifiés | 50 |
+| `/services/teleprospection-b2b` | Agence de téléprospection B2B en France | 56 |
+| `/services/prise-rendez-vous-b2b` | Prise de rendez-vous B2B qualifiés | 51 |
+| `/services/vente-marque-blanche` | Force de vente externalisée en marque blanche | 58 |
+| `/services/digital` | Agence digitale B2B pour soutenir votre croissance | 53 |
+| `/services/digital/seo-acquisition` | Agence d'acquisition digitale B2B : SEO et Google Ads | 57 |
+| `/services/digital/strategie-digitale` | Conseil en stratégie marketing digitale B2B | 60 |
+| `/services/digital/sites-web-ecommerce` | Création de sites web et e-commerce B2B | 56 |
+| `/services/digital/branding-identite` | Branding et identité visuelle B2B | 50 |
+| `/services/digital/developpement-automatisation` | Développement web et automatisation IA sur mesure | 51 |
+| `/offres` | Nos offres et tarifs de prospection B2B | 54 |
+| `/etudes-de-cas` | Études de cas : nos missions B2B, du défi au livrable | 55 |
+| `/equipe` | Notre équipe commerciale et digitale | 53 |
+| `/actualites` | Guides et actualités de la prospection B2B | 56 |
+| `/contact` | Contactez notre agence de prospection B2B | 50 |
+| `/carriers` | Carrières : rejoignez l'équipe Suzali Conseil | 52 |
+
+Unchanged H1: prospection externalisée, fichier, qualification, campagnes (already correct). Prices quoted in descriptions are read from `offers-catalog.js`, never typed by hand.
+
+### Structured data (all in the server HTML)
+
+| File | Change |
+|---|---|
+| `src/lib/structured-data.js` (new) | One place for `Organization`, `WebSite`, `ProfessionalService`, `Service`, `FAQPage`, `BreadcrumbList`, `BlogPosting`. Services and articles point to the organisation by `@id` |
+| `src/components/seo/JsonLd.jsx` (new) | Plain `<script type="application/ld+json">`, escapes `<` |
+| `src/app/layout.jsx` | `Organization` now carries email, address (registered office), founder, founding year, LinkedIn: all data already published on the site |
+| `src/app/page.jsx` | Home adds `ProfessionalService` |
+| 12 service `page.jsx` files | `Service` added where missing (commercial, lead-gen, téléprospection, prise de RDV, outbound, marque blanche, digital + 5 children). `FAQPage` only where the FAQ is visible |
+| `src/app/services/page.jsx`, `ServicesHub.jsx` | The `FAQPage` described 3 questions worded differently from the 5 shown on the page; it now comes from the visible FAQ |
+| `src/app/actualites/[slug]/page.jsx` | `BlogPosting`: adds `publisher`, author `@id`/`url`, ISO dates, `inLanguage`, `url`, headline capped at 110 characters; word count from text without tags |
+| `src/components/kit/PageHero.jsx`, `FaqList.jsx`, `home/Faq.jsx`, `TransactionalServicePage.jsx`, `ProspectionExternaliseePage.jsx` | Use the shared builders |
+| `src/components/ui/Breadcrumbs.jsx` | Deleted: unused, and it emitted JSON-LD through JavaScript only |
+
+### Other fixes
+
+- **Breadcrumbs:** visible trail + `BreadcrumbList` on every page except the home (11 pages had none). The `/services/commercial` crumb now reads « Prospection commerciale » everywhere.
+- **Root layout:** removed the inherited `canonical: "/"`, which made the 404 page (and any page that forgets its own) canonicalise to the home. Default title and OG updated; the unverified `@suzaliconseil` Twitter handle is no longer emitted.
+- **`robots.txt`:** `Allow: /api/og`. The OG images live there, and `/api/` was blocked, so LinkedIn and X (which obey robots.txt) could show previews without an image.
+- **Images:** hero images get `fetchpriority="high"` (Next 16 no longer adds it with `priority`); 5 hero images with an empty `alt` got a French description; a below-the-fold image on `/etudes-de-cas` was loaded eagerly and is now lazy.
+- **Link text:** « En savoir plus » (home pricing) and « Voir le détail du service » (`/offres`) now show the target service name; « Découvrir le service » (home) is now « Nos solutions de prospection B2B » / « Notre agence digitale B2B »; a home FAQ link labelled « Outbound marketing B2B » actually pointed to prospection externalisée and is relabelled.
+
+### Verified (local production build, `next start`)
+
+- `next build` passes; lint clean on changed files (one pre-existing error in `AgendaField.jsx`, not touched).
+- Crawl of the 24 sitemap pages: 200, `lang="fr"`, unique titles 50–60, unique descriptions 140–155, exactly one H1, self-referencing canonical, OG + Twitter with a 1200×630 image, visible breadcrumb on every non-home page, no heading-level skips, no generic link text, no image without `alt` (the only empty `alt` values are the hidden duplicate copies of the scrolling logo bands).
+- JSON-LD check: every block parses, required fields present, `@id` references resolve on the page, every `FAQPage` question is visible on the page, no duplicate `FAQPage`/`BreadcrumbList`.
+- 404: real 404 status, `noindex`, no canonical.
+- **Not verifiable here:** article pages (need the database; the `BlogPosting` builder was tested with a sample post) and **Lighthouse**: no local Lighthouse, and the PageSpeed Insights API refused the request (quota). Fonts were already `next/font` with `display: swap` + preload; production images are served as AVIF by the optimizer (checked: a 7 MB PNG comes out at 28 KB).
+
+### Prices (decision of 2026-10-22: the hook « 150 € par RDV » stays on three pages)
+
+The catalogue (`src/lib/offers-catalog.js`, the source of `/offres`) has two offers with a per-appointment price: **Growth Standard** (1 590 € par mois + 150 € par RDV validé et honoré) and **Vente au Rendez-Vous** (599 € de mise en place + 55 € par RDV). There is no standalone « 150 € par RDV » offer in the catalogue: the 150 € is the variable part of Growth Standard.
+
+**Decision (manager):** the home page, `/services/prise-rendez-vous-b2b` and `/services/teleprospection-b2b` keep the commercial hook « 150 € par RDV » **exactly as it is on `main`**. This branch does not change the visible text of those three pages (checked: the price lines are identical to `main`).
+
+Rule that follows: **a JSON-LD `Offer` is only emitted on a page whose visible text writes exactly those amounts.** Those three pages therefore have **no `Offer`** (a 1 590 € or 599 € Offer would not match their visible text).
+
+| Where | What |
+|---|---|
+| `src/lib/offer-terms.js`, `src/lib/offer-schemas.js` (new) | The two offers read from the catalogue; one JSON-LD `Offer` per offer with its own `priceSpecification` |
+| `/services/prospection-commerciale-externalisee` | Hero price line prefixed « Offre Growth Standard : … »; JSON-LD has the two `Offer`s (Growth Standard, Vente au Rendez-Vous). The page shows both offers as two separate cards, so all six JSON-LD amounts (1 590, 150, 599, 55) are written on it |
+| `/offres` (`PricingFaq.jsx`) | The billing FAQ no longer lists « 55 € ou 150 € par rendez-vous » together; each amount stays on its offer's card |
+| Home, prise de RDV, téléprospection | Unchanged price text; no `Offer` |
+
+Checked on the local build (script over the 24 sitemap pages): the only page with a priced JSON-LD node is the externalisée page, and every price in it (including prices quoted in `Offer` descriptions) is written in its visible text.
+### Address
+
+`10 rue de la Paix, 75002 Paris` (confirmed: footer, contact page and legal notice all say this; `structured-data.js` already used it). No change needed.
+
+### TODO SUZALI (real data needed)
+
+1. `ProfessionalService`: opening hours and price range: **left empty on purpose** (Odo's instruction).
+2. Articles are signed by the organisation: named author **left empty on purpose**.
+3. **To confirm (informational):** the prise-de-RDV page (offer Vente au Rendez-Vous per the catalogue) still says « une absence n'est pas facturée » and « 150 € par RDV honoré », which are Growth Standard terms. Left as is by the manager's decision; if that page is ever aligned with the catalogue, check the no-show rule for Vente au Rendez-Vous first.
+4. The « 150 € par RDV » hook shown alone on three pages omits Growth Standard's 1 590 € par mois; kept on purpose (decision above). If a standalone offer exists, its exact conditions should be added to the catalogue.
+
+### To do by hand
+1. After deploy, run PageSpeed Insights (mobile) on `/` and one service page, and note the scores for the Phase 8 report.
+2. Rich Results Test on `/`, `/services/prospection-commerciale-externalisee` and one article.
