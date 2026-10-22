@@ -126,3 +126,10 @@ export const contentGeneratorSettings = pgTable("content_generator_settings", {
   lastRunAt: timestamp("last_run_at"),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+// 10. Journal des essais de génération d'articles (plafond : 3 par 24 h, rejets compris).
+// Voir src/lib/article-attempts.js. Le dernier essai (« lastAttemptAt ») est le plus récent attemptedAt.
+export const articleGenerationAttempts = pgTable("article_generation_attempts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  attemptedAt: timestamp("attempted_at").notNull().defaultNow(),
+});

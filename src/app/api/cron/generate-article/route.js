@@ -6,6 +6,8 @@ import { generateArticle, pickNextTarget } from "../../../../lib/ai-writer.js";
 import { notifyArticlePublished } from "../../../../lib/indexnow.js";
 import { uniquePostSlug } from "../../../../lib/post-slug-db.js";
 import { checkCadence } from "../../../../lib/article-cadence.js";
+import { beginAttempt, MAX_ATTEMPTS_PER_DAY } from "../../../../lib/article-attempts.js";
+import { dbAttemptStore } from "../../../../lib/article-attempts-db.js";
 
 /** Vercel Cron envoie Authorization: Bearer <CRON_SECRET> */
 function isAuthorized(request) {
@@ -78,6 +80,21 @@ async function handleCron(request) {
       });
     }
 
+    // Plafond d'essais : 3 par 24 h, REJETS COMPRIS. L'essai est enregistré AVANT d'appeler
+    // Mistral, donc un rejet ou un plantage compte aussi (sinon un planificateur qui rappelle
+    // la route en boucle ferait des appels Mistral sans fin : un rejet ne met pas lastRunAt à jour).
+    const attempt = await beginAttempt(dbAttemptStore);
+    if (!attempt.allowed) {
+      return NextResponse.json({
+        ok: true,
+        skipped: true,
+        reason: `Plafond : ${MAX_ATTEMPTS_PER_DAY} essais de génération par 24 h (rejets compris).`,
+        attemptsInWindow: attempt.attemptsInWindow,
+        lastAttemptAt: attempt.lastAttemptAt,
+        nextAllowedAt: attempt.nextAllowedAt,
+      });
+    }
+
     const article = await generateArticle({ tone, recentTitles, target });
 
     const now = new Date();
@@ -120,6 +137,8 @@ async function handleCron(request) {
       published: autoPublish,
       title: post.title,
       targetKeyword: post.targetKeyword,
+      lastAttemptAt: attempt.lastAttemptAt,
+      attemptsInWindow: attempt.attemptsInWindow,
     });
   } catch (err) {
     console.error("Cron generate-article error:", err);
