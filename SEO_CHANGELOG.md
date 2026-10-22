@@ -71,6 +71,25 @@ Manual actions still open: slug migration (backup, test on the `slug-test` copy,
 3. Search Console: request indexing for the new article URLs.
 ## B7 + B8: On-page SEO and structured data (2026-10-16), branch `seo/B7-B8-onpage`
 
+### Live
+
+Merged 2026-10-22 16:10, PR #4 (`a5192fd`); **live on production at about 16:47** (about 37 minutes after the merge: Dokploy builds on every merge to `main`, so wait for the build before checking production). Checked on https://suzaliconseil.com the same day:
+
+| Check | Result |
+|---|---|
+| 24 static pages in the sitemap | all 200, `lang="fr"`, exactly 1 H1, self-referencing canonical, valid JSON-LD, unique title and description |
+| 13 article pages (database-backed) | all have `BlogPosting` + `BreadcrumbList` + `publisher`, self canonical, 1 H1 |
+| Home, `/services/prise-rendez-vous-b2b`, `/services/teleprospection-b2b` | still show « 150 € », **no JSON-LD `Offer`** (manager decision) |
+| `/services/prospection-commerciale-externalisee` | hero says « Offre Growth Standard », 2 `Offer`s in JSON-LD; every JSON-LD price (1 590, 150, 599, 55) is written on the page |
+| JSON-LD prices vs visible text, all 24 pages | the only priced JSON-LD is on the externalisée page and matches its text |
+| `/sitemap.xml` | 37 URLs (unchanged) |
+| `/robots.txt` | `Allow: /api/og`, `/api/` still blocked |
+| 404 | real 404, `noindex`, no canonical to the home page |
+| Redirects | `/category/foo` → `/actualites`, `/author/x` → `/equipe`, `/feed` → `/actualites`, `/blog/x` → `/actualites/x` (308) |
+| `/api/og?title=Test` | 200 |
+
+Still open for the team: run PageSpeed Insights (mobile) on `/` and one service page, and the Rich Results Test on `/`, `/services/prospection-commerciale-externalisee` and one article.
+
 No URL changed, so no new redirects. All visible text is in French.
 
 ### Titles, descriptions, H1 (24 indexable pages)
@@ -201,6 +220,8 @@ extAllowedAt; 200 more calls in the same minute record nothing; the window rolls
 - **Not testable here:** the cron route itself (needs the database and Mistral).
 
 ### Things to know
+
+- **Before calling `?dryRun=1` in production, check that T2 is the deployed version:** `curl.exe -I https://suzaliconseil.com/api/cron/generate-article` must show `x-cron-features: dry-run,attempt-cap,figure-guard` (the header is sent even on the 401, so no secret is needed). An older deployed version does not know `dryRun` and would ignore it and do a **real** generation. The header is absent until T2 is live.
 
 - The new keywords are **not validated in Search Console** (the old ones were, but they were the service pages' own searches). Replace or add real ones in `src/lib/ai-writer.js` as data comes in.
 - The admin setting « fréquence par semaine » is still displayed and saved, but it is not what limits publishing (the cap above is). A manual « Générer » in the admin is not limited, but it updates `lastRunAt`, so it uses up that week's automatic article.
