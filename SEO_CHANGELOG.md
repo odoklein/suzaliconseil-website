@@ -6,12 +6,36 @@
 - Correction (2026-10-22): the first audit reported a possible `www` redirect loop. It was a faulty test. `www` to non-`www` is a single 301 that keeps path and query.
 - Done by hand earlier (outside the plan): Google Search Console verification file `public/google2f092a151e9f95b5.html`, live on production.
 
+**Merged:** 2026-10-22, PR #1 (`c51554e`), docs only. Nothing to check on production.
+
 **Left for the team to do by hand**
 - Optional: pin the Cloudflare `www` to non-`www` redirect rule so it doesn't depend on an unseen setting (exact rule in the B1 report).
 
 ## B2: Stable article slugs + redirects (2026-10-16), branch `seo/B2-slugs`
 
 Decisions applied: keep the existing `/services/...` URLs (no flat URLs, no service-page moves); slug rewrite on existing articles **prepared but NOT run** (needs a separate OK, see `docs/slug-migration-runbook.md`).
+
+### Live
+
+Merged 2026-10-22, PR #2 (`f17232e`); deployed by Dokploy (merge to `main` auto-deploys, a build takes about 25 minutes, so wait for it before checking production). **The slug migration of existing articles has NOT been run**, so existing article URLs still carry their suffix.
+
+Production checks (`curl -I https://suzaliconseil.com/...`, 2026-10-22, after the deploy):
+
+| URL | Result |
+|---|---|
+| `/category/foo`, `/tag/foo` | `308` to `/actualites` |
+| `/category/a/b?x=1` | `308` to `/actualites?x=1` (query kept) |
+| `/author/admin` | `308` to `/equipe` |
+| `/feed`, `/feed/atom` | `308` to `/actualites` |
+| `/blog/test-article` | `308` to `/actualites/test-article` (unchanged) |
+| `/this-page-does-not-exist` | `404` |
+| `/actualites/prospection-commerciale-externalisee-guide-complet-2024-mug26uk3` | `200` (still the live slug, migration not run) |
+| `/robots.txt`, `/google2f092a151e9f95b5.html` | `200` |
+| `/sitemap.xml` | `200`, 37 URLs, unchanged |
+
+(Next.js sends permanent redirects as 308; Google treats them like 301.) Not verifiable on production until the migration runs: the old-slug safety net (needs an article renamed in the database).
+
+Manual actions still open: slug migration (backup, test on the `slug-test` copy, separate OK); Search Console: request indexing once the migration is done.
 
 ### Changed
 

@@ -134,11 +134,11 @@ de l'équipe marketing : **dès qu'une est débloquée, elle passe avant la pist
 Tu peux les enchaîner sans attendre de données de l'équipe. Le détail de chaque point est
 dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en ligne**.
 
-- [ ] **B1 — Audit du repo** (lecture seule) → `SEO_AUDIT.md` : framework, mode de rendu, hébergement,
+- [x] **B1 — Audit du repo** (lecture seule) → `SEO_AUDIT.md` : framework, mode de rendu, hébergement,
   commande de build, **comment se fait le déploiement**, routes, origine du suffixe `-mug26uk3`,
   sources d'URL en double ou infinies (paramètres, pagination, slash final, www, majuscules…).
   *Pas de mise en ligne : juste me présenter l'audit.*
-- [ ] **B2 — Slugs stables** pour `/actualites/` (sans suffixe aléatoire ni année) + **301** de chaque ancienne URL.
+- [x] **B2 — Slugs stables** pour `/actualites/` (sans suffixe aléatoire ni année) + **301** de chaque ancienne URL. *(Code en ligne le 22/10/2026 ; la migration des slugs des articles existants reste à faire, sur OK séparé.)*
   Me montrer la table complète des redirections avant le OK.
 - [ ] **B3 — Canonical absolue auto-référente** sur toutes les pages + une seule politique de slash final
   + 301 pour www / http / slash.
