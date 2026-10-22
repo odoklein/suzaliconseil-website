@@ -1,6 +1,7 @@
 import { Mistral } from "@mistralai/mistralai";
 import { SERVICES } from "./article-services.js";
 import { slugFromTitle } from "./post-slug.js";
+import { findUnsourcedFigures, describeFigures } from "./article-figures.js";
 
 /*
  * POLITIQUE DE CIBLAGE (tâche T2, 22/10/2026)
@@ -146,6 +147,54 @@ export function pickNextTarget(usedKeywords = new Set()) {
 }
 
 /**
+ * Construit le prompt de génération. Exportée pour être testée : les règles sur les
+ * chiffres (ci-dessous) ne doivent pas pouvoir disparaître sans qu'un test le signale.
+ */
+export function buildArticlePrompt({ target, tone = "expert", recentTitles = "" }) {
+  const linkInstructions = target.targetService
+    ? `- Lien interne PRINCIPAL obligatoire, à poser naturellement dans le corps du texte (pas seulement en conclusion) : <a href="${target.targetService.href}">${target.targetService.label}</a>${
+        target.secondaryService
+          ? `\n- Lien interne SECONDAIRE, à poser ailleurs dans le texte : <a href="${target.secondaryService.href}">${target.secondaryService.label}</a>`
+          : ""
+      }\n- N'invente PAS d'autres URLs internes que celles fournies ci-dessus.`
+    : `- Liens internes SEO : inclus au moins 2 liens internes en HTML vers nos pages de services parmi :
+  * Prospection / leads : <a href="/services/commercial">, <a href="/services/generation-leads-b2b">, <a href="/services/teleprospection-b2b">
+  * Digital : <a href="/services/digital">, <a href="/services/digital/seo-acquisition">, <a href="/services/digital/sites-web-ecommerce">`;
+
+  const angleInstruction = target.angle
+    ? `\nAngle éditorial imposé : ${target.angle}`
+    : "";
+
+  return `Tu es un rédacteur senior SEO pour Suzali Conseil, agence B2B française (génération de leads, prospection commerciale, digital). Tu écris comme un expert qui a réellement mené ces missions : affirmations concrètes, exemples précis plutôt que généralités, sans aucun chiffre inventé. Jamais de ton robotique ni de tournures creuses.
+
+Génère UN article de blog optimisé pour le mot-clé principal suivant (dans le titre, l'accroche, et naturellement 3-5 fois dans le texte, jamais en sur-optimisation forcée) :
+**Mot-clé principal à cibler :** "${target.keyword}"${angleInstruction}
+
+Contraintes :
+- Langue : français. Ton : ${tone}.
+- Public : décideurs et responsables marketing/commercial/digital en B2B en France.
+- Longueur : 1600 à 2200 mots de contenu rédactionnel (hors titre/extrait) — un article de référence, pas un article de blog superficiel.
+- Structure : introduction qui pose un problème concret (pas "dans un monde où..."), 4 à 6 sections avec sous-titres H2 (et H3 si une section a des sous-parties), au moins une liste à puces ou un tableau HTML (<table>) si le sujet s'y prête (comparatif, critères, étapes), conclusion avec CTA vers une prise de contact.
+- CHIFFRES (règle stricte) : tu n'as accès à aucune source, donc tout chiffre que tu avancerais serait inventé. N'écris AUCUN chiffre qui présente un fait, un résultat ou un ordre de grandeur : pas de pourcentage, pas de montant ni de fourchette de prix, pas de délai moyen ou de durée « typique », pas de « x fois plus », pas de statistique, pas de « selon une étude » ou « d'après un rapport », pas d'exemple client chiffré, pas de taux de réussite. Quand un ordre de grandeur serait tentant, écris en termes qualitatifs (« souvent », « nettement plus long », « une part importante des échanges ») ou explique comment le lecteur calcule sa propre valeur (la méthode ou la formule, sans valeurs inventées). Seuls les nombres qui comptent ou numérotent des éléments de ton propre texte sont autorisés (« 3 modèles », « étape 2 », « 5 questions »), ainsi que ceux donnés dans ce prompt.
+${linkInstructions}
+- Originalité : ne rédige PAS sur ces sujets déjà traités : ${String(recentTitles || "").substring(0, 500)}
+- E-E-A-T : montre une expérience terrain sans la chiffrer (ex. "sur les missions que nous menons...", "en pratique, ce point est souvent sous-estimé..."), pas de discours marketing vide.
+- Interdictions strictes : pas de <h1>. Pas de "dans cet article", "en conclusion", "il est important de noter que", "dans le monde d'aujourd'hui". N'écris AUCUNE année (2023, 2024, 2025...) dans le titre, le seoTitle ou l'excerpt : un article daté devient obsolète et faux dès l'année suivante. Si une date est indispensable dans le corps du texte, reste vague ("actuellement", "ces dernières années") plutôt qu'une année en dur.
+- FAQ : génère 4 à 5 questions/réponses courtes et concrètes, au format "People Also Ask" (questions que taperait réellement un utilisateur Google), réponses de 2-4 phrases chacune, sans redite du corps de l'article, et sans chiffre (même règle que ci-dessus).
+- Réponds UNIQUEMENT avec un JSON valide, sans markdown ni \`\`\`, avec exactement les clés suivantes :
+
+{
+  "title": "Titre de l'article (60 caractères max, contient le mot-clé, proche du début)",
+  "seoTitle": "Titre SEO distinct et naturel (42 caractères maximum avant la marque)",
+  "seoDescription": "Meta description unique, orientée clic, avec un verbe d'action (130 à 155 caractères)",
+  "excerpt": "Accroche éditoriale visible de l'article, indépendante de la meta description",
+  "content": "Contenu en HTML valide (paragraphes <p>, sous-titres <h2>/<h3>, listes <ul>/<li>, <table> si pertinent). Pas de <h1>.",
+  "metaKeywords": "mot-clé principal, 3 à 5 mots-clés secondaires séparés par des virgules",
+  "faq": [{"question": "...", "answer": "..."}],
+  "topic": "commercial ou digital selon le sujet. Une seule valeur."
+}`;
+}
+/**
  * Génère un article d'actualité optimisé SEO via Mistral.
  * @param {{ tone?: string, target?: object, usedKeywords?: Set<string> }} options
  *   - target : cible explicite (voir PRIORITY_TARGETS) ; sinon choisie via pickNextTarget(usedKeywords)
@@ -169,75 +218,54 @@ export async function generateArticle(options = {}) {
 
   const client = new Mistral({ apiKey });
 
-  const linkInstructions = target.targetService
-    ? `- Lien interne PRINCIPAL obligatoire, à poser naturellement dans le corps du texte (pas seulement en conclusion) : <a href="${target.targetService.href}">${target.targetService.label}</a>${
-        target.secondaryService
-          ? `\n- Lien interne SECONDAIRE, à poser ailleurs dans le texte : <a href="${target.secondaryService.href}">${target.secondaryService.label}</a>`
-          : ""
-      }\n- N'invente PAS d'autres URLs internes que celles fournies ci-dessus.`
-    : `- Liens internes SEO : inclus au moins 2 liens internes en HTML vers nos pages de services parmi :
-  * Prospection / leads : <a href="/services/commercial">, <a href="/services/generation-leads-b2b">, <a href="/services/teleprospection-b2b">
-  * Digital : <a href="/services/digital">, <a href="/services/digital/seo-acquisition">, <a href="/services/digital/sites-web-ecommerce">`;
+  const basePrompt = buildArticlePrompt({ target, tone, recentTitles: options.recentTitles });
 
-  const angleInstruction = target.angle
-    ? `\nAngle éditorial imposé : ${target.angle}`
-    : "";
+  // Appelle le modèle et renvoie l'article brut (JSON analysé).
+  const callModel = async (prompt) => {
+    let response;
+    try {
+      response = await client.chat.complete({
+        model: modelName,
+        temperature: 0.85,
+        responseFormat: { type: "json_object" },
+        messages: [{ role: "user", content: prompt }],
+      });
+    } catch (error) {
+      console.error("Mistral chat.complete failed:", {
+        apiKeyLength: apiKey.length,
+        modelName,
+        errorMsg: error?.message,
+      });
+      throw error;
+    }
 
-  const prompt = `Tu es un rédacteur senior SEO pour Suzali Conseil, agence B2B française (génération de leads, prospection commerciale, digital). Tu écris comme un expert qui a réellement mené ces missions : affirmations concrètes, chiffres ou fourchettes plausibles, exemples précis plutôt que généralités. Jamais de ton robotique ni de tournures creuses.
+    const rawContent = response?.choices?.[0]?.message?.content;
+    if (!rawContent) {
+      throw new Error("Mistral returned no content");
+    }
 
-Génère UN article de blog optimisé pour le mot-clé principal suivant (dans le titre, l'accroche, et naturellement 3-5 fois dans le texte, jamais en sur-optimisation forcée) :
-**Mot-clé principal à cibler :** "${target.keyword}"${angleInstruction}
+    let raw = typeof rawContent === "string" ? rawContent.trim() : String(rawContent);
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (jsonMatch) raw = jsonMatch[0];
+    return JSON.parse(raw);
+  };
 
-Contraintes :
-- Langue : français. Ton : ${tone}.
-- Public : décideurs et responsables marketing/commercial/digital en B2B en France.
-- Longueur : 1600 à 2200 mots de contenu rédactionnel (hors titre/extrait) — un article de référence, pas un article de blog superficiel.
-- Structure : introduction qui pose un problème concret (pas "dans un monde où..."), 4 à 6 sections avec sous-titres H2 (et H3 si une section a des sous-parties), au moins une liste à puces ou un tableau HTML (<table>) si le sujet s'y prête (comparatif, critères, étapes), conclusion avec CTA vers une prise de contact.
-${linkInstructions}
-- Originalité : ne rédige PAS sur ces sujets déjà traités : ${(options.recentTitles || "").substring(0, 500)}
-- E-E-A-T : montre une expérience terrain (ex. "sur les missions que nous menons...", "en pratique, la plupart des entreprises sous-estiment..."), pas de discours marketing vide.
-- Interdictions strictes : pas de <h1>. Pas de "dans cet article", "en conclusion", "il est important de noter que", "dans le monde d'aujourd'hui". N'écris AUCUNE année (2023, 2024, 2025...) dans le titre, le seoTitle ou l'excerpt : un article daté devient obsolète et faux dès l'année suivante. Si une date est indispensable dans le corps du texte, reste vague ("actuellement", "ces dernières années") plutôt qu'une année en dur.
-- FAQ : génère 4 à 5 questions/réponses courtes et concrètes, au format "People Also Ask" (questions que taperait réellement un utilisateur Google), réponses de 2-4 phrases chacune, sans redite du corps de l'article.
-- Réponds UNIQUEMENT avec un JSON valide, sans markdown ni \`\`\`, avec exactement les clés suivantes :
-
-{
-  "title": "Titre de l'article (60 caractères max, contient le mot-clé, proche du début)",
-  "seoTitle": "Titre SEO distinct et naturel (42 caractères maximum avant la marque)",
-  "seoDescription": "Meta description unique, orientée clic, avec un verbe d'action (130 à 155 caractères)",
-  "excerpt": "Accroche éditoriale visible de l'article, indépendante de la meta description",
-  "content": "Contenu en HTML valide (paragraphes <p>, sous-titres <h2>/<h3>, listes <ul>/<li>, <table> si pertinent). Pas de <h1>.",
-  "metaKeywords": "mot-clé principal, 3 à 5 mots-clés secondaires séparés par des virgules",
-  "faq": [{"question": "...", "answer": "..."}],
-  "topic": "commercial ou digital selon le sujet. Une seule valeur."
-}`;
-
-  let response;
-  try {
-    response = await client.chat.complete({
-      model: modelName,
-      temperature: 0.85,
-      responseFormat: { type: "json_object" },
-      messages: [{ role: "user", content: prompt }],
-    });
-  } catch (error) {
-    console.error("Mistral chat.complete failed:", {
-      apiKeyLength: apiKey.length,
-      modelName,
-      errorMsg: error?.message,
-    });
-    throw error;
+  // Garde-fou « aucun chiffre non sourcé » : le prompt l'interdit, mais un prompt n'est
+  // pas une garantie et l'article est publié automatiquement. Un seul nouvel essai avec
+  // les chiffres fautifs cités ; si le second jet en contient encore, on REJETTE l'article
+  // (rien n'est publié, rien n'est enregistré) plutôt que de publier un chiffre inventé.
+  let data = await callModel(basePrompt);
+  let figures = findUnsourcedFigures(data);
+  if (figures.length > 0) {
+    console.warn(`ai-writer: chiffres non sourcés détectés, nouvel essai : ${describeFigures(figures)}`);
+    data = await callModel(
+      `${basePrompt}\n\nCORRECTION OBLIGATOIRE : ta version précédente contenait des chiffres non sourcés : ${describeFigures(figures)}. Réécris l'article COMPLET sans aucun chiffre de ce type (ni pourcentage, ni montant, ni « x fois », ni « selon une étude ») : formule ces points de façon qualitative.`,
+    );
+    figures = findUnsourcedFigures(data);
+    if (figures.length > 0) {
+      throw new Error(`Article rejeté : chiffres non sourcés après un nouvel essai (${describeFigures(figures)}).`);
+    }
   }
-
-  const rawContent = response?.choices?.[0]?.message?.content;
-  if (!rawContent) {
-    throw new Error("Mistral returned no content");
-  }
-
-  let raw = typeof rawContent === "string" ? rawContent.trim() : String(rawContent);
-  const jsonMatch = raw.match(/\{[\s\S]*\}/);
-  if (jsonMatch) raw = jsonMatch[0];
-  const data = JSON.parse(raw);
-
   // Filet de sécurité : même sur consigne explicite, le modèle glisse parfois
   // une année en dur ("guide complet 2024") qui rend le titre daté et faux
   // dès l'année suivante. On la retire plutôt que de faire confiance au
