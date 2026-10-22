@@ -1,7 +1,8 @@
 import { db } from "../../../lib/db";
 import { posts } from "../../../db/schema";
 import { and, desc, eq, isNotNull } from "drizzle-orm";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
+import { findPostBySlug } from "../../../lib/post-lookup";
 import { ArrowRight } from "lucide-react";
 import { getPostTheme } from "../../../lib/actualites-theme";
 import { getRelatedServices } from "../../../lib/article-services";
@@ -57,11 +58,8 @@ function getArticleSeo(post) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
 
-  const [post] = await db
-    .select()
-    .from(posts)
-    .where(eq(posts.slug, slug))
-    .limit(1);
+  const { post, redirectTo } = await findPostBySlug(slug);
+  if (redirectTo) permanentRedirect(`/actualites/${redirectTo}`);
 
   // Un brouillon (publishedAt nul) se comporte comme un article inexistant.
   if (!post || !post.publishedAt) {
@@ -105,11 +103,8 @@ export async function generateMetadata({ params }) {
 export default async function ActualiteDetailPage({ params }) {
   const { slug } = await params;
 
-  const [post] = await db
-    .select()
-    .from(posts)
-    .where(eq(posts.slug, slug))
-    .limit(1);
+  const { post, redirectTo } = await findPostBySlug(slug);
+  if (redirectTo) permanentRedirect(`/actualites/${redirectTo}`);
 
   if (!post || !post.publishedAt) {
     notFound();

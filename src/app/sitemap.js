@@ -2,6 +2,7 @@ import { isNotNull } from "drizzle-orm";
 import { posts } from "@/db/schema";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/seo";
+import articleMerges from "@/data/article-merges.json";
 
 const STATIC_ROUTES = [
   ["/", "weekly", 1],
@@ -50,7 +51,8 @@ export default async function sitemap() {
 
     return [
       ...staticRoutes,
-      ...allPosts.map((post) => ({
+      // Un article fusionné dans un autre redirige (301) : il n'a rien à faire dans le sitemap.
+      ...allPosts.filter((post) => !(post.slug in articleMerges)).map((post) => ({
         url: `${SITE_URL}/actualites/${post.slug}`,
         lastModified: post.updatedAt || post.publishedAt,
         changeFrequency: "monthly",

@@ -80,6 +80,7 @@ The database is Neon. Do both, they take two minutes.
    curl.exe -I http://localhost:3000/actualites/pourquoi-externaliser-sa-prospection-commerciale-b2b            # 200
    curl.exe -s http://localhost:3000/sitemap.xml                                                              # only new slugs
    ```
+   **Safety-net check (no 404 before the redeploy):** the script has just written `src/data/slug-redirects.json`. Empty it again (`git checkout src/data/slug-redirects.json`), rebuild and restart, then run the same `curl.exe -I` on the old URL: it must **still** answer `308` to the new slug (this time from the application, not from `next.config.mjs`), never `404`.
 4. Test the way back on the copy: `node scripts/migrate-post-slugs.mjs --rollback backups/slugs-before-<timestamp>.json` (dry run), then add `--apply`. Slugs must return to their old values.
 5. Reset the redirect map after testing: `git checkout src/data/slug-redirects.json`. Delete the `slug-test` branch in Neon. Close the PowerShell window (or `Remove-Item Env:DATABASE_URL`).
 
@@ -91,7 +92,32 @@ The database is Neon. Do both, they take two minutes.
 4. Check in production: old URL gives 308 to the new one, new URL gives 200, `/sitemap.xml` lists the new slugs, an article shows its "Services associés" block.
 5. Search Console: request indexing for the new URLs; keep the sitemap submitted.
 
-## 5. Rollback
+### Safety net: no 404 between the database change and the redeploy
+
+`/actualites/[slug]` (via `src/lib/post-lookup.js`) first looks for the exact slug. If it doesn't exist, it cleans the slug (removes the random suffix and any year) and, if a **published** article exists under the cleaned slug, answers with a permanent redirect (308) to it. So after `--apply`, an old URL such as `.../pourquoi-externaliser-sa-prospection-commerciale-b2b-mojth973` is redirected by the application itself, even before the new `next.config.mjs` redirects are deployed. Drafts are never revealed this way. This also stays as a permanent fallback for any old URL not in the map. (One limit: if a collision forced a `-2` suffix on the new slug, the safety net can't guess it; the redirect map covers that case.)
+
+**Order that avoids any 404:** deploy the B2 code first (it contains the safety net), then run the migration, then commit `slug-redirects.json` and redeploy.
+
+## 5. Folding articles into another article (T1)
+
+When the "vrai coût" article is published, the "guide complet" and "Pourquoi externaliser" articles are folded into it. Edit **`src/data/article-merges.json`** (a map `slug fusionné: slug de l'article cible`) and redeploy:
+
+```json
+{
+  "prospection-commerciale-externalisee-guide-complet": "internaliser-ou-externaliser-sa-prospection-le-vrai-cout",
+  "pourquoi-externaliser-sa-prospection-commerciale-b2b": "internaliser-ou-externaliser-sa-prospection-le-vrai-cout"
+}
+```
+
+(Use the slugs that are live at that moment; if the migration has not been applied yet, use the suffixed ones.) At build time this produces **one 301 per old URL, straight to the target**: the folded article's current URL, its old suffixed URL (from `slug-redirects.json`), and the old WordPress-era URLs that already pointed to it. No redirect chain, and a mistake (an entry pointing to itself, or to another folded article) **fails the build** instead of breaking the site silently. Folded articles also leave `sitemap.xml` automatically. Afterwards, unpublish them in the admin so they disappear from the article lists (never delete).
+
+The same file repoints the hand-written legacy redirect for "combien coûte la génération de leads b2b" (today: `/offres`) once the price article is live:
+
+```json
+{ "combien-coute-la-generation-de-leads-b2b-le-guide-suzali-mn8n0mlp": "<slug de l'article prix>" }
+```
+
+## 6. Rollback
 
 - Before deploying: `node scripts/migrate-post-slugs.mjs --rollback backups/slugs-before-<timestamp>.json --apply`, then `git checkout src/data/slug-redirects.json`.
 - After deploying: same command, then commit the emptied `src/data/slug-redirects.json` and redeploy. Fallback: restore the `backup-slugs-...` Neon branch.
