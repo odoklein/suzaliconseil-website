@@ -14,6 +14,7 @@ import { generateFeaturedImage } from "../../../lib/featured-image.js";
 import { notifyArticlePublished } from "../../../lib/indexnow.js";
 import { slugFromTitle } from "../../../lib/post-slug.js";
 import { uniquePostSlug } from "../../../lib/post-slug-db.js";
+import { parseFaqFromForm } from "../../../lib/post-faq.js";
 
 export async function updateSettings(formData) {
   const frequencyPerWeek = formData.get("frequencyPerWeek")?.toString() || "3";
@@ -186,6 +187,9 @@ export async function createManualPost(formData) {
     };
   }
 
+  const { faq, error: faqError } = parseFaqFromForm(formData);
+  if (faqError) return { ok: false, error: faqError };
+
   const slug = await uniquePostSlug(slugFromTitle(title));
 
   let coverImageUrl = null;
@@ -214,6 +218,7 @@ export async function createManualPost(formData) {
     publishedAt: publishNow ? now : null,
     source: "manual",
     topic,
+    faq,
   });
 
   revalidatePath("/admin");
