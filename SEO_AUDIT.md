@@ -31,7 +31,7 @@ Related existing handling: `next.config.mjs` already has 11 redirects, including
 **Indexable, in sitemap (24 static + 13 article = 37):**
 `/`, `/services`, `/services/commercial`, `/services/prospection-commerciale-externalisee`, `/services/generation-leads-b2b`, `/services/teleprospection-b2b`, `/services/prise-rendez-vous-b2b`, `/services/outbound-marketing-b2b`, `/services/vente-marque-blanche`, `/services/fichier-prospection-b2b`, `/services/qualification-leads-b2b`, `/services/campagnes-email-sms-b2b`, `/services/digital` and 5 children (`strategie-digitale`, `sites-web-ecommerce`, `seo-acquisition`, `branding-identite`, `developpement-automatisation`), `/offres`, `/etudes-de-cas`, `/equipe`, `/actualites`, `/contact`, `/carriers`, plus `/actualites/<slug>` (14 sitemap entries under `/actualites` including the list page).
 
-**Not indexable / private:** `/admin/*`, `/portal/*`, `/api/*` are only blocked by `robots.txt` (no `noindex` meta found in the code; a robots.txt block alone doesn't stop a linked URL from being indexed, though these need a login). `/mentions-legales` is intentionally `noindex` (`robots: { index: false }`) and correctly absent from the sitemap.
+**Not indexable / private:** `/admin/*` and `/portal/*` have `noindex, nofollow` in their layouts and are also blocked by `robots.txt`; `/api/*` is blocked by `robots.txt`. `/mentions-legales` is intentionally `noindex` (`robots: { index: false }`) and correctly absent from the sitemap.
 
 > **Important for Phase 4:** the plan suggests new top-level URLs (`/agence-outbound`, `/marketing-b2b-externalise`, ...). **The site already has service pages under `/services/...`**, several on the same intents:
 >
@@ -115,7 +115,7 @@ Other observations:
 | Tags / categories / authors | None on the new site |
 | Preview / draft pages | Posts without `publishedAt` are excluded from the sitemap; but `/actualites/[slug]` does **not** check `publishedAt`, so an **unpublished post is reachable by URL** and has `index, follow`. Low risk because it isn't linked, but worth a guard |
 | `/api/og?title=...` | Disallowed by robots; used for OG images |
-| `/admin/*`, `/portal/*` | Blocked in robots.txt only, no `noindex` meta (add `noindex` as a safety net) |
+| `/admin/*`, `/portal/*` | `noindex` + robots.txt block. OK |
 
 ## 8. Smaller defects worth fixing
 

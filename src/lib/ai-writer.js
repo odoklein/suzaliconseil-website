@@ -1,5 +1,6 @@
 import { Mistral } from "@mistralai/mistralai";
 import { SERVICES } from "./article-services.js";
+import { slugFromTitle } from "./post-slug.js";
 
 /**
  * Cibles prioritaires : mots-clés réellement présents dans la Search Console
@@ -72,15 +73,6 @@ const SECONDARY_POOL = [
   { keyword: "identité visuelle entreprise", topic: "digital", targetService: SERVICES.strategieDigitale },
   { keyword: "site e-commerce b2b", topic: "digital" },
 ];
-
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
 
 function truncateAtWord(text, maxLength) {
   const clean = String(text || "").replace(/\s+/g, " ").trim();
@@ -204,8 +196,6 @@ ${linkInstructions}
     String(text || "").replace(/\s*[:\-–]?\s*\b(20[2-3]\d)\b\s*/g, " ").replace(/\s+/g, " ").trim();
 
   const title = stripYear(data.title) || "Article B2B";
-  const slugified = slugify(title);
-  const slugBase = slugified.length > 0 ? slugified : `article-${Date.now().toString(36)}`;
 
   const topic =
     (data.topic || target.topic || "").toLowerCase() === "digital"
@@ -221,7 +211,9 @@ ${linkInstructions}
 
   return {
     title,
-    slug: `${slugBase}-${Date.now().toString(36)}`,
+    // Slug stable (titre slugifié). L'unicité (-2, -3...) est garantie à
+    // l'insertion par uniquePostSlug(), pas ici : ce module n'accède pas à la base.
+    slug: slugFromTitle(title),
     seoTitle: truncateAtWord(stripYear(data.seoTitle) || title, 42),
     seoDescription: truncateAtWord(stripYear(data.seoDescription) || stripYear(data.excerpt) || "", 155),
     excerpt: stripYear(data.excerpt) || stripYear(data.seoDescription) || "",

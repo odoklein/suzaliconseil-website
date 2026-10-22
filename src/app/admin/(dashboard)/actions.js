@@ -12,15 +12,8 @@ import { eq, isNotNull } from "drizzle-orm";
 import { generateArticle } from "../../../lib/ai-writer.js";
 import { generateFeaturedImage } from "../../../lib/featured-image.js";
 import { notifyArticlePublished } from "../../../lib/indexnow.js";
-
-function slugify(text) {
-  return String(text)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
+import { slugFromTitle } from "../../../lib/post-slug.js";
+import { uniquePostSlug } from "../../../lib/post-slug-db.js";
 
 export async function updateSettings(formData) {
   const frequencyPerWeek = formData.get("frequencyPerWeek")?.toString() || "3";
@@ -136,7 +129,7 @@ export async function triggerGenerate() {
     .insert(posts)
     .values({
       title: article.title,
-      slug: article.slug,
+      slug: await uniquePostSlug(article.slug),
       excerpt: article.excerpt,
       seoTitle: article.seoTitle,
       seoDescription: article.seoDescription,
@@ -193,8 +186,7 @@ export async function createManualPost(formData) {
     };
   }
 
-  const slugBase = slugify(title) || `post-${Date.now()}`;
-  const slug = `${slugBase}-${Date.now().toString(36)}`;
+  const slug = await uniquePostSlug(slugFromTitle(title));
 
   let coverImageUrl = null;
   if (generateImage) {

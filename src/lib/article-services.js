@@ -18,6 +18,8 @@
  * défaut du thème.
  */
 
+import { cleanSlug } from "./post-slug.js";
+
 export const SERVICES = {
   generationLeads: {
     href: "/services/generation-leads-b2b",
@@ -111,6 +113,12 @@ const SERVICES_BY_SLUG = {
   ],
 };
 
+// Clés normalisées (sans suffixe aléatoire ni année) : la table continue de
+// s'appliquer après la migration des slugs (scripts/migrate-post-slugs.mjs).
+const SERVICES_BY_CLEAN_SLUG = Object.fromEntries(
+  Object.entries(SERVICES_BY_SLUG).map(([slug, services]) => [cleanSlug(slug), services]),
+);
+
 const DEFAULT_BY_THEME = {
   digital: [SERVICES.seoAcquisition, SERVICES.developpementAutomatisation],
   commercial: [SERVICES.generationLeads, SERVICES.teleprospection],
@@ -144,7 +152,7 @@ const SERVICES_BY_KEYWORD = {
 export function getRelatedServices(slug, theme, targetKeyword) {
   return (
     (targetKeyword && SERVICES_BY_KEYWORD[targetKeyword.toLowerCase()]) ||
-    SERVICES_BY_SLUG[slug] ||
+    SERVICES_BY_CLEAN_SLUG[cleanSlug(slug)] ||
     DEFAULT_BY_THEME[theme] ||
     DEFAULT_BY_THEME.commercial
   );

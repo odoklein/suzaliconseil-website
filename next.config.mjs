@@ -1,3 +1,51 @@
+import { readFileSync } from "node:fs";
+
+function loadJson(relativePath) {
+  try {
+    return JSON.parse(readFileSync(new URL(relativePath, import.meta.url), "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+// Ancien slug d'article -> nouveau slug, alimenté par scripts/migrate-post-slugs.mjs.
+// Lu au build : après une migration, il faut committer ce fichier et redéployer.
+const slugRedirects = loadJson("./src/data/slug-redirects.json");
+
+// Articles fusionnés dans un autre : slug fusionné -> slug de l'article cible.
+// À remplir à la main quand l'article cible est EN LIGNE (voir docs/slug-migration-runbook.md).
+const articleMerges = loadJson("./src/data/article-merges.json");
+
+// Une fusion mal saisie casserait le site en silence : on fait échouer le build.
+for (const [from, to] of Object.entries(articleMerges)) {
+  if (from === to) {
+    throw new Error(`article-merges.json : « ${from} » pointe vers lui-même.`);
+  }
+  if (articleMerges[to]) {
+    throw new Error(
+      `article-merges.json : la cible « ${to} » est elle-même fusionnée vers « ${articleMerges[to]} ». Pointez directement vers l'article final.`,
+    );
+  }
+}
+
+/**
+ * Slug final d'un article : migration des slugs PUIS fusion, chacune en une
+ * seule étape, de sorte que toute ancienne URL (suffixée, WordPress...) mène à
+ * l'article cible en UN saut, sans chaîne de redirections.
+ */
+function finalArticleSlug(slug) {
+  const migrated = slugRedirects[slug] ?? slug;
+  return articleMerges[migrated] ?? articleMerges[slug] ?? migrated;
+}
+
+/** Réécrit la destination d'une redirection existante vers le slug final. */
+function remapArticleDestination(redirect) {
+  const prefix = "/actualites/";
+  if (!redirect.destination.startsWith(prefix)) return redirect;
+  const slug = redirect.destination.slice(prefix.length);
+  const finalSlug = finalArticleSlug(slug);
+  return finalSlug === slug ? redirect : { ...redirect, destination: `${prefix}${finalSlug}` };
+}
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -53,7 +101,7 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return [
+    const configured = [
       {
         source: "/:path*",
         has: [
@@ -130,13 +178,47 @@ const nextConfig = {
         destination: "/actualites/prospection-commerciale-pme-les-strategies-incontournables-mmix31os",
         permanent: true,
       },
-      // Example of old service page redirect if slug changed:
-      // {
-      //   source: '/old-service-page',
-      //   destination: '/services/commercial',
-      //   permanent: true,
-      // }
+      // URLs WordPress sans équivalent (archives, taxonomies, auteurs, flux) :
+      // Google les a encore en mémoire et recevait un 404.
+      {
+        source: "/category/:path*",
+        destination: "/actualites",
+        permanent: true,
+      },
+      {
+        source: "/tag/:path*",
+        destination: "/actualites",
+        permanent: true,
+      },
+      {
+        source: "/author/:path*",
+        destination: "/equipe",
+        permanent: true,
+      },
+      {
+        source: "/feed/:path*",
+        destination: "/actualites",
+        permanent: true,
+      },
     ];
+
+    // Anciens slugs migrés (suffixe retiré) et articles fusionnés : toujours vers le slug FINAL.
+    const toRule = (from) => ({
+      source: `/actualites/${from}`,
+      destination: `/actualites/${finalArticleSlug(from)}`,
+      permanent: true,
+    });
+    const mergeRules = Object.keys(articleMerges).map(toRule);
+    const migrationRules = Object.keys(slugRedirects).map(toRule);
+
+    // Une source ne peut apparaître qu'une fois. Une entrée de article-merges.json prime sur
+    // une règle écrite à la main plus haut (c'est ainsi qu'on repointe, par exemple, l'ancienne
+    // URL « combien coûte la génération de leads b2b » vers le futur article prix).
+    const bySource = new Map();
+    for (const rule of [...mergeRules, ...configured.map(remapArticleDestination), ...migrationRules]) {
+      if (!bySource.has(rule.source)) bySource.set(rule.source, rule);
+    }
+    return [...bySource.values()];
   },
 };
 

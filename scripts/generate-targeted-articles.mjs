@@ -12,6 +12,7 @@ import { db } from "../src/lib/db.js";
 import { posts } from "../src/db/schema.js";
 import { generateArticle } from "../src/lib/ai-writer.js";
 import { notifyArticlePublished } from "../src/lib/indexnow.js";
+import { uniquePostSlug } from "../src/lib/post-slug-db.js";
 import { isNotNull } from "drizzle-orm";
 
 async function main() {
@@ -45,7 +46,7 @@ async function main() {
       .insert(posts)
       .values({
         title: article.title,
-        slug: article.slug,
+        slug: await uniquePostSlug(article.slug),
         excerpt: article.excerpt,
         seoTitle: article.seoTitle,
         seoDescription: article.seoDescription,

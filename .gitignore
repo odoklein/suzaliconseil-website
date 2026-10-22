@@ -48,3 +48,6 @@ finovate/
 # Local tooling output
 .playwright-mcp/
 brag-output*/
+
+# Sauvegardes locales de scripts de migration
+/backups/

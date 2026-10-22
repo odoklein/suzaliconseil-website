@@ -4,6 +4,7 @@ import { posts, contentGeneratorSettings } from "../../../../db/schema";
 import { eq, isNotNull, sql } from "drizzle-orm";
 import { generateArticle } from "../../../../lib/ai-writer.js";
 import { notifyArticlePublished } from "../../../../lib/indexnow.js";
+import { uniquePostSlug } from "../../../../lib/post-slug-db.js";
 
 /** Vercel Cron envoie Authorization: Bearer <CRON_SECRET> */
 function isAuthorized(request) {
@@ -61,7 +62,7 @@ async function handleCron(request) {
       .insert(posts)
       .values({
         title: article.title,
-        slug: article.slug,
+        slug: await uniquePostSlug(article.slug),
         excerpt: article.excerpt,
         seoTitle: article.seoTitle,
         seoDescription: article.seoDescription,
