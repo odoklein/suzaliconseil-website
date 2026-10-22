@@ -1,78 +1,124 @@
 import { Mistral } from "@mistralai/mistralai";
 import { SERVICES } from "./article-services.js";
 import { slugFromTitle } from "./post-slug.js";
+import { findUnsourcedFigures, describeFigures } from "./article-figures.js";
+
+/*
+ * POLITIQUE DE CIBLAGE (tâche T2, 22/10/2026)
+ *
+ * Une recherche = une seule page Suzali. Les articles automatiques ne doivent donc
+ * JAMAIS viser :
+ *   1. une recherche déjà tenue par une page service (agence de génération de leads,
+ *      prospection commerciale externalisée, agence outbound, téléprospection, prise
+ *      de rendez-vous, fichier de prospection, qualification de leads, marque blanche,
+ *      acquisition digitale, branding, site e-commerce…) ;
+ *   2. un sujet réservé aux 4 articles rédigés par l'équipe marketing : prix d'une
+ *      agence de prospection, internaliser ou externaliser (le vrai coût), comparatif
+ *      des agences, forfait ou paiement au rendez-vous (dont « combien coûte la
+ *      génération de leads b2b »).
+ *
+ * Les cibles ci-dessous sont des questions pratiques (« comment… », « modèle de… »,
+ * « exemple de… ») : elles répondent à un besoin d'information et envoient ensuite le
+ * lecteur vers la page service concernée par un lien interne.
+ *
+ * Ces mots-clés n'ont PAS été validés dans la Search Console (ceux de l'ancienne liste
+ * l'étaient mais visaient les pages services) : à ajuster avec les données réelles.
+ */
 
 /**
- * Cibles prioritaires : mots-clés réellement présents dans la Search Console
- * (export du 24/09/2026, forts volumes d'impressions, position 40-80, sans
- * page dédiée bien classée) plutôt qu'un tirage aléatoire dans une liste
- * générique. Chacune a un angle éditorial précis et une page de service
- * déterminée à l'avance : le modèle n'a pas à deviner quel lien interne
- * poser, on le lui donne.
- *
- * "angle" cadre le sujet exact ; le modèle reste libre du titre final tant
- * qu'il contient le mot-clé.
+ * Cibles prioritaires, traitées dans l'ordre. "angle" cadre le sujet exact ; le
+ * modèle reste libre du titre final tant qu'il contient le mot-clé. Chaque cible
+ * a la page de service vers laquelle poser le lien interne.
  */
 const PRIORITY_TARGETS = [
   {
-    keyword: "agence de génération de leads b2b",
+    keyword: "modèle de script de téléprospection b2b",
     angle:
-      "Un guide pour choisir son agence de génération de leads B2B : critères de sélection, questions à poser, grille d'évaluation. Public : décideur qui compare plusieurs prestataires avant de signer.",
+      "Un modèle de script d'appel B2B commenté, étape par étape : accroche, questions de qualification, traitement des objections courantes, prise de rendez-vous. Donner des formulations concrètes que le lecteur peut adapter, sans promettre de taux de réussite chiffrés.",
     topic: "commercial",
-    targetService: SERVICES.generationLeads,
-    secondaryService: SERVICES.qualificationLeads,
+    targetService: SERVICES.teleprospection,
+    secondaryService: SERVICES.priseRendezVous,
   },
   {
-    keyword: "prospection commerciale externalisée",
+    keyword: "modèle d'email de prospection b2b",
     angle:
-      "Un guide complet sur l'externalisation de la prospection commerciale B2B : ce que ça coûte réellement, les modèles de facturation courants, les avantages et limites concrets, comment évaluer un prestataire. Public : dirigeant ou directeur commercial qui hésite entre interne et externalisé.",
+      "Trois modèles d'emails de prospection B2B commentés (première approche, relance, dernier message) et les règles à respecter (objet, longueur, une seule demande, désinscription simple, information sur l'origine des données). Aucun chiffre de performance inventé.",
     topic: "commercial",
-    targetService: SERVICES.prospectionExternalisee,
-    secondaryService: SERVICES.commercial,
+    targetService: SERVICES.campagnesEmailSms,
+    secondaryService: SERVICES.outbound,
   },
   {
-    keyword: "agence outbound",
+    keyword: "comment prospecter sur linkedin en b2b",
     angle:
-      "Un comparatif outbound vs inbound marketing B2B : différences concrètes, quand choisir l'un plutôt que l'autre selon le marché et le cycle de vente, comment les combiner. Public : responsable marketing qui arbitre son budget d'acquisition.",
+      "Une méthode pas à pas pour prospecter sur LinkedIn : préparer son profil, cibler, rédiger un message de connexion et une relance, mesurer ce qui fonctionne. Exemples de messages courts et sobres, sans automatisation abusive.",
     topic: "commercial",
     targetService: SERVICES.outbound,
     secondaryService: SERVICES.generationLeads,
   },
+  {
+    keyword: "comment qualifier un lead b2b avec la méthode bant",
+    angle:
+      "Appliquer BANT (budget, autorité, besoin, délai) à la qualification d'un lead B2B : questions types pour chaque critère, grille de décision simple, quand transmettre ou écarter un lead.",
+    topic: "commercial",
+    targetService: SERVICES.qualificationLeads,
+    secondaryService: SERVICES.priseRendezVous,
+  },
 ];
 
 /**
- * Pool secondaire pour la cadence récurrente (cron lun/mer/ven) une fois les
- * cibles prioritaires épuisées. Repris de l'ancienne liste statique
- * (src/lib/gemini.js), sans service imposé : l'article retombe sur le lien
- * par défaut du thème (voir article-services.js).
+ * Pool secondaire, utilisé quand les cibles prioritaires sont traitées (et seulement
+ * au rythme d'un article par semaine, voir article-cadence.js). Mêmes règles : des
+ * questions pratiques qui ne visent aucune page service ni aucun des 4 articles de
+ * l'équipe. Sans service imposé, l'article retombe sur le lien par défaut du thème
+ * (voir article-services.js).
  */
 const SECONDARY_POOL = [
-  { keyword: "téléprospection efficace b2b", topic: "commercial" },
-  { keyword: "combien coûte la génération de leads b2b", topic: "commercial" },
-  { keyword: "meilleur outil prospection b2b", topic: "commercial" },
-  { keyword: "script téléprospection b2b", topic: "commercial" },
-  { keyword: "kpi prospection commerciale", topic: "commercial" },
-  { keyword: "fichier prospection b2b", topic: "commercial", targetService: SERVICES.fichierProspection },
-  { keyword: "agence prospection pour startup saas", topic: "commercial" },
-  { keyword: "génération leads b2b industrie", topic: "commercial" },
-  { keyword: "prospection commerciale pme", topic: "commercial" },
-  { keyword: "cold emailing b2b france", topic: "commercial", targetService: SERVICES.campagnesEmailSms },
-  { keyword: "linkedin prospection commerciale", topic: "commercial" },
-  { keyword: "qualification leads bant", topic: "commercial", targetService: SERVICES.qualificationLeads },
-  { keyword: "prise de rendez-vous b2b externalisée", topic: "commercial", targetService: SERVICES.priseRendezVous },
-  { keyword: "techniques de closing b2b", topic: "commercial" },
-  { keyword: "vente en marque blanche", topic: "commercial" },
   { keyword: "comment trouver des clients b2b", topic: "commercial" },
-  { keyword: "account based marketing b2b", topic: "commercial" },
-  { keyword: "agence acquisition google", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "spécialiste acquisition digitale", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "référencement naturel b2b", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "content marketing b2b", topic: "digital" },
-  { keyword: "stratégie seo b2b", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "automatisation marketing b2b", topic: "digital", targetService: SERVICES.developpementAutomatisation },
-  { keyword: "identité visuelle entreprise", topic: "digital", targetService: SERVICES.strategieDigitale },
-  { keyword: "site e-commerce b2b", topic: "digital" },
+  { keyword: "comment préparer un appel de téléprospection b2b", topic: "commercial", targetService: SERVICES.teleprospection },
+  { keyword: "comment choisir un outil de prospection b2b", topic: "commercial" },
+  { keyword: "techniques de closing b2b", topic: "commercial" },
+  { keyword: "comment répondre aux objections en prospection b2b", topic: "commercial", targetService: SERVICES.teleprospection },
+  { keyword: "comment lancer une stratégie abm b2b", topic: "commercial", targetService: SERVICES.outbound },
+  { keyword: "comment relancer un prospect b2b sans être insistant", topic: "commercial" },
+  { keyword: "exemple de séquence de prospection multicanale", topic: "commercial", targetService: SERVICES.outbound },
+  { keyword: "comment construire une stratégie de content marketing b2b", topic: "digital" },
+  { keyword: "exemple de scénario d'automatisation marketing b2b", topic: "digital", targetService: SERVICES.developpementAutomatisation },
+  { keyword: "comment faire un audit seo b2b", topic: "digital", targetService: SERVICES.seoAcquisition },
+  { keyword: "comment structurer le site web d'une entreprise b2b", topic: "digital", targetService: SERVICES.strategieDigitale },
 ];
+
+/**
+ * Mots-clés retirés des listes (et pourquoi), gardés ici pour que personne ne les remette :
+ * agence de génération de leads b2b, prospection commerciale externalisée, agence outbound,
+ * téléprospection efficace b2b, fichier prospection b2b, prise de rendez-vous b2b externalisée,
+ * vente en marque blanche, agence acquisition google, spécialiste acquisition digitale,
+ * stratégie seo b2b, identité visuelle entreprise, site e-commerce b2b, agence prospection pour
+ * startup saas : recherches tenues par une page service.
+ * combien coûte la génération de leads b2b, meilleur outil prospection b2b : article prix de
+ * l'équipe / comparatif non vérifiable (publicité comparative).
+ * kpi prospection commerciale, génération leads b2b industrie, prospection commerciale pme,
+ * cold emailing b2b france : déjà couverts par un article existant.
+ */
+export const EXCLUDED_KEYWORDS = [
+  "agence de génération de leads b2b",
+  "prospection commerciale externalisée",
+  "agence outbound",
+  "téléprospection efficace b2b",
+  "fichier prospection b2b",
+  "prise de rendez-vous b2b externalisée",
+  "vente en marque blanche",
+  "agence acquisition google",
+  "spécialiste acquisition digitale",
+  "stratégie seo b2b",
+  "identité visuelle entreprise",
+  "site e-commerce b2b",
+  "agence prospection pour startup saas",
+  "combien coûte la génération de leads b2b",
+  "meilleur outil prospection b2b",
+];
+
+/** Pour les tests : toutes les cibles actuellement proposées par le générateur. */
+export const ALL_TARGET_KEYWORDS = [...PRIORITY_TARGETS, ...SECONDARY_POOL].map((t) => t.keyword);
 
 function truncateAtWord(text, maxLength) {
   const clean = String(text || "").replace(/\s+/g, " ").trim();
@@ -82,24 +128,72 @@ function truncateAtWord(text, maxLength) {
 }
 
 /**
- * Choisit la prochaine cible : cibles prioritaires non encore traitées
- * d'abord (dans l'ordre), puis pool secondaire non encore traité, puis
- * n'importe laquelle du pool secondaire en dernier recours.
+ * Choisit la prochaine cible : les cibles prioritaires non encore traitées d'abord
+ * (dans l'ordre), puis le pool secondaire (dans l'ordre).
+ *
+ * Renvoie `null` quand toutes les cibles ont déjà un article. On ne retombe PAS sur
+ * une cible déjà traitée : écrire un deuxième article sur la même recherche est
+ * exactement la cannibalisation que ce générateur ne doit plus créer. Il faut alors
+ * ajouter de nouveaux mots-clés (validés dans la Search Console) dans cette liste.
+ *
  * @param {Set<string>} usedKeywords mots-clés déjà ciblés (posts.targetKeyword, en minuscules)
+ * @returns {object|null}
  */
 export function pickNextTarget(usedKeywords = new Set()) {
-  const unusedPriority = PRIORITY_TARGETS.filter(
+  const unused = [...PRIORITY_TARGETS, ...SECONDARY_POOL].filter(
     (t) => !usedKeywords.has(t.keyword.toLowerCase()),
   );
-  if (unusedPriority.length > 0) return unusedPriority[0];
-
-  const unusedSecondary = SECONDARY_POOL.filter(
-    (t) => !usedKeywords.has(t.keyword.toLowerCase()),
-  );
-  const pool = unusedSecondary.length > 0 ? unusedSecondary : SECONDARY_POOL;
-  return pool[Math.floor(Math.random() * pool.length)];
+  return unused[0] ?? null;
 }
 
+/**
+ * Construit le prompt de génération. Exportée pour être testée : les règles sur les
+ * chiffres (ci-dessous) ne doivent pas pouvoir disparaître sans qu'un test le signale.
+ */
+export function buildArticlePrompt({ target, tone = "expert", recentTitles = "" }) {
+  const linkInstructions = target.targetService
+    ? `- Lien interne PRINCIPAL obligatoire, à poser naturellement dans le corps du texte (pas seulement en conclusion) : <a href="${target.targetService.href}">${target.targetService.label}</a>${
+        target.secondaryService
+          ? `\n- Lien interne SECONDAIRE, à poser ailleurs dans le texte : <a href="${target.secondaryService.href}">${target.secondaryService.label}</a>`
+          : ""
+      }\n- N'invente PAS d'autres URLs internes que celles fournies ci-dessus.`
+    : `- Liens internes SEO : inclus au moins 2 liens internes en HTML vers nos pages de services parmi :
+  * Prospection / leads : <a href="/services/commercial">, <a href="/services/generation-leads-b2b">, <a href="/services/teleprospection-b2b">
+  * Digital : <a href="/services/digital">, <a href="/services/digital/seo-acquisition">, <a href="/services/digital/sites-web-ecommerce">`;
+
+  const angleInstruction = target.angle
+    ? `\nAngle éditorial imposé : ${target.angle}`
+    : "";
+
+  return `Tu es un rédacteur senior SEO pour Suzali Conseil, agence B2B française (génération de leads, prospection commerciale, digital). Tu écris comme un expert qui a réellement mené ces missions : affirmations concrètes, exemples précis plutôt que généralités, sans aucun chiffre inventé. Jamais de ton robotique ni de tournures creuses.
+
+Génère UN article de blog optimisé pour le mot-clé principal suivant (dans le titre, l'accroche, et naturellement 3-5 fois dans le texte, jamais en sur-optimisation forcée) :
+**Mot-clé principal à cibler :** "${target.keyword}"${angleInstruction}
+
+Contraintes :
+- Langue : français. Ton : ${tone}.
+- Public : décideurs et responsables marketing/commercial/digital en B2B en France.
+- Longueur : 1600 à 2200 mots de contenu rédactionnel (hors titre/extrait) — un article de référence, pas un article de blog superficiel.
+- Structure : introduction qui pose un problème concret (pas "dans un monde où..."), 4 à 6 sections avec sous-titres H2 (et H3 si une section a des sous-parties), au moins une liste à puces ou un tableau HTML (<table>) si le sujet s'y prête (comparatif, critères, étapes), conclusion avec CTA vers une prise de contact.
+- CHIFFRES (règle stricte) : tu n'as accès à aucune source, donc tout chiffre que tu avancerais serait inventé. N'écris AUCUN chiffre qui présente un fait, un résultat ou un ordre de grandeur : pas de pourcentage, pas de montant ni de fourchette de prix, pas de délai moyen ou de durée « typique », pas de « x fois plus », pas de statistique, pas de « selon une étude » ou « d'après un rapport », pas d'exemple client chiffré, pas de taux de réussite. Quand un ordre de grandeur serait tentant, écris en termes qualitatifs (« souvent », « nettement plus long », « une part importante des échanges ») ou explique comment le lecteur calcule sa propre valeur (la méthode ou la formule, sans valeurs inventées). Seuls les nombres qui comptent ou numérotent des éléments de ton propre texte sont autorisés (« 3 modèles », « étape 2 », « 5 questions »), ainsi que ceux donnés dans ce prompt.
+${linkInstructions}
+- Originalité : ne rédige PAS sur ces sujets déjà traités : ${String(recentTitles || "").substring(0, 500)}
+- E-E-A-T : montre une expérience terrain sans la chiffrer (ex. "sur les missions que nous menons...", "en pratique, ce point est souvent sous-estimé..."), pas de discours marketing vide.
+- Interdictions strictes : pas de <h1>. Pas de "dans cet article", "en conclusion", "il est important de noter que", "dans le monde d'aujourd'hui". N'écris AUCUNE année (2023, 2024, 2025...) dans le titre, le seoTitle ou l'excerpt : un article daté devient obsolète et faux dès l'année suivante. Si une date est indispensable dans le corps du texte, reste vague ("actuellement", "ces dernières années") plutôt qu'une année en dur.
+- FAQ : génère 4 à 5 questions/réponses courtes et concrètes, au format "People Also Ask" (questions que taperait réellement un utilisateur Google), réponses de 2-4 phrases chacune, sans redite du corps de l'article, et sans chiffre (même règle que ci-dessus).
+- Réponds UNIQUEMENT avec un JSON valide, sans markdown ni \`\`\`, avec exactement les clés suivantes :
+
+{
+  "title": "Titre de l'article (60 caractères max, contient le mot-clé, proche du début)",
+  "seoTitle": "Titre SEO distinct et naturel (42 caractères maximum avant la marque)",
+  "seoDescription": "Meta description unique, orientée clic, avec un verbe d'action (130 à 155 caractères)",
+  "excerpt": "Accroche éditoriale visible de l'article, indépendante de la meta description",
+  "content": "Contenu en HTML valide (paragraphes <p>, sous-titres <h2>/<h3>, listes <ul>/<li>, <table> si pertinent). Pas de <h1>.",
+  "metaKeywords": "mot-clé principal, 3 à 5 mots-clés secondaires séparés par des virgules",
+  "faq": [{"question": "...", "answer": "..."}],
+  "topic": "commercial ou digital selon le sujet. Une seule valeur."
+}`;
+}
 /**
  * Génère un article d'actualité optimisé SEO via Mistral.
  * @param {{ tone?: string, target?: object, usedKeywords?: Set<string> }} options
@@ -116,78 +210,62 @@ export async function generateArticle(options = {}) {
 
   const tone = options.tone || "expert";
   const target = options.target || pickNextTarget(options.usedKeywords);
+  if (!target) {
+    throw new Error(
+      "Aucune cible de mot-clé disponible : toutes ont déjà un article. Ajoutez de nouveaux mots-clés dans src/lib/ai-writer.js.",
+    );
+  }
 
   const client = new Mistral({ apiKey });
 
-  const linkInstructions = target.targetService
-    ? `- Lien interne PRINCIPAL obligatoire, à poser naturellement dans le corps du texte (pas seulement en conclusion) : <a href="${target.targetService.href}">${target.targetService.label}</a>${
-        target.secondaryService
-          ? `\n- Lien interne SECONDAIRE, à poser ailleurs dans le texte : <a href="${target.secondaryService.href}">${target.secondaryService.label}</a>`
-          : ""
-      }\n- N'invente PAS d'autres URLs internes que celles fournies ci-dessus.`
-    : `- Liens internes SEO : inclus au moins 2 liens internes en HTML vers nos pages de services parmi :
-  * Prospection / leads : <a href="/services/commercial">, <a href="/services/generation-leads-b2b">, <a href="/services/teleprospection-b2b">
-  * Digital : <a href="/services/digital">, <a href="/services/digital/seo-acquisition">, <a href="/services/digital/sites-web-ecommerce">`;
+  const basePrompt = buildArticlePrompt({ target, tone, recentTitles: options.recentTitles });
 
-  const angleInstruction = target.angle
-    ? `\nAngle éditorial imposé : ${target.angle}`
-    : "";
+  // Appelle le modèle et renvoie l'article brut (JSON analysé).
+  const callModel = async (prompt) => {
+    let response;
+    try {
+      response = await client.chat.complete({
+        model: modelName,
+        temperature: 0.85,
+        responseFormat: { type: "json_object" },
+        messages: [{ role: "user", content: prompt }],
+      });
+    } catch (error) {
+      console.error("Mistral chat.complete failed:", {
+        apiKeyLength: apiKey.length,
+        modelName,
+        errorMsg: error?.message,
+      });
+      throw error;
+    }
 
-  const prompt = `Tu es un rédacteur senior SEO pour Suzali Conseil, agence B2B française (génération de leads, prospection commerciale, digital). Tu écris comme un expert qui a réellement mené ces missions : affirmations concrètes, chiffres ou fourchettes plausibles, exemples précis plutôt que généralités. Jamais de ton robotique ni de tournures creuses.
+    const rawContent = response?.choices?.[0]?.message?.content;
+    if (!rawContent) {
+      throw new Error("Mistral returned no content");
+    }
 
-Génère UN article de blog optimisé pour le mot-clé principal suivant (dans le titre, l'accroche, et naturellement 3-5 fois dans le texte, jamais en sur-optimisation forcée) :
-**Mot-clé principal à cibler :** "${target.keyword}"${angleInstruction}
+    let raw = typeof rawContent === "string" ? rawContent.trim() : String(rawContent);
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (jsonMatch) raw = jsonMatch[0];
+    return JSON.parse(raw);
+  };
 
-Contraintes :
-- Langue : français. Ton : ${tone}.
-- Public : décideurs et responsables marketing/commercial/digital en B2B en France.
-- Longueur : 1600 à 2200 mots de contenu rédactionnel (hors titre/extrait) — un article de référence, pas un article de blog superficiel.
-- Structure : introduction qui pose un problème concret (pas "dans un monde où..."), 4 à 6 sections avec sous-titres H2 (et H3 si une section a des sous-parties), au moins une liste à puces ou un tableau HTML (<table>) si le sujet s'y prête (comparatif, critères, étapes), conclusion avec CTA vers une prise de contact.
-${linkInstructions}
-- Originalité : ne rédige PAS sur ces sujets déjà traités : ${(options.recentTitles || "").substring(0, 500)}
-- E-E-A-T : montre une expérience terrain (ex. "sur les missions que nous menons...", "en pratique, la plupart des entreprises sous-estiment..."), pas de discours marketing vide.
-- Interdictions strictes : pas de <h1>. Pas de "dans cet article", "en conclusion", "il est important de noter que", "dans le monde d'aujourd'hui". N'écris AUCUNE année (2023, 2024, 2025...) dans le titre, le seoTitle ou l'excerpt : un article daté devient obsolète et faux dès l'année suivante. Si une date est indispensable dans le corps du texte, reste vague ("actuellement", "ces dernières années") plutôt qu'une année en dur.
-- FAQ : génère 4 à 5 questions/réponses courtes et concrètes, au format "People Also Ask" (questions que taperait réellement un utilisateur Google), réponses de 2-4 phrases chacune, sans redite du corps de l'article.
-- Réponds UNIQUEMENT avec un JSON valide, sans markdown ni \`\`\`, avec exactement les clés suivantes :
-
-{
-  "title": "Titre de l'article (60 caractères max, contient le mot-clé, proche du début)",
-  "seoTitle": "Titre SEO distinct et naturel (42 caractères maximum avant la marque)",
-  "seoDescription": "Meta description unique, orientée clic, avec un verbe d'action (130 à 155 caractères)",
-  "excerpt": "Accroche éditoriale visible de l'article, indépendante de la meta description",
-  "content": "Contenu en HTML valide (paragraphes <p>, sous-titres <h2>/<h3>, listes <ul>/<li>, <table> si pertinent). Pas de <h1>.",
-  "metaKeywords": "mot-clé principal, 3 à 5 mots-clés secondaires séparés par des virgules",
-  "faq": [{"question": "...", "answer": "..."}],
-  "topic": "commercial ou digital selon le sujet. Une seule valeur."
-}`;
-
-  let response;
-  try {
-    response = await client.chat.complete({
-      model: modelName,
-      temperature: 0.85,
-      responseFormat: { type: "json_object" },
-      messages: [{ role: "user", content: prompt }],
-    });
-  } catch (error) {
-    console.error("Mistral chat.complete failed:", {
-      apiKeyLength: apiKey.length,
-      modelName,
-      errorMsg: error?.message,
-    });
-    throw error;
+  // Garde-fou « aucun chiffre non sourcé » : le prompt l'interdit, mais un prompt n'est
+  // pas une garantie et l'article est publié automatiquement. Un seul nouvel essai avec
+  // les chiffres fautifs cités ; si le second jet en contient encore, on REJETTE l'article
+  // (rien n'est publié, rien n'est enregistré) plutôt que de publier un chiffre inventé.
+  let data = await callModel(basePrompt);
+  let figures = findUnsourcedFigures(data);
+  if (figures.length > 0) {
+    console.warn(`ai-writer: chiffres non sourcés détectés, nouvel essai : ${describeFigures(figures)}`);
+    data = await callModel(
+      `${basePrompt}\n\nCORRECTION OBLIGATOIRE : ta version précédente contenait des chiffres non sourcés : ${describeFigures(figures)}. Réécris l'article COMPLET sans aucun chiffre de ce type (ni pourcentage, ni montant, ni « x fois », ni « selon une étude ») : formule ces points de façon qualitative.`,
+    );
+    figures = findUnsourcedFigures(data);
+    if (figures.length > 0) {
+      throw new Error(`Article rejeté : chiffres non sourcés après un nouvel essai (${describeFigures(figures)}).`);
+    }
   }
-
-  const rawContent = response?.choices?.[0]?.message?.content;
-  if (!rawContent) {
-    throw new Error("Mistral returned no content");
-  }
-
-  let raw = typeof rawContent === "string" ? rawContent.trim() : String(rawContent);
-  const jsonMatch = raw.match(/\{[\s\S]*\}/);
-  if (jsonMatch) raw = jsonMatch[0];
-  const data = JSON.parse(raw);
-
   // Filet de sécurité : même sur consigne explicite, le modèle glisse parfois
   // une année en dur ("guide complet 2024") qui rend le titre daté et faux
   // dès l'année suivante. On la retire plutôt que de faire confiance au

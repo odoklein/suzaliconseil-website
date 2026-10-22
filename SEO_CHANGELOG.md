@@ -71,6 +71,25 @@ Manual actions still open: slug migration (backup, test on the `slug-test` copy,
 3. Search Console: request indexing for the new article URLs.
 ## B7 + B8: On-page SEO and structured data (2026-10-16), branch `seo/B7-B8-onpage`
 
+### Live
+
+Merged 2026-10-22 16:10, PR #4 (`a5192fd`); **live on production at about 16:47** (about 37 minutes after the merge: Dokploy builds on every merge to `main`, so wait for the build before checking production). Checked on https://suzaliconseil.com the same day:
+
+| Check | Result |
+|---|---|
+| 24 static pages in the sitemap | all 200, `lang="fr"`, exactly 1 H1, self-referencing canonical, valid JSON-LD, unique title and description |
+| 13 article pages (database-backed) | all have `BlogPosting` + `BreadcrumbList` + `publisher`, self canonical, 1 H1 |
+| Home, `/services/prise-rendez-vous-b2b`, `/services/teleprospection-b2b` | still show « 150 € », **no JSON-LD `Offer`** (manager decision) |
+| `/services/prospection-commerciale-externalisee` | hero says « Offre Growth Standard », 2 `Offer`s in JSON-LD; every JSON-LD price (1 590, 150, 599, 55) is written on the page |
+| JSON-LD prices vs visible text, all 24 pages | the only priced JSON-LD is on the externalisée page and matches its text |
+| `/sitemap.xml` | 37 URLs (unchanged) |
+| `/robots.txt` | `Allow: /api/og`, `/api/` still blocked |
+| 404 | real 404, `noindex`, no canonical to the home page |
+| Redirects | `/category/foo` → `/actualites`, `/author/x` → `/equipe`, `/feed` → `/actualites`, `/blog/x` → `/actualites/x` (308) |
+| `/api/og?title=Test` | 200 |
+
+Still open for the team: run PageSpeed Insights (mobile) on `/` and one service page, and the Rich Results Test on `/`, `/services/prospection-commerciale-externalisee` and one article.
+
 No URL changed, so no new redirects. All visible text is in French.
 
 ### Titles, descriptions, H1 (24 indexable pages)
@@ -162,3 +181,50 @@ Checked on the local build (script over the 24 sitemap pages): the only page wit
 ### To do by hand
 1. After deploy, run PageSpeed Insights (mobile) on `/` and one service page, and note the scores for the Phase 8 report.
 2. Rich Results Test on `/`, `/services/prospection-commerciale-externalisee` and one article.
+
+
+## T2: Retarget the automatic article generator (2026-10-22), branch `seo/T2-ai-writer`
+
+**Not live yet** (waiting for Odo's OK).
+
+### Why
+
+The generator's three priority targets (« agence de génération de leads b2b », « prospection commerciale externalisée », « agence outbound ») are exactly the searches held by the service pages: it created the cannibalisation. Its secondary pool also contained other service-page searches and « combien coûte la génération de leads b2b » (reserved for the team's price article). And the « 3 articles per week » setting was never read by anything.
+
+### Changed
+
+| File | Change |
+|---|---|
+| `src/lib/ai-writer.js` | **Priority targets are now 4 practical topics**, each with a service link: « modèle de script de téléprospection b2b », « modèle d'email de prospection b2b », « comment prospecter sur linkedin en b2b », « comment qualifier un lead b2b avec la méthode bant ». **Secondary pool: 12 practical topics** (« comment… », « exemple de… », « techniques de… »). **15 keywords removed** and listed in `EXCLUDED_KEYWORDS` with the reason (service-page searches, the team's price article, a « meilleur outil » ranking that would need unverifiable claims about competitors, topics already covered by existing articles). |
+| `src/lib/ai-writer.js` | `pickNextTarget` now returns `null` when every target already has an article, instead of picking a random used one (which would have written duplicate articles once the pool ran out). |
+| `src/lib/article-cadence.js` (new) | **1 automatic article per week maximum**, enforced in code: minimum gap 7 days minus 2 hours (the 2 hours absorb the delay between the trigger and `lastRunAt`). Independent of how often the scheduler calls the endpoint. |
+| `src/app/api/cron/generate-article/route.js` | Skips (HTTP 200, `skipped: true`, with the reason and `nextAllowedAt`) when the cadence rule or the target list says so. |
+| `src/lib/ai-writer.js` (prompt) | **No more invented figures (requested 2026-10-22).** « chiffres ou fourchettes plausibles » is removed. New strict rule « CHIFFRES »: no percentage, amount or price range, average delay, « x fois plus », statistic, « selon une étude », client example with figures or success rate; write qualitatively (« souvent », « nettement plus long ») or give the method/formula to compute one's own value. Only numbers that count the text's own elements (« 3 modèles », « étape 2 ») are allowed. The rule also covers the FAQ, and the E-E-A-T example « la plupart des entreprises sous-estiment… » (a hidden statistic) is now « ce point est souvent sous-estimé… ». The prompt is built by the exported `buildArticlePrompt` so a test can pin these rules. |
+| `src/lib/article-figures.js` (new), `src/lib/ai-writer.js` | **Safety net, because a prompt is not a guarantee** and articles publish automatically: after generation, title, SEO fields, excerpt, body and FAQ are scanned for percentages, amounts (€, k€, \$), « x fois » / « 3x » and « selon une étude / d'après un rapport ». If found, **one retry** with the offending figures quoted; if the second draft still has any, **the article is rejected** (error, nothing published, nothing saved). |
+
+| `src/lib/article-attempts.js`, `article-attempts-db.js` (new), `src/db/schema.js` | **Attempt limit: 3 per rolling 24 h, rejections included.** Every call that reaches the model is recorded in the new table `article_generation_attempts` **before** Mistral is called, so a rejected or crashed attempt counts too. `lastAttemptAt` is the most recent row (returned by the route). A refused call is not recorded and does not call Mistral. Worst case: 3 attempts × 2 model calls (1 + the figure retry) = 6 Mistral calls per 24 h. Skips for the weekly cap or an empty target list do not count as attempts. |
+| `src/lib/article-cron.js` (new), `route.js` | **The cron's decisions are now in a testable module** (the route only checks the secret, wires the real database and Mistral in, and reads `?dryRun=1`). **`?dryRun=1`**: after the same authentication, runs the checks (weekly cap, target, attempt limit) **read-only** and answers what a real call would do (`wouldGenerate`, the keyword and service it would use, `attemptsInWindow`, `attemptsLeft`, `lastAttemptAt`, `nextAllowedAt`). It never calls Mistral, never publishes, never records an attempt, and never creates a settings row. |
+| `docs/article-attempts-table.sql`, `scripts/migrate-attempts-table.mjs` (new) | The `CREATE TABLE IF NOT EXISTS` for that table (exact SQL for the Neon console; the script is the same thing with a dry run by default). **Not run on production** (to be run by the site owner). |
+
+**If the table does not exist yet:** the route **fails cleanly**: HTTP **503** with the message « Table article_generation_attempts absente : exécuter docs/article-attempts-table.sql », and **Mistral is never called** (checked: 10 consecutive calls = 10 × 503, 0 model calls). There is deliberately no in-memory fallback: a limit that resets on every restart is not a limit. Any other database error on the attempts store also stops the call before Mistral (HTTP 500). Consequence: **until the table is created, the automatic generation is paused** (the rest of the site is unaffected: nothing else reads this table).
+### Checked
+
+- Lint clean; build passes.
+- Prompt and figure guard (script, all pass): the prompt no longer contains « plausibles » or « la plupart des entreprises » and contains the strict rule; the detector flags 11 kinds of figure claims in the body, a table cell, the title, SEO title, description, excerpt and FAQ question/answer, and does not flag « 3 modèles », « étape 2 », links or plain prose; with a **mocked Mistral**: a clean draft = 1 call and accepted; a dirty then clean draft = 2 calls, the retry prompt quotes the figure, accepted; two dirty drafts = exactly 2 calls and rejected.
+- Script (33 checks): no target is an excluded keyword, no duplicates, no target contains service-page or plan wording (agence, externalisée, prix, comparatif, forfait…), every target is « comment / modèle / exemple / techniques »; the selection walks each target once and then returns `null`; a Mon/Wed/Fri scheduler publishes 1 article per week; an hourly scheduler over 60 days publishes 9 (about 1 per week), never two closer than 6 days 22 hours.
+extAllowedAt; 200 more calls in the same minute record nothing; the window rolls (refused at 23 h 59, allowed at 24 h); 5 cron calls where every generation is rejected = 3 reach the model and 2 are skipped; an attempt is already recorded when the process crashes mid-generation; store errors fail closed.
+- Attempt limit (scripts, all pass): attempts 1 to 3 allowed, the 4th refused with `lastAttemptAt` and `nextAllowedAt`; 200 more calls in the same minute record nothing; the window rolls (refused at 23 h 59, allowed at 24 h); 6 cron calls where every generation is rejected = 3 reach the model and 3 are skipped, nothing published; the attempt is recorded before the model call (order add, generate, publish) and even if the process crashes mid-generation; store errors and a missing table stop the call before Mistral.
+- Cron decisions with fake dependencies that record every call (24 checks): **dryRun never calls generate, publish or add, in every case** (all clear, weekly cap, no target left, limit reached, table missing, no settings row); 25 dry runs consume no attempt and a real call right after is still allowed.
+- The real route handler run through `tsx` without a database (14 checks): 401 without a secret, with a wrong secret, without the `Bearer ` prefix and **with `dryRun=1` but no secret** (authentication comes first), for GET and POST; `dryRun=1` and `dryRun=true` are understood, `dryRun=0` is a real call; **no outbound network request** in any case.
+- **Years, legal references, official rates (current behaviour of the figure detector, pinned by tests):** « en 2026 », « depuis 2018 » and a year in a title are **not flagged** (ai-writer strips years from the title, SEO title and excerpt afterwards, never from the body); legal references (« article L.1234-1 », « article L. 34-5 du CPCE », « loi n° 2018-493 ») are **not flagged**; official rates (« TVA à 20 % », « TVA de 5,5 % ») **are flagged** as percentages (so is an unrelated « 42 % de charges patronales »). Decision pending: legal references are exactly what a model can invent (wrong article number) and nobody checks them before publication.
+- **Not testable here:** the cron route itself (needs the database and Mistral).
+
+### Things to know
+
+- **Before calling `?dryRun=1` in production, check that T2 is the deployed version:** `curl.exe -I https://suzaliconseil.com/api/cron/generate-article` must show `x-cron-features: dry-run,attempt-cap,figure-guard` (the header is sent even on the 401, so no secret is needed). An older deployed version does not know `dryRun` and would ignore it and do a **real** generation. The header is absent until T2 is live.
+
+- The new keywords are **not validated in Search Console** (the old ones were, but they were the service pages' own searches). Replace or add real ones in `src/lib/ai-writer.js` as data comes in.
+- The admin setting « fréquence par semaine » is still displayed and saved, but it is not what limits publishing (the cap above is). A manual « Générer » in the admin is not limited, but it updates `lastRunAt`, so it uses up that week's automatic article.
+- **Figures:** handled (see the prompt and safety-net rows above). A rejected article makes the cron answer with an error and leaves lastRunAt untouched, so the next scheduler call tries again with a fresh draft (one extra Mistral call or two per attempt). If rejections become frequent, check the logs line « chiffres non sourcés détectés ».
+- The detector catches figure claims, not every vague quantifier (« la plupart », « souvent » are not flagged), and it cannot verify that a qualitative statement is true: articles are still not fact-checked.
+- 3 existing articles may carry the old priority keywords as `targetKeyword`; they simply don't block the new targets.

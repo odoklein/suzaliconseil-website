@@ -145,9 +145,9 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
 - [ ] **B4 — `sitemap.xml` automatique** (uniquement pages canoniques, 200, indexables, avec `lastmod`).
 - [ ] **B5 — `robots.txt`** : tout autoriser sauf admin / API / preview, avec lien vers le sitemap.
 - [ ] **B6 — Vraies 404** (statut HTTP 404) + `noindex,follow` sur recherche interne, filtres vides, paramètres.
-- [ ] **B7 — Balises on-page** : `<html lang="fr">`, title unique, meta description unique, un seul H1,
+- [x] **B7 — Balises on-page** : `<html lang="fr">`, title unique, meta description unique, un seul H1,
   Open Graph / Twitter, fil d'Ariane visible.
-- [ ] **B8 — JSON-LD** : `Organization` + `ProfessionalService` (accueil), `Service` + `BreadcrumbList`
+- [x] **B8 — JSON-LD** : `Organization` + `ProfessionalService` (accueil), `Service` + `BreadcrumbList`
   (+ `FAQPage` si FAQ visible) sur les pages services, `BlogPosting` + `BreadcrumbList` sur les articles.
   Données réelles uniquement, sinon TODO SUZALI.
 - [ ] **B9 — FAQ sur les articles manuels** : ajouter à l'admin la possibilité de saisir une FAQ
