@@ -2,6 +2,7 @@ import PriseRdvClient from "../../../components/services/prise-rdv/PriseRdvClien
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
+import { venteAuRdvOffer } from "../../../lib/offer-schemas";
 
 const PAGE = {
   title: "Prise de rendez-vous B2B qualifiés | Suzali Conseil",
@@ -21,6 +22,8 @@ export default function PriseRdvB2BPage() {
           serviceType: "Prise de rendez-vous B2B",
           description: PAGE.description,
           path: PAGE.path,
+          // Le prix affiché sur cette page est celui de l'offre Vente au Rendez-Vous.
+          offers: venteAuRdvOffer(),
         })}
       />
       <PriseRdvClient />

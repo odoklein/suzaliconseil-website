@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { FaqList } from "../kit";
 import { TRANSACTIONAL_SERVICES } from "../../lib/transactional-services";
+import { GROWTH_STANDARD, VENTE_AU_RDV } from "../../lib/offer-terms";
+// Les montants ne figurent volontairement pas dans cette réponse : une FAQ qui cite les prix
+// par rendez-vous des deux offres côte à côte les mélange. Chaque prix reste sur la carte de
+// son offre, dans le catalogue.
 
 /*
  * Four questions are reused verbatim from the service pages so the pricing
@@ -28,7 +32,7 @@ const DERIVED = [
   {
     question: "Comment sont facturées les différentes offres ?",
     answer:
-      "Quatre modes coexistent : un paiement unique (fichiers, packs SMS, projets web), un abonnement mensuel (Growth Standard, pack campagne complet), une facturation à l'usage (7 € par lead qualifié, 55 € ou 150 € par rendez-vous selon l'offre) et le sur-devis pour les dispositifs sur mesure.",
+      `Quatre modes coexistent : un paiement unique (fichiers, packs SMS, projets web), un abonnement mensuel (${GROWTH_STANDARD.name}, avec une part variable par rendez-vous ; pack campagne complet), une facturation à l'usage (Qualification de Leads, ${VENTE_AU_RDV.name}) et le sur-devis pour les dispositifs sur mesure. Le prix exact de chaque offre est affiché, avec son nom, dans le catalogue.`,
     href: "/offres",
     label: "Voir le catalogue",
   },

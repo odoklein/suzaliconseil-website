@@ -11,13 +11,12 @@ import {
 } from "../../kit";
 import CheckRows from "../commercial-b/CheckRows";
 import { MethodSection } from "../../kit";
-import { SITE_URL } from "../../../lib/seo";
 import { faqSchema, serviceSchema } from "../../../lib/structured-data";
+import { growthStandardOffer, venteAuRdvOffer } from "../../../lib/offer-schemas";
 import JsonLd from "../../seo/JsonLd";
 import {
   GROWTH_STANDARD_OFFER,
   VENTE_RDV_OFFER,
-  billingInSentence,
 } from "../../../lib/transactional-services";
 import { CASE_STUDIES } from "../../../lib/case-studies";
 
@@ -90,14 +89,9 @@ export default function ProspectionExternaliseePage({ service }) {
       name: service.h1,
       description: service.description,
       path: service.path,
-      offers: {
-        "@type": "Offer",
-        name: GROWTH_STANDARD_OFFER.name,
-        price: GROWTH_STANDARD_OFFER.price.replace(/\D/g, ""),
-        priceCurrency: "EUR",
-        description: `${GROWTH_STANDARD_OFFER.price} ${billingInSentence(GROWTH_STANDARD_OFFER)}`,
-        url: `${SITE_URL}/offres`,
-      },
+      // Les deux offres affichées sur cette page (deux cartes distinctes) ont chacune leur
+      // Offer : Growth Standard (abonnement + part variable) et Vente au Rendez-Vous.
+      offers: [growthStandardOffer(), venteAuRdvOffer()],
     }),
     faqSchema(
       service.faqs.map(([question, answer]) => ({ question, answer })),
@@ -118,7 +112,7 @@ export default function ProspectionExternaliseePage({ service }) {
           { label: "Prospection commerciale", href: "/services/commercial" },
           { label: service.h1, href: service.path },
         ]}
-        meta={`À partir de ${GROWTH_STANDARD_OFFER.price} ${GROWTH_STANDARD_OFFER.billing}`}
+        meta={`Offre ${GROWTH_STANDARD_OFFER.name} : à partir de ${GROWTH_STANDARD_OFFER.price} ${GROWTH_STANDARD_OFFER.billing}`}
         image="/images/manager-prospection-externalisee.webp"
         imageAlt="Manager en costume dans un open space équipé de postes de travail"
         imagePosition="center 35%"

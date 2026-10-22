@@ -13,6 +13,7 @@ import {
 } from "../../kit";
 import PipelinePanel from "../commercial-shared/PipelinePanel";
 import HeroNotes from "../commercial-shared/HeroNotes";
+import { VENTE_AU_RDV } from "../../../lib/offer-terms";
 
 const BREADCRUMBS = [
   { label: "Services", href: "/services" },
@@ -40,10 +41,11 @@ const BENEFITS = [
     meta: "Auto · Synchronisation",
   },
   {
-    title: "Payé au rendez-vous tenu",
-    description:
-      "Vos commerciaux se concentrent sur le closing. La part variable ne s'applique qu'aux rendez-vous validés et honorés : une absence n'est pas facturée.",
-    meta: "150 € · Par RDV honoré",
+    title: "Payé au rendez-vous",
+    // TODO SUZALI : confirmer si une absence du prospect est facturée sur l'offre Vente au
+    // Rendez-Vous (la promesse « une absence n'est pas facturée » vaut pour Growth Standard).
+    description: `Vos commerciaux se concentrent sur le closing. Offre ${VENTE_AU_RDV.name} : ${VENTE_AU_RDV.setup} de mise en place, puis ${VENTE_AU_RDV.perRdv} par rendez-vous.`,
+    meta: `${VENTE_AU_RDV.name} · ${VENTE_AU_RDV.perRdv} par RDV`,
   },
 ];
 
@@ -73,7 +75,10 @@ const STEPS = [
 // Offer terms (see "Vente au Rendez-Vous" in the catalogue), not outcomes.
 const OUTCOMES = [
   { value: "10 RDV", label: "Minimum par campagne" },
-  { value: "150 €", label: "Par rendez-vous validé et honoré" },
+  {
+    value: VENTE_AU_RDV.perRdv,
+    label: `Par rendez-vous, après ${VENTE_AU_RDV.setup} de mise en place (offre ${VENTE_AU_RDV.name})`,
+  },
 ];
 
 const STRONG = "font-semibold text-[#0D332B]";
@@ -160,10 +165,11 @@ export default function PriseRdvClient() {
       </section>
 
       <ClosingCta
-        title="Des rendez-vous qualifiés, payés quand ils ont lieu"
+        title="Des rendez-vous qualifiés, payés au rendez-vous"
         intro={
           <span className="block font-mono text-[0.85rem] tracking-normal md:text-[0.9rem]">
-            Ciblage ICP · Qualification BANT · Sync CRM · 150 € par RDV honoré
+            Ciblage ICP · Qualification BANT · Sync CRM · Offre {VENTE_AU_RDV.name} :{" "}
+            {VENTE_AU_RDV.line}
           </span>
         }
         primary={{ label: "Démarrer ma prise de RDV", href: "/contact" }}
