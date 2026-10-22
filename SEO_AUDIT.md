@@ -57,7 +57,7 @@ Related existing handling: `next.config.mjs` already has 11 redirects, including
 | Canonical | Present on all 37 sampled pages, absolute, self-referencing, no trailing slash. **Home canonical is `https://suzaliconseil.com` (no slash): fine.** The root layout sets `canonical: "/"`; every page I sampled overrides it, so no page inherits the home canonical today. This is a latent trap for any new page that forgets `alternates`. |
 | Meta robots | `index, follow` everywhere sampled. No stray `noindex`, no `X-Robots-Tag` header. |
 | `http` to `https` | 301 to `https://suzaliconseil.com/...`. OK. |
-| `www` to non-`www` | `next.config.mjs` has the redirect, but `www` is proxied by Cloudflare and my request to `https://www.suzaliconseil.com/` redirected repeatedly (loop) in one test and failed in another. **Needs a manual check in Cloudflare** (likely a redirect loop between a Cloudflare rule and the Next redirect). |
+| `www` to non-`www` | **OK, single hop (re-tested 2026-10-22 with `curl -I`).** `http(s)://www.suzaliconseil.com/<path>?<query>` returns one `301` to `https://suzaliconseil.com/<path>?<query>`, then `200`. No loop. *(An earlier version of this audit reported a possible loop; that was a bad test: PowerShell's `-MaximumRedirection 0` throws on any 3xx, and a Node `fetch` failed once. Corrected.)* The `301` status and the headers (`location` in lower case, no `x-powered-by`) differ from Next.js's own `308`, so the redirect is produced by Cloudflare in front of the app; the `www` rule in `next.config.mjs` is a backup that is never reached. |
 | Trailing slash | `/services/commercial/` returns **308** to the slashless URL. OK. |
 | Uppercase | `/Services/Commercial` returns **404**. OK (no duplicate). |
 | Query params | `/actualites?page=2` and `?utm_source=x` return 200 with canonical to `/actualites`. OK. |
@@ -111,7 +111,7 @@ Other observations:
 |---|---|
 | Query params, pagination, filters | Canonicalised to the clean URL; list is client-side |
 | Trailing slash, uppercase | 308 / 404, no duplicates |
-| `http`, `www` | `http` OK; **`www` needs checking** (see section 4) |
+| `http`, `www` | Both redirect in one hop to `https://suzaliconseil.com` (see section 4). Google Search Console still lists some `www` URLs because they are **old index entries** that will consolidate over time, not a live duplicate |
 | Tags / categories / authors | None on the new site |
 | Preview / draft pages | Posts without `publishedAt` are excluded from the sitemap; but `/actualites/[slug]` does **not** check `publishedAt`, so an **unpublished post is reachable by URL** and has `index, follow`. Low risk because it isn't linked, but worth a guard |
 | `/api/og?title=...` | Disallowed by robots; used for OG images |
@@ -135,7 +135,7 @@ HTTPS + HSTS, canonical + OG + Twitter on every page, correct 404 status, `lang=
 1. **Service URL strategy.** Keep the existing `/services/...` URLs and improve those pages in place (my recommendation: zero redirect risk, keeps what little authority exists), **or** move to the plan's flat URLs with 301s from the current ones?
    If keeping `/services/...`, I'd create only the two missing pages there: `/services/marketing-b2b-externalise` and `/services/agence-generation-de-leads-paris`.
 2. **Article slugs.** OK to change slug generation to **no suffix** (collision handled by `-2`) and to **rewrite the existing ~13 published slugs with 301s from the old ones**? This changes the `slug` column in the production database, so it needs your explicit OK and a backup first.
-3. **`www`.** Can you check Cloudflare's redirect rules for `www.suzaliconseil.com`? I can't see them from the repo.
+3. **`www`.** Resolved: working today (see section 4). Optional: pin the rule in Cloudflare so it doesn't depend on an unseen setting (exact rule in the B1 report).
 4. **Branching.** The plan says never push to `main` without your OK. Phase 1 is committed locally on `seo/phase-1`; tell me if you want it pushed.
 
 ## 11. Proposed Phase 2 scope (once decisions 1 and 2 are made)
@@ -145,4 +145,4 @@ HTTPS + HSTS, canonical + OG + Twitter on every page, correct 404 status, `lang=
 - `/category`, `/tag`, `/author`, `/feed` redirects.
 - Sitemap: add `lastmod` to static routes (from a single source of truth) ; derive the list from one route table.
 - Guard `/actualites/[slug]` against unpublished posts.
-- Fix `www` redirect once Cloudflare is checked.
+- (`www` redirect: no code change needed.)
