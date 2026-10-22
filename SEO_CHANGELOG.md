@@ -132,29 +132,22 @@ Unchanged H1: prospection externalisée, fichier, qualification, campagnes (alre
 - 404: real 404 status, `noindex`, no canonical.
 - **Not verifiable here:** article pages (need the database; the `BlogPosting` builder was tested with a sample post) and **Lighthouse**: no local Lighthouse, and the PageSpeed Insights API refused the request (quota). Fonts were already `next/font` with `display: swap` + preload; production images are served as AVIF by the optimizer (checked: a 7 MB PNG comes out at 28 KB).
 
-### Prices: two offers, always named (added after the Odo review of 2026-10-22)
+### Prices (decision of 2026-10-22: the hook « 150 € par RDV » stays on three pages)
 
-The catalogue (`src/lib/offers-catalog.js`, the source of `/offres`) has two offers with a per-appointment price. They are shown as **two separate, named offers** and never on one line:
+The catalogue (`src/lib/offers-catalog.js`, the source of `/offres`) has two offers with a per-appointment price: **Growth Standard** (1 590 € par mois + 150 € par RDV validé et honoré) and **Vente au Rendez-Vous** (599 € de mise en place + 55 € par RDV). There is no standalone « 150 € par RDV » offer in the catalogue: the 150 € is the variable part of Growth Standard.
 
-| Offer | Price |
+**Decision (manager):** the home page, `/services/prise-rendez-vous-b2b` and `/services/teleprospection-b2b` keep the commercial hook « 150 € par RDV » **exactly as it is on `main`**. This branch does not change the visible text of those three pages (checked: the price lines are identical to `main`).
+
+Rule that follows: **a JSON-LD `Offer` is only emitted on a page whose visible text writes exactly those amounts.** Those three pages therefore have **no `Offer`** (a 1 590 € or 599 € Offer would not match their visible text).
+
+| Where | What |
 |---|---|
-| **Growth Standard** | 1 590 € par mois **+** 150 € par RDV validé et honoré |
-| **Vente au Rendez-Vous** | 599 € de mise en place **+** 55 € par RDV |
+| `src/lib/offer-terms.js`, `src/lib/offer-schemas.js` (new) | The two offers read from the catalogue; one JSON-LD `Offer` per offer with its own `priceSpecification` |
+| `/services/prospection-commerciale-externalisee` | Hero price line prefixed « Offre Growth Standard : … »; JSON-LD has the two `Offer`s (Growth Standard, Vente au Rendez-Vous). The page shows both offers as two separate cards, so all six JSON-LD amounts (1 590, 150, 599, 55) are written on it |
+| `/offres` (`PricingFaq.jsx`) | The billing FAQ no longer lists « 55 € ou 150 € par rendez-vous » together; each amount stays on its offer's card |
+| Home, prise de RDV, téléprospection | Unchanged price text; no `Offer` |
 
-Important: **there is no standalone "150 € per appointment" offer.** The 150 € is the variable part of Growth Standard, on top of its monthly subscription; showing it alone (as several pages did) hid the 1 590 €/month. Pages now say which offer a price belongs to.
-
-| File | Change |
-|---|---|
-| `src/lib/offer-terms.js` (new) | `GROWTH_STANDARD` and `VENTE_AU_RDV`, read from the catalogue and `offers-pricing-meta.js` (no retyped numbers) |
-| `src/lib/offer-schemas.js` (new) | One JSON-LD `Offer` per offer, each with its own `priceSpecification` (monthly + per-RDV; setup + per-RDV) |
-| `/services/prise-rendez-vous-b2b` (`PriseRdvClient.jsx`, `page.jsx`) | This page is the Vente au Rendez-Vous offer: it showed « 150 € » (Growth Standard's). Now « Vente au Rendez-Vous : 599 € de mise en place + 55 € par RDV », JSON-LD `Offer` Vente au Rendez-Vous. The claim « une absence n'est pas facturée » was removed from this page (it holds for Growth Standard, not documented for this offer) |
-| `/services/teleprospection-b2b` (`TeleprospectionClient.jsx`, `page.jsx`) | « 150 € » now reads « …en plus de 1 590 € par mois (offre Growth Standard) »; JSON-LD `Offer` Growth Standard |
-| Home (`home/Results.jsx`) | The « 150 € » figure names Growth Standard, gives its monthly price and now links to `/services/prospection-commerciale-externalisee` (it linked to the prise-de-RDV page, which is the other offer) |
-| `/offres` (`PricingFaq.jsx`) | The billing FAQ no longer lists « 55 € ou 150 € par rendez-vous » together; amounts stay on each offer's card |
-| `/services/prospection-commerciale-externalisee` (`ProspectionExternaliseePage.jsx`) | Hero price line prefixed « Offre Growth Standard : … » ; JSON-LD has both offers as two separate `Offer`s (the page already shows two cards) |
-
-Checked on the local build: every « 150 € » appears next to « Growth Standard », every « 55 € » next to « Vente au Rendez-Vous », the two never adjacent, and each JSON-LD `Offer` mentions only its own prices.
-
+Checked on the local build (script over the 24 sitemap pages): the only page with a priced JSON-LD node is the externalisée page, and every price in it (including prices quoted in `Offer` descriptions) is written in its visible text.
 ### Address
 
 `10 rue de la Paix, 75002 Paris` (confirmed: footer, contact page and legal notice all say this; `structured-data.js` already used it). No change needed.
@@ -163,8 +156,9 @@ Checked on the local build: every « 150 € » appears next to « Growth Standa
 
 1. `ProfessionalService`: opening hours and price range: **left empty on purpose** (Odo's instruction).
 2. Articles are signed by the organisation: named author **left empty on purpose**.
-3. **Confirm for Vente au Rendez-Vous:** is a no-show appointment billed or not? Growth Standard promises « une absence n'est pas facturée »; the prise-de-RDV page used to repeat it, and I removed it there because it is not documented for this offer (`// TODO SUZALI` in `PriseRdvClient.jsx`).
-4. **Confirm there is no standalone « 150 € par RDV » offer** (see above). If one exists, give me its exact conditions so it can be added to the catalogue.
+3. **To confirm (informational):** the prise-de-RDV page (offer Vente au Rendez-Vous per the catalogue) still says « une absence n'est pas facturée » and « 150 € par RDV honoré », which are Growth Standard terms. Left as is by the manager's decision; if that page is ever aligned with the catalogue, check the no-show rule for Vente au Rendez-Vous first.
+4. The « 150 € par RDV » hook shown alone on three pages omits Growth Standard's 1 590 € par mois; kept on purpose (decision above). If a standalone offer exists, its exact conditions should be added to the catalogue.
+
 ### To do by hand
 1. After deploy, run PageSpeed Insights (mobile) on `/` and one service page, and note the scores for the Phase 8 report.
 2. Rich Results Test on `/`, `/services/prospection-commerciale-externalisee` and one article.

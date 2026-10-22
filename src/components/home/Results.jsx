@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import Reveal from "./kit/Reveal";
 import SectionHead from "./kit/SectionHead";
-import { GROWTH_STANDARD } from "../../lib/offer-terms";
 
 // Commitments a client can check in the first month, taken from the offers
 // themselves (delays, pricing, reporting) rather than unmeasured percentages.
@@ -15,12 +14,11 @@ const stats = [
     href: "/services/prospection-commerciale-externalisee",
   },
   {
-    // Part variable de l'offre Growth Standard, qui s'ajoute à son abonnement mensuel :
-    // ce n'est pas une offre « au rendez-vous » seule (voir lib/offer-terms.js).
-    figure: GROWTH_STANDARD.perRdv,
-    title: `Par rendez-vous validé et honoré (offre ${GROWTH_STANDARD.name})`,
-    description: `Offre ${GROWTH_STANDARD.name} : ${GROWTH_STANDARD.monthly} par mois, plus ${GROWTH_STANDARD.perRdv} par rendez-vous validé et honoré. La part variable ne suit que les rendez-vous réellement tenus : un prospect qui ne se présente pas n'est pas facturé.`,
-    href: GROWTH_STANDARD.href,
+    figure: "150 €",
+    title: "Par rendez-vous validé et honoré",
+    description:
+      "La part variable ne suit que les rendez-vous réellement tenus. Un prospect qui ne se présente pas n'est pas facturé.",
+    href: "/services/prise-rendez-vous-b2b",
   },
   {
     figure: "4 canaux",
@@ -56,7 +54,7 @@ const Results = () => {
 
         <ul className="mt-16 border-b border-white/12 md:mt-20">
           {stats.map((stat, idx) => (
-            <Reveal as="li" key={stat.figure} delay={idx * 70}>
+            <Reveal as="li" key={stat.href} delay={idx * 70}>
               <Link
                 href={stat.href}
                 className="ledger-row on-ink group grid grid-cols-1 items-baseline gap-4 border-t border-white/12 px-1 py-9 outline-none focus-visible:ring-2 focus-visible:ring-[#B0FF5B] md:grid-cols-[minmax(19rem,auto)_minmax(0,1fr)_minmax(0,1.1fr)_2.5rem] md:gap-10 md:py-11"

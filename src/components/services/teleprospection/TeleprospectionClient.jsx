@@ -12,7 +12,6 @@ import {
   FigureRow,
 } from "../../kit";
 import PipelinePanel from "../commercial-shared/PipelinePanel";
-import { GROWTH_STANDARD } from "../../../lib/offer-terms";
 import HeroNotes from "../commercial-shared/HeroNotes";
 
 const BREADCRUMBS = [
@@ -25,10 +24,7 @@ const BREADCRUMBS = [
 // the other commercial pages (see the offers catalogue).
 const FIGURES = [
   { value: "7 jours", label: "Pour lancer les appels après validation du ciblage" },
-  {
-    value: GROWTH_STANDARD.perRdv,
-    label: `Par rendez-vous validé et honoré, en plus de ${GROWTH_STANDARD.monthly} par mois (offre ${GROWTH_STANDARD.name})`,
-  },
+  { value: "150 €", label: "Par rendez-vous validé et honoré, rien pour une absence" },
   { value: "1 brief", label: "Écrit avant chaque rendez-vous posé" },
   { value: "Hebdo", label: "Reporting des appels, contacts et rendez-vous" },
 ];

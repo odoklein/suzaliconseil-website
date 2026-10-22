@@ -6,8 +6,15 @@ import { OFFER_PRICING } from "./offers-pricing-meta.js";
  * (la source de /offres) plutôt que recopiées : une page, un FAQ ou un JSON-LD
  * ne peut plus afficher un prix qui diverge de /offres.
  *
- * Règle éditoriale : tout prix affiché nomme son offre, et les deux offres ne
- * se mélangent jamais sur une même ligne.
+ * Règle éditoriale pour les pages qui utilisent ce module (/offres, page
+ * prospection externalisée) : tout prix affiché nomme son offre, et les deux
+ * offres ne se mélangent jamais sur une même ligne.
+ *
+ * Exception décidée par le manager (22/10/2026) : l'accueil, la page prise de RDV
+ * et la page téléprospection gardent l'accroche commerciale « 150 € par RDV » telle
+ * qu'elle est sur main. Ces trois pages n'utilisent donc PAS ce module et n'ont
+ * aucun Offer JSON-LD (un Offer dont le prix ne correspond pas au texte visible
+ * est interdit).
  *
  *   Growth Standard       1 590 € par mois + 150 € par RDV validé et honoré
  *   Vente au Rendez-Vous  599 € de mise en place + 55 € par RDV

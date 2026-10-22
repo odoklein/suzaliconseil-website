@@ -2,7 +2,6 @@ import TeleprospectionClient from "../../../components/services/teleprospection/
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
-import { growthStandardOffer } from "../../../lib/offer-schemas";
 
 const PAGE = {
   title: "Agence de téléprospection B2B en France | Suzali Conseil",
@@ -22,8 +21,6 @@ export default function TeleprospectionB2BPage() {
           serviceType: "Téléprospection B2B",
           description: PAGE.description,
           path: PAGE.path,
-          // Le prix affiché sur cette page est celui de l'offre Growth Standard.
-          offers: growthStandardOffer(),
         })}
       />
       <TeleprospectionClient />

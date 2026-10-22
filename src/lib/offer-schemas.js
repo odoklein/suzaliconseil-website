@@ -5,6 +5,9 @@ import { GROWTH_STANDARD, VENTE_AU_RDV } from "./offer-terms";
  * JSON-LD Offer des deux offres à prix par rendez-vous. Chaque offre a son
  * propre Offer, avec ses propres composantes de prix (priceSpecification) :
  * on ne fond jamais Growth Standard et Vente au Rendez-Vous en un seul prix.
+ *
+ * Règle : n'utiliser ces builders QUE sur une page dont le texte visible affiche
+ * exactement ces montants (aujourd'hui : /services/prospection-commerciale-externalisee).
  */
 const spec = (price, extra) => ({
   "@type": "UnitPriceSpecification",
