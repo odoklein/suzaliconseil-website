@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { db } from "../../../../lib/db";
 import { posts, contentGeneratorSettings } from "../../../../db/schema";
 import { eq, isNotNull, sql } from "drizzle-orm";
-import { generateArticle } from "../../../../lib/ai-writer.js";
+import { generateArticle, pickNextTarget } from "../../../../lib/ai-writer.js";
 import { notifyArticlePublished } from "../../../../lib/indexnow.js";
 import { uniquePostSlug } from "../../../../lib/post-slug-db.js";
+import { checkCadence } from "../../../../lib/article-cadence.js";
 
 /** Vercel Cron envoie Authorization: Bearer <CRON_SECRET> */
 function isAuthorized(request) {
@@ -41,6 +42,17 @@ async function handleCron(request) {
       settings = inserted;
     }
 
+    // 1 article automatique par semaine au maximum, quel que soit le rythme du planificateur.
+    const cadence = checkCadence(settings.lastRunAt);
+    if (!cadence.allowed) {
+      return NextResponse.json({
+        ok: true,
+        skipped: true,
+        reason: "Cadence : 1 article automatique par semaine au maximum.",
+        nextAllowedAt: cadence.nextAllowedAt,
+      });
+    }
+
     const tone = settings.tone || "expert";
     const autoPublish = settings.autoPublish === "true";
 
@@ -55,7 +67,18 @@ async function handleCron(request) {
       targetedPosts.map((p) => (p.targetKeyword || "").toLowerCase()).filter(Boolean),
     );
 
-    const article = await generateArticle({ tone, recentTitles, usedKeywords });
+    // Plus aucune cible inédite : on s'arrête plutôt que d'écrire un doublon (cannibalisation).
+    const target = pickNextTarget(usedKeywords);
+    if (!target) {
+      return NextResponse.json({
+        ok: true,
+        skipped: true,
+        reason:
+          "Toutes les cibles de mots-clés ont déjà un article : ajouter de nouveaux mots-clés dans src/lib/ai-writer.js.",
+      });
+    }
+
+    const article = await generateArticle({ tone, recentTitles, target });
 
     const now = new Date();
     const [post] = await db

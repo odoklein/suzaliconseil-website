@@ -162,3 +162,34 @@ Checked on the local build (script over the 24 sitemap pages): the only page wit
 ### To do by hand
 1. After deploy, run PageSpeed Insights (mobile) on `/` and one service page, and note the scores for the Phase 8 report.
 2. Rich Results Test on `/`, `/services/prospection-commerciale-externalisee` and one article.
+
+
+## T2: Retarget the automatic article generator (2026-10-22), branch `seo/T2-ai-writer`
+
+**Not live yet** (waiting for Odo's OK).
+
+### Why
+
+The generator's three priority targets (« agence de génération de leads b2b », « prospection commerciale externalisée », « agence outbound ») are exactly the searches held by the service pages: it created the cannibalisation. Its secondary pool also contained other service-page searches and « combien coûte la génération de leads b2b » (reserved for the team's price article). And the « 3 articles per week » setting was never read by anything.
+
+### Changed
+
+| File | Change |
+|---|---|
+| `src/lib/ai-writer.js` | **Priority targets are now 4 practical topics**, each with a service link: « modèle de script de téléprospection b2b », « modèle d'email de prospection b2b », « comment prospecter sur linkedin en b2b », « comment qualifier un lead b2b avec la méthode bant ». **Secondary pool: 12 practical topics** (« comment… », « exemple de… », « techniques de… »). **15 keywords removed** and listed in `EXCLUDED_KEYWORDS` with the reason (service-page searches, the team's price article, a « meilleur outil » ranking that would need unverifiable claims about competitors, topics already covered by existing articles). |
+| `src/lib/ai-writer.js` | `pickNextTarget` now returns `null` when every target already has an article, instead of picking a random used one (which would have written duplicate articles once the pool ran out). |
+| `src/lib/article-cadence.js` (new) | **1 automatic article per week maximum**, enforced in code: minimum gap 7 days minus 2 hours (the 2 hours absorb the delay between the trigger and `lastRunAt`). Independent of how often the scheduler calls the endpoint. |
+| `src/app/api/cron/generate-article/route.js` | Skips (HTTP 200, `skipped: true`, with the reason and `nextAllowedAt`) when the cadence rule or the target list says so. |
+
+### Checked
+
+- Lint clean; build passes.
+- Script (33 checks): no target is an excluded keyword, no duplicates, no target contains service-page or plan wording (agence, externalisée, prix, comparatif, forfait…), every target is « comment / modèle / exemple / techniques »; the selection walks each target once and then returns `null`; a Mon/Wed/Fri scheduler publishes 1 article per week; an hourly scheduler over 60 days publishes 9 (about 1 per week), never two closer than 6 days 22 hours.
+- **Not testable here:** the cron route itself (needs the database and Mistral).
+
+### Things to know
+
+- The new keywords are **not validated in Search Console** (the old ones were, but they were the service pages' own searches). Replace or add real ones in `src/lib/ai-writer.js` as data comes in.
+- The admin setting « fréquence par semaine » is still displayed and saved, but it is not what limits publishing (the cap above is). A manual « Générer » in the admin is not limited, but it updates `lastRunAt`, so it uses up that week's automatic article.
+- **Risk to review, not changed here:** the generation prompt asks for « chiffres ou fourchettes plausibles ». Articles are published automatically, so a model-invented figure can go live. Suggest asking the model not to invent figures (a prompt change, separate task).
+- 3 existing articles may carry the old priority keywords as `targetKeyword`; they simply don't block the new targets.

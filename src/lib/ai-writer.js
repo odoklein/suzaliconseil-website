@@ -2,77 +2,122 @@ import { Mistral } from "@mistralai/mistralai";
 import { SERVICES } from "./article-services.js";
 import { slugFromTitle } from "./post-slug.js";
 
-/**
- * Cibles prioritaires : mots-clés réellement présents dans la Search Console
- * (export du 24/09/2026, forts volumes d'impressions, position 40-80, sans
- * page dédiée bien classée) plutôt qu'un tirage aléatoire dans une liste
- * générique. Chacune a un angle éditorial précis et une page de service
- * déterminée à l'avance : le modèle n'a pas à deviner quel lien interne
- * poser, on le lui donne.
+/*
+ * POLITIQUE DE CIBLAGE (tâche T2, 22/10/2026)
  *
- * "angle" cadre le sujet exact ; le modèle reste libre du titre final tant
- * qu'il contient le mot-clé.
+ * Une recherche = une seule page Suzali. Les articles automatiques ne doivent donc
+ * JAMAIS viser :
+ *   1. une recherche déjà tenue par une page service (agence de génération de leads,
+ *      prospection commerciale externalisée, agence outbound, téléprospection, prise
+ *      de rendez-vous, fichier de prospection, qualification de leads, marque blanche,
+ *      acquisition digitale, branding, site e-commerce…) ;
+ *   2. un sujet réservé aux 4 articles rédigés par l'équipe marketing : prix d'une
+ *      agence de prospection, internaliser ou externaliser (le vrai coût), comparatif
+ *      des agences, forfait ou paiement au rendez-vous (dont « combien coûte la
+ *      génération de leads b2b »).
+ *
+ * Les cibles ci-dessous sont des questions pratiques (« comment… », « modèle de… »,
+ * « exemple de… ») : elles répondent à un besoin d'information et envoient ensuite le
+ * lecteur vers la page service concernée par un lien interne.
+ *
+ * Ces mots-clés n'ont PAS été validés dans la Search Console (ceux de l'ancienne liste
+ * l'étaient mais visaient les pages services) : à ajuster avec les données réelles.
+ */
+
+/**
+ * Cibles prioritaires, traitées dans l'ordre. "angle" cadre le sujet exact ; le
+ * modèle reste libre du titre final tant qu'il contient le mot-clé. Chaque cible
+ * a la page de service vers laquelle poser le lien interne.
  */
 const PRIORITY_TARGETS = [
   {
-    keyword: "agence de génération de leads b2b",
+    keyword: "modèle de script de téléprospection b2b",
     angle:
-      "Un guide pour choisir son agence de génération de leads B2B : critères de sélection, questions à poser, grille d'évaluation. Public : décideur qui compare plusieurs prestataires avant de signer.",
+      "Un modèle de script d'appel B2B commenté, étape par étape : accroche, questions de qualification, traitement des objections courantes, prise de rendez-vous. Donner des formulations concrètes que le lecteur peut adapter, sans promettre de taux de réussite chiffrés.",
     topic: "commercial",
-    targetService: SERVICES.generationLeads,
-    secondaryService: SERVICES.qualificationLeads,
+    targetService: SERVICES.teleprospection,
+    secondaryService: SERVICES.priseRendezVous,
   },
   {
-    keyword: "prospection commerciale externalisée",
+    keyword: "modèle d'email de prospection b2b",
     angle:
-      "Un guide complet sur l'externalisation de la prospection commerciale B2B : ce que ça coûte réellement, les modèles de facturation courants, les avantages et limites concrets, comment évaluer un prestataire. Public : dirigeant ou directeur commercial qui hésite entre interne et externalisé.",
+      "Trois modèles d'emails de prospection B2B commentés (première approche, relance, dernier message) et les règles à respecter (objet, longueur, une seule demande, désinscription simple, information sur l'origine des données). Aucun chiffre de performance inventé.",
     topic: "commercial",
-    targetService: SERVICES.prospectionExternalisee,
-    secondaryService: SERVICES.commercial,
+    targetService: SERVICES.campagnesEmailSms,
+    secondaryService: SERVICES.outbound,
   },
   {
-    keyword: "agence outbound",
+    keyword: "comment prospecter sur linkedin en b2b",
     angle:
-      "Un comparatif outbound vs inbound marketing B2B : différences concrètes, quand choisir l'un plutôt que l'autre selon le marché et le cycle de vente, comment les combiner. Public : responsable marketing qui arbitre son budget d'acquisition.",
+      "Une méthode pas à pas pour prospecter sur LinkedIn : préparer son profil, cibler, rédiger un message de connexion et une relance, mesurer ce qui fonctionne. Exemples de messages courts et sobres, sans automatisation abusive.",
     topic: "commercial",
     targetService: SERVICES.outbound,
     secondaryService: SERVICES.generationLeads,
   },
+  {
+    keyword: "comment qualifier un lead b2b avec la méthode bant",
+    angle:
+      "Appliquer BANT (budget, autorité, besoin, délai) à la qualification d'un lead B2B : questions types pour chaque critère, grille de décision simple, quand transmettre ou écarter un lead.",
+    topic: "commercial",
+    targetService: SERVICES.qualificationLeads,
+    secondaryService: SERVICES.priseRendezVous,
+  },
 ];
 
 /**
- * Pool secondaire pour la cadence récurrente (cron lun/mer/ven) une fois les
- * cibles prioritaires épuisées. Repris de l'ancienne liste statique
- * (src/lib/gemini.js), sans service imposé : l'article retombe sur le lien
- * par défaut du thème (voir article-services.js).
+ * Pool secondaire, utilisé quand les cibles prioritaires sont traitées (et seulement
+ * au rythme d'un article par semaine, voir article-cadence.js). Mêmes règles : des
+ * questions pratiques qui ne visent aucune page service ni aucun des 4 articles de
+ * l'équipe. Sans service imposé, l'article retombe sur le lien par défaut du thème
+ * (voir article-services.js).
  */
 const SECONDARY_POOL = [
-  { keyword: "téléprospection efficace b2b", topic: "commercial" },
-  { keyword: "combien coûte la génération de leads b2b", topic: "commercial" },
-  { keyword: "meilleur outil prospection b2b", topic: "commercial" },
-  { keyword: "script téléprospection b2b", topic: "commercial" },
-  { keyword: "kpi prospection commerciale", topic: "commercial" },
-  { keyword: "fichier prospection b2b", topic: "commercial", targetService: SERVICES.fichierProspection },
-  { keyword: "agence prospection pour startup saas", topic: "commercial" },
-  { keyword: "génération leads b2b industrie", topic: "commercial" },
-  { keyword: "prospection commerciale pme", topic: "commercial" },
-  { keyword: "cold emailing b2b france", topic: "commercial", targetService: SERVICES.campagnesEmailSms },
-  { keyword: "linkedin prospection commerciale", topic: "commercial" },
-  { keyword: "qualification leads bant", topic: "commercial", targetService: SERVICES.qualificationLeads },
-  { keyword: "prise de rendez-vous b2b externalisée", topic: "commercial", targetService: SERVICES.priseRendezVous },
-  { keyword: "techniques de closing b2b", topic: "commercial" },
-  { keyword: "vente en marque blanche", topic: "commercial" },
   { keyword: "comment trouver des clients b2b", topic: "commercial" },
-  { keyword: "account based marketing b2b", topic: "commercial" },
-  { keyword: "agence acquisition google", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "spécialiste acquisition digitale", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "référencement naturel b2b", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "content marketing b2b", topic: "digital" },
-  { keyword: "stratégie seo b2b", topic: "digital", targetService: SERVICES.seoAcquisition },
-  { keyword: "automatisation marketing b2b", topic: "digital", targetService: SERVICES.developpementAutomatisation },
-  { keyword: "identité visuelle entreprise", topic: "digital", targetService: SERVICES.strategieDigitale },
-  { keyword: "site e-commerce b2b", topic: "digital" },
+  { keyword: "comment préparer un appel de téléprospection b2b", topic: "commercial", targetService: SERVICES.teleprospection },
+  { keyword: "comment choisir un outil de prospection b2b", topic: "commercial" },
+  { keyword: "techniques de closing b2b", topic: "commercial" },
+  { keyword: "comment répondre aux objections en prospection b2b", topic: "commercial", targetService: SERVICES.teleprospection },
+  { keyword: "comment lancer une stratégie abm b2b", topic: "commercial", targetService: SERVICES.outbound },
+  { keyword: "comment relancer un prospect b2b sans être insistant", topic: "commercial" },
+  { keyword: "exemple de séquence de prospection multicanale", topic: "commercial", targetService: SERVICES.outbound },
+  { keyword: "comment construire une stratégie de content marketing b2b", topic: "digital" },
+  { keyword: "exemple de scénario d'automatisation marketing b2b", topic: "digital", targetService: SERVICES.developpementAutomatisation },
+  { keyword: "comment faire un audit seo b2b", topic: "digital", targetService: SERVICES.seoAcquisition },
+  { keyword: "comment structurer le site web d'une entreprise b2b", topic: "digital", targetService: SERVICES.strategieDigitale },
 ];
+
+/**
+ * Mots-clés retirés des listes (et pourquoi), gardés ici pour que personne ne les remette :
+ * agence de génération de leads b2b, prospection commerciale externalisée, agence outbound,
+ * téléprospection efficace b2b, fichier prospection b2b, prise de rendez-vous b2b externalisée,
+ * vente en marque blanche, agence acquisition google, spécialiste acquisition digitale,
+ * stratégie seo b2b, identité visuelle entreprise, site e-commerce b2b, agence prospection pour
+ * startup saas : recherches tenues par une page service.
+ * combien coûte la génération de leads b2b, meilleur outil prospection b2b : article prix de
+ * l'équipe / comparatif non vérifiable (publicité comparative).
+ * kpi prospection commerciale, génération leads b2b industrie, prospection commerciale pme,
+ * cold emailing b2b france : déjà couverts par un article existant.
+ */
+export const EXCLUDED_KEYWORDS = [
+  "agence de génération de leads b2b",
+  "prospection commerciale externalisée",
+  "agence outbound",
+  "téléprospection efficace b2b",
+  "fichier prospection b2b",
+  "prise de rendez-vous b2b externalisée",
+  "vente en marque blanche",
+  "agence acquisition google",
+  "spécialiste acquisition digitale",
+  "stratégie seo b2b",
+  "identité visuelle entreprise",
+  "site e-commerce b2b",
+  "agence prospection pour startup saas",
+  "combien coûte la génération de leads b2b",
+  "meilleur outil prospection b2b",
+];
+
+/** Pour les tests : toutes les cibles actuellement proposées par le générateur. */
+export const ALL_TARGET_KEYWORDS = [...PRIORITY_TARGETS, ...SECONDARY_POOL].map((t) => t.keyword);
 
 function truncateAtWord(text, maxLength) {
   const clean = String(text || "").replace(/\s+/g, " ").trim();
@@ -82,22 +127,22 @@ function truncateAtWord(text, maxLength) {
 }
 
 /**
- * Choisit la prochaine cible : cibles prioritaires non encore traitées
- * d'abord (dans l'ordre), puis pool secondaire non encore traité, puis
- * n'importe laquelle du pool secondaire en dernier recours.
+ * Choisit la prochaine cible : les cibles prioritaires non encore traitées d'abord
+ * (dans l'ordre), puis le pool secondaire (dans l'ordre).
+ *
+ * Renvoie `null` quand toutes les cibles ont déjà un article. On ne retombe PAS sur
+ * une cible déjà traitée : écrire un deuxième article sur la même recherche est
+ * exactement la cannibalisation que ce générateur ne doit plus créer. Il faut alors
+ * ajouter de nouveaux mots-clés (validés dans la Search Console) dans cette liste.
+ *
  * @param {Set<string>} usedKeywords mots-clés déjà ciblés (posts.targetKeyword, en minuscules)
+ * @returns {object|null}
  */
 export function pickNextTarget(usedKeywords = new Set()) {
-  const unusedPriority = PRIORITY_TARGETS.filter(
+  const unused = [...PRIORITY_TARGETS, ...SECONDARY_POOL].filter(
     (t) => !usedKeywords.has(t.keyword.toLowerCase()),
   );
-  if (unusedPriority.length > 0) return unusedPriority[0];
-
-  const unusedSecondary = SECONDARY_POOL.filter(
-    (t) => !usedKeywords.has(t.keyword.toLowerCase()),
-  );
-  const pool = unusedSecondary.length > 0 ? unusedSecondary : SECONDARY_POOL;
-  return pool[Math.floor(Math.random() * pool.length)];
+  return unused[0] ?? null;
 }
 
 /**
@@ -116,6 +161,11 @@ export async function generateArticle(options = {}) {
 
   const tone = options.tone || "expert";
   const target = options.target || pickNextTarget(options.usedKeywords);
+  if (!target) {
+    throw new Error(
+      "Aucune cible de mot-clé disponible : toutes ont déjà un article. Ajoutez de nouveaux mots-clés dans src/lib/ai-writer.js.",
+    );
+  }
 
   const client = new Mistral({ apiKey });
 
