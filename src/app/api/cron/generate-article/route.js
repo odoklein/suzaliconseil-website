@@ -93,10 +93,14 @@ const deps = {
   },
 };
 
+// Visible SANS le secret (même sur un 401) : permet de vérifier, avant d'appeler la route avec ?dryRun=1,
+// que la version déployée connaît bien ce mode. Une ancienne version l'ignorerait et ferait un vrai appel.
+const FEATURES_HEADER = { "x-cron-features": "dry-run,attempt-cap,figure-guard" };
+
 async function handleCron(request) {
   // L'authentification passe AVANT tout, y compris le mode dryRun.
   if (!isAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: FEATURES_HEADER });
   }
 
   // ?dryRun=1 : exécute les contrôles (auth, cadence, cible, plafond d'essais) en lecture
@@ -106,12 +110,12 @@ async function handleCron(request) {
 
   try {
     const { status, body } = await runArticleCron({ dryRun, deps });
-    return NextResponse.json(body, { status });
+    return NextResponse.json(body, { status, headers: FEATURES_HEADER });
   } catch (err) {
     console.error("Cron generate-article error:", err);
     return NextResponse.json(
       { error: err.message || "Generation failed", ...(dryRun ? { dryRun: true } : {}) },
-      { status: 500 },
+      { status: 500, headers: FEATURES_HEADER },
     );
   }
 }
