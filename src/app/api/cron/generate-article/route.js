@@ -2,12 +2,11 @@ import { NextResponse } from "next/server";
 import { db } from "../../../../lib/db";
 import { posts, contentGeneratorSettings } from "../../../../db/schema";
 import { eq, isNotNull, sql } from "drizzle-orm";
-import { generateArticle, pickNextTarget } from "../../../../lib/ai-writer.js";
+import { generateArticle } from "../../../../lib/ai-writer.js";
 import { notifyArticlePublished } from "../../../../lib/indexnow.js";
 import { uniquePostSlug } from "../../../../lib/post-slug-db.js";
-import { checkCadence } from "../../../../lib/article-cadence.js";
-import { beginAttempt, MAX_ATTEMPTS_PER_DAY } from "../../../../lib/article-attempts.js";
 import { dbAttemptStore } from "../../../../lib/article-attempts-db.js";
+import { runArticleCron } from "../../../../lib/article-cron.js";
 
 /** Vercel Cron envoie Authorization: Bearer <CRON_SECRET> */
 function isAuthorized(request) {
@@ -25,79 +24,43 @@ export async function POST(request) {
   return handleCron(request);
 }
 
-async function handleCron(request) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+// Valeurs utilisées quand aucune ligne de réglages n'existe et qu'on ne doit rien écrire (dryRun).
+const DEFAULT_SETTINGS = { id: null, lastRunAt: null, tone: "expert", autoPublish: "true" };
 
-  try {
+/** Les accès réels à la base et à Mistral, injectés dans la logique testable (article-cron.js). */
+const deps = {
+  async loadSettings({ createIfMissing }) {
     let [settings] = await db.select().from(contentGeneratorSettings).limit(1);
-    if (!settings) {
+    if (!settings && createIfMissing) {
       const [inserted] = await db
         .insert(contentGeneratorSettings)
-        .values({
-          frequencyPerWeek: "3",
-          tone: "expert",
-          autoPublish: "true",
-        })
+        .values({ frequencyPerWeek: "3", tone: "expert", autoPublish: "true" })
         .returning();
       settings = inserted;
     }
+    return settings || DEFAULT_SETTINGS;
+  },
 
-    // 1 article automatique par semaine au maximum, quel que soit le rythme du planificateur.
-    const cadence = checkCadence(settings.lastRunAt);
-    if (!cadence.allowed) {
-      return NextResponse.json({
-        ok: true,
-        skipped: true,
-        reason: "Cadence : 1 article automatique par semaine au maximum.",
-        nextAllowedAt: cadence.nextAllowedAt,
-      });
-    }
-
-    const tone = settings.tone || "expert";
-    const autoPublish = settings.autoPublish === "true";
-
+  async loadTargeting() {
     const recentPosts = await db.select({ title: posts.title }).from(posts).orderBy(sql`created_at DESC`).limit(30);
-    const recentTitles = recentPosts.map(p => p.title).join(" | ");
-
     const targetedPosts = await db
       .select({ targetKeyword: posts.targetKeyword })
       .from(posts)
       .where(isNotNull(posts.targetKeyword));
-    const usedKeywords = new Set(
-      targetedPosts.map((p) => (p.targetKeyword || "").toLowerCase()).filter(Boolean),
-    );
+    return {
+      recentTitles: recentPosts.map((p) => p.title).join(" | "),
+      usedKeywords: new Set(
+        targetedPosts.map((p) => (p.targetKeyword || "").toLowerCase()).filter(Boolean),
+      ),
+    };
+  },
 
-    // Plus aucune cible inédite : on s'arrête plutôt que d'écrire un doublon (cannibalisation).
-    const target = pickNextTarget(usedKeywords);
-    if (!target) {
-      return NextResponse.json({
-        ok: true,
-        skipped: true,
-        reason:
-          "Toutes les cibles de mots-clés ont déjà un article : ajouter de nouveaux mots-clés dans src/lib/ai-writer.js.",
-      });
-    }
+  attemptStore: dbAttemptStore,
 
-    // Plafond d'essais : 3 par 24 h, REJETS COMPRIS. L'essai est enregistré AVANT d'appeler
-    // Mistral, donc un rejet ou un plantage compte aussi (sinon un planificateur qui rappelle
-    // la route en boucle ferait des appels Mistral sans fin : un rejet ne met pas lastRunAt à jour).
-    const attempt = await beginAttempt(dbAttemptStore);
-    if (!attempt.allowed) {
-      return NextResponse.json({
-        ok: true,
-        skipped: true,
-        reason: `Plafond : ${MAX_ATTEMPTS_PER_DAY} essais de génération par 24 h (rejets compris).`,
-        attemptsInWindow: attempt.attemptsInWindow,
-        lastAttemptAt: attempt.lastAttemptAt,
-        nextAllowedAt: attempt.nextAllowedAt,
-      });
-    }
+  generate: (args) => generateArticle(args),
 
-    const article = await generateArticle({ tone, recentTitles, target });
-
-    const now = new Date();
+  async publish({ article, settings, now }) {
+    const autoPublish = settings.autoPublish === "true";
     const [post] = await db
       .insert(posts)
       .values({
@@ -119,32 +82,36 @@ async function handleCron(request) {
 
     await db
       .update(contentGeneratorSettings)
-      .set({
-        lastRunAt: now,
-        updatedAt: now,
-      })
+      .set({ lastRunAt: now, updatedAt: now })
       .where(eq(contentGeneratorSettings.id, settings.id));
 
     if (autoPublish) {
       // Best-effort : ne bloque jamais la réponse du cron si IndexNow est down.
       notifyArticlePublished(post.slug).catch(() => {});
     }
+    return post;
+  },
+};
 
-    return NextResponse.json({
-      ok: true,
-      postId: post.id,
-      slug: post.slug,
-      published: autoPublish,
-      title: post.title,
-      targetKeyword: post.targetKeyword,
-      lastAttemptAt: attempt.lastAttemptAt,
-      attemptsInWindow: attempt.attemptsInWindow,
-    });
+async function handleCron(request) {
+  // L'authentification passe AVANT tout, y compris le mode dryRun.
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // ?dryRun=1 : exécute les contrôles (auth, cadence, cible, plafond d'essais) en lecture
+  // seule et dit ce que ferait un vrai appel, sans appeler Mistral ni rien écrire.
+  const dryRunParam = new URL(request.url).searchParams.get("dryRun");
+  const dryRun = dryRunParam === "1" || dryRunParam === "true";
+
+  try {
+    const { status, body } = await runArticleCron({ dryRun, deps });
+    return NextResponse.json(body, { status });
   } catch (err) {
     console.error("Cron generate-article error:", err);
     return NextResponse.json(
-      { error: err.message || "Generation failed" },
-      { status: 500 }
+      { error: err.message || "Generation failed", ...(dryRun ? { dryRun: true } : {}) },
+      { status: 500 },
     );
   }
 }

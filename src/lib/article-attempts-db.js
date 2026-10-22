@@ -5,31 +5,28 @@ import { db } from "./db.js";
 /*
  * Store des essais de génération (voir article-attempts.js).
  *
- * Table : article_generation_attempts (créée par scripts/migrate-attempts-table.mjs).
- * Une nouvelle table plutôt que de nouvelles colonnes sur content_generator_settings :
- * l'admin et le cron lisent cette table en entier, une colonne absente les ferait tous
- * planter ; une table absente ne gêne personne.
+ * Table : article_generation_attempts, à créer avec le SQL de
+ * docs/article-attempts-table.sql (ou scripts/migrate-attempts-table.mjs).
  *
- * Tant que la table n'existe pas (déploiement avant migration), on retombe sur une
- * liste en MÉMOIRE du processus : le plafond s'applique alors tant que le serveur
- * tourne, mais un redémarrage le remet à zéro. Toute AUTRE erreur de base, elle,
- * remonte : on n'appelle pas Mistral sans pouvoir enregistrer l'essai.
+ * Si la table n'existe pas encore, le store LÈVE AttemptsTableMissingError : la route
+ * répond 503 et n'appelle JAMAIS Mistral. Pas de repli en mémoire : un plafond qui se
+ * remet à zéro à chaque redémarrage n'en est pas un, et « échouer proprement » est
+ * plus sûr que « continuer sans garde-fou ». Toute autre erreur de base remonte telle
+ * quelle (même effet : pas d'appel au modèle).
  */
-const memory = [];
-let warned = false;
+export class AttemptsTableMissingError extends Error {
+  constructor() {
+    super(
+      "Table article_generation_attempts absente : exécuter docs/article-attempts-table.sql sur la base, puis relancer.",
+    );
+    this.name = "AttemptsTableMissingError";
+  }
+}
 
 export const isMissingTable = (error) => {
-  const text = `${error?.code ?? ""} ${error?.message ?? ""} ${error?.cause?.message ?? ""}`;
+  const text = `${error?.code ?? ""} ${error?.message ?? ""} ${error?.cause?.message ?? ""} ${error?.cause?.code ?? ""}`;
   return /42P01|does not exist|n'existe pas/i.test(text);
 };
-
-function warnOnce() {
-  if (warned) return;
-  warned = true;
-  console.warn(
-    "article-attempts: table article_generation_attempts absente, plafond en mémoire seulement (lancer scripts/migrate-attempts-table.mjs).",
-  );
-}
 
 export const dbAttemptStore = {
   async list(since) {
@@ -40,18 +37,16 @@ export const dbAttemptStore = {
         .where(gt(articleGenerationAttempts.attemptedAt, since));
       return rows.map((row) => row.attemptedAt);
     } catch (error) {
-      if (!isMissingTable(error)) throw error;
-      warnOnce();
-      return memory.filter((at) => at > since);
+      if (isMissingTable(error)) throw new AttemptsTableMissingError();
+      throw error;
     }
   },
   async add(at) {
     try {
       await db.insert(articleGenerationAttempts).values({ attemptedAt: at });
     } catch (error) {
-      if (!isMissingTable(error)) throw error;
-      warnOnce();
-      memory.push(at);
+      if (isMissingTable(error)) throw new AttemptsTableMissingError();
+      throw error;
     }
   },
 };

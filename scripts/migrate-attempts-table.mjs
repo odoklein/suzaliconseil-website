@@ -4,10 +4,11 @@
 //   node scripts/migrate-attempts-table.mjs            -> DRY RUN : affiche le SQL, n'écrit rien
 //   node scripts/migrate-attempts-table.mjs --apply    -> crée la table
 //
-// Idempotent (IF NOT EXISTS) et sans effet sur les tables existantes. Sans cette table,
-// l'application fonctionne quand même : le plafond est alors tenu en mémoire du processus
-// (il est remis à zéro à chaque redémarrage). Le script affiche l'hôte de la base visée :
-// à vérifier avant --apply (une DATABASE_URL du shell prime sur .env.local).
+// Idempotent (IF NOT EXISTS) et sans effet sur les tables existantes. Sans cette table, la route
+// cron répond 503 et n'appelle JAMAIS Mistral (échec propre, voir src/lib/article-cron.js).
+// Le même SQL est dans docs/article-attempts-table.sql (à coller dans la console Neon).
+// Le script affiche l'hôte de la base visée : à vérifier avant --apply (une DATABASE_URL du
+// shell prime sur .env.local).
 import { config } from "dotenv";
 import postgres from "postgres";
 
