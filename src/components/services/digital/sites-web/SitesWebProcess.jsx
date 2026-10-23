@@ -16,7 +16,7 @@ const steps = [
   },
   {
     title: "Recette & Optimisation",
-    description: "Tests sur +50 terminaux, optimisation SEO et temps de chargement.",
+    description: "Tests sur différents terminaux, optimisation SEO et temps de chargement.",
   },
   {
     title: "Formation & Mise en Ligne",

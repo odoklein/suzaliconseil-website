@@ -4,8 +4,9 @@ import { ARTICLES, SERVICES } from "../../lib/internal-links";
  * Contenu éditorial long de /services/vente-marque-blanche (rendu par ServiceLongForm).
  * Requêtes visées : force de vente externalisée, vente en marque blanche, externaliser sa vente,
  * closing externalisé. S'appuie sur les engagements déjà publiés sur la page (équipe sous votre
- * marque, vos outils, account manager, reporting hebdomadaire, enregistrements d'appels).
- * Aucun chiffre, aucun prix, aucun résultat client.
+ * marque, vos outils, reporting hebdomadaire).
+ * Aucun chiffre, aucun prix, aucun résultat client, aucune politique non confirmée
+ * (transparence envers les prospects, enregistrement des appels, hébergement des données).
  */
 const link = ([href, text], label) => ({ href, text: label ?? text });
 
@@ -82,11 +83,11 @@ export const MARQUE_BLANCHE_CONTENT = {
         },
         {
           title: "3. Accès à vos outils",
-          text: "Messagerie, CRM, agenda, scripts : l’équipe travaille dans votre environnement, ce qui garde l’historique des échanges chez vous.",
+          text: "Messagerie, CRM, agenda, scripts : l’équipe travaille avec vos outils et selon vos règles.",
         },
         {
           title: "4. Démarrage encadré",
-          text: "Les premiers échanges sont suivis de près avec votre account manager : écoute d’enregistrements, ajustement du discours et des réponses avant de monter en charge.",
+          text: "Les premiers échanges sont suivis de près : le discours et les réponses sont ajustés avec vous avant de monter en charge.",
         },
         {
           title: "5. Pilotage régulier",
@@ -95,9 +96,9 @@ export const MARQUE_BLANCHE_CONTENT = {
       ],
     },
     {
-      title: "Transparence et responsabilité",
+      title: "Cadre et responsabilité",
       paragraphs: [
-        "Représenter une marque suppose de ne jamais tromper le client. Les commerciaux agissent en votre nom, avec votre accord, et ne prennent aucun engagement hors du cadre convenu. Leurs échanges sont consignés dans votre CRM, et les enregistrements d’appels servent au contrôle de qualité.",
+        "Les commerciaux agissent en votre nom, avec votre accord, et ne prennent aucun engagement hors du cadre convenu.",
         "La relation contractuelle reste celle de votre entreprise : c’est vous qui signez, vous qui livrez et vous qui répondez des promesses faites. D’où l’importance des règles écrites à l’étape précédente.",
       ],
     },
@@ -117,7 +118,7 @@ export const MARQUE_BLANCHE_CONTENT = {
         },
         {
           title: "La qualité des échanges",
-          text: "Écoute d’enregistrements, relecture des emails et retours de vos équipes : les chiffres seuls ne disent pas si le discours est juste.",
+          text: "Relecture des emails et retours de vos équipes : les chiffres seuls ne disent pas si le discours est juste.",
         },
         {
           title: "Les motifs de perte",
@@ -146,20 +147,12 @@ export const MARQUE_BLANCHE_CONTENT = {
   faqTitle: "Force de vente externalisée : vos questions",
   faqs: [
     [
-      "Mes clients sauront-ils qu’une équipe externe intervient ?",
-      "Les commerciaux se présentent sous votre marque et utilisent vos outils. La manière d’aborder ce point, notamment dans la relation contractuelle, est décidée avec vous : nous recommandons de ne jamais tromper un client sur l’identité de l’entreprise qui s’engage.",
-    ],
-    [
-      "Où sont conservées les données et l’historique des échanges ?",
-      "Dans votre CRM et vos outils : l’équipe y travaille directement, ce qui garde l’historique de chaque contact chez vous.",
+      "Sous quelle marque les commerciaux se présentent-ils ?",
+      "Sous la vôtre : ils utilisent vos outils et suivent vos règles. Les modalités précises sont décidées avec vous avant le démarrage.",
     ],
     [
       "Peut-on augmenter ou réduire la capacité ?",
       "Oui, c’est l’un des intérêts de l’approche : la capacité s’ajuste à votre activité et à sa saisonnalité, dans les conditions fixées au contrat.",
-    ],
-    [
-      "Les appels sont-ils enregistrés ?",
-      "Les enregistrements d’appels font partie du contrôle de qualité. Leur usage respecte les règles d’information des personnes appelées.",
     ],
     [
       "Que faut-il pour démarrer ?",

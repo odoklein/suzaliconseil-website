@@ -16,8 +16,8 @@ const SOLUTIONS = [
   {
     title: "Intelligence Artificielle (GenAI)",
     description:
-      "Intégration de modèles LLM (GPT-4) pour analyser vos documents, générer du contenu ou assister votre support client.",
-    meta: "OpenAI / LangChain",
+      "Intégration de modèles de langage pour analyser vos documents, générer du contenu ou assister votre support client.",
+    meta: "IA générative",
   },
   {
     title: "APIs & Microservices",

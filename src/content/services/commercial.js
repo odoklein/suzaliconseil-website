@@ -171,8 +171,8 @@ export const COMMERCIAL_CONTENT = {
       "Un enchaînement d’email, de LinkedIn et de téléphone donne en général les résultats les plus réguliers : l’écrit ouvre, le téléphone qualifie. Le SMS sert aux rappels et aux confirmations. La part de chaque canal dépend de votre cible.",
     ],
     [
-      "Combien de temps avant de voir des résultats ?",
-      "Les campagnes peuvent démarrer sous 7 jours une fois le ciblage et les messages validés. Le rythme des premiers leads et rendez-vous dépend ensuite de votre marché, de la longueur de votre cycle de vente et de la précision de la cible.",
+      "En combien de temps une campagne démarre-t-elle ?",
+      "Les campagnes peuvent démarrer sous 7 jours une fois le ciblage et les messages validés.",
     ],
     [
       "Peut-on combiner plusieurs services ?",

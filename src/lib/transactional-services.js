@@ -36,7 +36,7 @@ export const TRANSACTIONAL_SERVICES = {
       "Prospection par téléphone, email et LinkedIn",
       "Rendez-vous posés dans l'agenda, avec un briefing avant-vente",
       "Intégration à votre CRM et historique complet des échanges",
-      "Reporting hebdomadaire et account manager dédié",
+      "Reporting hebdomadaire",
     ],
     process: [
       ["Cadrage", "Atelier d'onboarding : client idéal à partir de vos affaires signées, proposition de valeur, critères de qualification et passage de relais."],
@@ -49,10 +49,10 @@ export const TRANSACTIONAL_SERVICES = {
     faqs: [
       ["Comment démarre la mission ?", "Par un atelier d’onboarding qui fixe votre cible, votre proposition de valeur, les critères de qualification et le passage de relais à vos commerciaux. Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous."],
       ["Quels canaux sont utilisés ?", "Le dispositif associe téléphone, email et LinkedIn selon votre audience, vos données et les règles applicables. Le téléphone reste le canal le plus sûr pour qualifier un besoin ; l'email et LinkedIn ouvrent la porte et préparent l'appel."],
-      ["Comment suivez-vous les résultats ?", "Vous recevez un reporting hebdomadaire sur les contacts traités, les conversations, les qualifications, les objections rencontrées et les rendez-vous obtenus. Un account manager dédié le commente avec vous et ajuste le dispositif."],
-      ["Combien coûte la prospection commerciale externalisée ?", `Chez Suzali Conseil, l'offre Growth Standard coûte ${GROWTH_STANDARD_OFFER.price} ${billingInSentence(GROWTH_STANDARD_OFFER)}. Le forfait couvre l'équipe, le ciblage, les outils et le pilotage ; la part variable ne s'applique qu'aux rendez-vous validés et réellement honorés. Pour un besoin limité à la prise de rendez-vous téléphonique, la Vente au Rendez-Vous démarre à ${VENTE_RDV_OFFER.price} de ${VENTE_RDV_OFFER.billing}.`],
+      ["Comment suivez-vous les résultats ?", "Vous recevez un reporting hebdomadaire sur les contacts traités, les conversations, les qualifications, les objections rencontrées et les rendez-vous obtenus. Il est commenté avec vous chaque semaine et le dispositif est ajusté en conséquence."],
+      ["Combien coûte la prospection commerciale externalisée ?", `Chez Suzali Conseil, l'offre Growth Standard coûte ${GROWTH_STANDARD_OFFER.price} ${billingInSentence(GROWTH_STANDARD_OFFER)}. Le forfait couvre l'équipe, le ciblage, les outils et le pilotage ; la part variable s'applique aux rendez-vous validés. Pour un besoin limité à la prise de rendez-vous téléphonique, la Vente au Rendez-Vous démarre à ${VENTE_RDV_OFFER.price} de ${VENTE_RDV_OFFER.billing}.`],
       ["Externaliser ou recruter un commercial en interne : que choisir ?", "Recruter coûte un salaire chargé, des outils, des données et plusieurs mois de recrutement puis de formation avant un rythme normal, que les résultats suivent ou non. Externaliser démarre en quelques jours avec une méthode et des outils déjà en place. L'interne reste préférable quand la vente demande une expertise produit très pointue dès le premier appel ; beaucoup d'entreprises externalisent pour lancer un marché, puis recrutent une fois le discours validé."],
-      ["En combien de temps arrivent les premiers rendez-vous ?", "Les campagnes sont actives sous 7 jours après validation du ciblage et des messages. Les premiers rendez-vous qualifiés arrivent généralement dans les 30 jours suivant le lancement ; le rythme dépend ensuite de la longueur du cycle de vente de votre marché."],
+      ["En combien de temps la mission démarre-t-elle ?", "Les campagnes sont actives sous 7 jours après validation du ciblage et des messages. Le rythme des échanges qui suivent dépend ensuite de la longueur du cycle de vente de votre marché."],
       ["Est-ce que je garde la main sur le discours et sur les prospects ?", "Oui. Les scripts et séquences sont validés avec vous avant tout envoi, chaque échange est tracé dans le CRM et chaque rendez-vous arrive avec un compte rendu. Vos commerciaux mènent la vente ; notre équipe ouvre la porte et qualifie."],
       ["La prospection externalisée est-elle conforme au RGPD ?", "Oui, si elle respecte les règles de la prospection B2B. On peut contacter un professionnel au sujet de son activité, à condition de l'informer de l'origine de ses données et de respecter son droit d'opposition ; par email, le message doit concerner sa fonction et proposer une désinscription simple. Nos fichiers sont sourcés et les demandes d'opposition sont appliquées immédiatement."],
       ["Quelle différence avec l'outbound marketing ou la prise de rendez-vous ?", "La prospection externalisée désigne le mode de collaboration : une équipe extérieure prend en charge l'ensemble de la démarche. L'outbound marketing désigne les canaux digitaux (cold email, LinkedIn, ABM) et la prise de rendez-vous se concentre sur le remplissage de l'agenda, surtout par téléphone. La prospection externalisée combine les deux."],
@@ -73,7 +73,7 @@ export const TRANSACTIONAL_SERVICES = {
     h1: "Marketing B2B externalisé",
     parent: { label: "Services", href: "/services" },
     introduction:
-      "Nous prenons en charge tout ou partie de votre marketing B2B : positionnement, prospection outbound, contenu, référencement naturel et automatisation. Une équipe dédiée, un seul interlocuteur et un pilotage chaque semaine, sans recruter un département marketing.",
+      "Nous prenons en charge tout ou partie de votre marketing B2B : positionnement, prospection outbound, contenu, référencement naturel et automatisation. Une équipe dédiée et un pilotage chaque semaine, sans recruter un département marketing.",
     suitableFor: [
       "PME et ETI sans équipe marketing structurée, ou avec une équipe d’une ou deux personnes",
       "Dirigeants qui veulent un marketing relié aux rendez-vous et aux ventes, pas seulement à la visibilité",
@@ -86,7 +86,7 @@ export const TRANSACTIONAL_SERVICES = {
       "Production et publication des contenus validés avant mise en ligne",
       "Campagnes de prospection email, LinkedIn et téléphone",
       "Automatisations et suivi dans votre CRM",
-      "Reporting hebdomadaire et account manager dédié",
+      "Reporting hebdomadaire",
     ],
     process: [
       ["Diagnostic", "Revue de votre offre, de vos clients actuels, de votre site et de vos canaux. Nous repérons ce qui fonctionne déjà et ce qui manque."],
@@ -131,7 +131,7 @@ export const TRANSACTIONAL_SERVICES = {
       "Séquences email, LinkedIn et appels écrites pour chaque segment",
       "Qualification de chaque lead selon vos critères",
       "Rendez-vous posés dans l’agenda, avec un briefing avant-vente",
-      "Reporting hebdomadaire, account manager dédié et suivi CRM",
+      "Reporting hebdomadaire et suivi CRM",
     ],
     process: [
       ["Cadrage", "Votre client idéal, vos meilleures affaires, la zone à couvrir et ce qu’est un lead qualifié pour vous."],

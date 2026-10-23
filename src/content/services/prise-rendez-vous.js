@@ -146,7 +146,7 @@ export const PRISE_RDV_CONTENT = {
     ],
     [
       "Peut-on interrompre ou ajuster une campagne ?",
-      "Les messages, la cible et le rythme sont revus chaque semaine avec votre account manager. Si un segment ne produit pas de rendez-vous utiles, il est retiré ou retravaillé.",
+      "Les messages, la cible et le rythme sont revus chaque semaine avec vous. Si un segment ne produit pas de rendez-vous utiles, il est retiré ou retravaillé.",
     ],
   ],
 

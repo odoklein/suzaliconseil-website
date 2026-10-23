@@ -98,7 +98,7 @@ const services = [
       "Déléguez votre closing et votre développement commercial à des experts. Nous agissons en votre nom, avec vos outils, pour transformer vos opportunités en contrats signés sans frais fixes.",
     features: [
       "Closing externalisé confidentiel",
-      "Account Management dédié",
+      "Suivi des comptes existants",
       "Intégration CRM totale",
       "Reporting de performance",
     ],

@@ -90,10 +90,6 @@ export function serviceLabel(href) {
 
 /** slug d'article -> services les plus proches de son intention de recherche */
 const SERVICES_BY_SLUG = {
-  "boostez-vos-ventes-b2b-agence-generation-leads-paris-expert-mm4molzg": [
-    SERVICES.leadsParis,
-    SERVICES.generationLeads,
-  ],
   "agence-de-generation-de-leads-b2b-comment-bien-choisir-mug25o6t": [
     SERVICES.generationLeads,
     SERVICES.leadsParis,
