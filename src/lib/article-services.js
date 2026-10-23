@@ -94,6 +94,14 @@ const SERVICES_BY_SLUG = {
     SERVICES.leadsParis,
     SERVICES.generationLeads,
   ],
+  "agence-de-generation-de-leads-b2b-comment-bien-choisir-mug25o6t": [
+    SERVICES.generationLeads,
+    SERVICES.leadsParis,
+  ],
+  "prospection-commerciale-externalisee-guide-complet-2024-mug26uk3": [
+    SERVICES.prospectionExternalisee,
+    SERVICES.marketingExternalise,
+  ],
   "agence-outbound-vs-inbound-quand-choisir-mug27mpp": [
     SERVICES.outbound,
     SERVICES.marketingExternalise,
