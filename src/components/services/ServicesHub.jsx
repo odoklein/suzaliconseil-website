@@ -50,6 +50,7 @@ const COMMERCIAL_GROUPS = [
         "/services/prospection-commerciale-externalisee",
       ],
       ["Génération de leads B2B", "/services/generation-leads-b2b"],
+      ["Agence de génération de leads à Paris", "/services/agence-generation-de-leads-paris"],
       ["Fichier de prospection B2B", "/services/fichier-prospection-b2b"],
     ],
   },
@@ -69,6 +70,7 @@ const COMMERCIAL_GROUPS = [
       "Nous combinons canaux, outils et ressources commerciales pour accélérer sans alourdir votre structure interne.",
     links: [
       ["Outbound marketing B2B", "/services/outbound-marketing-b2b"],
+      ["Marketing B2B externalisé", "/services/marketing-b2b-externalise"],
       ["Campagnes email et SMS B2B", "/services/campagnes-email-sms-b2b"],
       ["Force de vente en marque blanche", "/services/vente-marque-blanche"],
     ],

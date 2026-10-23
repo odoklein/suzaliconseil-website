@@ -23,6 +23,13 @@ export async function getMegaMenuData() {
           description: "Prospects ciblés et qualifiés pour votre pipeline.",
         },
         {
+          id: "c9",
+          title: "Agence de leads à Paris",
+          slug: "agence-generation-de-leads-paris",
+          href: "/services/agence-generation-de-leads-paris",
+          description: "Génération de leads ciblée sur Paris et l'Île-de-France.",
+        },
+        {
           id: "c2",
           title: "Téléprospection B2B",
           slug: "teleprospection-b2b",
@@ -42,6 +49,13 @@ export async function getMegaMenuData() {
           slug: "outbound-marketing-b2b",
           href: "/services/outbound-marketing-b2b",
           description: "Stratégies proactives d'acquisition multicanale.",
+        },
+        {
+          id: "c10",
+          title: "Marketing B2B externalisé",
+          slug: "marketing-b2b-externalise",
+          href: "/services/marketing-b2b-externalise",
+          description: "Une équipe dédiée pour votre outbound, contenu et SEO.",
         },
         {
           id: "c5",

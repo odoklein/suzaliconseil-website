@@ -222,6 +222,7 @@ export const GENERATION_LEADS_CONTENT = {
       [...SERVICES.fichier, "Un fichier ciblé, vérifié et prêt à intégrer dans votre CRM."],
       [...SERVICES.priseRdv, "Des rendez-vous qualifiés posés dans l’agenda de vos commerciaux."],
       [...SERVICES.outbound, "Cold email, LinkedIn et prospection multicanale opérés pour vous."],
+      [...SERVICES.leadsParis, "La même démarche appliquée aux entreprises de Paris et d’Île-de-France."],
     ],
     articles: [
       [...ARTICLES.choisirAgenceLeads, "Les critères utiles pour choisir un prestataire de génération de leads."],

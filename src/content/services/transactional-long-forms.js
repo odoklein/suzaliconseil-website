@@ -9,6 +9,312 @@ import { ARTICLES, SERVICES } from "../../lib/internal-links";
 const link = ([href, text], label) => ({ href, text: label ?? text });
 
 export const LONG_FORMS = {
+  /* --------------------------------------------------------- marketing externalisé */
+  "/services/marketing-b2b-externalise": {
+    sections: [
+      {
+        title: "Ce que recouvre le marketing B2B",
+        paragraphs: [
+          "Le marketing B2B regroupe tout ce qui amène des entreprises à vous connaître, à vous faire confiance puis à vous contacter : définir à qui vous vous adressez et ce que vous promettez, aller chercher activement les bons interlocuteurs, publier du contenu qui répond à leurs questions, être trouvé quand ils cherchent, et suivre ce qui se passe ensuite dans le CRM.",
+          "Les cycles de vente B2B sont plus longs et font intervenir plusieurs personnes. Le marketing sert donc moins à déclencher un achat immédiat qu’à rester présent et crédible tout au long de la réflexion, jusqu’au moment où un rendez-vous a du sens.",
+        ],
+      },
+      {
+        title: "Pourquoi l’externaliser",
+        paragraphs: [
+          "Constituer un service marketing complet suppose plusieurs métiers : stratégie, rédaction, référencement, emailing, prospection, outils et mesure. Peu de PME peuvent recruter toutes ces compétences, et une seule personne les couvre rarement toutes.",
+        ],
+        items: [
+          {
+            title: "Un démarrage rapide",
+            text: "L’équipe, les outils et les méthodes sont déjà en place. Vous évitez les mois de recrutement et de montée en compétence.",
+          },
+          {
+            title: "Des compétences complémentaires",
+            text: "Vous accédez à des profils différents sans les salarier tous : stratégie, outbound, contenu, référencement, automatisation.",
+          },
+          {
+            title: "Un coût plus lisible",
+            text: "Vous savez ce qui est dépensé et ce que cela produit, sans salaires, outils et abonnements dispersés entre plusieurs lignes budgétaires.",
+          },
+          {
+            title: "Une souplesse de périmètre",
+            text: "Vous pouvez commencer par un seul canal, ajouter ou arrêter une action selon les résultats, ou confier un dispositif complet.",
+          },
+        ],
+        closing: [
+          [
+            "L’arbitrage entre interne et externe dépend de votre situation. Pour la prospection, nous l’avons détaillé dans l’article ",
+            link(ARTICLES.pourquoiExternaliser, "pourquoi externaliser sa prospection commerciale B2B"),
+            ".",
+          ],
+        ],
+      },
+      {
+        title: "Les leviers que nous pouvons prendre en charge",
+        paragraphs: [
+          "Chaque levier a sa page dédiée. Voici comment ils s’articulent dans un dispositif de marketing B2B.",
+        ],
+        items: [
+          {
+            title: "Stratégie et positionnement",
+            text: [
+              "Clarifier cible, promesse et messages avant d’investir dans des canaux. C’est le travail de la ",
+              link(SERVICES.strategieDigitale, "stratégie marketing digitale B2B"),
+              ", qui fixe les priorités et les indicateurs.",
+            ],
+          },
+          {
+            title: "Prospection outbound",
+            text: [
+              "Aller chercher les bons décideurs par email, LinkedIn et téléphone avec des séquences adaptées à chaque segment. Voir l’",
+              link(SERVICES.outbound, "outbound marketing B2B"),
+              " et les ",
+              link(SERVICES.campagnes, "campagnes email et SMS"),
+              ".",
+            ],
+          },
+          {
+            title: "Contenu et référencement naturel",
+            text: [
+              "Publier des contenus qui répondent aux questions de vos acheteurs et sont trouvés sur Google. Voir le ",
+              link(SERVICES.seoAcquisition, "SEO et l’acquisition digitale B2B"),
+              ".",
+            ],
+          },
+          {
+            title: "Automatisation et suivi",
+            text: [
+              "Relier les outils, déclencher les relances au bon moment et garder l’historique de chaque échange dans le CRM. Voir le ",
+              link(SERVICES.automatisation, "développement et l’automatisation"),
+              ".",
+            ],
+          },
+          {
+            title: "Qualification et rendez-vous",
+            text: [
+              "Transformer l’intérêt en rendez-vous exploitables, avec un brief pour le commercial. Voir la ",
+              link(SERVICES.priseRdv, "prise de rendez-vous B2B"),
+              " et la ",
+              link(SERVICES.qualification, "qualification de leads"),
+              ".",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Un dispositif, du cadrage au pilotage",
+        items: [
+          {
+            title: "1. Objectifs et indicateurs",
+            text: "Nous fixons avec vous ce qui sera mesuré : leads qualifiés, rendez-vous tenus, opportunités, plutôt que seulement des visites ou des impressions.",
+          },
+          {
+            title: "2. Priorités par canal",
+            text: "Nous choisissons les canaux selon votre cible et votre cycle de vente, pas selon la mode. Mieux vaut un canal bien exécuté que cinq effleurés.",
+          },
+          {
+            title: "3. Production validée",
+            text: "Messages, contenus et campagnes sont rédigés par l’équipe puis soumis à votre relecture avant diffusion.",
+          },
+          {
+            title: "4. Lecture hebdomadaire",
+            text: "Un point chaque semaine sur ce qui a été fait, ce qui a répondu et ce qui change. Les décisions sont écrites, pas seulement discutées.",
+          },
+        ],
+      },
+      {
+        title: "Les erreurs que nous aidons à éviter",
+        items: [
+          {
+            title: "Faire du contenu sans lien avec les ventes",
+            text: "Un article ou une publication doit répondre à une question que vos prospects se posent réellement, et mener vers une action.",
+          },
+          {
+            title: "Multiplier les canaux sans tenir la durée",
+            text: "Le marketing B2B produit surtout par la régularité. Mieux vaut un rythme tenable qu’un lancement spectaculaire suivi d’un arrêt.",
+          },
+          {
+            title: "Séparer marketing et commercial",
+            text: "Si les deux équipes n’ont pas la même définition d’un lead qualifié, chacune juge l’autre sur de mauvais critères. Nous la fixons ensemble dès le début.",
+          },
+          {
+            title: "Ne mesurer que ce qui est facile à mesurer",
+            text: [
+              "Les clics et les visites rassurent mais ne disent rien des ventes. Voir notre article sur les ",
+              link(ARTICLES.kpiProspection, "KPI de prospection commerciale"),
+              ".",
+            ],
+          },
+        ],
+      },
+    ],
+    faqs: [
+      ["Peut-on externaliser seulement une partie du marketing ?", "Oui. Beaucoup d’entreprises commencent par un seul levier, par exemple la prospection outbound ou le référencement, puis élargissent le périmètre quand les premiers résultats arrivent."],
+      ["Travaillez-vous avec une équipe marketing existante ?", "Oui. L’équipe externe peut renforcer une équipe interne sur un domaine précis (outbound, SEO, automatisation) ou prendre en charge ce qui n’est pas couvert, en s’alignant sur vos outils et vos priorités."],
+      [
+        "Marketing externalisé ou agence de génération de leads : quelle différence ?",
+        [
+          "Une agence de ",
+          link(SERVICES.generationLeads, "génération de leads B2B"),
+          " se concentre sur l’obtention de contacts et de rendez-vous qualifiés. Le marketing externalisé inclut aussi le positionnement, le contenu et le référencement qui nourrissent cette génération sur la durée.",
+        ],
+      ],
+      ["Le référencement naturel est-il inclus ?", "Il peut l’être, selon le périmètre choisi. Le référencement est un levier de moyen terme : il travaille en parallèle de l’outbound, qui produit des échanges plus rapidement."],
+    ],
+    articles: [
+      [...ARTICLES.strategieOutbound, "Structurer une démarche outbound B2B."],
+      [...ARTICLES.outboundVsInbound, "Choisir entre outbound et inbound selon votre situation."],
+      [...ARTICLES.automatiserWorkflows, "Automatiser les tâches répétitives de la prospection."],
+    ],
+  },
+
+  /* ------------------------------------------------------------------- Paris */
+  "/services/agence-generation-de-leads-paris": {
+    sections: [
+      {
+        title: "Une agence de génération de leads à Paris : ce que cela change",
+        paragraphs: [
+          "La génération de leads B2B se fait en grande partie à distance : email, LinkedIn et téléphone n’ont pas de frontière. Ce qui compte, pour une cible parisienne ou francilienne, c’est de bien connaître la zone : où se trouvent les entreprises, qui décide, comment sont organisés les sièges et les établissements.",
+          "Être établi à Paris apporte aussi une proximité pratique : les points de pilotage peuvent se tenir en présentiel si vous le préférez, et l’équipe travaille dans le même fuseau et les mêmes horaires que vos décideurs.",
+        ],
+      },
+      {
+        title: "Cibler Paris et l’Île-de-France avec précision",
+        paragraphs: [
+          "« Paris » recouvre des réalités très différentes selon votre offre. Nous paramétrons la zone selon votre marché plutôt que de viser largement.",
+        ],
+        items: [
+          {
+            title: "Par zone géographique",
+            text: "Paris intra-muros, départements de la petite et de la grande couronne, ou pôles d’activité précis comme La Défense, la Plaine Saint-Denis ou Paris-Saclay, selon la présence de votre cible.",
+          },
+          {
+            title: "Par secteur et taille",
+            text: "Services, industrie, numérique, santé, immobilier d’entreprise… La taille de l’entreprise et son secteur changent le décideur à contacter et le message à tenir.",
+          },
+          {
+            title: "Par fonction",
+            text: "Le décideur n’est pas le même selon que vous vendez à une direction générale, financière, RH ou informatique. Nous ciblons la fonction, pas seulement l’entreprise.",
+          },
+          {
+            title: "Siège ou établissement",
+            text: "Beaucoup d’entreprises ont leur siège à Paris et leurs décisions d’achat ailleurs, ou l’inverse. Nous vérifions où se prend réellement la décision avant de contacter.",
+          },
+        ],
+      },
+      {
+        title: "Notre méthode de génération de leads",
+        paragraphs: [
+          [
+            "La méthode est celle de notre offre de ",
+            link(SERVICES.generationLeads, "génération de leads B2B"),
+            ", appliquée à votre zone.",
+          ],
+        ],
+        items: [
+          {
+            title: "1. Cadrage",
+            text: "Votre client idéal à partir de vos meilleures affaires, votre proposition de valeur, et la définition écrite d’un lead qualifié.",
+          },
+          {
+            title: "2. Fichier ciblé",
+            text: [
+              "Construction ou nettoyage d’une base d’entreprises et de décideurs de la zone, vérifiée avant utilisation. Voir le ",
+              link(SERVICES.fichier),
+              ".",
+            ],
+          },
+          {
+            title: "3. Séquences multicanales",
+            text: "Email, LinkedIn et appels enchaînés dans une même séquence, avec des messages adaptés à chaque segment et des relances limitées.",
+          },
+          {
+            title: "4. Qualification",
+            text: [
+              "Les réponses sont qualifiées selon vos critères (besoin, échéance, rôle de l’interlocuteur). Voir la ",
+              link(SERVICES.qualification),
+              ".",
+            ],
+          },
+          {
+            title: "5. Rendez-vous",
+            text: [
+              "Les leads mûrs sont transformés en rendez-vous dans l’agenda de vos commerciaux, avec un brief écrit. Voir la ",
+              link(SERVICES.priseRdv),
+              ".",
+            ],
+          },
+        ],
+      },
+      {
+        title: "Pour quels profils d’entreprises ?",
+        items: [
+          {
+            title: "Les entreprises qui vendent à des entreprises parisiennes",
+            text: "Éditeurs, cabinets, prestataires de services : quand la cible est concentrée, une démarche locale bien ciblée évite de disperser l’effort sur tout le territoire.",
+          },
+          {
+            title: "Les entreprises parisiennes qui veulent un partenaire proche",
+            text: "Si vous préférez rencontrer l’équipe qui prospecte en votre nom, la proximité simplifie le cadrage et les points réguliers.",
+          },
+          {
+            title: "Les entreprises qui testent la région avant de recruter",
+            text: "Une équipe externe permet de valider l’intérêt du marché parisien avant d’y affecter des commerciaux à plein temps.",
+          },
+        ],
+        closing: [
+          [
+            "Vous ciblez toute la France ? Notre page ",
+            link(SERVICES.externalisee),
+            " décrit le dispositif complet, quelle que soit la zone.",
+          ],
+        ],
+      },
+      {
+        title: "Les erreurs courantes en prospection locale",
+        items: [
+          {
+            title: "Viser « Paris » sans critères",
+            text: "Une zone géographique seule ne fait pas une cible. Sans secteur, taille et fonction, les messages restent génériques.",
+          },
+          {
+            title: "Négliger la qualité des données",
+            text: "Les décideurs changent de poste et d’entreprise. Un fichier non revérifié fait perdre du temps aux appelants et abîme la réputation d’envoi.",
+          },
+          {
+            title: "Mesurer le volume plutôt que la qualité",
+            text: [
+              "Nombre de contacts traités et nombre de rendez-vous tenus ne disent pas la même chose. Voir notre article sur la ",
+              link(ARTICLES.agenceLeadsParis, "génération de leads B2B à Paris"),
+              " et sur les ",
+              link(ARTICLES.kpiProspection, "KPI de prospection"),
+              ".",
+            ],
+          },
+        ],
+      },
+    ],
+    faqs: [
+      ["Combien de temps pour lancer une campagne à Paris ?", "Les campagnes peuvent démarrer sous 7 jours une fois le ciblage et les messages validés avec vous. Le rythme des premiers rendez-vous dépend ensuite de votre cible et de la longueur de votre cycle de vente."],
+      ["Pouvons-nous nous rencontrer ?", "Oui. Les points de pilotage se tiennent en visioconférence ou en présentiel selon votre préférence, à Paris."],
+      [
+        "Quelle est la différence entre génération de leads et prospection externalisée ?",
+        [
+          "La génération de leads vise à produire des contacts qualifiés ; la ",
+          link(SERVICES.externalisee, "prospection commerciale externalisée"),
+          " désigne le mode de collaboration : une équipe extérieure prend en charge la démarche de bout en bout, jusqu’aux rendez-vous.",
+        ],
+      ],
+      ["Respectez-vous le RGPD ?", "Oui. Les contacts sont des professionnels sollicités au sujet de leur fonction, leur origine est conservée, et toute demande d’opposition est appliquée immédiatement."],
+    ],
+    articles: [
+      [...ARTICLES.agenceLeadsParis, "Notre analyse de la génération de leads B2B à Paris."],
+      [...ARTICLES.choisirAgenceLeads, "Les critères pour choisir une agence de génération de leads."],
+      [...ARTICLES.kpiProspection, "Les indicateurs pour piloter la prospection."],
+    ],
+  },
+
   /* ------------------------------------------------------------------ fichier */
   "/services/fichier-prospection-b2b": {
     sections: [

@@ -25,6 +25,14 @@ export const SERVICES = {
     href: "/services/generation-leads-b2b",
     label: "Agence de génération de leads B2B",
   },
+  leadsParis: {
+    href: "/services/agence-generation-de-leads-paris",
+    label: "Agence de génération de leads à Paris",
+  },
+  marketingExternalise: {
+    href: "/services/marketing-b2b-externalise",
+    label: "Marketing B2B externalisé",
+  },
   prospectionExternalisee: {
     href: "/services/prospection-commerciale-externalisee",
     label: "Prospection commerciale externalisée",
@@ -83,8 +91,12 @@ export function serviceLabel(href) {
 /** slug d'article -> services les plus proches de son intention de recherche */
 const SERVICES_BY_SLUG = {
   "boostez-vos-ventes-b2b-agence-generation-leads-paris-expert-mm4molzg": [
+    SERVICES.leadsParis,
     SERVICES.generationLeads,
-    SERVICES.priseRendezVous,
+  ],
+  "agence-outbound-vs-inbound-quand-choisir-mug27mpp": [
+    SERVICES.outbound,
+    SERVICES.marketingExternalise,
   ],
   "pourquoi-externaliser-sa-prospection-commerciale-b2b-mojth973": [
     SERVICES.prospectionExternalisee,
@@ -150,6 +162,8 @@ const SERVICES_BY_KEYWORD = {
     SERVICES.commercial,
   ],
   "agence outbound": [SERVICES.outbound, SERVICES.generationLeads],
+  "marketing b2b externalisé": [SERVICES.marketingExternalise, SERVICES.outbound],
+  "agence génération de leads paris": [SERVICES.leadsParis, SERVICES.generationLeads],
 };
 
 /**

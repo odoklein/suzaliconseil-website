@@ -13,6 +13,8 @@ export const SERVICES = {
   commercial: ["/services/commercial", "Prospection commerciale B2B"],
   externalisee: ["/services/prospection-commerciale-externalisee", "Prospection commerciale externalisée"],
   generationLeads: ["/services/generation-leads-b2b", "Génération de leads B2B"],
+  leadsParis: ["/services/agence-generation-de-leads-paris", "Agence de génération de leads à Paris"],
+  marketingExternalise: ["/services/marketing-b2b-externalise", "Marketing B2B externalisé"],
   teleprospection: ["/services/teleprospection-b2b", "Téléprospection B2B"],
   priseRdv: ["/services/prise-rendez-vous-b2b", "Prise de rendez-vous B2B"],
   outbound: ["/services/outbound-marketing-b2b", "Outbound marketing B2B"],
