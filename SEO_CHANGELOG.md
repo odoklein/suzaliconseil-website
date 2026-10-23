@@ -185,7 +185,16 @@ Checked on the local build (script over the 24 sitemap pages): the only page wit
 
 ## T2: Retarget the automatic article generator (2026-10-22), branch `seo/T2-ai-writer`
 
-**Not live yet** (waiting for Odo's OK).
+**Live** (merged 2026-10-22 16:51, PR #5, `bbfabbf`; deployed by 2026-10-23 at the latest: the new `x-cron-features` header is served). What could be checked on production **without the secret**:
+
+| Check | Result |
+|---|---|
+| `curl -I https://suzaliconseil.com/api/cron/generate-article` | `401 Unauthorized` with `x-cron-features: dry-run,attempt-cap,figure-guard`: the deployed route is the T2 version and knows `?dryRun=1` |
+| Authentication | the route answers 401 to everyone without the secret (also with `?dryRun=1`) |
+
+**Not verified on production** (needs the secret, which I do not have; the owner makes the first calls): the authenticated behaviour. Tested locally instead (144 checks, including the real route handler run without a database).
+
+**Until the table is created, automatic generation is paused**: the route answers 503 and never calls Mistral. The owner creates the table with `docs/article-attempts-table.sql` (Neon SQL editor). Then, **before any real call**, run once `?dryRun=1` with the secret and check that it answers `wouldGenerate`.
 
 ### Why
 
@@ -254,3 +263,15 @@ The rest of B4 was already satisfied on production (checked 2026-10-23: all 37 s
 
 1. After deploy: Search Console → Sitemaps → resubmit `https://suzaliconseil.com/sitemap.xml` (or just let Google re-read it).
 2. **Maintenance rule for the team:** when a static page's content really changes, update its date in `src/lib/static-lastmod.js` in the same commit.
+
+## B3, B5, B6: verified already satisfied on production (2026-10-23)
+
+No code change was needed: B2 and B7/B8 covered them. Checked with `curl` / a script on https://suzaliconseil.com (read-only):
+
+| Task | Verified |
+|---|---|
+| **B3** canonical + redirect policy | `http`, `www` (http and https) and trailing-slash variants all reach the clean `https://suzaliconseil.com/...` URL in one hop; an uppercase path is a real 404 (no duplicate page); `?utm_source=...&page=2` and WordPress-style `/?s=test` both canonicalise to the clean URL; every page has an absolute self-referencing canonical (checked on the 24 static pages and the 13 articles on 2026-10-22) |
+| **B5** `robots.txt` | allows `/`, links `https://suzaliconseil.com/sitemap.xml`, blocks `/api/`, `/admin/`, `/portal/`, `/private/`, keeps `/api/og` crawlable for social previews |
+| **B6** real 404s + noindex | an unknown URL and an unknown article answer HTTP 404 (`noindex`, no canonical); `/admin/login` and `/portal/login` are `noindex`; `/admin` redirects to the login page; `/wp-admin`, `/wp-login.php`, `/xmlrpc.php` are 404 (no soft 404). There is no internal search page or filter that would need `noindex,follow` |
+
+Remaining part of B4 (`lastmod` on the static pages): see the B4 section.
