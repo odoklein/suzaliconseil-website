@@ -275,3 +275,13 @@ No code change was needed: B2 and B7/B8 covered them. Checked with `curl` / a sc
 | **B6** real 404s + noindex | an unknown URL and an unknown article answer HTTP 404 (`noindex`, no canonical); `/admin/login` and `/portal/login` are `noindex`; `/admin` redirects to the login page; `/wp-admin`, `/wp-login.php`, `/xmlrpc.php` are 404 (no soft 404). There is no internal search page or filter that would need `noindex,follow` |
 
 Remaining part of B4 (`lastmod` on the static pages): see the B4 section.
+
+## Environment notes (2026-10-23)
+
+Names only, never values (this repository is public).
+
+- **No production key on the development machine** (owner's rule): the local `.env.local` holds no variable at all. In particular there is no production `DATABASE_URL` locally. The tests that need a database (B9 browser test, trial of the slug migration) use **only** the Neon `slug-test` URL, once the owner provides it.
+- **Secrets rotation:** the owner rotates the production secrets in Dokploy (database, S3, Mistral, Gemini, cron, admin). Hosting settings are never touched by Claude.
+- **`GEMINI_API_KEY` is unused:** no file in `src/` or `scripts/` reads it. To be removed from the environment later.
+- **`MISTRAL_MODEL`:** when set, it overrides the code's default (`mistral-large-latest`) in `src/lib/ai-writer.js`. Left unchanged; the owner decides later.
+- **Read by the code but not needed locally for now:** `SMTP_*`, `MAIL_FROM`, `MAIL_FROM_NAME`, `CONTACT_TO`, `LEADS_TO`, `CAREERS_TO`, `OPENAI_API_KEY`, `OPENAI_IMAGE_MODEL`, `SEO_AUDIT_BASE_URL`. (Without them the contact forms cannot send email and admin image generation does not work in a local run.)
