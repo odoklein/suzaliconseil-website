@@ -185,6 +185,7 @@ export const SEO_ACQUISITION_CONTENT = {
       [...SERVICES.sitesWeb, "Un site rapide et pensé pour convertir les visites en demandes."],
       [...SERVICES.generationLeads, "La prospection multicanale, en complément de l’acquisition entrante."],
       [...SERVICES.automatisation, "Relier vos formulaires, votre CRM et vos relances."],
+      [...SERVICES.marketingExternalise, "Déléguer le référencement avec l’outbound et le contenu à une équipe dédiée."],
     ],
     articles: [
       [...ARTICLES.outboundVsInbound, "Quand privilégier l’entrant, le sortant, ou les deux."],

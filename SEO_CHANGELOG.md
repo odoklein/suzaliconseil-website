@@ -340,3 +340,18 @@ The site's own text contained two statistics with no source; replaced with quali
 - Point 2: create the two missing pages (« marketing B2B externalisé », « génération de leads Paris »).
 - Point 3 (rest): each article links to its service page (`article-services.js` already does for 10 articles; the generated articles get theirs from their target); the service pages now link to 2–5 articles each.
 - After deploy (manual): Search Console → resubmit the sitemap, request indexing of the 14 enriched pages.
+
+## 2026-10-23 — C2: two new service pages (branch `seo/C2-new-service-pages`)
+
+Status: merged, deploy to verify.
+
+| New page | Target search | Notes |
+|---|---|---|
+| `/services/marketing-b2b-externalise` | marketing B2B externalisé | Wider than « prospection externalisée » (positioning, outbound, content, SEO, automation), so it does not compete with the prospection page. |
+| `/services/agence-generation-de-leads-paris` | agence de génération de leads Paris | Uses the postal address already published on the contact page (Paris 2e). No client, figure or office claim beyond that. |
+
+- Both are built on the shared `TransactionalServicePage` template (`TRANSACTIONAL_SERVICES.marketing` / `.paris`, long-form text in `transactional-long-forms.js`); the template now accepts an optional parent breadcrumb and footnote.
+- Each has one H1, one `FAQPage` (8 visible questions), `Service` + `BreadcrumbList` JSON-LD, a canonical URL, 1,300–1,400 words, and no figure or price in the text.
+- Added to `sitemap.xml` (with `lastmod`), the services hub, the mega menu / footer data and `internal-links.js`; the Paris article now points to the Paris page first (`article-services.js`); `generation-leads-b2b` and `seo-acquisition` link to the new pages.
+- `lastmod` of the 14 pages enriched in C1 (and `/services`) set to 2026-10-23, the real date they went live.
+- Decision pending (owner): the existing article « Boostez vos ventes B2B… agence de génération de leads à Paris » targets the same search as the new Paris page. Nothing was redirected; the article keeps its URL and links to the page.

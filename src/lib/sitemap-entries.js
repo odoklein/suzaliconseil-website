@@ -8,6 +8,8 @@ export const STATIC_ROUTES = [
   ["/services/commercial", "weekly", 0.9],
   ["/services/prospection-commerciale-externalisee", "weekly", 0.9],
   ["/services/generation-leads-b2b", "weekly", 0.8],
+  ["/services/agence-generation-de-leads-paris", "weekly", 0.8],
+  ["/services/marketing-b2b-externalise", "weekly", 0.8],
   ["/services/teleprospection-b2b", "weekly", 0.8],
   ["/services/prise-rendez-vous-b2b", "weekly", 0.8],
   ["/services/outbound-marketing-b2b", "weekly", 0.8],
