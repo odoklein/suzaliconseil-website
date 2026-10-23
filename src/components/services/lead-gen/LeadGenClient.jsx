@@ -83,7 +83,7 @@ const COMMITMENTS = [
 
 const STRONG = "font-semibold text-[#0D332B]";
 
-export default function LeadGenClient() {
+export default function LeadGenClient({ children }) {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
@@ -186,6 +186,9 @@ export default function LeadGenClient() {
           </div>
         </div>
       </section>
+
+      {/* Partie éditoriale longue (méthode, cas d'usage, mesure, FAQ, maillage) : voir ServiceLongForm. */}
+      {children}
 
       <ClosingCta
         title="Prêt à remplir votre pipeline commercial ?"

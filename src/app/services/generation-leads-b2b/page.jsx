@@ -1,4 +1,6 @@
 import LeadGenClient from "../../../components/services/lead-gen/LeadGenClient";
+import ServiceLongForm from "../../../components/services/ServiceLongForm";
+import { GENERATION_LEADS_CONTENT } from "../../../content/services/generation-leads-b2b";
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function GenerationLeadsB2BPage() {
           path: PAGE.path,
         })}
       />
-      <LeadGenClient />
+      <LeadGenClient>
+        <ServiceLongForm content={GENERATION_LEADS_CONTENT} />
+      </LeadGenClient>
     </>
   );
 }

@@ -78,7 +78,7 @@ const OUTCOMES = [
 
 const STRONG = "font-semibold text-[#0D332B]";
 
-export default function PriseRdvClient() {
+export default function PriseRdvClient({ children }) {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
@@ -158,6 +158,9 @@ export default function PriseRdvClient() {
           </div>
         </div>
       </section>
+
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
 
       <ClosingCta
         title="Des rendez-vous qualifiés, payés quand ils ont lieu"

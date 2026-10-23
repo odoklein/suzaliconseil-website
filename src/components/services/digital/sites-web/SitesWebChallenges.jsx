@@ -53,8 +53,8 @@ export default function SitesWebChallenges() {
             delay={160}
             className="max-w-[46ch] text-lg leading-relaxed text-[#4E605B] lg:col-span-5 lg:pb-2"
           >
-            53% des visiteurs quittent un site qui met plus de 3 secondes à
-            charger.{" "}
+            Beaucoup de visiteurs quittent un site qui met trop de temps à
+            s&apos;afficher.{" "}
             <strong className="font-semibold text-[#0D332B]">
               Ne laissez pas la technique ruiner votre image de marque.
             </strong>

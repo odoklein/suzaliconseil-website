@@ -1,4 +1,6 @@
 import PriseRdvClient from "../../../components/services/prise-rdv/PriseRdvClient";
+import ServiceLongForm from "../../../components/services/ServiceLongForm";
+import { PRISE_RDV_CONTENT } from "../../../content/services/prise-rendez-vous";
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function PriseRdvB2BPage() {
           path: PAGE.path,
         })}
       />
-      <PriseRdvClient />
+      <PriseRdvClient>
+        <ServiceLongForm content={PRISE_RDV_CONTENT} />
+      </PriseRdvClient>
     </>
   );
 }

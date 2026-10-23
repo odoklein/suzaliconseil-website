@@ -80,7 +80,7 @@ const CAPABILITIES = [
   { title: "Performance Tracking", text: "Dashboard temps réel : appels, contacts, RDV fixés" },
 ];
 
-export default function TeleprospectionClient() {
+export default function TeleprospectionClient({ children }) {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
@@ -168,6 +168,9 @@ export default function TeleprospectionClient() {
           </div>
         </div>
       </section>
+
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
 
       <ClosingCta
         title="Prêt à remplir l'agenda de vos commerciaux ?"

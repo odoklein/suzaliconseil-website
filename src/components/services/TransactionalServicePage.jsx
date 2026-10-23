@@ -4,6 +4,8 @@ import CheckRows from "./commercial-b/CheckRows";
 import { MethodSection } from "../kit";
 import JsonLd from "../seo/JsonLd";
 import { faqSchema, serviceSchema } from "../../lib/structured-data";
+import ServiceLongForm, { Rich, plain } from "./ServiceLongForm";
+import { LONG_FORMS } from "../../content/services/transactional-long-forms";
 
 /*
  * Gabarit des pages services « transactionnelles » (fichier, qualification,
@@ -36,6 +38,10 @@ const SERVICE_VISUALS = {
 export default function TransactionalServicePage({ service }) {
   const visual = SERVICE_VISUALS[service.path] ?? SERVICE_VISUALS["/services/prospection-commerciale-externalisee"];
 
+  // Contenu éditorial long de la page (sections, questions en plus, articles liés), s'il existe.
+  const extra = LONG_FORMS[service.path];
+  const faqs = [...service.faqs, ...(extra?.faqs ?? [])];
+
   return (
     <main className="overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
       {/* FAQPage émis ici : FaqList est rendu plus bas avec jsonLd={false}. */}
@@ -47,7 +53,7 @@ export default function TransactionalServicePage({ service }) {
             path: service.path,
           }),
           faqSchema(
-            service.faqs.map(([question, answer]) => ({ question, answer })),
+            faqs.map(([question, answer]) => ({ question, answer: plain(answer) })),
             service.path,
           ),
         ]}
@@ -104,9 +110,19 @@ export default function TransactionalServicePage({ service }) {
         footnote="L’accompagnement est assuré à distance dans toute la France, notamment pour des entreprises situées à Paris, Lyon, Bordeaux, Nantes et dans les autres bassins économiques, sans prétendre disposer de bureaux locaux."
       />
 
+      {extra && (
+        <ServiceLongForm
+          content={{ sections: extra.sections, related: { articles: extra.articles } }}
+        />
+      )}
+
       <FaqList
         jsonLd={false}
-        items={service.faqs.map(([question, answer]) => ({ question, answer }))}
+        items={faqs.map(([question, answer]) => ({
+          question,
+          answer: typeof answer === "string" ? answer : <Rich parts={answer} />,
+          answerText: plain(answer),
+        }))}
       />
 
       {/* Services associés */}

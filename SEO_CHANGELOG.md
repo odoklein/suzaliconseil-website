@@ -185,7 +185,16 @@ Checked on the local build (script over the 24 sitemap pages): the only page wit
 
 ## T2: Retarget the automatic article generator (2026-10-22), branch `seo/T2-ai-writer`
 
-**Not live yet** (waiting for Odo's OK).
+**Live** (merged 2026-10-22 16:51, PR #5, `bbfabbf`; deployed by 2026-10-23 at the latest: the new `x-cron-features` header is served). What could be checked on production **without the secret**:
+
+| Check | Result |
+|---|---|
+| `curl -I https://suzaliconseil.com/api/cron/generate-article` | `401 Unauthorized` with `x-cron-features: dry-run,attempt-cap,figure-guard`: the deployed route is the T2 version and knows `?dryRun=1` |
+| Authentication | the route answers 401 to everyone without the secret (also with `?dryRun=1`) |
+
+**Not verified on production** (needs the secret, which I do not have; the owner makes the first calls): the authenticated behaviour. Tested locally instead (144 checks, including the real route handler run without a database).
+
+**Until the table is created, automatic generation is paused**: the route answers 503 and never calls Mistral. The owner creates the table with `docs/article-attempts-table.sql` (Neon SQL editor). Then, **before any real call**, run once `?dryRun=1` with the secret and check that it answers `wouldGenerate`.
 
 ### Why
 
@@ -231,7 +240,7 @@ extAllowedAt; 200 more calls in the same minute record nothing; the window rolls
 
 ## B4: `lastmod` for the static pages in sitemap.xml (2026-10-23), branch `seo/B4-lastmod`
 
-**Not live yet** (waiting for the owner's OK).
+**Live** (merged 2026-10-23 12:12, PR #6, `17fddce`; deployed about 20 minutes later). Checked on https://suzaliconseil.com/sitemap.xml: 37 URLs, 23 static pages dated 2026-10-22, and `/actualites` dated 2026-10-22T14:09:36.289Z (the newest article, as designed).
 
 ### Why
 
@@ -254,3 +263,80 @@ The rest of B4 was already satisfied on production (checked 2026-10-23: all 37 s
 
 1. After deploy: Search Console → Sitemaps → resubmit `https://suzaliconseil.com/sitemap.xml` (or just let Google re-read it).
 2. **Maintenance rule for the team:** when a static page's content really changes, update its date in `src/lib/static-lastmod.js` in the same commit.
+
+## B3, B5, B6: verified already satisfied on production (2026-10-23)
+
+No code change was needed: B2 and B7/B8 covered them. Checked with `curl` / a script on https://suzaliconseil.com (read-only):
+
+| Task | Verified |
+|---|---|
+| **B3** canonical + redirect policy | `http`, `www` (http and https) and trailing-slash variants all reach the clean `https://suzaliconseil.com/...` URL in one hop; an uppercase path is a real 404 (no duplicate page); `?utm_source=...&page=2` and WordPress-style `/?s=test` both canonicalise to the clean URL; every page has an absolute self-referencing canonical (checked on the 24 static pages and the 13 articles on 2026-10-22) |
+| **B5** `robots.txt` | allows `/`, links `https://suzaliconseil.com/sitemap.xml`, blocks `/api/`, `/admin/`, `/portal/`, `/private/`, keeps `/api/og` crawlable for social previews |
+| **B6** real 404s + noindex | an unknown URL and an unknown article answer HTTP 404 (`noindex`, no canonical); `/admin/login` and `/portal/login` are `noindex`; `/admin` redirects to the login page; `/wp-admin`, `/wp-login.php`, `/xmlrpc.php` are 404 (no soft 404). There is no internal search page or filter that would need `noindex,follow` |
+
+Remaining part of B4 (`lastmod` on the static pages): see the B4 section.
+
+## Environment notes (2026-10-23)
+
+Names only, never values (this repository is public).
+
+- **No production key on the development machine** (owner's rule): the local `.env.local` holds no variable at all. In particular there is no production `DATABASE_URL` locally. The tests that need a database (B9 browser test, trial of the slug migration) use **only** the Neon `slug-test` URL, once the owner provides it.
+- **Secrets rotation:** the owner rotates the production secrets in Dokploy (database, S3, Mistral, Gemini, cron, admin). Hosting settings are never touched by Claude.
+- **`GEMINI_API_KEY` is unused:** no file in `src/` or `scripts/` reads it. To be removed from the environment later.
+- **`MISTRAL_MODEL`:** when set, it overrides the code's default (`mistral-large-latest`) in `src/lib/ai-writer.js`. Left unchanged; the owner decides later.
+- **Read by the code but not needed locally for now:** `SMTP_*`, `MAIL_FROM`, `MAIL_FROM_NAME`, `CONTACT_TO`, `LEADS_TO`, `CAREERS_TO`, `OPENAI_API_KEY`, `OPENAI_IMAGE_MODEL`, `SEO_AUDIT_BASE_URL`. (Without them the contact forms cannot send email and admin image generation does not work in a local run.)
+
+## C1: long-form content for the 14 thin service pages (2026-10-23), branch `seo/C1-service-pages`
+
+Decision of the owner (2026-10-23): work autonomously on SEO, in this order: (1) enrich the thin service pages to 1,200–2,000 useful words, (2) create the missing pages, (3) internal linking, (4) the rest of `CLAUDE.md` §6. This section covers point 1 and the first part of point 3.
+
+### What was added
+
+Every page keeps its existing hero and sections and gains, just above its closing call to action: method, use cases, how to measure, GDPR/compliance where relevant, a longer FAQ (with its `FAQPage` markup), related services and related articles. Writing rules: no figure that is not already published on the site, no client result, no competitor criticism, no price (prices stay on `/offres`); anything that is not a definition or a method stays qualitative.
+
+| Page | Words before → after* | Internal links added (services / articles) |
+|---|---|---|
+| `/services/generation-leads-b2b` | 438 → 2,133 | 8 / 5 |
+| `/services/digital/seo-acquisition` | 299 → 1,854 | 6 / 3 |
+| `/services/teleprospection-b2b` | 426 → 1,729 | 7 / 4 |
+| `/services/commercial` (hub) | 590 → 1,687 | 9 / 5 |
+| `/services/prise-rendez-vous-b2b` | 419 → 1,491 | 6 / 3 |
+| `/services/vente-marque-blanche` | 284 → 1,436 | 5 / 3 |
+| `/services/campagnes-email-sms-b2b` | 327 → 1,393 | 5 / 3 |
+| `/services/fichier-prospection-b2b` | 347 → 1,342 | 5 / 2 |
+| `/services/digital/branding-identite` | 306 → 1,344 | 5 / 2 |
+| `/services/digital/sites-web-ecommerce` | 335 → 1,299 | 5 / 2 |
+| `/services/digital/developpement-automatisation` | 333 → 1,278 | 4 / 2 |
+| `/services/digital/strategie-digitale` | 345 → 1,275 | 7 / 2 |
+| `/services/digital` (hub) | 280 → 1,268 | 7 / 3 |
+| `/services/qualification-leads-b2b` | 329 → 1,302 | 4 / 2 |
+
+\* Visible words of the page body (header and footer excluded), measured on the rendered HTML. « Before » comes from the Phase 1 audit. `/services/outbound-marketing-b2b` (1,418) and `/services/prospection-commerciale-externalisee` (1,767) were already long enough and are unchanged.
+
+### How it is built
+
+| File | Role |
+|---|---|
+| `src/components/services/ServiceLongForm.jsx` (new) | Renders the long-form block with the site's own kit (`SectionHead`, `FaqList`, `LedgerList`). Server component: all text, links and the FAQ markup are in the HTML. Text can carry inline links. |
+| `src/content/services/*.js` (new) | The French content, one module per page (`transactional-long-forms.js` for the three pages built on the shared template, `digital-long-forms.js` for the five digital pages). |
+| `src/lib/internal-links.js` (new) | **One table** of service and article links used by the content. After the slug migration of existing articles, update the article slugs there (old URLs already redirect, so nothing breaks in the meantime). |
+| Page components (10 files) | Accept `children` and render it above the closing call to action. |
+| `src/components/services/TransactionalServicePage.jsx` | Reads the extra content of its page by path, merges the extra FAQ questions into the single `FAQPage` markup. |
+
+### Unsourced statistics removed from existing text
+
+The site's own text contained two statistics with no source; replaced with qualitative wording (rule: no unsourced figure):
+- `/services/digital/seo-acquisition`: « 93 % des expériences en ligne commencent par un moteur de recherche » → « Pour un grand nombre d'acheteurs professionnels, la recherche en ligne est le point de départ d'un projet. »
+- `/services/digital/sites-web-ecommerce`: « 53 % des visiteurs quittent un site qui met plus de 3 secondes à charger » → « Beaucoup de visiteurs quittent un site qui met trop de temps à s'afficher. »
+
+### Checked (local production build)
+
+- Lint identical to `main` (1 existing error, 157 warnings); build passes.
+- On each of the 14 pages (script): between 1,189 and 2,133 words at first measure (two short pages were extended and re-measured above 1,200), exactly one H1, exactly one `FAQPage` JSON-LD whose questions are all visible, no figure-like claim in the visible text, and every internal link resolves (article links checked on production).
+- Site-wide: the 24-page check (200, `lang="fr"`, one H1, self canonical, valid JSON-LD, unique title and description) and the price-versus-visible-text check both pass; the three « 150 € par RDV » pages are untouched.
+
+### Still to do for the plan
+
+- Point 2: create the two missing pages (« marketing B2B externalisé », « génération de leads Paris »).
+- Point 3 (rest): each article links to its service page (`article-services.js` already does for 10 articles; the generated articles get theirs from their target); the service pages now link to 2–5 articles each.
+- After deploy (manual): Search Console → resubmit the sitemap, request indexing of the 14 enriched pages.
