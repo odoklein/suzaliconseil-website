@@ -288,6 +288,8 @@ Names only, never values (this repository is public).
 
 ## C1: long-form content for the 14 thin service pages (2026-10-23), branch `seo/C1-service-pages`
 
+**Live, verified in production on 2026-10-23 (PR #7):** the 14 pages measure 1,268 to 2,133 words, each with one H1 and one `FAQPage`; the 26-page check and the price check pass. Two pre-existing issues seen on article pages, unrelated to C1 (meta description under 130 characters, edited in the admin): `agence-de-generation-de-leads-b2b-comment-bien-choisir` (117) and `agence-outbound-vs-inbound-quand-choisir` (105).
+
 Decision of the owner (2026-10-23): work autonomously on SEO, in this order: (1) enrich the thin service pages to 1,200–2,000 useful words, (2) create the missing pages, (3) internal linking, (4) the rest of `CLAUDE.md` §6. This section covers point 1 and the first part of point 3.
 
 ### What was added
@@ -343,7 +345,9 @@ The site's own text contained two statistics with no source; replaced with quali
 
 ## 2026-10-23 — C2: two new service pages (branch `seo/C2-new-service-pages`)
 
-Status: merged, deploy to verify.
+**Live, verified in production on 2026-10-23 (PR #8):** both pages return 200 with a self canonical, one H1, one `FAQPage`; `sitemap.xml` lists them (39 URLs) with `lastmod` 2026-10-23; the site-wide and price checks pass.
+
+C3 (same day): the two live articles that still had generic service links (« comment bien choisir » and the externalised-prospection guide) now point to their own service pages in `article-services.js`; every live article is mapped.
 
 | New page | Target search | Notes |
 |---|---|---|
