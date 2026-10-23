@@ -228,3 +228,29 @@ extAllowedAt; 200 more calls in the same minute record nothing; the window rolls
 - **Figures:** handled (see the prompt and safety-net rows above). A rejected article makes the cron answer with an error and leaves lastRunAt untouched, so the next scheduler call tries again with a fresh draft (one extra Mistral call or two per attempt). If rejections become frequent, check the logs line « chiffres non sourcés détectés ».
 - The detector catches figure claims, not every vague quantifier (« la plupart », « souvent » are not flagged), and it cannot verify that a qualitative statement is true: articles are still not fact-checked.
 - 3 existing articles may carry the old priority keywords as `targetKeyword`; they simply don't block the new targets.
+
+## B4: `lastmod` for the static pages in sitemap.xml (2026-10-23), branch `seo/B4-lastmod`
+
+**Not live yet** (waiting for the owner's OK).
+
+### Why
+
+The rest of B4 was already satisfied on production (checked 2026-10-23: all 37 sitemap URLs answer 200, are self-canonical, indexable, not redirected; the legal notice is `noindex` and absent; no private area listed). The one gap: **only the 13 articles had a `<lastmod>`; the 24 static pages had none**, because there was no honest date to give them. A build date would have been worse than nothing (a date that changes without a content change teaches Google to ignore `lastmod` for the whole site).
+
+### Changed
+
+| File | Change |
+|---|---|
+| `src/lib/static-lastmod.js` (new) | Table route → date of the last **real** change of the page's visible content or metadata. All 24 pages are dated **2026-10-22**: that day B7/B8 gave every page a unique title and description, a visible breadcrumb and server-rendered structured data (home: new H1). The rule is written in the file: update by hand in the commit that changes a page; never the build date; no entry = no `lastmod`. |
+| `src/lib/sitemap-entries.js` (new), `src/app/sitemap.js` | The sitemap is built by a pure function (testable without a database); `sitemap.js` only loads the articles. `/actualites` takes the date of the **newest published article** (the list changes with each publication) but never goes earlier than its static date. Merged articles stay out. If the database is down, the static pages are still returned, with their dates. |
+
+### Checked
+
+- Lint clean; build passes; the served `/sitemap.xml` is valid XML with 24 entries, all with `lastmod` 2026-10-22, all 24 URLs answer 200 (local production server, no database, so no article entries locally).
+- 18 checks (script): every route has a date and no date is orphaned; all dates valid `YYYY-MM-DD`, none is today's date, none in the future; two calls give identical output (no clock involved); database down = 24 dated static entries; with articles, `/actualites` follows the newest article's `updatedAt`, articles keep `updatedAt` else `publishedAt`, merged slugs are excluded, an old article does not move `/actualites` back in time.
+- **Not testable locally:** the article entries from the real database (they were already live and unchanged by this task).
+
+### To do by hand
+
+1. After deploy: Search Console → Sitemaps → resubmit `https://suzaliconseil.com/sitemap.xml` (or just let Google re-read it).
+2. **Maintenance rule for the team:** when a static page's content really changes, update its date in `src/lib/static-lastmod.js` in the same commit.
