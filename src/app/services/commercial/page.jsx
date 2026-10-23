@@ -1,4 +1,6 @@
 import { CommercialClientPage } from "../../../components/services/commercial/CommercialClientPage";
+import ServiceLongForm from "../../../components/services/ServiceLongForm";
+import { COMMERCIAL_CONTENT } from "../../../content/services/commercial";
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function CommercialPage() {
           path: PAGE.path,
         })}
       />
-      <CommercialClientPage />
+      <CommercialClientPage>
+        <ServiceLongForm content={COMMERCIAL_CONTENT} />
+      </CommercialClientPage>
     </>
   );
 }

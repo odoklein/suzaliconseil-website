@@ -1,4 +1,6 @@
 import TeleprospectionClient from "../../../components/services/teleprospection/TeleprospectionClient";
+import ServiceLongForm from "../../../components/services/ServiceLongForm";
+import { TELEPROSPECTION_CONTENT } from "../../../content/services/teleprospection";
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function TeleprospectionB2BPage() {
           path: PAGE.path,
         })}
       />
-      <TeleprospectionClient />
+      <TeleprospectionClient>
+        <ServiceLongForm content={TELEPROSPECTION_CONTENT} />
+      </TeleprospectionClient>
     </>
   );
 }

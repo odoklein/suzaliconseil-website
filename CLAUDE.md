@@ -143,7 +143,7 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
   Me montrer la table complète des redirections avant le OK.
 - [x] **B3 — Canonical absolue auto-référente** sur toutes les pages + une seule politique de slash final
   + 301 pour www / http / slash.
-- [ ] **B4 — `sitemap.xml` automatique** (uniquement pages canoniques, 200, indexables, avec `lastmod`).
+- [x] **B4 — `sitemap.xml` automatique** (uniquement pages canoniques, 200, indexables, avec `lastmod`).
 - [x] **B5 — `robots.txt`** : tout autoriser sauf admin / API / preview, avec lien vers le sitemap.
 - [x] **B6 — Vraies 404** (statut HTTP 404) + `noindex,follow` sur recherche interne, filtres vides, paramètres.
 - [x] **B7 — Balises on-page** : `<html lang="fr">`, title unique, meta description unique, un seul H1,

@@ -1,4 +1,6 @@
 import SitesWebClient from "../../../../components/services/digital/sites-web/SitesWebClient";
+import ServiceLongForm from "../../../../components/services/ServiceLongForm";
+import { SITES_WEB_CONTENT } from "../../../../content/services/digital-long-forms";
 import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
 import { serviceSchema } from "../../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function SitesWebEcommercePage() {
           path: PAGE.path,
         })}
       />
-      <SitesWebClient />
+      <SitesWebClient>
+        <ServiceLongForm content={SITES_WEB_CONTENT} />
+      </SitesWebClient>
     </>
   );
 }

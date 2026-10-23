@@ -51,7 +51,7 @@ const SOLUTIONS = [
   },
 ];
 
-export default function MarqueBlancheClient() {
+export default function MarqueBlancheClient({ children }) {
   return (
     <div className="min-h-screen bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
@@ -127,6 +127,9 @@ export default function MarqueBlancheClient() {
           </ul>
         </div>
       </section>
+
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
 
       <ClosingCta
         title="Scalez votre vente sans limites."

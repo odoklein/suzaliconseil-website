@@ -54,9 +54,10 @@ export default function SeoChannels() {
           }
           intro={
             <>
-              93% des expériences en ligne commencent par un moteur de recherche.{" "}
+              Pour un grand nombre d&apos;acheteurs professionnels, la recherche en ligne est le point de
+              départ d&apos;un projet.{" "}
               <strong className="font-semibold text-[#0D332B]">
-                Si vous n&apos;êtes pas en première page, vous n&apos;existez pas.
+                Être absent des premiers résultats, c&apos;est laisser cette demande à d&apos;autres.
               </strong>
             </>
           }

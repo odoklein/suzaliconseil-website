@@ -1,4 +1,6 @@
 import DeveloppementAutoClient from "../../../../components/services/digital/developpement-auto/DeveloppementAutoClient";
+import ServiceLongForm from "../../../../components/services/ServiceLongForm";
+import { AUTOMATISATION_CONTENT } from "../../../../content/services/digital-long-forms";
 import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
 import { serviceSchema } from "../../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function DeveloppementAutomatisationPage() {
           path: PAGE.path,
         })}
       />
-      <DeveloppementAutoClient />
+      <DeveloppementAutoClient>
+        <ServiceLongForm content={AUTOMATISATION_CONTENT} />
+      </DeveloppementAutoClient>
     </>
   );
 }
