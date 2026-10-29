@@ -3,7 +3,7 @@
 import MagneticButton from "../../../ui/MagneticButton";
 import { PageHero } from "../../../kit";
 
-const STACK = ["Next.js 14", "Python / Django", "OpenAI API", "AWS / Vercel", "n8n / Zapier"];
+const STACK = ["Next.js 14", "Python / Django", "IA générative","AWS / Vercel", "n8n / Zapier"];
 
 export default function DevHero() {
   return (

@@ -36,7 +36,7 @@ export const TRANSACTIONAL_SERVICES = {
       "Prospection par téléphone, email et LinkedIn",
       "Rendez-vous posés dans l'agenda, avec un briefing avant-vente",
       "Intégration à votre CRM et historique complet des échanges",
-      "Reporting hebdomadaire et account manager dédié",
+      "Reporting hebdomadaire",
     ],
     process: [
       ["Cadrage", "Atelier d'onboarding : client idéal à partir de vos affaires signées, proposition de valeur, critères de qualification et passage de relais."],
@@ -49,10 +49,10 @@ export const TRANSACTIONAL_SERVICES = {
     faqs: [
       ["Comment démarre la mission ?", "Par un atelier d’onboarding qui fixe votre cible, votre proposition de valeur, les critères de qualification et le passage de relais à vos commerciaux. Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous."],
       ["Quels canaux sont utilisés ?", "Le dispositif associe téléphone, email et LinkedIn selon votre audience, vos données et les règles applicables. Le téléphone reste le canal le plus sûr pour qualifier un besoin ; l'email et LinkedIn ouvrent la porte et préparent l'appel."],
-      ["Comment suivez-vous les résultats ?", "Vous recevez un reporting hebdomadaire sur les contacts traités, les conversations, les qualifications, les objections rencontrées et les rendez-vous obtenus. Un account manager dédié le commente avec vous et ajuste le dispositif."],
-      ["Combien coûte la prospection commerciale externalisée ?", `Chez Suzali Conseil, l'offre Growth Standard coûte ${GROWTH_STANDARD_OFFER.price} ${billingInSentence(GROWTH_STANDARD_OFFER)}. Le forfait couvre l'équipe, le ciblage, les outils et le pilotage ; la part variable ne s'applique qu'aux rendez-vous validés et réellement honorés. Pour un besoin limité à la prise de rendez-vous téléphonique, la Vente au Rendez-Vous démarre à ${VENTE_RDV_OFFER.price} de ${VENTE_RDV_OFFER.billing}.`],
+      ["Comment suivez-vous les résultats ?", "Vous recevez un reporting hebdomadaire sur les contacts traités, les conversations, les qualifications, les objections rencontrées et les rendez-vous obtenus. Il est commenté avec vous chaque semaine et le dispositif est ajusté en conséquence."],
+      ["Combien coûte la prospection commerciale externalisée ?", `Chez Suzali Conseil, l'offre Growth Standard coûte ${GROWTH_STANDARD_OFFER.price} ${billingInSentence(GROWTH_STANDARD_OFFER)}. Le forfait couvre l'équipe, le ciblage, les outils et le pilotage ; la part variable s'applique aux rendez-vous validés. Pour un besoin limité à la prise de rendez-vous téléphonique, la Vente au Rendez-Vous démarre à ${VENTE_RDV_OFFER.price} de ${VENTE_RDV_OFFER.billing}.`],
       ["Externaliser ou recruter un commercial en interne : que choisir ?", "Recruter coûte un salaire chargé, des outils, des données et plusieurs mois de recrutement puis de formation avant un rythme normal, que les résultats suivent ou non. Externaliser démarre en quelques jours avec une méthode et des outils déjà en place. L'interne reste préférable quand la vente demande une expertise produit très pointue dès le premier appel ; beaucoup d'entreprises externalisent pour lancer un marché, puis recrutent une fois le discours validé."],
-      ["En combien de temps arrivent les premiers rendez-vous ?", "Les campagnes sont actives sous 7 jours après validation du ciblage et des messages. Les premiers rendez-vous qualifiés arrivent généralement dans les 30 jours suivant le lancement ; le rythme dépend ensuite de la longueur du cycle de vente de votre marché."],
+      ["En combien de temps la mission démarre-t-elle ?", "Les campagnes sont actives sous 7 jours après validation du ciblage et des messages. Le rythme des échanges qui suivent dépend ensuite de la longueur du cycle de vente de votre marché."],
       ["Est-ce que je garde la main sur le discours et sur les prospects ?", "Oui. Les scripts et séquences sont validés avec vous avant tout envoi, chaque échange est tracé dans le CRM et chaque rendez-vous arrive avec un compte rendu. Vos commerciaux mènent la vente ; notre équipe ouvre la porte et qualifie."],
       ["La prospection externalisée est-elle conforme au RGPD ?", "Oui, si elle respecte les règles de la prospection B2B. On peut contacter un professionnel au sujet de son activité, à condition de l'informer de l'origine de ses données et de respecter son droit d'opposition ; par email, le message doit concerner sa fonction et proposer une désinscription simple. Nos fichiers sont sourcés et les demandes d'opposition sont appliquées immédiatement."],
       ["Quelle différence avec l'outbound marketing ou la prise de rendez-vous ?", "La prospection externalisée désigne le mode de collaboration : une équipe extérieure prend en charge l'ensemble de la démarche. L'outbound marketing désigne les canaux digitaux (cold email, LinkedIn, ABM) et la prise de rendez-vous se concentre sur le remplissage de l'agenda, surtout par téléphone. La prospection externalisée combine les deux."],
@@ -62,6 +62,94 @@ export const TRANSACTIONAL_SERVICES = {
       ["/services/teleprospection-b2b", "Téléprospection B2B"],
       ["/services/outbound-marketing-b2b", "Outbound marketing B2B"],
       ["/services/prise-rendez-vous-b2b", "Prise de rendez-vous B2B"],
+    ],
+  },
+  marketing: {
+    path: "/services/marketing-b2b-externalise",
+    title: "Marketing B2B externalisé : équipe dédiée | Suzali Conseil",
+    description:
+      "Externalisez votre marketing B2B : stratégie, prospection outbound, contenu, SEO et automatisation menés par une équipe dédiée, avec reporting hebdomadaire.",
+    eyebrow: "Marketing B2B externalisé",
+    h1: "Marketing B2B externalisé",
+    parent: { label: "Services", href: "/services" },
+    introduction:
+      "Nous prenons en charge tout ou partie de votre marketing B2B : positionnement, prospection outbound, contenu, référencement naturel et automatisation. Une équipe dédiée et un pilotage chaque semaine, sans recruter un département marketing.",
+    suitableFor: [
+      "PME et ETI sans équipe marketing structurée, ou avec une équipe d’une ou deux personnes",
+      "Dirigeants qui veulent un marketing relié aux rendez-vous et aux ventes, pas seulement à la visibilité",
+      "Entreprises qui lancent une offre ou entrent sur un nouveau marché",
+      "Équipes marketing internes qui ont besoin d’un renfort sur l’outbound, le SEO ou l’automatisation",
+    ],
+    deliverables: [
+      "Positionnement, cibles prioritaires et messages écrits avec vous",
+      "Plan d’actions par canal : outbound, contenu, référencement naturel, email",
+      "Production et publication des contenus validés avant mise en ligne",
+      "Campagnes de prospection email, LinkedIn et téléphone",
+      "Automatisations et suivi dans votre CRM",
+      "Reporting hebdomadaire",
+    ],
+    process: [
+      ["Diagnostic", "Revue de votre offre, de vos clients actuels, de votre site et de vos canaux. Nous repérons ce qui fonctionne déjà et ce qui manque."],
+      ["Plan d’actions", "Priorités par canal, calendrier et indicateurs, présentés avec les raisons de chaque choix. Rien n’est lancé sans votre validation."],
+      ["Production", "Messages, contenus, campagnes et automatisations sont produits par notre équipe puis relus par vous avant diffusion."],
+      ["Pilotage", "Point hebdomadaire sur les indicateurs convenus. Ce qui ne produit rien est corrigé ou arrêté, ce qui fonctionne est renforcé."],
+    ],
+    faqs: [
+      ["Que recouvre le marketing B2B externalisé ?", "C’est la prise en charge, par une équipe extérieure, de tout ou partie des actions qui amènent des prospects qualifiés : positionnement, prospection outbound, contenu, référencement, emailing et automatisation. Vous choisissez le périmètre, de l’action ciblée au dispositif complet."],
+      ["Quelle différence avec la prospection commerciale externalisée ?", "La prospection externalisée se concentre sur la prise de contact et les rendez-vous. Le marketing B2B externalisé est plus large : il travaille aussi le positionnement, le contenu et le référencement qui rendent la prospection plus efficace et préparent une demande entrante."],
+      ["Garde-t-on la main sur les messages et les contenus ?", "Oui. Tout message, contenu ou campagne vous est présenté avant diffusion, et vous suivez chaque semaine ce qui a été fait."],
+      ["Comment démarrer ?", "Par un audit gratuit de votre situation. Il débouche sur un plan d’actions priorisé, que vous soyez accompagné par nous ou non. Les tarifs publiés figurent sur la page Offres."],
+    ],
+    related: [
+      ["/services/outbound-marketing-b2b", "Outbound marketing B2B"],
+      ["/services/digital/seo-acquisition", "SEO et acquisition digitale B2B"],
+      ["/services/digital/strategie-digitale", "Stratégie marketing digitale B2B"],
+      ["/services/prospection-commerciale-externalisee", "Prospection commerciale externalisée"],
+    ],
+  },
+  paris: {
+    path: "/services/agence-generation-de-leads-paris",
+    title: "Agence de génération de leads B2B à Paris | Suzali Conseil",
+    description:
+      "Agence de génération de leads B2B basée à Paris : ciblage des décideurs franciliens, prospection multicanale, qualification et rendez-vous dans votre agenda.",
+    eyebrow: "Agence à Paris",
+    h1: "Agence de génération de leads B2B à Paris",
+    parent: { label: "Génération de leads B2B", href: "/services/generation-leads-b2b" },
+    footnote:
+      "Suzali Conseil est établi à Paris (2e arrondissement). Les campagnes s’opèrent à distance, et les points de pilotage se tiennent en visioconférence ou en présentiel selon votre préférence.",
+    introduction:
+      "Vous vendez à des entreprises de Paris et d’Île-de-France, ou vous êtes situé à Paris et voulez une équipe proche pour générer vos leads ? Nous ciblons les décideurs, les contactons par email, LinkedIn et téléphone, qualifions leur besoin et posons les rendez-vous dans l’agenda de vos commerciaux.",
+    suitableFor: [
+      "Entreprises parisiennes qui veulent un interlocuteur dans leur ville",
+      "Sociétés qui visent les entreprises de Paris et d’Île-de-France sans équipe commerciale dédiée",
+      "Éditeurs, cabinets et prestataires de services dont la cible est concentrée en région parisienne",
+      "Dirigeants qui veulent tester la région parisienne avant d’y affecter des commerciaux",
+    ],
+    deliverables: [
+      "Ciblage des entreprises par zone, secteur, taille et fonction du décideur",
+      "Fichier de contacts professionnels vérifié",
+      "Séquences email, LinkedIn et appels écrites pour chaque segment",
+      "Qualification de chaque lead selon vos critères",
+      "Rendez-vous posés dans l’agenda, avec un briefing avant-vente",
+      "Reporting hebdomadaire et suivi CRM",
+    ],
+    process: [
+      ["Cadrage", "Votre client idéal, vos meilleures affaires, la zone à couvrir et ce qu’est un lead qualifié pour vous."],
+      ["Ciblage", "Entreprises et décideurs de Paris et d’Île-de-France répondant à vos critères, vérifiés avant tout envoi."],
+      ["Activation", "Séquences email, LinkedIn et appels sur la cible validée, relances, puis qualification des réponses."],
+      ["Transmission", "Chaque lead qualifié arrive avec ses notes ; les rendez-vous sont posés dans l’agenda de vos commerciaux."],
+    ],
+    faqs: [
+      ["Êtes-vous basés à Paris ?", "Oui. Suzali Conseil est établi à Paris, dans le 2e arrondissement. Nous accompagnons aussi des entreprises dans le reste de la France, à distance."],
+      ["Ciblez-vous uniquement des entreprises parisiennes ?", "Non. La zone se paramètre librement : Paris intra-muros, Île-de-France, plusieurs régions ou tout le territoire. Cette page s’adresse à ceux dont la cible ou le siège est à Paris."],
+      ["Quelle différence avec votre page générale sur la génération de leads ?", "La page générale décrit toute notre méthode de génération de leads B2B. Celle-ci s’adresse à celles et ceux qui cherchent une agence à Paris et détaille ce que cela change : la zone ciblée, les quartiers d’affaires et la proximité pour les points de pilotage."],
+      ["Comment obtenir un devis ?", "Contactez-nous pour un audit gratuit de votre prospection actuelle. Les tarifs de chaque prestation sont publiés sur la page Offres."],
+    ],
+    related: [
+      ["/services/generation-leads-b2b", "Génération de leads B2B"],
+      ["/services/prise-rendez-vous-b2b", "Prise de rendez-vous B2B"],
+      ["/services/teleprospection-b2b", "Téléprospection B2B"],
+      ["/services/fichier-prospection-b2b", "Fichier de prospection B2B"],
     ],
   },
   fichier: {

@@ -40,10 +40,10 @@ const BENEFITS = [
     meta: "Auto · Synchronisation",
   },
   {
-    title: "Payé au rendez-vous tenu",
+    title: "Payé au rendez-vous validé",
     description:
-      "Vos commerciaux se concentrent sur le closing. La part variable ne s'applique qu'aux rendez-vous validés et honorés : une absence n'est pas facturée.",
-    meta: "150 € · Par RDV honoré",
+      "Vos commerciaux se concentrent sur le closing. La part variable s'applique aux rendez-vous validés selon vos critères.",
+    meta: "150 € · Par RDV validé",
   },
 ];
 
@@ -78,7 +78,7 @@ const OUTCOMES = [
 
 const STRONG = "font-semibold text-[#0D332B]";
 
-export default function PriseRdvClient() {
+export default function PriseRdvClient({ children }) {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
@@ -158,6 +158,9 @@ export default function PriseRdvClient() {
           </div>
         </div>
       </section>
+
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
 
       <ClosingCta
         title="Des rendez-vous qualifiés, payés quand ils ont lieu"

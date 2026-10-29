@@ -11,8 +11,8 @@
  * génération de leads B2B » (position 9,72), désormais redirigé vers /offres.
  *
  * Les réponses ne reprennent que des engagements déjà affichés sur le site
- * (déploiement sous 7 jours, premiers leads sous 30 jours, conformité RGPD) :
- * aucune promesse nouvelle n'est introduite ici.
+ * (déploiement sous 7 jours, conformité RGPD) : aucune promesse nouvelle n'est
+ * introduite ici, et aucun délai de premier lead ou de premier rendez-vous.
  */
 export const OUTBOUND_FAQ = [
   {
@@ -29,13 +29,12 @@ export const OUTBOUND_FAQ = [
   {
     question: "Combien coûte une campagne d'outbound marketing B2B ?",
     answer:
-      "Le budget dépend du nombre de comptes ciblés, du nombre de canaux activés et du niveau de personnalisation attendu : une séquence cold email sur un marché large ne mobilise pas les mêmes moyens qu'une campagne ABM sur cinquante comptes stratégiques. Nos formules et leurs périmètres sont détaillés sur la page offres, et l'audit initial est gratuit — il sert précisément à chiffrer votre cas avant tout engagement.",
+      "Le budget dépend du nombre de comptes ciblés, du nombre de canaux activés et du niveau de personnalisation attendu : une séquence cold email sur un marché large ne mobilise pas les mêmes moyens qu'une campagne ABM sur quelques comptes stratégiques. Nos formules et leurs périmètres sont détaillés sur la page offres, et l'audit initial est gratuit — il sert précisément à chiffrer votre cas avant tout engagement.",
   },
   {
-    question:
-      "En combien de temps obtient-on les premiers rendez-vous qualifiés ?",
+    question: "En combien de temps une campagne outbound démarre-t-elle ?",
     answer:
-      "Les campagnes sont actives sous 7 jours après validation du ciblage et des messages. Les premiers rendez-vous qualifiés arrivent généralement dans les 30 jours suivant le lancement. Le délai réel dépend surtout de la longueur du cycle de vente de votre marché : un logiciel vendu 500 € par mois ne se décide pas au même rythme qu'un contrat industriel à six chiffres.",
+      "Les campagnes sont actives sous 7 jours après validation du ciblage et des messages. Le rythme des échanges qui suivent dépend ensuite de votre marché et de la longueur de votre cycle de vente.",
   },
   {
     question: "Le cold emailing B2B est-il conforme au RGPD ?",

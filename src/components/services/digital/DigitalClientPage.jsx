@@ -7,7 +7,7 @@ import { DigitalHero } from "./DigitalHero";
 import { DigitalProcess } from "./DigitalProcess";
 import { DigitalTechStack } from "./DigitalTechStack";
 
-export function DigitalClientPage() {
+export function DigitalClientPage({ children }) {
   const { openBooking } = useBooking();
 
   return (
@@ -16,6 +16,10 @@ export function DigitalClientPage() {
       <DigitalTechStack />
       <DigitalBento />
       <DigitalProcess />
+
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
+
       <ClosingCta
         title="Donnez une direction claire à votre prochain projet digital."
         intro="Découvrez les formats d'accompagnement adaptés à votre objectif, à votre équipe et à votre niveau de maturité."

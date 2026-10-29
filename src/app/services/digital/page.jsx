@@ -1,4 +1,6 @@
 import { DigitalClientPage } from "../../../components/services/digital/DigitalClientPage";
+import ServiceLongForm from "../../../components/services/ServiceLongForm";
+import { DIGITAL_CONTENT } from "../../../content/services/digital-long-forms";
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function DigitalPage() {
           path: PAGE.path,
         })}
       />
-      <DigitalClientPage />
+      <DigitalClientPage>
+        <ServiceLongForm content={DIGITAL_CONTENT} />
+      </DigitalClientPage>
     </>
   );
 }

@@ -1,4 +1,6 @@
 import SeoAcquisitionClient from "../../../../components/services/digital/seo-acquisition/SeoAcquisitionClient";
+import ServiceLongForm from "../../../../components/services/ServiceLongForm";
+import { SEO_ACQUISITION_CONTENT } from "../../../../content/services/seo-acquisition";
 import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
 import { serviceSchema } from "../../../../lib/structured-data";
@@ -24,7 +26,9 @@ export default function SeoAcquisitionPage() {
           path: PAGE.path,
         })}
       />
-      <SeoAcquisitionClient />
+      <SeoAcquisitionClient>
+        <ServiceLongForm content={SEO_ACQUISITION_CONTENT} />
+      </SeoAcquisitionClient>
     </>
   );
 }

@@ -4,6 +4,8 @@ import CheckRows from "./commercial-b/CheckRows";
 import { MethodSection } from "../kit";
 import JsonLd from "../seo/JsonLd";
 import { faqSchema, serviceSchema } from "../../lib/structured-data";
+import ServiceLongForm, { Rich, plain } from "./ServiceLongForm";
+import { LONG_FORMS } from "../../content/services/transactional-long-forms";
 
 /*
  * Gabarit des pages services « transactionnelles » (fichier, qualification,
@@ -31,10 +33,28 @@ const SERVICE_VISUALS = {
     alt: "Dirigeant consultant un tableau de bord commercial avec pipeline et taux de conversion",
     position: "center",
   },
+  "/services/marketing-b2b-externalise": {
+    src: "/images/services-growth-system.webp",
+    alt: "Composition architecturale représentant deux expertises qui convergent vers une trajectoire commune",
+    position: "center",
+  },
+  "/services/agence-generation-de-leads-paris": {
+    src: "/images/hero-office.webp",
+    alt: "Open space lumineux avec postes de travail et vue sur la ville",
+    position: "center",
+  },
 };
+
+const DEFAULT_PARENT = { label: "Prospection commerciale", href: "/services/commercial" };
+const DEFAULT_FOOTNOTE =
+  "L’accompagnement est assuré à distance dans toute la France, notamment pour des entreprises situées à Paris, Lyon, Bordeaux, Nantes et dans les autres bassins économiques, sans prétendre disposer de bureaux locaux.";
 
 export default function TransactionalServicePage({ service }) {
   const visual = SERVICE_VISUALS[service.path] ?? SERVICE_VISUALS["/services/prospection-commerciale-externalisee"];
+
+  // Contenu éditorial long de la page (sections, questions en plus, articles liés), s'il existe.
+  const extra = LONG_FORMS[service.path];
+  const faqs = [...service.faqs, ...(extra?.faqs ?? [])];
 
   return (
     <main className="overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
@@ -47,7 +67,7 @@ export default function TransactionalServicePage({ service }) {
             path: service.path,
           }),
           faqSchema(
-            service.faqs.map(([question, answer]) => ({ question, answer })),
+            faqs.map(([question, answer]) => ({ question, answer: plain(answer) })),
             service.path,
           ),
         ]}
@@ -58,7 +78,7 @@ export default function TransactionalServicePage({ service }) {
         intro={service.introduction}
         breadcrumbs={[
           { label: "Services", href: "/services" },
-          { label: "Prospection commerciale", href: "/services/commercial" },
+          service.parent ?? DEFAULT_PARENT,
           { label: service.h1, href: service.path },
         ]}
         image={visual.src}
@@ -101,12 +121,22 @@ export default function TransactionalServicePage({ service }) {
         className="bg-[#FCFDFC]"
         title="Un processus clair, du cadrage au passage de relais"
         steps={service.process.map(([title, description]) => ({ title, description }))}
-        footnote="L’accompagnement est assuré à distance dans toute la France, notamment pour des entreprises situées à Paris, Lyon, Bordeaux, Nantes et dans les autres bassins économiques, sans prétendre disposer de bureaux locaux."
+        footnote={service.footnote ?? DEFAULT_FOOTNOTE}
       />
+
+      {extra && (
+        <ServiceLongForm
+          content={{ sections: extra.sections, related: { articles: extra.articles } }}
+        />
+      )}
 
       <FaqList
         jsonLd={false}
-        items={service.faqs.map(([question, answer]) => ({ question, answer }))}
+        items={faqs.map(([question, answer]) => ({
+          question,
+          answer: typeof answer === "string" ? answer : <Rich parts={answer} />,
+          answerText: plain(answer),
+        }))}
       />
 
       {/* Services associés */}

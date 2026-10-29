@@ -1,4 +1,6 @@
 import MarqueBlancheClient from "../../../components/services/marque-blanche/MarqueBlancheClient";
+import ServiceLongForm from "../../../components/services/ServiceLongForm";
+import { MARQUE_BLANCHE_CONTENT } from "../../../content/services/marque-blanche";
 import JsonLd from "../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../lib/seo";
 import { serviceSchema } from "../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function VenteMarqueBlanchePage() {
           path: PAGE.path,
         })}
       />
-      <MarqueBlancheClient />
+      <MarqueBlancheClient>
+        <ServiceLongForm content={MARQUE_BLANCHE_CONTENT} />
+      </MarqueBlancheClient>
     </>
   );
 }

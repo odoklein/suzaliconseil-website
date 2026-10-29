@@ -12,7 +12,7 @@ function loadJson(relativePath) {
 // Lu au build : après une migration, il faut committer ce fichier et redéployer.
 const slugRedirects = loadJson("./src/data/slug-redirects.json");
 
-// Articles fusionnés dans un autre : slug fusionné -> slug de l'article cible.
+// Articles fusionnés dans un autre : slug fusionné -> slug de l'article cible, ou chemin d'une page (« /services/... »).
 // À remplir à la main quand l'article cible est EN LIGNE (voir docs/slug-migration-runbook.md).
 const articleMerges = loadJson("./src/data/article-merges.json");
 
@@ -38,13 +38,18 @@ function finalArticleSlug(slug) {
   return articleMerges[migrated] ?? articleMerges[slug] ?? migrated;
 }
 
+/** Destination d'une fusion : un article (slug) ou une page du site (chemin commençant par « / »). */
+function articleDestination(finalSlug) {
+  return finalSlug.startsWith("/") ? finalSlug : `/actualites/${finalSlug}`;
+}
+
 /** Réécrit la destination d'une redirection existante vers le slug final. */
 function remapArticleDestination(redirect) {
   const prefix = "/actualites/";
   if (!redirect.destination.startsWith(prefix)) return redirect;
   const slug = redirect.destination.slice(prefix.length);
   const finalSlug = finalArticleSlug(slug);
-  return finalSlug === slug ? redirect : { ...redirect, destination: `${prefix}${finalSlug}` };
+  return finalSlug === slug ? redirect : { ...redirect, destination: articleDestination(finalSlug) };
 }
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -205,10 +210,14 @@ const nextConfig = {
     // Anciens slugs migrés (suffixe retiré) et articles fusionnés : toujours vers le slug FINAL.
     const toRule = (from) => ({
       source: `/actualites/${from}`,
-      destination: `/actualites/${finalArticleSlug(from)}`,
+      destination: articleDestination(finalArticleSlug(from)),
       permanent: true,
     });
-    const mergeRules = Object.keys(articleMerges).map(toRule);
+    // L'ancienne forme /blog/<slug> est aussi redirigée directement (sinon : deux sauts).
+    const mergeRules = Object.keys(articleMerges).flatMap((from) => [
+      toRule(from),
+      { ...toRule(from), source: `/blog/${from}` },
+    ]);
     const migrationRules = Object.keys(slugRedirects).map(toRule);
 
     // Une source ne peut apparaître qu'une fois. Une entrée de article-merges.json prime sur

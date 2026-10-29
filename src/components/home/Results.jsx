@@ -17,7 +17,7 @@ const stats = [
     figure: "150 €",
     title: "Par rendez-vous validé et honoré",
     description:
-      "La part variable ne suit que les rendez-vous réellement tenus. Un prospect qui ne se présente pas n'est pas facturé.",
+      "Une part variable par rendez-vous validé selon vos critères, en plus du forfait.",
     href: "/services/prise-rendez-vous-b2b",
   },
   {
@@ -31,7 +31,7 @@ const stats = [
     figure: "Hebdo",
     title: "Un point et un reporting chaque semaine",
     description:
-      "Appels passés, contacts joints, rendez-vous posés, objections entendues : votre account manager vous les présente.",
+      "Appels passés, contacts joints, rendez-vous posés, objections entendues : le point hebdomadaire vous les présente.",
     href: "/services/generation-leads-b2b",
   },
 ];

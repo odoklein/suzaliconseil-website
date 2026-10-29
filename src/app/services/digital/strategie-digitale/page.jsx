@@ -1,4 +1,6 @@
 import StrategieDigitaleClient from "../../../../components/services/digital/strategie/StrategieDigitaleClient";
+import ServiceLongForm from "../../../../components/services/ServiceLongForm";
+import { STRATEGIE_DIGITALE_CONTENT } from "../../../../content/services/digital-long-forms";
 import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
 import { serviceSchema } from "../../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function StrategieDigitalePage() {
           path: PAGE.path,
         })}
       />
-      <StrategieDigitaleClient />
+      <StrategieDigitaleClient>
+        <ServiceLongForm content={STRATEGIE_DIGITALE_CONTENT} />
+      </StrategieDigitaleClient>
     </>
   );
 }

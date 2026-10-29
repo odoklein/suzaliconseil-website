@@ -44,7 +44,7 @@ const COMPARISON = [
   [
     "Structure du coût",
     "Salaire chargé, outils, données et temps de management, que les résultats suivent ou non.",
-    "Un forfait mensuel et une part variable due seulement pour les rendez-vous honorés.",
+    "Un forfait mensuel et une part variable par rendez-vous validé.",
   ],
   [
     "Outils et données",
@@ -54,7 +54,7 @@ const COMPARISON = [
   [
     "Encadrement",
     "Un manager forme, suit et motive les commerciaux.",
-    "Un account manager dédié pilote l'équipe et vous rend compte chaque semaine.",
+    "L'équipe est pilotée pour vous et vous rend compte chaque semaine.",
   ],
   [
     "Connaissance de l'offre",
@@ -257,7 +257,7 @@ export default function ProspectionExternaliseePage({ service }) {
           <SectionHead
             className="max-w-4xl"
             title="Combien coûte la prospection externalisée chez Suzali ?"
-            intro="Un forfait couvre l'équipe, le ciblage, les outils et le pilotage. La part variable ne s'applique qu'aux rendez-vous validés selon vos critères et réellement honorés : si le prospect ne se présente pas, ce rendez-vous ne vous est pas facturé."
+            intro="Un forfait couvre l'équipe, le ciblage, les outils et le pilotage. La part variable s'applique aux rendez-vous validés selon vos critères."
           />
 
           <Reveal

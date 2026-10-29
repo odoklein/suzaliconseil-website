@@ -25,7 +25,7 @@ const FIGURES = [
   { value: "7 jours", label: "Pour lancer la campagne après validation du ciblage" },
   { value: "4 canaux", label: "Email, LinkedIn, téléphone et SMS dans une séquence" },
   { value: "5 appels", label: "Maximum par lead, sur 10 jours, pour le qualifier" },
-  { value: "Hebdo", label: "Reporting et point avec votre account manager" },
+  { value: "Hebdo", label: "Reporting et point hebdomadaire" },
 ];
 
 const LEVERS = [
@@ -76,14 +76,14 @@ const STEPS = [
 
 const COMMITMENTS = [
   { value: "7 jours", label: "Lancement", note: "Après validation du ciblage et des messages" },
-  { value: "1:1", label: "Account Manager", note: "Expert dédié à votre compte" },
+  { value: "Écrits", label: "Objectifs", note: "Fixés au cadrage, revus chaque semaine" },
   { value: "7 €", label: "Par lead qualifié", note: "Offre Qualification de leads, dès 100 leads" },
   { value: "Hebdo", label: "Reporting", note: "Volumes, réponses et rendez-vous" },
 ];
 
 const STRONG = "font-semibold text-[#0D332B]";
 
-export default function LeadGenClient() {
+export default function LeadGenClient({ children }) {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
@@ -186,6 +186,9 @@ export default function LeadGenClient() {
           </div>
         </div>
       </section>
+
+      {/* Partie éditoriale longue (méthode, cas d'usage, mesure, FAQ, maillage) : voir ServiceLongForm. */}
+      {children}
 
       <ClosingCta
         title="Prêt à remplir votre pipeline commercial ?"

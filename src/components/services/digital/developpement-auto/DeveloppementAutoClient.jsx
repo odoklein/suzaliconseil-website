@@ -5,12 +5,15 @@ import DevSolutions from "./DevSolutions";
 import DevMethodology from "./DevMethodology";
 import { ClosingCta } from "../../../kit";
 
-export default function DeveloppementAutoClient() {
+export default function DeveloppementAutoClient({ children }) {
   return (
     <div className="w-full bg-[#F6F7F4]">
       <DevHero />
       <DevSolutions />
       <DevMethodology />
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
+
       <ClosingCta
         title="Prêt à passer au stade supérieur ?"
         intro="Discutez faisabilité technique avec notre CTO. Nous transformons vos contraintes métiers en opportunités digitales."

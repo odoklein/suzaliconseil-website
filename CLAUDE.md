@@ -93,7 +93,7 @@ de l'équipe marketing : **dès qu'une est débloquée, elle passe avant la pist
   - Pistes probables : « Pourquoi externaliser… » → fusionné dans l'article « vrai coût » ;
     « Boostez vos ventes B2B… » à arbitrer face à `/services/generation-leads-b2b`.
 
-- [ ] **T2 — Réorienter l'outil d'articles automatiques** · id plan : `t-moteur` · ✅ autonome
+- [x] **T2 — Réorienter l'outil d'articles automatiques** · id plan : `t-moteur` · ✅ autonome
   - Fichier : `src/lib/ai-writer.js`.
   - Retirer du pool tous les mots-clés déjà couverts par une page service ou par les 4 articles
     du plan contenu (prix d'agence, interne vs externe, comparatif d'agences, forfait vs paiement
@@ -102,6 +102,7 @@ de l'équipe marketing : **dès qu'une est débloquée, elle passe avant la pist
     qui ne concurrencent aucune page service.
   - Cadence : 1 article par semaine maximum.
   - Vérifier aussi que les articles générés n'ont plus de suffixe aléatoire dans le slug (voir B2).
+  - *(En ligne le 22/10/2026. La génération automatique reste en pause tant que le propriétaire n'a pas créé la table `article_generation_attempts` avec `docs/article-attempts-table.sql` : la route répond 503 sans appeler Mistral. Avant tout vrai appel : `?dryRun=1`.)*
 
 - [ ] **T3 — Publier les 4 articles du plan contenu avec leur FAQ** · id plan : `t-publier`
   - Déclencheur : un article passe au statut « Envoyé à Odo » avec le lien de son Google Doc.
@@ -140,11 +141,11 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
   *Pas de mise en ligne : juste me présenter l'audit.*
 - [x] **B2 — Slugs stables** pour `/actualites/` (sans suffixe aléatoire ni année) + **301** de chaque ancienne URL. *(Code en ligne le 22/10/2026 ; la migration des slugs des articles existants reste à faire, sur OK séparé.)*
   Me montrer la table complète des redirections avant le OK.
-- [ ] **B3 — Canonical absolue auto-référente** sur toutes les pages + une seule politique de slash final
+- [x] **B3 — Canonical absolue auto-référente** sur toutes les pages + une seule politique de slash final
   + 301 pour www / http / slash.
-- [ ] **B4 — `sitemap.xml` automatique** (uniquement pages canoniques, 200, indexables, avec `lastmod`).
-- [ ] **B5 — `robots.txt`** : tout autoriser sauf admin / API / preview, avec lien vers le sitemap.
-- [ ] **B6 — Vraies 404** (statut HTTP 404) + `noindex,follow` sur recherche interne, filtres vides, paramètres.
+- [x] **B4 — `sitemap.xml` automatique** (uniquement pages canoniques, 200, indexables, avec `lastmod`).
+- [x] **B5 — `robots.txt`** : tout autoriser sauf admin / API / preview, avec lien vers le sitemap.
+- [x] **B6 — Vraies 404** (statut HTTP 404) + `noindex,follow` sur recherche interne, filtres vides, paramètres.
 - [x] **B7 — Balises on-page** : `<html lang="fr">`, title unique, meta description unique, un seul H1,
   Open Graph / Twitter, fil d'Ariane visible.
 - [x] **B8 — JSON-LD** : `Organization` + `ProfessionalService` (accueil), `Service` + `BreadcrumbList`
@@ -156,11 +157,11 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
 - [ ] **B11 — Images et performance** : `alt` en français, WebP/AVIF, `width`/`height`, lazy-load sauf hero,
   `fetchpriority="high"` sur l'image LCP, `font-display: swap`, JS non critique différé.
   Mesurer Lighthouse mobile avant / après.
-- [ ] **B12 — Maillage interne et navigation** : menu « Services », footer, aucune page orpheline,
+- [x] **B12 — Maillage interne et navigation** : menu « Services », footer, aucune page orpheline,
   tout à 3 clics max de l'accueil, ancres descriptives (pas de « cliquez ici »).
 - [ ] **B13 — Quick wins** (phase 5 du plan) : `marketing b2b externalisé` (pos. 10,7),
   article unique « Inbound vs outbound » (pos. 19–27). Texte en brouillon → **me le montrer avant**.
-- [ ] **B14 — Contrôle final** → `SEO_REPORT.md` (liens cassés, statuts, titres uniques, JSON-LD valide,
+- [x] **B14 — Contrôle final** → `SEO_REPORT.md` (liens cassés, statuts, titres uniques, JSON-LD valide,
   table des 301 testée, liste des TODO SUZALI, actions manuelles pour l'équipe).
 
 Les pages services (phase 4) et les articles de blog (phase 7) demandent des textes : tu peux

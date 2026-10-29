@@ -5,12 +5,15 @@ import { CommercialHero } from "./CommercialHero";
 import { CommercialProcess } from "./CommercialProcess";
 import { CommercialServicesList } from "./CommercialServicesList";
 
-export function CommercialClientPage() {
+export function CommercialClientPage({ children }) {
   return (
     <main className="w-full overflow-x-clip bg-[#F6F7F4] text-[#0D332B]">
       <CommercialHero />
       <CommercialServicesList />
       <CommercialProcess />
+
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
 
       <ClosingCta
         title="Prêt à faire décoller vos ventes ?"

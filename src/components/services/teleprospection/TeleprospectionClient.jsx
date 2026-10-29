@@ -24,7 +24,7 @@ const BREADCRUMBS = [
 // the other commercial pages (see the offers catalogue).
 const FIGURES = [
   { value: "7 jours", label: "Pour lancer les appels après validation du ciblage" },
-  { value: "150 €", label: "Par rendez-vous validé et honoré, rien pour une absence" },
+  { value: "150 €", label: "Par rendez-vous validé et honoré" },
   { value: "1 brief", label: "Écrit avant chaque rendez-vous posé" },
   { value: "Hebdo", label: "Reporting des appels, contacts et rendez-vous" },
 ];
@@ -80,7 +80,7 @@ const CAPABILITIES = [
   { title: "Performance Tracking", text: "Dashboard temps réel : appels, contacts, RDV fixés" },
 ];
 
-export default function TeleprospectionClient() {
+export default function TeleprospectionClient({ children }) {
   return (
     <div className="bg-[#F6F7F4] text-[#0D332B]">
       <PageHero
@@ -168,6 +168,9 @@ export default function TeleprospectionClient() {
           </div>
         </div>
       </section>
+
+      {/* Partie éditoriale longue (voir ServiceLongForm) */}
+      {children}
 
       <ClosingCta
         title="Prêt à remplir l'agenda de vos commerciaux ?"

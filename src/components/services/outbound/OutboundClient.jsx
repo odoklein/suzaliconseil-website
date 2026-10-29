@@ -19,7 +19,7 @@ const CONTAINER = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 const FIGURES = [
   { value: "2 semaines", label: "De cadrage avant le premier envoi" },
   { value: "4 canaux", label: "Email, LinkedIn, téléphone et SMS dans une séquence" },
-  { value: "1:1", label: "Account manager dédié à votre compte" },
+  { value: "Écrits", label: "Objectifs fixés au cadrage, revus chaque semaine" },
   { value: "Hebdo", label: "Reporting par segment : ouvertures, réponses, RDV" },
 ];
 
@@ -104,7 +104,7 @@ const COMMITMENTS = [
   { title: "Cadrage d'abord", desc: "Deux semaines avant le premier envoi" },
   { title: "Conformité RGPD", desc: "Désinscription simple, oppositions appliquées immédiatement" },
   { title: "Objectifs écrits", desc: "Fixés au cadrage, revus chaque semaine" },
-  { title: "Account Manager", desc: "Expert dédié à votre compte" },
+  { title: "Reporting hebdomadaire", desc: "Par segment : réponses et rendez-vous" },
 ];
 
 const PHASES = [

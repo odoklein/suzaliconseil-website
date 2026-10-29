@@ -1,4 +1,6 @@
 import BrandingClient from "../../../../components/services/digital/branding/BrandingClient";
+import ServiceLongForm from "../../../../components/services/ServiceLongForm";
+import { BRANDING_CONTENT } from "../../../../content/services/digital-long-forms";
 import JsonLd from "../../../../components/seo/JsonLd";
 import { createPageMetadata } from "../../../../lib/seo";
 import { serviceSchema } from "../../../../lib/structured-data";
@@ -23,7 +25,9 @@ export default function BrandingIdentitePage() {
           path: PAGE.path,
         })}
       />
-      <BrandingClient />
+      <BrandingClient>
+        <ServiceLongForm content={BRANDING_CONTENT} />
+      </BrandingClient>
     </>
   );
 }
