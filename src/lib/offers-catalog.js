@@ -23,7 +23,6 @@ export const OFFER_CATEGORIES = [
               "Le plan growth est intégré au Centre de Contact pour piloter l'acquisition et les rendez-vous.",
             features: [
               "Prospection multicanale",
-              "Account manager dédié",
               "Reporting hebdomadaire",
               "Intégration CRM",
               "Briefing avant-vente",
