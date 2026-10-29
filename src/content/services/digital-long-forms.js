@@ -146,10 +146,6 @@ export const DIGITAL_CONTENT = {
       "Pas forcément. Si le site est sain, des corrections suffisent. S’il convertit mal ou charge lentement, il vaut mieux le traiter avant d’acheter du trafic.",
     ],
     [
-      "Travaillez-vous avec nos équipes ou prestataires existants ?",
-      "Oui. Nous pouvons piloter ou compléter vos équipes et vos prestataires, en nous coordonnant avec eux pour les modifications du site, des campagnes et des outils.",
-    ],
-    [
       "Quelle différence entre une agence digitale et une agence de prospection ?",
       [
         "L’agence digitale travaille ce qui attire et convainc en ligne (site, visibilité, marque, outils). L’agence de prospection va chercher des décideurs précis par email, LinkedIn et téléphone. Nous proposons les deux : voir ",
@@ -256,8 +252,8 @@ export const STRATEGIE_DIGITALE_CONTENT = {
           text: "Une direction digitale externalisée apporte une vision d’ensemble sans le coût d’un recrutement à temps plein.",
         },
         {
-          title: "Vous avez plusieurs prestataires sans pilote",
-          text: "Agence web, agence de publicité, freelance de contenu : quelqu’un doit tenir le cap commun et vérifier que les actions se renforcent.",
+          title: "Vous avez plusieurs prestataires sans cap commun",
+          text: "Agence web, agence de publicité, freelance de contenu : les actions gagnent à suivre des objectifs partagés et à se renforcer entre elles.",
         },
         {
           title: "Vos résultats stagnent sans que vous sachiez pourquoi",
@@ -276,10 +272,6 @@ export const STRATEGIE_DIGITALE_CONTENT = {
     [
       "Que contient la feuille de route que vous livrez ?",
       "Une liste d’actions classées par effet attendu et effort, avec un responsable, un calendrier, un indicateur de réussite et un budget par chantier. Elle distingue les gains rapides des chantiers de fond.",
-    ],
-    [
-      "Pouvez-vous piloter nos prestataires existants ?",
-      "Oui, c’est un cas fréquent : nous coordonnons vos agences et vos équipes internes autour d’objectifs communs et suivons les résultats avec vous.",
     ],
     [
       "Le diagnostic est-il gratuit ?",
@@ -419,8 +411,8 @@ export const SITES_WEB_CONTENT = {
           text: "Tests sur différents appareils, optimisation de la vitesse et du référencement technique, correction des défauts.",
         },
         {
-          title: "4. Formation et mise en ligne",
-          text: "Nous vous formons à l’administration du site (CMS) et accompagnons le lancement.",
+          title: "4. Mise en ligne",
+          text: "Mise en ligne du site et accompagnement du lancement.",
         },
       ],
     },
@@ -439,20 +431,12 @@ export const SITES_WEB_CONTENT = {
       "Cela dépend du périmètre (nombre de pages, fonctionnalités, e-commerce) et de la rapidité de vos retours sur les maquettes et les contenus. Nous annonçons un calendrier précis après l’atelier de cadrage, jamais avant.",
     ],
     [
-      "Pourrai-je modifier mon site moi-même ?",
-      "Oui. Nous vous formons à l’administration du site et vous remettons les accès, de sorte que vous puissiez modifier les textes et les pages courantes sans dépendre de nous.",
-    ],
-    [
       "Que devient mon référencement lors d’une refonte ?",
-      "Il est préservé par une préparation soignée : cartographie des pages qui comptent, redirections de chaque adresse modifiée, reprise des contenus et des balises, tests avant la mise en ligne et suivi après.",
+      "Une refonte bien préparée cherche à le préserver : cartographie des pages qui comptent, redirections de chaque adresse modifiée, reprise des contenus et des balises, tests avant la mise en ligne et suivi après.",
     ],
     [
       "Quelles sont les particularités d’un site e-commerce B2B ?",
       "Tarifs spécifiques par client, devis, commandes récurrentes, paiement différé, règles de livraison par client. Elles influencent le choix de la solution technique dès le départ.",
-    ],
-    [
-      "Proposez-vous la maintenance et la sécurité ?",
-      "Oui : surveillance, mises à jour de sécurité et sauvegardes font partie des prestations de maintenance que nous proposons après la mise en ligne.",
     ],
   ],
   related: {
@@ -504,28 +488,9 @@ export const BRANDING_CONTENT = {
       ],
     },
     {
-      title: "Ce que contient une identité visuelle complète",
-      items: [
-        {
-          title: "Logotype et déclinaisons",
-          text: "Un logo pensé pour l’écran comme pour le papier, avec ses versions (couleur, monochrome, réduite) et ses règles de protection.",
-        },
-        {
-          title: "Charte graphique",
-          text: "Palette de couleurs, typographies, iconographie, mise en page : le manuel qui garantit la cohérence, y compris quand plusieurs personnes créent des supports.",
-        },
-        {
-          title: "Supports marketing et print",
-          text: "Cartes de visite, brochures, présentations commerciales, signatures d’email, déclinés selon la charte.",
-        },
-        {
-          title: "Composants pour les produits digitaux",
-          text: "Pour les entreprises qui ont un produit en ligne : une bibliothèque de composants d’interface cohérente avec la marque.",
-        },
-        {
-          title: "Direction artistique",
-          text: "La supervision de l’image dans la durée : photographies, vidéos, animations, afin que la marque garde son cap dans les nouveaux supports.",
-        },
+      title: "Ce que produit un travail de marque",
+      paragraphs: [
+        "Le travail aboutit à une charte graphique, qui garantit la cohérence de la marque même quand plusieurs personnes créent des supports, et à des supports de prospection alignés sur cette charte. Le contenu exact est défini avec vous au départ, selon vos besoins.",
       ],
     },
     {
@@ -585,7 +550,7 @@ export const BRANDING_CONTENT = {
         },
         {
           title: "4. Affinage et livraison",
-          text: "Mise au point de la piste retenue, puis remise des fichiers et de la charte, avec leurs règles d’usage.",
+          text: "Mise au point de la piste retenue, puis remise de la charte et de ses règles d’usage.",
         },
         {
           title: "5. Déploiement",
@@ -628,7 +593,7 @@ export const BRANDING_CONTENT = {
     ],
     [
       "Que recevrai-je à la fin de la mission ?",
-      "Les fichiers du logo dans ses déclinaisons, la charte graphique avec ses règles d’usage, et les supports convenus au départ (par exemple cartes de visite ou présentation commerciale).",
+      "Une charte graphique et des supports de prospection cohérents avec elle. Le détail est convenu avec vous au départ.",
     ],
     [
       "Comment le branding s’articule-t-il avec le site web ?",
@@ -703,7 +668,7 @@ export const AUTOMATISATION_CONTENT = {
       title: "L’intelligence artificielle générative : où elle aide, où il faut de la prudence",
       paragraphs: [
         "Les modèles de langage savent résumer un document, rédiger un premier jet, classer des messages ou assister un service client. Ils font gagner du temps sur ces tâches, à condition d’être encadrés.",
-        "Trois précautions s’imposent. Le résultat peut contenir des erreurs : une relecture humaine reste nécessaire dès qu’il engage l’entreprise. Les données confiées au modèle peuvent transiter par un fournisseur : les informations sensibles ou personnelles demandent un choix de solution adapté et le respect du RGPD. Enfin, l’IA doit servir un usage précis et mesurable, pas être ajoutée pour elle-même.",
+        "Deux précautions s’imposent. Le résultat peut contenir des erreurs : une relecture humaine reste nécessaire dès qu’il engage l’entreprise. Et l’IA doit servir un usage précis et mesurable, pas être ajoutée pour elle-même.",
       ],
     },
     {
@@ -711,6 +676,30 @@ export const AUTOMATISATION_CONTENT = {
       paragraphs: [
         "Un outil existant est généralement plus rapide à mettre en place et moins coûteux au départ. Le développement sur mesure se justifie quand votre processus est spécifique, quand les outils du marché ne peuvent pas être branchés ensemble de façon satisfaisante, ou quand leurs abonnements et leurs limites coûtent plus cher que la construction d’une solution adaptée.",
         "Le bon choix se fait en comparant trois choses : l’adéquation au processus réel, le coût sur la durée (abonnements, maintenance, évolutions) et la dépendance à un fournisseur. Nous commençons presque toujours par regarder ce que les outils existants permettent avant de proposer du développement.",
+      ],
+    },
+    {
+      title: "Quels processus se prêtent à l’automatisation ?",
+      paragraphs: [
+        "Tous les processus ne méritent pas d’être automatisés. Quatre signes indiquent qu’un processus est un bon candidat.",
+      ],
+      items: [
+        {
+          title: "Il est répétitif",
+          text: "La même suite d’actions se reproduit à chaque demande, chaque client ou chaque semaine. Plus la fréquence est élevée, plus le temps gagné s’accumule.",
+        },
+        {
+          title: "Il suit des règles claires",
+          text: "On peut écrire les cas et les exceptions. Si la décision dépend à chaque fois du jugement d’une personne, l’outil servira à préparer le travail plutôt qu’à le faire.",
+        },
+        {
+          title: "Il passe d’un outil à un autre",
+          text: "Recopier une information d’un logiciel vers un autre est une source de retard et d’erreurs. Relier les deux supprime cette étape.",
+        },
+        {
+          title: "Il est déjà bien compris",
+          text: "Automatiser un processus mal défini fige ses défauts. Il vaut mieux le clarifier d’abord, puis l’outiller.",
+        },
       ],
     },
     {
@@ -730,7 +719,7 @@ export const AUTOMATISATION_CONTENT = {
         },
         {
           title: "4. Déployer et documenter",
-          text: "Mise en service avec une documentation technique, des tests automatisés et des sauvegardes, pour que la solution reste maintenable et compréhensible.",
+          text: "Mise en service de la solution, pour qu’elle reste maintenable et compréhensible.",
         },
         {
           title: "5. Mesurer et faire évoluer",
@@ -739,10 +728,10 @@ export const AUTOMATISATION_CONTENT = {
       ],
     },
     {
-      title: "Sécurité et données",
+      title: "Données et conformité",
       paragraphs: [
         [
-          "Une automatisation manipule souvent des données de clients et de prospects. Les accès sont limités à ce qui est nécessaire, les sauvegardes sont prévues, et la conformité au RGPD fait partie du cadrage. Les bonnes pratiques de sécurité applicative (celles de l’OWASP) sont appliquées au développement. Notre article sur les ",
+          "Une automatisation manipule souvent des données de clients et de prospects : leur traitement relève du RGPD et se décide au cadrage, au cas par cas. Notre article sur les ",
           link(ARTICLES.automatiserWorkflows, "workflows de prospection"),
           " illustre ces principes dans le cas de la prospection.",
         ],
@@ -758,19 +747,11 @@ export const AUTOMATISATION_CONTENT = {
     ],
     [
       "L’IA va-t-elle remplacer mes équipes ?",
-      "Nous l’utilisons pour assister, pas pour remplacer : elle prépare, trie et résume, et vos équipes décident et gardent la relation. Les tâches qui engagent l’entreprise gardent une validation humaine.",
-    ],
-    [
-      "Mes données seront-elles envoyées à un tiers ?",
-      "Cela dépend de la solution retenue. Lorsqu’un modèle est fourni par un tiers, les données qui lui sont confiées transitent par ce fournisseur. Le cadrage précise quelles données sont concernées, avec quelles protections, et il écarte toute donnée sensible qui n’a pas à y figurer.",
+      "L’IA sert à assister, pas à remplacer : elle prépare, trie et résume, et vos équipes décident et gardent la relation. Les tâches qui engagent l’entreprise gardent une validation humaine.",
     ],
     [
       "Pouvez-vous connecter nos outils actuels ?",
       "Oui, c’est un cas fréquent : CRM, facturation, outils de paiement et d’emailing peuvent être reliés entre eux par des connexions ou des interfaces de programmation (API).",
-    ],
-    [
-      "Qui maintient la solution après la livraison ?",
-      "La documentation et les tests livrés permettent à une autre équipe de reprendre le travail. Nous pouvons aussi assurer la maintenance et l’évolution, dans les conditions précisées au cadrage.",
     ],
   ],
   related: {

@@ -10,13 +10,13 @@ const CONTAINER = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 const FIGURES = [
   { value: "Votre nom", label: "Nos commerciaux se présentent sous votre marque" },
   { value: "Vos outils", label: "Votre CRM, vos scripts, vos conditions de vente" },
-  { value: "1:1", label: "Account manager dédié à votre compte" },
+  { value: "Vos règles", label: "Périmètre, remises et conditions écrits avant le démarrage" },
   { value: "Hebdo", label: "Reporting des échanges, devis et signatures" },
 ];
 
 const PRINCIPLES = [
   {
-    title: "Transparence Totale",
+    title: "Votre Identité de Marque",
     description: "Nous utilisons vos adresses emails, votre CRM et votre identité de marque.",
   },
   {
@@ -29,7 +29,7 @@ const PRINCIPLES = [
   },
   {
     title: "Contrôle Qualité",
-    description: "Enregistrements d'appels et reporting hebdomadaire détaillé.",
+    description: "Reporting hebdomadaire détaillé des échanges, devis et signatures.",
   },
 ];
 

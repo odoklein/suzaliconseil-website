@@ -40,10 +40,10 @@ const BENEFITS = [
     meta: "Auto · Synchronisation",
   },
   {
-    title: "Payé au rendez-vous tenu",
+    title: "Payé au rendez-vous validé",
     description:
-      "Vos commerciaux se concentrent sur le closing. La part variable ne s'applique qu'aux rendez-vous validés et honorés : une absence n'est pas facturée.",
-    meta: "150 € · Par RDV honoré",
+      "Vos commerciaux se concentrent sur le closing. La part variable s'applique aux rendez-vous validés selon vos critères.",
+    meta: "150 € · Par RDV validé",
   },
 ];
 

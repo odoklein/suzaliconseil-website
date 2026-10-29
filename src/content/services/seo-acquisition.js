@@ -77,7 +77,7 @@ export const SEO_ACQUISITION_CONTENT = {
         },
         {
           title: "3. Mise en œuvre",
-          text: "Les corrections, les contenus et les campagnes sont réalisés par étapes, chaque étape étant mesurée avant la suivante. Les modifications du site se font avec vos équipes ou votre agence web si vous en avez une.",
+          text: "Les corrections, les contenus et les campagnes sont réalisés par étapes, chaque étape étant mesurée avant la suivante.",
         },
         {
           title: "4. Pilotage régulier",
@@ -112,7 +112,7 @@ export const SEO_ACQUISITION_CONTENT = {
     {
       title: "Comment choisir un spécialiste de l’acquisition digitale",
       paragraphs: [
-        "Que vous cherchiez une agence, un expert indépendant ou un renfort pour votre équipe, quelques critères permettent de distinguer un partenaire sérieux, quel qu’il soit.",
+        "Que vous cherchiez une agence ou un expert indépendant, quelques critères permettent de distinguer un partenaire sérieux, quel qu’il soit.",
       ],
       items: [
         {
@@ -172,10 +172,6 @@ export const SEO_ACQUISITION_CONTENT = {
     [
       "Comment mesurez-vous la qualité des demandes reçues ?",
       "Avec vos commerciaux. Nous rapprochons chaque demande de son devenir dans votre CRM (traitée, qualifiée, transformée en opportunité) et nous ajustons le ciblage et les messages en conséquence.",
-    ],
-    [
-      "Travaillez-vous avec une équipe marketing existante ?",
-      "Oui. Nous pouvons intervenir en renfort ou en pilotage, et nous nous coordonnons avec vos équipes ou votre agence web pour les modifications du site.",
     ],
   ],
 

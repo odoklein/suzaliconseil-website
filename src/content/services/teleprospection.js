@@ -149,7 +149,7 @@ export const TELEPROSPECTION_CONTENT = {
   faqs: [
     [
       "Qui passe les appels ?",
-      "Des téléconseillers formés à votre offre et à vos cibles, encadrés par un account manager dédié. Ils s’appuient sur un script validé avec vous et sur un brief écrit de votre activité.",
+      "Des téléconseillers formés à votre offre et à vos cibles, encadrés par une équipe de pilotage. Ils s’appuient sur un script validé avec vous et sur un brief écrit de votre activité.",
     ],
     [
       "Pouvons-nous valider le script avant le lancement ?",

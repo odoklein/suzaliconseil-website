@@ -151,7 +151,6 @@ export const LONG_FORMS = {
     ],
     faqs: [
       ["Peut-on externaliser seulement une partie du marketing ?", "Oui. Beaucoup d’entreprises commencent par un seul levier, par exemple la prospection outbound ou le référencement, puis élargissent le périmètre quand les premiers résultats arrivent."],
-      ["Travaillez-vous avec une équipe marketing existante ?", "Oui. L’équipe externe peut renforcer une équipe interne sur un domaine précis (outbound, SEO, automatisation) ou prendre en charge ce qui n’est pas couvert, en s’alignant sur vos outils et vos priorités."],
       [
         "Marketing externalisé ou agence de génération de leads : quelle différence ?",
         [
@@ -201,6 +200,45 @@ export const LONG_FORMS = {
             title: "Siège ou établissement",
             text: "Beaucoup d’entreprises ont leur siège à Paris et leurs décisions d’achat ailleurs, ou l’inverse. Nous vérifions où se prend réellement la décision avant de contacter.",
           },
+        ],
+      },
+      {
+        title: "Comment choisir une agence de génération de leads à Paris",
+        paragraphs: [
+          "Le B2B n’est pas le B2C : les décisions d’achat sont plus longues, impliquent plusieurs personnes et reposent sur des critères rationnels. Gérer la génération de leads en interne suppose du temps, des outils et une expertise que beaucoup d’entreprises n’ont pas toutes réunies. Pour comparer des agences, six critères aident à trancher.",
+        ],
+        items: [
+          {
+            title: "Une expérience B2B vérifiable",
+            text: "Demandez des exemples concrets dans votre secteur ou dans des secteurs proches, et la manière dont les résultats ont été obtenus. La compréhension des enjeux B2B ne se déclare pas, elle se constate.",
+          },
+          {
+            title: "Une méthode qui combine plusieurs leviers",
+            text: "Prospection sortante (téléphone, emails ciblés, LinkedIn) et leviers entrants (contenu, référencement) se complètent. La bonne combinaison dépend de votre cible et de votre cycle de vente.",
+          },
+          {
+            title: "Un reporting clair",
+            text: "Exigez de savoir ce qui a été fait, ce que cela a produit et comment les indicateurs évoluent, avec des indicateurs convenus à l’avance.",
+          },
+          {
+            title: "Une qualification rigoureuse",
+            text: "Ne jugez pas une agence au volume de leads. Définissez avec elle ce qu’est un lead qualifié (budget, autorité, besoin, échéance) et vérifiez que cette grille est appliquée.",
+          },
+          {
+            title: "Une relation de partenariat",
+            text: "Au-delà des compétences, la qualité de la collaboration compte : des valeurs compatibles, une approche collaborative et la volonté de travailler dans la durée.",
+          },
+          {
+            title: "Une connaissance du tissu économique local",
+            text: "Pour une cible parisienne ou francilienne, connaître la répartition des entreprises, des sièges et des établissements permet de mieux cibler.",
+          },
+        ],
+        closing: [
+          [
+            "Notre article « ",
+            link(ARTICLES.choisirAgenceLeads, "Agence de génération de leads B2B : comment bien choisir ?"),
+            " » détaille cette comparaison.",
+          ],
         ],
       },
       {
@@ -285,9 +323,7 @@ export const LONG_FORMS = {
           {
             title: "Mesurer le volume plutôt que la qualité",
             text: [
-              "Nombre de contacts traités et nombre de rendez-vous tenus ne disent pas la même chose. Voir notre article sur la ",
-              link(ARTICLES.agenceLeadsParis, "génération de leads B2B à Paris"),
-              " et sur les ",
+              "Nombre de contacts traités et nombre de rendez-vous tenus ne disent pas la même chose. Voir notre article sur les ",
               link(ARTICLES.kpiProspection, "KPI de prospection"),
               ".",
             ],
@@ -296,7 +332,7 @@ export const LONG_FORMS = {
       },
     ],
     faqs: [
-      ["Combien de temps pour lancer une campagne à Paris ?", "Les campagnes peuvent démarrer sous 7 jours une fois le ciblage et les messages validés avec vous. Le rythme des premiers rendez-vous dépend ensuite de votre cible et de la longueur de votre cycle de vente."],
+      ["Combien de temps pour lancer une campagne à Paris ?", "Les campagnes peuvent démarrer sous 7 jours une fois le ciblage et les messages validés avec vous."],
       ["Pouvons-nous nous rencontrer ?", "Oui. Les points de pilotage se tiennent en visioconférence ou en présentiel selon votre préférence, à Paris."],
       [
         "Quelle est la différence entre génération de leads et prospection externalisée ?",
@@ -309,7 +345,6 @@ export const LONG_FORMS = {
       ["Respectez-vous le RGPD ?", "Oui. Les contacts sont des professionnels sollicités au sujet de leur fonction, leur origine est conservée, et toute demande d’opposition est appliquée immédiatement."],
     ],
     articles: [
-      [...ARTICLES.agenceLeadsParis, "Notre analyse de la génération de leads B2B à Paris."],
       [...ARTICLES.choisirAgenceLeads, "Les critères pour choisir une agence de génération de leads."],
       [...ARTICLES.kpiProspection, "Les indicateurs pour piloter la prospection."],
     ],
@@ -358,27 +393,9 @@ export const LONG_FORMS = {
         ],
       },
       {
-        title: "Les sources de données, et leurs limites",
+        title: "À qui appartiennent les fichiers livrés",
         paragraphs: [
-          "Aucune source n’est parfaite. Un fichier de qualité croise en général plusieurs sources, chacune apportant ce que les autres n’ont pas.",
-        ],
-        items: [
-          {
-            title: "Votre propre base",
-            text: "Anciens prospects, contacts de salons, demandes entrantes : ce sont souvent les contacts les plus réceptifs, mais leurs informations vieillissent vite.",
-          },
-          {
-            title: "Les registres publics d’entreprises",
-            text: "Ils fournissent des informations fiables sur l’existence, l’activité, la taille et la localisation d’une entreprise, mais pas ses décideurs.",
-          },
-          {
-            title: "Les sites d’entreprise et les réseaux professionnels",
-            text: "Utiles pour identifier les fonctions et les décideurs, ils demandent un contrôle et une mise à jour, car l’information publiée n’est pas toujours à jour.",
-          },
-          {
-            title: "Les bases commerciales de données B2B",
-            text: "Elles permettent de gagner du temps sur de gros volumes, avec une qualité très variable d’un éditeur à l’autre : un échantillon se vérifie avant d’être adopté.",
-          },
+          "Les fichiers livrés appartiennent au client.",
         ],
       },
       {

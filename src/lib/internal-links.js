@@ -83,8 +83,4 @@ export const ARTICLES = {
     "les-10-outils-numeriques-indispensables-pour-booster-la-performance-commerciale-de-votre-entreprise",
     "Les 10 outils numériques pour booster la performance commerciale",
   ),
-  agenceLeadsParis: article(
-    "boostez-vos-ventes-b2b-agence-generation-leads-paris-expert-mm4molzg",
-    "Boostez vos ventes B2B : agence de génération de leads à Paris",
-  ),
 };

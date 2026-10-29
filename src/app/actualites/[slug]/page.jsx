@@ -3,6 +3,7 @@ import { posts } from "../../../db/schema";
 import { and, desc, eq, isNotNull } from "drizzle-orm";
 import { notFound, permanentRedirect } from "next/navigation";
 import { findPostBySlug } from "../../../lib/post-lookup";
+import articleMerges from "../../../data/article-merges.json";
 import { ArrowRight } from "lucide-react";
 import { getPostTheme } from "../../../lib/actualites-theme";
 import { getRelatedServices } from "../../../lib/article-services";
@@ -28,7 +29,7 @@ export async function generateStaticParams() {
       .from(posts)
       .where(isNotNull(posts.publishedAt));
 
-    return published.map(({ slug }) => ({ slug }));
+    return published.filter(({ slug }) => !(slug in articleMerges)).map(({ slug }) => ({ slug }));
   } catch (error) {
     console.error("generateStaticParams actualites a échoué:", error);
     return [];
@@ -162,9 +163,10 @@ export default async function ActualiteDetailPage({ params }) {
       ),
     )
     .orderBy(desc(posts.createdAt))
-    .limit(4);
+    .limit(5);
 
-  const related = relatedPosts.filter((r) => r.slug !== slug).slice(0, 3);
+  // Un article fusionné redirige vers une autre page : on ne le propose plus en lecture associée.
+  const related = relatedPosts.filter((r) => r.slug !== slug && !(r.slug in articleMerges)).slice(0, 3);
   const relatedServices = getRelatedServices(slug, theme, post.targetKeyword);
   const faq = Array.isArray(post.faq) ? post.faq.filter((f) => f?.question && f?.answer) : [];
 

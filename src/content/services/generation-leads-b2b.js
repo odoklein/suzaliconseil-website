@@ -179,8 +179,8 @@ export const GENERATION_LEADS_CONTENT = {
       "Un lead est un contact qui a manifesté un intérêt. Un lead qualifié est un lead dont le besoin, l’échéance, le budget et le rôle dans la décision ont été vérifiés selon vos critères. Un rendez-vous est l’étape suivante : un échange fixé avec vos commerciaux. Tous les leads ne débouchent pas sur un rendez-vous, et c’est normal.",
     ],
     [
-      "Combien de temps avant les premiers leads ?",
-      "Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous. Le moment où arrivent les premiers leads qualifiés dépend de votre marché, de la longueur de votre cycle de vente et de la précision de la cible ; le point hebdomadaire sert à ajuster ces paramètres.",
+      "En combien de temps une campagne démarre-t-elle ?",
+      "Les campagnes sont actives sous 7 jours une fois le ciblage et les messages validés avec vous. Le point hebdomadaire sert ensuite à ajuster le ciblage, les messages et les canaux.",
     ],
     [
       "Dois-je fournir un fichier de prospects ?",

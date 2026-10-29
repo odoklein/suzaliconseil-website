@@ -1,4 +1,5 @@
 import { neon } from "@neondatabase/serverless";
+import articleMerges from "../data/article-merges.json";
 
 /**
  * Server-side only. Fetches posts from Neon (same data as GET /api/actualites).
@@ -16,7 +17,8 @@ export async function getPosts() {
     WHERE published_at IS NOT NULL
     ORDER BY COALESCE(published_at, created_at) DESC
   `;
-  return (Array.isArray(rows) ? rows : []).map((p) => ({
+  // Un article fusionné dans une autre page redirige (301) : il n'a plus à être listé.
+  return (Array.isArray(rows) ? rows : []).filter((p) => !(p.slug in articleMerges)).map((p) => ({
     id: p.id,
     title: p.title ?? "",
     excerpt: p.excerpt ?? "",
