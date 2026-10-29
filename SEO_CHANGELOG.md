@@ -369,4 +369,12 @@ Added `SEO_REPORT.md` (production checks, redirect test, link depth, image audit
 
 Live, verified in production: the three old URLs of the article « Boostez vos ventes B2B… Paris » (suffixed slug, clean slug, /blog/ form) answer with a permanent redirect (308) in one hop to `/services/agence-generation-de-leads-paris` (200); the article left the sitemap (38 URLs) and the Actualités list. Pages rechecked: Paris, marque blanche, branding, automatisation (one H1, one FAQPage, 1,264 to 1,523 words); 26-page check and price check pass. Text and redirects only: no CSS, font, component or class changed (owner's condition: no change to design, typography or visual identity).
 
-Still open: « Account manager dédié » remains in the offers catalogue (/offres, home, prospection externalisée) until the owner decides (QUESTIONS-METIER.md).
+Still open: « Account manager dédié » remains in the offers catalogue (/offres, home, prospection externalisée) until the owner decides (QUESTIONS-METIER.md). Done in C5 below.
+
+## 2026-10-29 — C5: « Account manager dédié » removed from the Growth Standard offer (PR #13)
+
+Owner's rule: no dedicated account manager (QUESTIONS-METIER.md, question 1). One line removed from the Growth Standard features in `src/lib/offers-catalog.js`; the card appears on `/`, `/offres` and `/services/prospection-commerciale-externalisee`. No price, layout or style change; no redirect. Approved by the owner after before/after captures (`seo-reports/captures/C5/`, local folder).
+
+Live, verified in production (merged 14:31, live by 14:36): the three pages answer 200 with one H1 and a self canonical, and contain no « account manager »; the rest of the card (« Reporting hebdomadaire »…) is unchanged; `/sitemap.xml` 200 (38 URLs), `/robots.txt` 200. « Account Manager » is still a job title on `/equipe` (a role, not an offer promise): left as is.
+
+Nothing to do by hand.
