@@ -363,3 +363,10 @@ C3 (same day): the two live articles that still had generic service links (« co
 ## 2026-10-29 — B14: final check (documentation only)
 
 Added `SEO_REPORT.md` (production checks, redirect test, link depth, image audit, Lighthouse mobile measurement without changes, manual actions, pending decisions). CLAUDE.md: B12 and B14 ticked. No site change. The cleanup branch `seo/C4-claims-cleanup` is not live: it waits for the owner's approval after screenshots.
+
+
+## 2026-10-29 — C4: unconfirmed promises removed, Paris article merged (PR #11)
+
+Live, verified in production: the three old URLs of the article « Boostez vos ventes B2B… Paris » (suffixed slug, clean slug, /blog/ form) answer with a permanent redirect (308) in one hop to `/services/agence-generation-de-leads-paris` (200); the article left the sitemap (38 URLs) and the Actualités list. Pages rechecked: Paris, marque blanche, branding, automatisation (one H1, one FAQPage, 1,264 to 1,523 words); 26-page check and price check pass. Text and redirects only: no CSS, font, component or class changed (owner's condition: no change to design, typography or visual identity).
+
+Still open: « Account manager dédié » remains in the offers catalogue (/offres, home, prospection externalisée) until the owner decides (QUESTIONS-METIER.md).

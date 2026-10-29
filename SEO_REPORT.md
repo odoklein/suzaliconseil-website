@@ -1,6 +1,6 @@
 # SEO_REPORT : contrôle final (29/10/2026)
 
-Périmètre : ce qui est **en ligne sur `main`** (PR #3 à #9). La branche `seo/C4-claims-cleanup` (nettoyage des promesses, fusion de l'article Paris) **n'est pas en ligne** : elle attend l'accord du propriétaire après captures (voir §6).
+Périmètre : ce qui est **en ligne sur `main`** (PR #3 à #9). C4 (nettoyage des promesses, fusion de l'article Paris) est **en ligne depuis le 29/10/2026** (PR #11), avec l'accord du propriétaire après captures.
 
 ## 1. Ce qui est en ligne
 
