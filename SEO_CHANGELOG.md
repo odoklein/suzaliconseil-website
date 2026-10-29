@@ -359,3 +359,7 @@ C3 (same day): the two live articles that still had generic service links (« co
 - Added to `sitemap.xml` (with `lastmod`), the services hub, the mega menu / footer data and `internal-links.js`; the Paris article now points to the Paris page first (`article-services.js`); `generation-leads-b2b` and `seo-acquisition` link to the new pages.
 - `lastmod` of the 14 pages enriched in C1 (and `/services`) set to 2026-10-23, the real date they went live.
 - Decision pending (owner): the existing article « Boostez vos ventes B2B… agence de génération de leads à Paris » targets the same search as the new Paris page. Nothing was redirected; the article keeps its URL and links to the page.
+
+## 2026-10-29 — B14: final check (documentation only)
+
+Added `SEO_REPORT.md` (production checks, redirect test, link depth, image audit, Lighthouse mobile measurement without changes, manual actions, pending decisions). CLAUDE.md: B12 and B14 ticked. No site change. The cleanup branch `seo/C4-claims-cleanup` is not live: it waits for the owner's approval after screenshots.

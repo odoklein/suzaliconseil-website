@@ -157,11 +157,11 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
 - [ ] **B11 — Images et performance** : `alt` en français, WebP/AVIF, `width`/`height`, lazy-load sauf hero,
   `fetchpriority="high"` sur l'image LCP, `font-display: swap`, JS non critique différé.
   Mesurer Lighthouse mobile avant / après.
-- [ ] **B12 — Maillage interne et navigation** : menu « Services », footer, aucune page orpheline,
+- [x] **B12 — Maillage interne et navigation** : menu « Services », footer, aucune page orpheline,
   tout à 3 clics max de l'accueil, ancres descriptives (pas de « cliquez ici »).
 - [ ] **B13 — Quick wins** (phase 5 du plan) : `marketing b2b externalisé` (pos. 10,7),
   article unique « Inbound vs outbound » (pos. 19–27). Texte en brouillon → **me le montrer avant**.
-- [ ] **B14 — Contrôle final** → `SEO_REPORT.md` (liens cassés, statuts, titres uniques, JSON-LD valide,
+- [x] **B14 — Contrôle final** → `SEO_REPORT.md` (liens cassés, statuts, titres uniques, JSON-LD valide,
   table des 301 testée, liste des TODO SUZALI, actions manuelles pour l'équipe).
 
 Les pages services (phase 4) et les articles de blog (phase 7) demandent des textes : tu peux
