@@ -206,6 +206,16 @@ const nextConfig = {
         destination: "/services/digital/sites-web-ecommerce",
         permanent: true,
       },
+      {
+        source: "/actualites/comment-lautomatisation-des-processus-transforme-votre-suivi-client-en-2023",
+        destination: "/services/digital/developpement-automatisation",
+        permanent: true,
+      },
+      {
+        source: "/actualites/comment-les-nouvelles-technologies-b2b-revolutionnent-le-monde-des-affaires-guide-pratique",
+        destination: "/actualites/les-10-outils-numeriques-indispensables-pour-booster-la-performance-commerciale-de-votre-entreprise",
+        permanent: true,
+      },
       // URLs WordPress sans équivalent (archives, taxonomies, auteurs, flux) :
       // Google les a encore en mémoire et recevait un 404.
       {
