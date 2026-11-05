@@ -430,3 +430,16 @@ Other Search Console groups read the same day (no change needed): « Google chos
 **To do by hand**
 - Search Console: request indexing of the 6 pages « Discovered, currently not indexed » (all 200 and in the sitemap): `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas`, `/actualites/agence-de-generation-de-leads-b2b-comment-bien-choisir-mug25o6t`, `/actualites/le-fichier-prospection-b2b-cle-de-voute-de-votre-croissance-mlunw2ai`.
 - Subdomains seen by Google (`app.`, `mailing.`, `openreplay.suzaliconseil.com`: login and admin pages): not in this repo; add `X-Robots-Tag: noindex` on those hosts (hosting setting, owner's call).
+
+## 2026-11-05 — R2: 301 for two more old articles (PR #20)
+
+Found in the Search Console « Crawled, not indexed » and « Duplicate without user-selected canonical » groups (404 on the site):
+
+| Old URL | New URL |
+|---|---|
+| `/actualites/comment-lautomatisation-des-processus-transforme-votre-suivi-client-en-2023` | `/services/digital/developpement-automatisation` |
+| `/actualites/comment-les-nouvelles-technologies-b2b-revolutionnent-le-monde-des-affaires-guide-pratique` | `/actualites/les-10-outils-numeriques-indispensables-pour-booster-la-performance-commerciale-de-votre-entreprise` |
+
+Merged 13:51 UTC (`6dd9384`), live at 13:57 UTC. Production: both end on their target in 200 after one hop; R1's `/developpement-web`, `/` and `/sitemap.xml` unchanged. Tested locally on top of `main` with the 410 for spam URLs (PR #19, other session): no conflict.
+
+Nothing to do by hand.
