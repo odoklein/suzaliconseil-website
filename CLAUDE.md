@@ -151,8 +151,9 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
 - [x] **B8 — JSON-LD** : `Organization` + `ProfessionalService` (accueil), `Service` + `BreadcrumbList`
   (+ `FAQPage` si FAQ visible) sur les pages services, `BlogPosting` + `BreadcrumbList` sur les articles.
   Données réelles uniquement, sinon TODO SUZALI.
-- [ ] **B9 — FAQ sur les articles manuels** : ajouter à l'admin la possibilité de saisir une FAQ
+- [x] **B9 — FAQ sur les articles manuels** : ajouter à l'admin la possibilité de saisir une FAQ
   (questions / réponses) sur un article manuel, rendue en HTML + JSON-LD `FAQPage`. Débloque T3.
+  *(En ligne le 05/11/2026, PR #15. Les 4 articles T3 sont prêts à coller dans `seo-reports/articles/admin/`.)*
 - [ ] **B10 — Limite du titre SEO dans l'admin** : passer de 42 à 60 caractères, avec compteur. (OK requis)
 - [ ] **B11 — Images et performance** : `alt` en français, WebP/AVIF, `width`/`height`, lazy-load sauf hero,
   `fetchpriority="high"` sur l'image LCP, `font-display: swap`, JS non critique différé.
