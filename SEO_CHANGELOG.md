@@ -378,3 +378,20 @@ Owner's rule: no dedicated account manager (QUESTIONS-METIER.md, question 1). On
 Live, verified in production (merged 14:31, live by 14:36): the three pages answer 200 with one H1 and a self canonical, and contain no « account manager »; the rest of the card (« Reporting hebdomadaire »…) is unchanged; `/sitemap.xml` 200 (38 URLs), `/robots.txt` 200. « Account Manager » is still a job title on `/equipe` (a role, not an offer promise): left as is.
 
 Nothing to do by hand.
+
+## 2026-11-05 — Spam 410: hacked-WordPress spam URLs answer « Gone » (PR #19)
+
+Search Console « Not found (404) » listed 118 URLs on 2026-11-05; 110 of them are spam left by a past hack of the old WordPress site (casino, slots, bingo… at the root, and `/get…/…items` pages). They now answer **410 Gone** with `X-Robots-Tag: noindex`, so Google drops them faster. No redirect (redirecting spam would pass it to a real page), no visible change, nothing in the sitemap. Search Console: no manual action, no security issue.
+
+| File | Change |
+|---|---|
+| `src/lib/spam-urls.js` (new) | `isSpamPath()`: `/get(i\|id\|idm)<digits>/<3 letters><digits><4 letters>items(.htm)`, or a single root segment containing a gambling word (casino, slot, bingo, rummy, gambl, blackjack, roulette, poker…) |
+| `src/proxy.js` (new) | Next 16 proxy, `matcher` limited to `/get…` and single root segments; everything else passes through unchanged |
+
+Live, verified in production (merged 14:49, serving 410 by 14:53): the 110 spam URLs from the report all end in **410** (addresses with a trailing slash first get the site's usual 308 that removes the slash); 38/38 sitemap URLs answer 200; `/robots.txt`, the Google verification file, `/api/og`, `/admin/login` 200; `/developpement-web` and `/category/…` redirects unchanged; unknown URLs (`/5`, `/en`, `/this-page-does-not-exist`) still 404.
+
+Left as 404 on purpose (not clearly spam): `/5`, `/en/`, `/pcmypage/`, `/shop/order/make_estimate.aspx`.
+
+Rule to remember: a future page at the root of the site whose address contains one of those gambling words would answer 410; put new pages under `/services/` or `/actualites/`.
+
+Nothing to do by hand. The Search Console 404 report will shrink on its own as Google re-crawls those URLs (weeks).
