@@ -15,6 +15,24 @@ import { notifyArticlePublished } from "../../../lib/indexnow.js";
 import { slugFromTitle } from "../../../lib/post-slug.js";
 import { uniquePostSlug } from "../../../lib/post-slug-db.js";
 import { parseFaqFromForm } from "../../../lib/post-faq.js";
+import { getAdminSession } from "../../../lib/admin-auth";
+
+/**
+ * Les pages /actualites/<slug> sont générées une fois et gardées en cache :
+ * sans ce rafraîchissement, une modification faite dans l'admin n'apparaissait
+ * qu'au déploiement suivant.
+ */
+async function revalidatePost(postId) {
+  revalidatePath("/admin");
+  revalidatePath("/actualites");
+  revalidatePath("/sitemap.xml");
+  const [row] = await db
+    .select({ slug: posts.slug })
+    .from(posts)
+    .where(eq(posts.id, postId))
+    .limit(1);
+  if (row?.slug) revalidatePath(`/actualites/${row.slug}`);
+}
 
 export async function updateSettings(formData) {
   const frequencyPerWeek = formData.get("frequencyPerWeek")?.toString() || "3";
@@ -60,8 +78,7 @@ export async function togglePublish(formData) {
     .update(posts)
     .set({ publishedAt: publish ? new Date() : null, updatedAt: new Date() })
     .where(eq(posts.id, postId));
-  revalidatePath("/admin");
-  revalidatePath("/actualites");
+  await revalidatePost(postId);
   return { ok: true };
 }
 
@@ -87,9 +104,37 @@ export async function updatePostSeo(formData) {
     .update(posts)
     .set({ seoTitle, seoDescription, updatedAt: new Date() })
     .where(eq(posts.id, postId));
-  revalidatePath("/admin");
-  revalidatePath("/actualites");
+  await revalidatePost(postId);
   return { ok: true };
+}
+
+/**
+ * Modifie le texte d'un article existant : contenu HTML, extrait et FAQ.
+ * Le titre et l'adresse (slug) ne changent pas, pour ne casser aucune URL.
+ */
+export async function updatePostContent(_prevState, formData) {
+  if (!(await getAdminSession())) {
+    return { ok: false, error: "Session expirée : reconnectez-vous." };
+  }
+  const postId = formData.get("postId")?.toString();
+  if (!postId) return { ok: false, error: "Article introuvable." };
+
+  const content = formData.get("content")?.toString()?.trim() || "";
+  if (!content) return { ok: false, error: "Le contenu ne peut pas être vide." };
+  const excerpt = formData.get("excerpt")?.toString()?.trim() || null;
+
+  const { faq, error: faqError } = parseFaqFromForm(formData);
+  if (faqError) return { ok: false, error: faqError };
+
+  const updated = await db
+    .update(posts)
+    .set({ content, excerpt, faq, updatedAt: new Date() })
+    .where(eq(posts.id, postId))
+    .returning({ id: posts.id });
+  if (updated.length === 0) return { ok: false, error: "Article introuvable." };
+
+  await revalidatePost(postId);
+  return { ok: true, savedAt: new Date().toISOString() };
 }
 
 export async function triggerGenerate() {
