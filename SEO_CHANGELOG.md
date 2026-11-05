@@ -474,8 +474,10 @@ Published from the admin (« Article manuel », B9 FAQ block, « Publier immédi
 
 Production: 200, clean slug, self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + `FAQPage`; listed on `/actualites`; every internal link in the 4 articles answers 200.
 
+**Indexing requests (Search Console, 2026-11-05, owner's go-ahead):** `/actualites/prix-d-une-agence-de-prospection-b2b-combien-compter` → « Indexing requested, URL added to a priority crawl queue ». The next one (`…le-vrai-cout`) got « Quota exceeded »: the daily quota (about 10) was already used that morning by the service-page requests.
+
 **To do by hand**
-- Search Console: request indexing of the 4 URLs (before the older list; daily limit about 10).
+- Search Console, **2026-11-06**, in this order: `/actualites/internaliser-ou-externaliser-sa-prospection-le-vrai-cout`, `/actualites/agences-de-prospection-b2b-en-france-le-comparatif`, `/actualites/forfait-ou-paiement-au-rendez-vous-quel-modele-choisir`, then the « Discovered, not indexed » pages `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas`, then the rest of the 2026-11-05 list.
 - Team: set the 4 articles to « Publié » in the content plan. T4 (links from old articles) is unblocked.
 
 ## 2026-11-05 — B4b: sitemap refreshed hourly (PR #22)
