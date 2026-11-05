@@ -3,6 +3,10 @@ import { posts } from "@/db/schema";
 import { db } from "@/lib/db";
 import { buildSitemapEntries } from "@/lib/sitemap-entries";
 
+// Sans cette ligne, le sitemap est figé au build : un article publié depuis
+// l'admin n'y entrait qu'au déploiement suivant. Rafraîchi au plus toutes les heures.
+export const revalidate = 3600;
+
 export default async function sitemap() {
   try {
     const allPosts = await db
