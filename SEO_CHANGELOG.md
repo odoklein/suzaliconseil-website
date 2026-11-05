@@ -378,3 +378,25 @@ Owner's rule: no dedicated account manager (QUESTIONS-METIER.md, question 1). On
 Live, verified in production (merged 14:31, live by 14:36): the three pages answer 200 with one H1 and a self canonical, and contain no « account manager »; the rest of the card (« Reporting hebdomadaire »…) is unchanged; `/sitemap.xml` 200 (38 URLs), `/robots.txt` 200. « Account Manager » is still a job title on `/equipe` (a role, not an offer promise): left as is.
 
 Nothing to do by hand.
+
+## 2026-11-05 — Search Console: sitemap + indexing requests (no code change)
+
+Done in Search Console (domain property `sc-domain:suzaliconseil.com`) with the owner's OK:
+
+- **Sitemap:** submitted `https://suzaliconseil.com/sitemap.xml` (non-www). Read the same day: Success, 38 pages. The old `https://www.suzaliconseil.com/sitemap.xml` (submitted 29 Jul 2026, last read 1 Nov) is left in place.
+- **Indexing requested** (all already « URL is on Google », re-crawl of the new content): `/services/outbound-marketing-b2b`, `/services/generation-leads-b2b`, `/services/prospection-commerciale-externalisee`, `/services/agence-generation-de-leads-paris` (requested twice by mistake, harmless), `/services/marketing-b2b-externalise`, `/services/teleprospection-b2b`, `/services/prise-rendez-vous-b2b`, `/services/commercial`, `/services/vente-marque-blanche`. Stopped there because of Google's daily limit (about 10 requests).
+- **Still to request (next day):** `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/services/digital`, `/services/digital/seo-acquisition`, `/services/digital/strategie-digitale`, `/services/digital/sites-web-ecommerce`, `/services/digital/branding-identite`, `/services/digital/developpement-automatisation`.
+
+Baseline read the same day (23 Oct – 3 Nov vs 11 – 22 Oct): clicks 12 → 12, impressions 607 → 1,240, average position 49.3 → 61.6 (more impressions on new, deeper queries). Indexing report: 38 indexed, 215 not indexed (118 × 404, 44 × redirect, 18 × crawled not indexed, 10 × Google chose another canonical).
+
+## 2026-11-05 — B9: FAQ editor for manual articles (PR #15)
+
+Merged 2026-11-05 12:45 UTC, PR #15 (`76fc277`), owner's « OK en ligne ». The « new manual article » form in the admin gets a FAQ block (up to 8 question/answer rows, plain text, HTML stripped). Saved in the existing `posts.faq` column, the same one generated articles use, so the article page shows the FAQ and its `FAQPage` JSON-LD from the same data. No database migration, no env change.
+
+Checked before the merge: build OK, 11 parser tests pass; the only lint error (`AgendaField.jsx`) was already on `main`. Not done: the browser test against a test database (no test database URL).
+
+Production, about 30 minutes after the merge: `/`, `/actualites`, `/sitemap.xml`, `/robots.txt`, `/services/prospection-commerciale-externalisee` answer 200, `/admin` 307 to the login. The FAQ form sits behind the admin login, so it can't be seen from outside.
+
+**To do by hand**
+- Owner: open Admin → new manual article and check that the FAQ block is there (if not, the Dokploy deploy has not finished).
+- Team (T3): paste the 4 content-plan articles from `seo-reports/articles/admin/*.txt` (local folder), FAQ included, then send me the URLs to check (FAQ visible + `FAQPage` JSON-LD) and request indexing in Search Console.
