@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import SeoTitleInput from "./SeoTitleInput";
 import {
   updateSettings,
   togglePublish,
@@ -591,9 +592,7 @@ export default function AdminDashboard({
                           <input type="hidden" name="postId" value={post.id} />
                           <label className="grid gap-1 text-xs font-semibold text-gray-500">
                             Titre SEO (42 caractères maximum)
-                            <input
-                              name="seoTitle"
-                              maxLength={42}
+                            <SeoTitleInput
                               defaultValue={post.seoTitle || ""}
                               className="rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-900"
                             />
@@ -1092,12 +1091,7 @@ export default function AdminDashboard({
                 <label className="block text-xs text-gray-500 font-semibold mb-1.5 uppercase tracking-wider">
                   Titre SEO (42 caractères maximum)
                 </label>
-                <input
-                  type="text"
-                  name="seoTitle"
-                  maxLength={42}
-                  className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#0D332B]/20 outline-none"
-                />
+                <SeoTitleInput className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#0D332B]/20 outline-none" />
               </div>
               <div>
                 <label className="block text-xs text-gray-500 font-semibold mb-1.5 uppercase tracking-wider">
