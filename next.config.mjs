@@ -183,6 +183,39 @@ const nextConfig = {
         destination: "/actualites/prospection-commerciale-pme-les-strategies-incontournables-mmix31os",
         permanent: true,
       },
+      // Anciennes pages relevées en 404 dans la Search Console (05/11/2026).
+      // Les autres URL du rapport 404 sont du spam (casino, /get…items) laissé
+      // par un ancien piratage : elles restent en 404, aucune redirection.
+      {
+        source: "/actualites/maitriser-les-kpi-prospection-commerciale-pour-performer-en-b2b-mogylg33",
+        destination: "/actualites/kpi-prospection-commerciale-mesurer-et-piloter-la-performance-mocznw1b",
+        permanent: true,
+      },
+      {
+        source: "/actualites/content-marketing-b2b-strategies-gagnantes-pour-generer-des-leads-mottk8py",
+        destination: "/services/marketing-b2b-externalise",
+        permanent: true,
+      },
+      {
+        source: "/actualites/comment-optimiser-le-developpement-dapplications-pour-repondre-aux-besoins-des-entreprises",
+        destination: "/services/digital/developpement-automatisation",
+        permanent: true,
+      },
+      {
+        source: "/developpement-web",
+        destination: "/services/digital/sites-web-ecommerce",
+        permanent: true,
+      },
+      {
+        source: "/actualites/comment-lautomatisation-des-processus-transforme-votre-suivi-client-en-2023",
+        destination: "/services/digital/developpement-automatisation",
+        permanent: true,
+      },
+      {
+        source: "/actualites/comment-les-nouvelles-technologies-b2b-revolutionnent-le-monde-des-affaires-guide-pratique",
+        destination: "/actualites/les-10-outils-numeriques-indispensables-pour-booster-la-performance-commerciale-de-votre-entreprise",
+        permanent: true,
+      },
       // URLs WordPress sans équivalent (archives, taxonomies, auteurs, flux) :
       // Google les a encore en mémoire et recevait un 404.
       {
