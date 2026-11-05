@@ -400,3 +400,14 @@ Production, about 30 minutes after the merge: `/`, `/actualites`, `/sitemap.xml`
 **To do by hand**
 - Owner: open Admin → new manual article and check that the FAQ block is there (if not, the Dokploy deploy has not finished).
 - Team (T3): paste the 4 content-plan articles from `seo-reports/articles/admin/*.txt` (local folder), FAQ included, then send me the URLs to check (FAQ visible + `FAQPage` JSON-LD) and request indexing in Search Console.
+
+## 2026-11-05 — B10: SEO title counter in the admin (PR #17)
+
+Owner's decision: keep the 42-character limit, because the article page adds « | Suzali Conseil » (17 characters) and 42 + 17 = 59 fits Google's ~60. Merged 2026-11-05 13:20 UTC, PR #17 (`2b99aea`). Under both « Titre SEO » fields of the admin (new manual article, and « Modifier les métadonnées SEO » on each article), a live counter shows `n / 42` and the full title length as Google shows it (`n + 17 / 60`), in amber at 42. Admin only, no public page changed. Checked before the merge: build OK, lint OK on the changed files. No local capture (the admin needs the database).
+
+**To do by hand**
+- Owner: after the deploy (about 25 minutes), check the counter under « Titre SEO » in the admin.
+
+## 2026-11-05 — B11: measurement only, no change
+
+Lighthouse 13.6 mobile (simulated throttling) on this machine: production home **95** (FCP/LCP about 1.3 s, TBT about 100 ms), local build 100 on `/` and `/services/generation-leads-b2b`. The earlier 65 came from a slower test machine (this one has benchmarkIndex 3,487, so these figures are optimistic). The rest of the first-screen JavaScript is React itself and the animation library (about 28 KiB unused). Removing it means rewriting the hero, button and booking animations: a visible change for a small gain, so nothing was changed. Reports in `seo-reports/lighthouse/B11/` (local folder).
