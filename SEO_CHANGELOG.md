@@ -460,3 +460,26 @@ Left as 404 on purpose (not clearly spam): `/5`, `/en/`, `/pcmypage/`, `/shop/or
 Rule to remember: a future page at the root of the site whose address contains one of those gambling words would answer 410; put new pages under `/services/` or `/actualites/`.
 
 Nothing to do by hand. The Search Console 404 report will shrink on its own as Google re-crawls those URLs (weeks).
+
+## 2026-11-05 — T3: the 4 content-plan articles published, with FAQ
+
+Published from the admin (« Article manuel », B9 FAQ block, « Publier immédiatement », AI cover image), with the owner's go-ahead. Text taken as is from `seo-reports/articles/admin/*.json`: before each submit, every form field was compared by SHA-256 with the source file (all identical). The owner confirmed the two Suzali sentences « téléprospecteurs en offshore » and « rendez-vous annulé remplacé » (prix, comparatif, forfait-ou-rdv). Suzali prices in the articles match `src/lib/offers-catalog.js`.
+
+| Article | URL | `<title>` | Description | FAQPage |
+|---|---|---|---|---|
+| Prix d'une agence | `/actualites/prix-d-une-agence-de-prospection-b2b-combien-compter` | 53 | 141 | 5 |
+| Vrai coût | `/actualites/internaliser-ou-externaliser-sa-prospection-le-vrai-cout` | 57 | 152 | 5 |
+| Comparatif | `/actualites/agences-de-prospection-b2b-en-france-le-comparatif` | 56 | 153 | 5 |
+| Forfait ou RDV | `/actualites/forfait-ou-paiement-au-rendez-vous-quel-modele-choisir` | 53 | 149 | 5 |
+
+Production: 200, clean slug, self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + `FAQPage`; listed on `/actualites`; every internal link in the 4 articles answers 200.
+
+**To do by hand**
+- Search Console: request indexing of the 4 URLs (before the older list; daily limit about 10).
+- Team: set the 4 articles to « Publié » in the content plan. T4 (links from old articles) is unblocked.
+
+## 2026-11-05 — B4b: sitemap refreshed hourly (PR #22)
+
+Found while checking T3: `src/app/sitemap.js` had no `revalidate`, so the sitemap was built once per deploy and articles published from the admin never entered it until the next deploy. Added `export const revalidate = 3600`. Merged 14:31 UTC (`8aeb584`), live at 14:35: `/sitemap.xml` 200, **42 URLs**, the 4 T3 articles included.
+
+Nothing to do by hand.

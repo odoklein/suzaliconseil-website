@@ -104,7 +104,8 @@ de l'équipe marketing : **dès qu'une est débloquée, elle passe avant la pist
   - Vérifier aussi que les articles générés n'ont plus de suffixe aléatoire dans le slug (voir B2).
   - *(En ligne le 22/10/2026. La génération automatique reste en pause tant que le propriétaire n'a pas créé la table `article_generation_attempts` avec `docs/article-attempts-table.sql` : la route répond 503 sans appeler Mistral. Avant tout vrai appel : `?dryRun=1`.)*
 
-- [ ] **T3 — Publier les 4 articles du plan contenu avec leur FAQ** · id plan : `t-publier`
+- [x] **T3 — Publier les 4 articles du plan contenu avec leur FAQ** · id plan : `t-publier`
+  - *(En ligne le 05/11/2026 depuis l'admin, FAQ comprise ; dans le sitemap depuis B4b, PR #22. Reste : demander l'indexation des 4 URL dans la Search Console.)*
   - Déclencheur : un article passe au statut « Envoyé à Odo » avec le lien de son Google Doc.
   - Prérequis autonome à faire **avant** : tâche B9 (FAQ sur les articles manuels).
   - Toi : convertir le Doc en article (texte **tel quel**, ne pas réécrire les chiffres),
