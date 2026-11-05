@@ -411,3 +411,22 @@ Owner's decision: keep the 42-character limit, because the article page adds « 
 ## 2026-11-05 — B11: measurement only, no change
 
 Lighthouse 13.6 mobile (simulated throttling) on this machine: production home **95** (FCP/LCP about 1.3 s, TBT about 100 ms), local build 100 on `/` and `/services/generation-leads-b2b`. The earlier 65 came from a slower test machine (this one has benchmarkIndex 3,487, so these figures are optimistic). The rest of the first-screen JavaScript is React itself and the animation library (about 28 KiB unused). Removing it means rewriting the hero, button and booking animations: a visible change for a small gain, so nothing was changed. Reports in `seo-reports/lighthouse/B11/` (local folder).
+
+## 2026-11-05 — R1: 301 for the real old pages in the Search Console 404 report (PR #18)
+
+Search Console « Not found (404) » (118 URLs, read 2026-11-05): 114 are spam from an old WordPress hack (casino slugs, `/get…items`, `/shop/order/make_estimate.aspx`, `/pcmypage/`, `/en/`, `/5`) and are not redirected. The 4 real old Suzali pages now redirect (`next.config.mjs`):
+
+| Old URL | New URL |
+|---|---|
+| `/actualites/maitriser-les-kpi-prospection-commerciale-pour-performer-en-b2b-mogylg33` | `/actualites/kpi-prospection-commerciale-mesurer-et-piloter-la-performance-mocznw1b` |
+| `/actualites/content-marketing-b2b-strategies-gagnantes-pour-generer-des-leads-mottk8py` | `/services/marketing-b2b-externalise` |
+| `/actualites/comment-optimiser-le-developpement-dapplications-pour-repondre-aux-besoins-des-entreprises` | `/services/digital/developpement-automatisation` |
+| `/developpement-web` | `/services/digital/sites-web-ecommerce` |
+
+Merged 13:36 UTC (`4489932`), live at 13:42 UTC (Dokploy took 6 minutes this time). Production: the 4 URLs end on their target in 200 (one hop; `/developpement-web/` two, slash first), spam URLs still 404, `/sitemap.xml` 200.
+
+Other Search Console groups read the same day (no change needed): « Google chose a different canonical » (10) and most « Crawled, not indexed » are `www.` URLs, which now redirect; « Alternative page with proper canonical » (6) are old WordPress `?p=` / `?page_id=` URLs; « Blocked by robots.txt » (3) are `/api/og` images; « noindex » (3) are `/mentions-legales` (intended), `/?m=20250219` and `openreplay.suzaliconseil.com`.
+
+**To do by hand**
+- Search Console: request indexing of the 6 pages « Discovered, currently not indexed » (all 200 and in the sitemap): `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas`, `/actualites/agence-de-generation-de-leads-b2b-comment-bien-choisir-mug25o6t`, `/actualites/le-fichier-prospection-b2b-cle-de-voute-de-votre-croissance-mlunw2ai`.
+- Subdomains seen by Google (`app.`, `mailing.`, `openreplay.suzaliconseil.com`: login and admin pages): not in this repo; add `X-Robots-Tag: noindex` on those hosts (hosting setting, owner's call).
