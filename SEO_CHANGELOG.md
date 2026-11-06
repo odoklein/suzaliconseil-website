@@ -519,3 +519,11 @@ The quota opened again early afternoon. Requested, each answered « Indexing req
 Then the rest of the 2026-11-05 list, also each « added to a priority crawl queue » (already indexed, re-crawl of the content enriched in C1): `/services/digital`, `/services/digital/seo-acquisition`, `/services/digital/strategie-digitale`, `/services/digital/sites-web-ecommerce`, `/services/digital/branding-identite`, `/services/digital/developpement-automatisation`. 11 requests on 2026-11-06, no quota refusal. **Every page of the site has now been requested at least once since 2026-11-05.**
 
 **To do by hand:** check the Search Console « Pages » report around 2026-11-13 (indexed pages, and the 404 count shrinking with the 410s).
+
+## 2026-11-06 — Team photos on `/equipe` (PR #25)
+
+New section « L'équipe au travail » under the hero of `/equipe`: 7 portrait photos supplied by the owner (`public/images/equipe/equipe-1…7.webp`, served by `next/image`, AVIF in production), French alt texts describing the scene without names, lazy-loaded, and a caption cell (« Une équipe dédiée à vos rendez-vous. »). Owner saw it on a local build (desktop and mobile) before the OK. Captures in `seo-reports/captures/team-photos/` (local folder). Merged 2026-11-06 (`e21418b`), live at 16:51 local time: `/equipe` 200, one H1, 7 alts; the 7 images 200.
+
+**To do by hand**
+- Owner: keep the consent of each person shown on the photos.
+- Names and roles under the photos can be added later if the owner provides them.
