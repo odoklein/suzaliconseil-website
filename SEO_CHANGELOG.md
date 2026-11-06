@@ -502,4 +502,11 @@ Nothing to do by hand.
 
 ## 2026-11-05/06 — B13: « Outbound ou inbound » article (in progress)
 
-Owner-approved draft (`seo-reports/B13-brouillon-outbound-vs-inbound.md`). SEO title and description changed in the admin on 2026-11-05, live since the 2026-11-06 deploy: « Outbound ou inbound en B2B : que choisir ? » (42; the draft's 46-character title exceeded the admin limit) and a 142-character description (was 105). Previous values: « Outbound vs Inbound B2B : quel levier » / « Découvrez les différences concrètes entre outbound et inbound B2B pour allouer votre budget efficacement. ». URL unchanged. Text and FAQ: see the next entry once applied (paste-ready file `seo-reports/articles/admin/outbound-inbound.txt`).
+Owner-approved draft (`seo-reports/B13-brouillon-outbound-vs-inbound.md`). SEO title and description changed in the admin on 2026-11-05, live since the 2026-11-06 deploy: « Outbound ou inbound en B2B : que choisir ? » (42; the draft's 46-character title exceeded the admin limit) and a 142-character description (was 105). Previous values: « Outbound vs Inbound B2B : quel levier » / « Découvrez les différences concrètes entre outbound et inbound B2B pour allouer votre budget efficacement. ». URL unchanged.
+
+**Text and FAQ applied 2026-11-06 (about 13:15 UTC)** with the B15 form (`seo-reports/articles/admin/outbound-inbound.txt`; every field compared by SHA-256 with that file before saving). Additions to the approved draft, shown to the owner: one closing sentence carrying the 3 planned links, a new excerpt, and FAQ answer 2 reworded (FAQ answers are plain text, no link). The previous text (15,097 characters, with unsourced figures such as « 30 projets… 68 % ») is saved as the full live page in `seo-reports/backups/2026-11-06_outbound-vs-inbound_avant-B13.html` (local folder).
+
+Production right after saving: 200, `<title>` « Outbound ou inbound en B2B : que choisir ? | Suzali Conseil », self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + **`FAQPage` (3 questions)**; new text present, old text and figures gone; links to `/services/outbound-marketing-b2b`, `/services/digital/seo-acquisition`, `/services/marketing-b2b-externalise` present (all 200). The page refreshed immediately, which also confirms B15's revalidation in production.
+
+**To do by hand**
+- Search Console: request re-indexing of `/actualites/agence-outbound-vs-inbound-quand-choisir-mug27mpp` (content changed).

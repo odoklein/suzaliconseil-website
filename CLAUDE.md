@@ -162,8 +162,11 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
   Mesurer Lighthouse mobile avant / après.
 - [x] **B12 — Maillage interne et navigation** : menu « Services », footer, aucune page orpheline,
   tout à 3 clics max de l'accueil, ancres descriptives (pas de « cliquez ici »).
-- [ ] **B13 — Quick wins** (phase 5 du plan) : `marketing b2b externalisé` (pos. 10,7),
+- [x] **B13 — Quick wins** (phase 5 du plan) : `marketing b2b externalisé` (pos. 10,7),
   article unique « Inbound vs outbound » (pos. 19–27). Texte en brouillon → **me le montrer avant**.
+  *(En ligne le 06/11/2026 : page « marketing B2B externalisé » créée en C2 ; article « Outbound ou inbound » réécrit (texte, FAQ, titre et description SEO) via l'admin B15, sauvegarde de l'ancien texte dans `seo-reports/backups/`.)*
+- [x] **B15 — Modifier le texte et la FAQ d'un article dans l'admin** + rafraîchissement des pages article après chaque modification. *(En ligne le 06/11/2026, PR #23.)*
+- [x] **B16 — Vérification de la session admin dans chaque action serveur.** *(En ligne le 06/11/2026, PR #24.)*
 - [x] **B14 — Contrôle final** → `SEO_REPORT.md` (liens cassés, statuts, titres uniques, JSON-LD valide,
   table des 301 testée, liste des TODO SUZALI, actions manuelles pour l'équipe).
 
