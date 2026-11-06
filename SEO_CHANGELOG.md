@@ -527,3 +527,15 @@ New section « L'équipe au travail » under the hero of `/equipe`: 7 portrait p
 **To do by hand**
 - Owner: keep the consent of each person shown on the photos.
 - Names and roles under the photos can be added later if the owner provides them.
+
+## 2026-11-06 — Phase 7: cold emailing article rewritten, MQL/SQL article published
+
+Both owner-approved (drafts `seo-reports/P7-brouillon-cold-emailing.md` and `seo-reports/P7-brouillon-mql-sql.md`), applied from the admin in the owner's Chrome session. Before each save, every field was compared by SHA-256 with `seo-reports/articles/admin/cold-emailing.txt` and `mql-sql.txt` (all identical).
+
+**Cold emailing (rewrite, URL unchanged)** — `/actualites/cold-emailing-b2b-france-la-strategie-gagnante-en-2024-mlywxerj`: new text (7-step method, email template, follow-ups, deliverability, CNIL rules), new excerpt, FAQ of 3 questions. SEO title and description unchanged. Removed: the inaccurate sentence on generic addresses, the list of named software vendors. Previous page saved in `seo-reports/backups/2026-11-06_cold-emailing_avant-P7.html` (local folder). Production: 200, self canonical, `index, follow`, one H1, `BlogPosting` + `FAQPage` (3 questions), new text present, old text gone. The visible H1 still says « …en 2024 » (the B15 form does not change the title).
+
+**MQL/SQL (new article)** — `/actualites/lead-qualifie-mql-sql-definitions-et-criteres-de-qualification`, « Article manuel », Commercial, AI cover image, published immediately. `<title>` « MQL, SQL, lead qualifié : les définitions | Suzali Conseil » (58), description 151, self canonical, `index, follow`, one H1, `BlogPosting` + `FAQPage` (3 questions), listed on `/actualites`, created once.
+
+**To do by hand**
+- Search Console: request indexing of both URLs.
+- Optional follow-ups (owner's OK): remove « 2024 » from the cold emailing H1 without changing its URL; remove « comment qualifier un lead b2b avec la méthode bant » from the `src/lib/ai-writer.js` pool, which is close to the new MQL/SQL article.
