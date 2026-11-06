@@ -516,4 +516,6 @@ Nothing to do by hand.
 
 The quota opened again early afternoon. Requested, each answered « Indexing requested, URL added to a priority crawl queue »: `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas` (all four were « URL is not on Google » that morning), plus the outbound/inbound article above. With the 4 T3 articles already indexed, every page from the 2026-11-05 « Discovered, not indexed » list has now been requested.
 
-**To do by hand (optional, from 2026-11-07):** the rest of the 2026-11-05 list (the 9 `/services/…` pages requested before then do not need a second request); check the « Pages » report in about a week.
+Then the rest of the 2026-11-05 list, also each « added to a priority crawl queue » (already indexed, re-crawl of the content enriched in C1): `/services/digital`, `/services/digital/seo-acquisition`, `/services/digital/strategie-digitale`, `/services/digital/sites-web-ecommerce`, `/services/digital/branding-identite`, `/services/digital/developpement-automatisation`. 11 requests on 2026-11-06, no quota refusal. **Every page of the site has now been requested at least once since 2026-11-05.**
+
+**To do by hand:** check the Search Console « Pages » report around 2026-11-13 (indexed pages, and the 404 count shrinking with the 410s).
