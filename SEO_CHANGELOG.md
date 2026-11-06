@@ -487,3 +487,19 @@ Production: 200, clean slug, self canonical, `index, follow`, one H1, `BlogPosti
 Found while checking T3: `src/app/sitemap.js` had no `revalidate`, so the sitemap was built once per deploy and articles published from the admin never entered it until the next deploy. Added `export const revalidate = 3600`. Merged 14:31 UTC (`8aeb584`), live at 14:35: `/sitemap.xml` 200, **42 URLs**, the 4 T3 articles included.
 
 Nothing to do by hand.
+
+## 2026-11-05/06 — B15: edit an article's text and FAQ from the admin (PR #23)
+
+New page `/admin/articles/<id>` (excerpt, HTML content, FAQ, pre-filled; title and slug unchanged so no URL breaks), linked « Modifier le texte et la FAQ → » under each article in the admin list. Its save action checks the admin session server-side. Every admin edit (text, FAQ, SEO, publish toggle) now refreshes `/actualites/<slug>`, `/actualites` and `/sitemap.xml`: article pages were static, so admin edits only showed after a deploy (found when the B13 SEO title, saved on 2026-11-05, did not appear).
+
+Merged 2026-11-05 15:10 UTC (`41bc0ab`) during a GitHub error (504): the commit reached `main` but no deploy started, and PR #23 still shows « open » (its content is in `main`; it can be closed). Deployed with B16 on 2026-11-06, live at 12:58 UTC: `/admin/articles/<id>` → 307 to `/admin/login` without session; the outbound/inbound article shows its new SEO title.
+
+## 2026-11-06 — B16: admin session checked in every admin action (PR #24)
+
+Admin server actions (delete, publish toggle, SEO, manual article, generation, settings, lead and contact status) relied only on the admin pages being protected; a server action can be called directly. Each now returns `{ ok: false, error: "Session expirée : reconnectez-vous." }` without an admin session. Tested on a local build: calling « delete article » directly without a session returns that error and runs nothing; admin pages still redirect to the login; public pages 200. Merged 12:54 UTC (`dd4e9b5`), live at 12:58 UTC.
+
+Nothing to do by hand.
+
+## 2026-11-05/06 — B13: « Outbound ou inbound » article (in progress)
+
+Owner-approved draft (`seo-reports/B13-brouillon-outbound-vs-inbound.md`). SEO title and description changed in the admin on 2026-11-05, live since the 2026-11-06 deploy: « Outbound ou inbound en B2B : que choisir ? » (42; the draft's 46-character title exceeded the admin limit) and a 142-character description (was 105). Previous values: « Outbound vs Inbound B2B : quel levier » / « Découvrez les différences concrètes entre outbound et inbound B2B pour allouer votre budget efficacement. ». URL unchanged. Text and FAQ: see the next entry once applied (paste-ready file `seo-reports/articles/admin/outbound-inbound.txt`).
