@@ -17,6 +17,10 @@ import { uniquePostSlug } from "../../../lib/post-slug-db.js";
 import { parseFaqFromForm } from "../../../lib/post-faq.js";
 import { getAdminSession } from "../../../lib/admin-auth";
 
+// Chaque action vérifie la session côté serveur : la protection de la page ne suffit pas,
+// une action serveur peut être appelée directement.
+const UNAUTHORIZED = { ok: false, error: "Session expirée : reconnectez-vous." };
+
 /**
  * Les pages /actualites/<slug> sont générées une fois et gardées en cache :
  * sans ce rafraîchissement, une modification faite dans l'admin n'apparaissait
@@ -35,6 +39,7 @@ async function revalidatePost(postId) {
 }
 
 export async function updateSettings(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const frequencyPerWeek = formData.get("frequencyPerWeek")?.toString() || "3";
   const tone = formData.get("tone")?.toString() || "expert";
   const autoPublish = formData.get("autoPublish") === "true" ? "true" : "false";
@@ -62,6 +67,7 @@ export async function updateSettings(formData) {
 }
 
 export async function deletePost(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const postId = formData.get("postId")?.toString();
   if (!postId) return { ok: false };
   await db.delete(posts).where(eq(posts.id, postId));
@@ -71,6 +77,7 @@ export async function deletePost(formData) {
 }
 
 export async function togglePublish(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const postId = formData.get("postId")?.toString();
   const publish = formData.get("publish") === "true";
   if (!postId) return { ok: false };
@@ -83,6 +90,7 @@ export async function togglePublish(formData) {
 }
 
 export async function updatePostSeo(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const postId = formData.get("postId")?.toString();
   const seoTitle = formData.get("seoTitle")?.toString()?.trim() || null;
   const seoDescription =
@@ -138,6 +146,7 @@ export async function updatePostContent(_prevState, formData) {
 }
 
 export async function triggerGenerate() {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   let [settings] = await db.select().from(contentGeneratorSettings).limit(1);
   if (!settings) {
     const [inserted] = await db
@@ -206,6 +215,7 @@ export async function triggerGenerate() {
 
 /** Create a manual post: topic (commercial/digital), optional AI-generated featured image. */
 export async function createManualPost(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const title = formData.get("title")?.toString()?.trim();
   const excerpt = formData.get("excerpt")?.toString()?.trim() ?? "";
   const seoTitle = formData.get("seoTitle")?.toString()?.trim() ?? "";
@@ -272,6 +282,7 @@ export async function createManualPost(formData) {
 }
 
 export async function updateLeadStatus(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const leadId = formData.get("leadId")?.toString();
   const status = formData.get("status")?.toString();
   if (!leadId || !status) return { ok: false };
@@ -281,6 +292,7 @@ export async function updateLeadStatus(formData) {
 }
 
 export async function updateContactStatus(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const contactId = formData.get("contactId")?.toString();
   const status = formData.get("status")?.toString();
   if (!contactId || !status) return { ok: false };
