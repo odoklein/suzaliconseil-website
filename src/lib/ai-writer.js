@@ -55,14 +55,6 @@ const PRIORITY_TARGETS = [
     targetService: SERVICES.outbound,
     secondaryService: SERVICES.generationLeads,
   },
-  {
-    keyword: "comment qualifier un lead b2b avec la méthode bant",
-    angle:
-      "Appliquer BANT (budget, autorité, besoin, délai) à la qualification d'un lead B2B : questions types pour chaque critère, grille de décision simple, quand transmettre ou écarter un lead.",
-    topic: "commercial",
-    targetService: SERVICES.qualificationLeads,
-    secondaryService: SERVICES.priseRendezVous,
-  },
 ];
 
 /**
@@ -98,6 +90,8 @@ const SECONDARY_POOL = [
  * l'équipe / comparatif non vérifiable (publicité comparative).
  * kpi prospection commerciale, génération leads b2b industrie, prospection commerciale pme,
  * cold emailing b2b france : déjà couverts par un article existant.
+ * comment qualifier un lead b2b avec la méthode bant : couvert par l'article « Lead qualifié,
+ * MQL, SQL : définitions et critères de qualification » (06/11/2026).
  */
 export const EXCLUDED_KEYWORDS = [
   "agence de génération de leads b2b",
@@ -115,6 +109,7 @@ export const EXCLUDED_KEYWORDS = [
   "agence prospection pour startup saas",
   "combien coûte la génération de leads b2b",
   "meilleur outil prospection b2b",
+  "comment qualifier un lead b2b avec la méthode bant",
 ];
 
 /** Pour les tests : toutes les cibles actuellement proposées par le générateur. */
