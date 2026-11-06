@@ -538,4 +538,12 @@ Both owner-approved (drafts `seo-reports/P7-brouillon-cold-emailing.md` and `seo
 
 **To do by hand**
 - Search Console: request indexing of both URLs.
-- Optional follow-ups (owner's OK): remove « 2024 » from the cold emailing H1 without changing its URL; remove « comment qualifier un lead b2b avec la méthode bant » from the `src/lib/ai-writer.js` pool, which is close to the new MQL/SQL article.
+- Optional follow-up (owner's OK): remove « comment qualifier un lead b2b avec la méthode bant » from the `src/lib/ai-writer.js` pool, which is close to the new MQL/SQL article.
+
+## 2026-11-06 — P7b: edit an article's visible title from the admin (PR #28)
+
+The admin page `/admin/articles/<id>` now has a « Titre de l'article (H1) » field (required, 120 characters max). Saving changes the title only; the slug never changes, so no URL breaks. Merged (`05d5af5`) and live by 20:14 local time.
+
+Used right away on the cold emailing article: H1 « Cold Emailing B2B France : La Stratégie Gagnante en 2024 » → « Cold emailing B2B en France : la méthode pas à pas ». Text, excerpt and FAQ checked by SHA-256 as unchanged before saving. Production: 200, H1 and `BlogPosting` headline updated, no « 2024 » left in the H1, `<title>` (SEO title) and canonical unchanged, FAQ 3 questions, `/actualites` shows the new title.
+
+Nothing to do by hand.
