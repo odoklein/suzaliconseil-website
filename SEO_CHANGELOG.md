@@ -379,6 +379,71 @@ Live, verified in production (merged 14:31, live by 14:36): the three pages answ
 
 Nothing to do by hand.
 
+## 2026-11-05 — Search Console: sitemap + indexing requests (no code change)
+
+Done in Search Console (domain property `sc-domain:suzaliconseil.com`) with the owner's OK:
+
+- **Sitemap:** submitted `https://suzaliconseil.com/sitemap.xml` (non-www). Read the same day: Success, 38 pages. The old `https://www.suzaliconseil.com/sitemap.xml` (submitted 29 Jul 2026, last read 1 Nov) is left in place.
+- **Indexing requested** (all already « URL is on Google », re-crawl of the new content): `/services/outbound-marketing-b2b`, `/services/generation-leads-b2b`, `/services/prospection-commerciale-externalisee`, `/services/agence-generation-de-leads-paris` (requested twice by mistake, harmless), `/services/marketing-b2b-externalise`, `/services/teleprospection-b2b`, `/services/prise-rendez-vous-b2b`, `/services/commercial`, `/services/vente-marque-blanche`. Stopped there because of Google's daily limit (about 10 requests).
+- **Still to request (next day):** `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/services/digital`, `/services/digital/seo-acquisition`, `/services/digital/strategie-digitale`, `/services/digital/sites-web-ecommerce`, `/services/digital/branding-identite`, `/services/digital/developpement-automatisation`.
+
+Baseline read the same day (23 Oct – 3 Nov vs 11 – 22 Oct): clicks 12 → 12, impressions 607 → 1,240, average position 49.3 → 61.6 (more impressions on new, deeper queries). Indexing report: 38 indexed, 215 not indexed (118 × 404, 44 × redirect, 18 × crawled not indexed, 10 × Google chose another canonical).
+
+## 2026-11-05 — B9: FAQ editor for manual articles (PR #15)
+
+Merged 2026-11-05 12:45 UTC, PR #15 (`76fc277`), owner's « OK en ligne ». The « new manual article » form in the admin gets a FAQ block (up to 8 question/answer rows, plain text, HTML stripped). Saved in the existing `posts.faq` column, the same one generated articles use, so the article page shows the FAQ and its `FAQPage` JSON-LD from the same data. No database migration, no env change.
+
+Checked before the merge: build OK, 11 parser tests pass; the only lint error (`AgendaField.jsx`) was already on `main`. Not done: the browser test against a test database (no test database URL).
+
+Production, about 30 minutes after the merge: `/`, `/actualites`, `/sitemap.xml`, `/robots.txt`, `/services/prospection-commerciale-externalisee` answer 200, `/admin` 307 to the login. The FAQ form sits behind the admin login, so it can't be seen from outside.
+
+**To do by hand**
+- Owner: open Admin → new manual article and check that the FAQ block is there (if not, the Dokploy deploy has not finished).
+- Team (T3): paste the 4 content-plan articles from `seo-reports/articles/admin/*.txt` (local folder), FAQ included, then send me the URLs to check (FAQ visible + `FAQPage` JSON-LD) and request indexing in Search Console.
+
+## 2026-11-05 — B10: SEO title counter in the admin (PR #17)
+
+Owner's decision: keep the 42-character limit, because the article page adds « | Suzali Conseil » (17 characters) and 42 + 17 = 59 fits Google's ~60. Merged 2026-11-05 13:20 UTC, PR #17 (`2b99aea`). Under both « Titre SEO » fields of the admin (new manual article, and « Modifier les métadonnées SEO » on each article), a live counter shows `n / 42` and the full title length as Google shows it (`n + 17 / 60`), in amber at 42. Admin only, no public page changed. Checked before the merge: build OK, lint OK on the changed files. No local capture (the admin needs the database).
+
+**To do by hand**
+- Owner: after the deploy (about 25 minutes), check the counter under « Titre SEO » in the admin.
+
+## 2026-11-05 — B11: measurement only, no change
+
+Lighthouse 13.6 mobile (simulated throttling) on this machine: production home **95** (FCP/LCP about 1.3 s, TBT about 100 ms), local build 100 on `/` and `/services/generation-leads-b2b`. The earlier 65 came from a slower test machine (this one has benchmarkIndex 3,487, so these figures are optimistic). The rest of the first-screen JavaScript is React itself and the animation library (about 28 KiB unused). Removing it means rewriting the hero, button and booking animations: a visible change for a small gain, so nothing was changed. Reports in `seo-reports/lighthouse/B11/` (local folder).
+
+## 2026-11-05 — R1: 301 for the real old pages in the Search Console 404 report (PR #18)
+
+Search Console « Not found (404) » (118 URLs, read 2026-11-05): 114 are spam from an old WordPress hack (casino slugs, `/get…items`, `/shop/order/make_estimate.aspx`, `/pcmypage/`, `/en/`, `/5`) and are not redirected. The 4 real old Suzali pages now redirect (`next.config.mjs`):
+
+| Old URL | New URL |
+|---|---|
+| `/actualites/maitriser-les-kpi-prospection-commerciale-pour-performer-en-b2b-mogylg33` | `/actualites/kpi-prospection-commerciale-mesurer-et-piloter-la-performance-mocznw1b` |
+| `/actualites/content-marketing-b2b-strategies-gagnantes-pour-generer-des-leads-mottk8py` | `/services/marketing-b2b-externalise` |
+| `/actualites/comment-optimiser-le-developpement-dapplications-pour-repondre-aux-besoins-des-entreprises` | `/services/digital/developpement-automatisation` |
+| `/developpement-web` | `/services/digital/sites-web-ecommerce` |
+
+Merged 13:36 UTC (`4489932`), live at 13:42 UTC (Dokploy took 6 minutes this time). Production: the 4 URLs end on their target in 200 (one hop; `/developpement-web/` two, slash first), spam URLs still 404, `/sitemap.xml` 200.
+
+Other Search Console groups read the same day (no change needed): « Google chose a different canonical » (10) and most « Crawled, not indexed » are `www.` URLs, which now redirect; « Alternative page with proper canonical » (6) are old WordPress `?p=` / `?page_id=` URLs; « Blocked by robots.txt » (3) are `/api/og` images; « noindex » (3) are `/mentions-legales` (intended), `/?m=20250219` and `openreplay.suzaliconseil.com`.
+
+**To do by hand**
+- Search Console: request indexing of the 6 pages « Discovered, currently not indexed » (all 200 and in the sitemap): `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas`, `/actualites/agence-de-generation-de-leads-b2b-comment-bien-choisir-mug25o6t`, `/actualites/le-fichier-prospection-b2b-cle-de-voute-de-votre-croissance-mlunw2ai`.
+- Subdomains seen by Google (`app.`, `mailing.`, `openreplay.suzaliconseil.com`: login and admin pages): not in this repo; add `X-Robots-Tag: noindex` on those hosts (hosting setting, owner's call).
+
+## 2026-11-05 — R2: 301 for two more old articles (PR #20)
+
+Found in the Search Console « Crawled, not indexed » and « Duplicate without user-selected canonical » groups (404 on the site):
+
+| Old URL | New URL |
+|---|---|
+| `/actualites/comment-lautomatisation-des-processus-transforme-votre-suivi-client-en-2023` | `/services/digital/developpement-automatisation` |
+| `/actualites/comment-les-nouvelles-technologies-b2b-revolutionnent-le-monde-des-affaires-guide-pratique` | `/actualites/les-10-outils-numeriques-indispensables-pour-booster-la-performance-commerciale-de-votre-entreprise` |
+
+Merged 13:51 UTC (`6dd9384`), live at 13:57 UTC. Production: both end on their target in 200 after one hop; R1's `/developpement-web`, `/` and `/sitemap.xml` unchanged. Tested locally on top of `main` with the 410 for spam URLs (PR #19, other session): no conflict.
+
+Nothing to do by hand.
+
 ## 2026-11-05 — Spam 410: hacked-WordPress spam URLs answer « Gone » (PR #19)
 
 Search Console « Not found (404) » listed 118 URLs on 2026-11-05; 110 of them are spam left by a past hack of the old WordPress site (casino, slots, bingo… at the root, and `/get…/…items` pages). They now answer **410 Gone** with `X-Robots-Tag: noindex`, so Google drops them faster. No redirect (redirecting spam would pass it to a real page), no visible change, nothing in the sitemap. Search Console: no manual action, no security issue.
@@ -395,3 +460,62 @@ Left as 404 on purpose (not clearly spam): `/5`, `/en/`, `/pcmypage/`, `/shop/or
 Rule to remember: a future page at the root of the site whose address contains one of those gambling words would answer 410; put new pages under `/services/` or `/actualites/`.
 
 Nothing to do by hand. The Search Console 404 report will shrink on its own as Google re-crawls those URLs (weeks).
+
+## 2026-11-05 — T3: the 4 content-plan articles published, with FAQ
+
+Published from the admin (« Article manuel », B9 FAQ block, « Publier immédiatement », AI cover image), with the owner's go-ahead. Text taken as is from `seo-reports/articles/admin/*.json`: before each submit, every form field was compared by SHA-256 with the source file (all identical). The owner confirmed the two Suzali sentences « téléprospecteurs en offshore » and « rendez-vous annulé remplacé » (prix, comparatif, forfait-ou-rdv). Suzali prices in the articles match `src/lib/offers-catalog.js`.
+
+| Article | URL | `<title>` | Description | FAQPage |
+|---|---|---|---|---|
+| Prix d'une agence | `/actualites/prix-d-une-agence-de-prospection-b2b-combien-compter` | 53 | 141 | 5 |
+| Vrai coût | `/actualites/internaliser-ou-externaliser-sa-prospection-le-vrai-cout` | 57 | 152 | 5 |
+| Comparatif | `/actualites/agences-de-prospection-b2b-en-france-le-comparatif` | 56 | 153 | 5 |
+| Forfait ou RDV | `/actualites/forfait-ou-paiement-au-rendez-vous-quel-modele-choisir` | 53 | 149 | 5 |
+
+Production: 200, clean slug, self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + `FAQPage`; listed on `/actualites`; every internal link in the 4 articles answers 200.
+
+**Indexing requests (Search Console, 2026-11-05, owner's go-ahead):** `/actualites/prix-d-une-agence-de-prospection-b2b-combien-compter` → « Indexing requested, URL added to a priority crawl queue ». The next one (`…le-vrai-cout`) got « Quota exceeded »: the daily quota (about 10) was already used that morning by the service-page requests.
+
+**2026-11-06 (URL inspection, about 12:30 UTC):** the 3 other articles (`…le-vrai-cout`, `…le-comparatif`, `…quel-modele-choisir`) are already **« URL is on Google »**: indexed overnight from the sitemap, no request needed. `/services/qualification-leads-b2b`: indexing request refused, « Quota exceeded » (quota apparently counted over a rolling 24 hours). `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas`: still « URL is not on Google », not requested.
+
+**To do by hand**
+- Search Console, from **2026-11-07**: request indexing of `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas`, then the rest of the 2026-11-05 list.
+- Team: set the 4 articles to « Publié » in the content plan. T4 (links from old articles) is unblocked.
+
+## 2026-11-05 — B4b: sitemap refreshed hourly (PR #22)
+
+Found while checking T3: `src/app/sitemap.js` had no `revalidate`, so the sitemap was built once per deploy and articles published from the admin never entered it until the next deploy. Added `export const revalidate = 3600`. Merged 14:31 UTC (`8aeb584`), live at 14:35: `/sitemap.xml` 200, **42 URLs**, the 4 T3 articles included.
+
+Nothing to do by hand.
+
+## 2026-11-05/06 — B15: edit an article's text and FAQ from the admin (PR #23)
+
+New page `/admin/articles/<id>` (excerpt, HTML content, FAQ, pre-filled; title and slug unchanged so no URL breaks), linked « Modifier le texte et la FAQ → » under each article in the admin list. Its save action checks the admin session server-side. Every admin edit (text, FAQ, SEO, publish toggle) now refreshes `/actualites/<slug>`, `/actualites` and `/sitemap.xml`: article pages were static, so admin edits only showed after a deploy (found when the B13 SEO title, saved on 2026-11-05, did not appear).
+
+Merged 2026-11-05 15:10 UTC (`41bc0ab`) during a GitHub error (504): the commit reached `main` but no deploy started, and PR #23 still shows « open » (its content is in `main`; it can be closed). Deployed with B16 on 2026-11-06, live at 12:58 UTC: `/admin/articles/<id>` → 307 to `/admin/login` without session; the outbound/inbound article shows its new SEO title.
+
+## 2026-11-06 — B16: admin session checked in every admin action (PR #24)
+
+Admin server actions (delete, publish toggle, SEO, manual article, generation, settings, lead and contact status) relied only on the admin pages being protected; a server action can be called directly. Each now returns `{ ok: false, error: "Session expirée : reconnectez-vous." }` without an admin session. Tested on a local build: calling « delete article » directly without a session returns that error and runs nothing; admin pages still redirect to the login; public pages 200. Merged 12:54 UTC (`dd4e9b5`), live at 12:58 UTC.
+
+Nothing to do by hand.
+
+## 2026-11-05/06 — B13: « Outbound ou inbound » article (in progress)
+
+Owner-approved draft (`seo-reports/B13-brouillon-outbound-vs-inbound.md`). SEO title and description changed in the admin on 2026-11-05, live since the 2026-11-06 deploy: « Outbound ou inbound en B2B : que choisir ? » (42; the draft's 46-character title exceeded the admin limit) and a 142-character description (was 105). Previous values: « Outbound vs Inbound B2B : quel levier » / « Découvrez les différences concrètes entre outbound et inbound B2B pour allouer votre budget efficacement. ». URL unchanged.
+
+**Text and FAQ applied 2026-11-06 (about 13:15 UTC)** with the B15 form (`seo-reports/articles/admin/outbound-inbound.txt`; every field compared by SHA-256 with that file before saving). Additions to the approved draft, shown to the owner: one closing sentence carrying the 3 planned links, a new excerpt, and FAQ answer 2 reworded (FAQ answers are plain text, no link). The previous text (15,097 characters, with unsourced figures such as « 30 projets… 68 % ») is saved as the full live page in `seo-reports/backups/2026-11-06_outbound-vs-inbound_avant-B13.html` (local folder).
+
+Production right after saving: 200, `<title>` « Outbound ou inbound en B2B : que choisir ? | Suzali Conseil », self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + **`FAQPage` (3 questions)**; new text present, old text and figures gone; links to `/services/outbound-marketing-b2b`, `/services/digital/seo-acquisition`, `/services/marketing-b2b-externalise` present (all 200). The page refreshed immediately, which also confirms B15's revalidation in production.
+
+**Re-indexing requested** (Search Console, 2026-11-06 about 13:00 UTC): « Indexing requested, URL added to a priority crawl queue ».
+
+Nothing to do by hand.
+
+## 2026-11-06 — Search Console: indexing requests for the service pages
+
+The quota opened again early afternoon. Requested, each answered « Indexing requested, URL added to a priority crawl queue »: `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas` (all four were « URL is not on Google » that morning), plus the outbound/inbound article above. With the 4 T3 articles already indexed, every page from the 2026-11-05 « Discovered, not indexed » list has now been requested.
+
+Then the rest of the 2026-11-05 list, also each « added to a priority crawl queue » (already indexed, re-crawl of the content enriched in C1): `/services/digital`, `/services/digital/seo-acquisition`, `/services/digital/strategie-digitale`, `/services/digital/sites-web-ecommerce`, `/services/digital/branding-identite`, `/services/digital/developpement-automatisation`. 11 requests on 2026-11-06, no quota refusal. **Every page of the site has now been requested at least once since 2026-11-05.**
+
+**To do by hand:** check the Search Console « Pages » report around 2026-11-13 (indexed pages, and the 404 count shrinking with the 410s).

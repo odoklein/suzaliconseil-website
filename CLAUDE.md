@@ -104,7 +104,8 @@ de l'équipe marketing : **dès qu'une est débloquée, elle passe avant la pist
   - Vérifier aussi que les articles générés n'ont plus de suffixe aléatoire dans le slug (voir B2).
   - *(En ligne le 22/10/2026. La génération automatique reste en pause tant que le propriétaire n'a pas créé la table `article_generation_attempts` avec `docs/article-attempts-table.sql` : la route répond 503 sans appeler Mistral. Avant tout vrai appel : `?dryRun=1`.)*
 
-- [ ] **T3 — Publier les 4 articles du plan contenu avec leur FAQ** · id plan : `t-publier`
+- [x] **T3 — Publier les 4 articles du plan contenu avec leur FAQ** · id plan : `t-publier`
+  - *(En ligne le 05/11/2026 depuis l'admin, FAQ comprise ; dans le sitemap depuis B4b, PR #22. Reste : demander l'indexation des 4 URL dans la Search Console.)*
   - Déclencheur : un article passe au statut « Envoyé à Odo » avec le lien de son Google Doc.
   - Prérequis autonome à faire **avant** : tâche B9 (FAQ sur les articles manuels).
   - Toi : convertir le Doc en article (texte **tel quel**, ne pas réécrire les chiffres),
@@ -151,16 +152,21 @@ dans `SEO_PLAN_CLAUDE_CODE.md`. Cocher la case ici quand la tâche est **en lign
 - [x] **B8 — JSON-LD** : `Organization` + `ProfessionalService` (accueil), `Service` + `BreadcrumbList`
   (+ `FAQPage` si FAQ visible) sur les pages services, `BlogPosting` + `BreadcrumbList` sur les articles.
   Données réelles uniquement, sinon TODO SUZALI.
-- [ ] **B9 — FAQ sur les articles manuels** : ajouter à l'admin la possibilité de saisir une FAQ
+- [x] **B9 — FAQ sur les articles manuels** : ajouter à l'admin la possibilité de saisir une FAQ
   (questions / réponses) sur un article manuel, rendue en HTML + JSON-LD `FAQPage`. Débloque T3.
-- [ ] **B10 — Limite du titre SEO dans l'admin** : passer de 42 à 60 caractères, avec compteur. (OK requis)
+  *(En ligne le 05/11/2026, PR #15. Les 4 articles T3 sont prêts à coller dans `seo-reports/articles/admin/`.)*
+- [x] **B10 — Limite du titre SEO dans l'admin** : passer de 42 à 60 caractères, avec compteur. (OK requis)
+  *(En ligne le 05/11/2026, PR #17 : limite gardée à 42 sur décision du propriétaire, car 42 + « | Suzali Conseil » = 59 ; compteur ajouté.)*
 - [ ] **B11 — Images et performance** : `alt` en français, WebP/AVIF, `width`/`height`, lazy-load sauf hero,
   `fetchpriority="high"` sur l'image LCP, `font-display: swap`, JS non critique différé.
   Mesurer Lighthouse mobile avant / après.
 - [x] **B12 — Maillage interne et navigation** : menu « Services », footer, aucune page orpheline,
   tout à 3 clics max de l'accueil, ancres descriptives (pas de « cliquez ici »).
-- [ ] **B13 — Quick wins** (phase 5 du plan) : `marketing b2b externalisé` (pos. 10,7),
+- [x] **B13 — Quick wins** (phase 5 du plan) : `marketing b2b externalisé` (pos. 10,7),
   article unique « Inbound vs outbound » (pos. 19–27). Texte en brouillon → **me le montrer avant**.
+  *(En ligne le 06/11/2026 : page « marketing B2B externalisé » créée en C2 ; article « Outbound ou inbound » réécrit (texte, FAQ, titre et description SEO) via l'admin B15, sauvegarde de l'ancien texte dans `seo-reports/backups/`.)*
+- [x] **B15 — Modifier le texte et la FAQ d'un article dans l'admin** + rafraîchissement des pages article après chaque modification. *(En ligne le 06/11/2026, PR #23.)*
+- [x] **B16 — Vérification de la session admin dans chaque action serveur.** *(En ligne le 06/11/2026, PR #24.)*
 - [x] **B14 — Contrôle final** → `SEO_REPORT.md` (liens cassés, statuts, titres uniques, JSON-LD valide,
   table des 301 testée, liste des TODO SUZALI, actions manuelles pour l'équipe).
 
