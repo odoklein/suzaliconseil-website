@@ -15,8 +15,31 @@ import { notifyArticlePublished } from "../../../lib/indexnow.js";
 import { slugFromTitle } from "../../../lib/post-slug.js";
 import { uniquePostSlug } from "../../../lib/post-slug-db.js";
 import { parseFaqFromForm } from "../../../lib/post-faq.js";
+import { getAdminSession } from "../../../lib/admin-auth";
+
+// Chaque action vérifie la session côté serveur : la protection de la page ne suffit pas,
+// une action serveur peut être appelée directement.
+const UNAUTHORIZED = { ok: false, error: "Session expirée : reconnectez-vous." };
+
+/**
+ * Les pages /actualites/<slug> sont générées une fois et gardées en cache :
+ * sans ce rafraîchissement, une modification faite dans l'admin n'apparaissait
+ * qu'au déploiement suivant.
+ */
+async function revalidatePost(postId) {
+  revalidatePath("/admin");
+  revalidatePath("/actualites");
+  revalidatePath("/sitemap.xml");
+  const [row] = await db
+    .select({ slug: posts.slug })
+    .from(posts)
+    .where(eq(posts.id, postId))
+    .limit(1);
+  if (row?.slug) revalidatePath(`/actualites/${row.slug}`);
+}
 
 export async function updateSettings(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const frequencyPerWeek = formData.get("frequencyPerWeek")?.toString() || "3";
   const tone = formData.get("tone")?.toString() || "expert";
   const autoPublish = formData.get("autoPublish") === "true" ? "true" : "false";
@@ -44,6 +67,7 @@ export async function updateSettings(formData) {
 }
 
 export async function deletePost(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const postId = formData.get("postId")?.toString();
   if (!postId) return { ok: false };
   await db.delete(posts).where(eq(posts.id, postId));
@@ -53,6 +77,7 @@ export async function deletePost(formData) {
 }
 
 export async function togglePublish(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const postId = formData.get("postId")?.toString();
   const publish = formData.get("publish") === "true";
   if (!postId) return { ok: false };
@@ -60,12 +85,12 @@ export async function togglePublish(formData) {
     .update(posts)
     .set({ publishedAt: publish ? new Date() : null, updatedAt: new Date() })
     .where(eq(posts.id, postId));
-  revalidatePath("/admin");
-  revalidatePath("/actualites");
+  await revalidatePost(postId);
   return { ok: true };
 }
 
 export async function updatePostSeo(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const postId = formData.get("postId")?.toString();
   const seoTitle = formData.get("seoTitle")?.toString()?.trim() || null;
   const seoDescription =
@@ -87,12 +112,41 @@ export async function updatePostSeo(formData) {
     .update(posts)
     .set({ seoTitle, seoDescription, updatedAt: new Date() })
     .where(eq(posts.id, postId));
-  revalidatePath("/admin");
-  revalidatePath("/actualites");
+  await revalidatePost(postId);
   return { ok: true };
 }
 
+/**
+ * Modifie le texte d'un article existant : contenu HTML, extrait et FAQ.
+ * Le titre et l'adresse (slug) ne changent pas, pour ne casser aucune URL.
+ */
+export async function updatePostContent(_prevState, formData) {
+  if (!(await getAdminSession())) {
+    return { ok: false, error: "Session expirée : reconnectez-vous." };
+  }
+  const postId = formData.get("postId")?.toString();
+  if (!postId) return { ok: false, error: "Article introuvable." };
+
+  const content = formData.get("content")?.toString()?.trim() || "";
+  if (!content) return { ok: false, error: "Le contenu ne peut pas être vide." };
+  const excerpt = formData.get("excerpt")?.toString()?.trim() || null;
+
+  const { faq, error: faqError } = parseFaqFromForm(formData);
+  if (faqError) return { ok: false, error: faqError };
+
+  const updated = await db
+    .update(posts)
+    .set({ content, excerpt, faq, updatedAt: new Date() })
+    .where(eq(posts.id, postId))
+    .returning({ id: posts.id });
+  if (updated.length === 0) return { ok: false, error: "Article introuvable." };
+
+  await revalidatePost(postId);
+  return { ok: true, savedAt: new Date().toISOString() };
+}
+
 export async function triggerGenerate() {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   let [settings] = await db.select().from(contentGeneratorSettings).limit(1);
   if (!settings) {
     const [inserted] = await db
@@ -161,6 +215,7 @@ export async function triggerGenerate() {
 
 /** Create a manual post: topic (commercial/digital), optional AI-generated featured image. */
 export async function createManualPost(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const title = formData.get("title")?.toString()?.trim();
   const excerpt = formData.get("excerpt")?.toString()?.trim() ?? "";
   const seoTitle = formData.get("seoTitle")?.toString()?.trim() ?? "";
@@ -227,6 +282,7 @@ export async function createManualPost(formData) {
 }
 
 export async function updateLeadStatus(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const leadId = formData.get("leadId")?.toString();
   const status = formData.get("status")?.toString();
   if (!leadId || !status) return { ok: false };
@@ -236,6 +292,7 @@ export async function updateLeadStatus(formData) {
 }
 
 export async function updateContactStatus(formData) {
+  if (!(await getAdminSession())) return UNAUTHORIZED;
   const contactId = formData.get("contactId")?.toString();
   const status = formData.get("status")?.toString();
   if (!contactId || !status) return { ok: false };
