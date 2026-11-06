@@ -4,12 +4,29 @@ import { useActionState } from "react";
 import { updatePostContent } from "../../actions";
 import FaqFields from "../../FaqFields";
 
-export default function EditArticleForm({ postId, excerpt, content, faq }) {
+export default function EditArticleForm({ postId, title, excerpt, content, faq }) {
   const [state, formAction, pending] = useActionState(updatePostContent, null);
 
   return (
     <form action={formAction} className="space-y-5 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
       <input type="hidden" name="postId" value={postId} />
+
+      <div>
+        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
+          Titre de l&apos;article (H1) *
+        </label>
+        <input
+          type="text"
+          name="title"
+          required
+          maxLength={120}
+          defaultValue={title}
+          className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#0D332B]/20"
+        />
+        <p className="mt-1 text-xs text-gray-400">
+          Titre affiché en haut de l&apos;article. L&apos;adresse de la page ne change pas.
+        </p>
+      </div>
 
       <div>
         <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">

@@ -127,6 +127,11 @@ export async function updatePostContent(_prevState, formData) {
   const postId = formData.get("postId")?.toString();
   if (!postId) return { ok: false, error: "Article introuvable." };
 
+  // The visible title (H1) can change; the slug never does, so no URL breaks.
+  const title = formData.get("title")?.toString()?.replace(/\s+/g, " ").trim() || "";
+  if (!title) return { ok: false, error: "Le titre ne peut pas être vide." };
+  if (title.length > 120) return { ok: false, error: "Le titre dépasse 120 caractères." };
+
   const content = formData.get("content")?.toString()?.trim() || "";
   if (!content) return { ok: false, error: "Le contenu ne peut pas être vide." };
   const excerpt = formData.get("excerpt")?.toString()?.trim() || null;
@@ -136,7 +141,7 @@ export async function updatePostContent(_prevState, formData) {
 
   const updated = await db
     .update(posts)
-    .set({ content, excerpt, faq, updatedAt: new Date() })
+    .set({ title, content, excerpt, faq, updatedAt: new Date() })
     .where(eq(posts.id, postId))
     .returning({ id: posts.id });
   if (updated.length === 0) return { ok: false, error: "Article introuvable." };
