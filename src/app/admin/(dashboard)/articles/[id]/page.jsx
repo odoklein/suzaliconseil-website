@@ -59,12 +59,13 @@ export default async function EditArticlePage({ params }) {
           )}
         </p>
         <p className="text-xs text-gray-400">
-          Le titre et l&apos;adresse ne changent pas ici (une adresse modifiée casserait les liens existants).
+          L&apos;adresse ne change jamais ici (une adresse modifiée casserait les liens existants).
           Le titre et la description SEO se modifient depuis la liste des articles.
         </p>
       </div>
       <EditArticleForm
         postId={post.id}
+        title={post.title}
         excerpt={post.excerpt || ""}
         content={post.content}
         faq={faq}
