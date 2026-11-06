@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Linkedin } from "lucide-react";
 import { PageHero, ClosingCta, SectionHead, Reveal } from "../kit";
 
@@ -102,6 +103,65 @@ const STATS = [
   { value: "2025", suffix: "", label: "Création du cabinet, à Paris" },
 ];
 
+/*
+ * Photos of the team at work (portraits 3:4, public/images/equipe/).
+ * No names: alt texts describe the scene only.
+ */
+const TEAM_PHOTOS = [
+  { src: "/images/equipe/equipe-1.webp", alt: "Membre de l'équipe commerciale en appel, casque micro, face à son écran" },
+  { src: "/images/equipe/equipe-2.webp", alt: "Membre de l'équipe commerciale concentré sur son écran pendant un appel" },
+  { src: "/images/equipe/equipe-3.webp", alt: "Membre de l'équipe commerciale en appel sur son ordinateur portable" },
+  { src: "/images/equipe/equipe-4.webp", alt: "Membre de l'équipe commerciale prenant des notes pendant un appel" },
+  { src: "/images/equipe/equipe-5.webp", alt: "Membre de l'équipe commerciale relisant un fichier de prospection à son poste" },
+  { src: "/images/equipe/equipe-6.webp", alt: "Membre de l'équipe commerciale souriant à son poste de travail" },
+  { src: "/images/equipe/equipe-7.webp", alt: "Membre de l'équipe commerciale en appel, lunettes et casque, au clavier" },
+];
+
+/* The team at work: a grid of portraits, closed by a short caption cell. */
+function TeamPhotos() {
+  return (
+    <section
+      aria-label="L'équipe au travail"
+      className="border-b border-[#0D332B]/10 bg-[#FCFDFC] py-24 md:py-32"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHead
+          size="md"
+          title="L'équipe au travail"
+          intro="Appels, emails, qualification des leads : une journée de l'équipe commerciale, à son poste."
+        />
+
+        <ul className="mt-12 grid grid-cols-2 gap-3 md:mt-16 md:gap-4 lg:grid-cols-4">
+          {TEAM_PHOTOS.map((photo, index) => (
+            <Reveal
+              as="li"
+              key={photo.src}
+              delay={Math.min(index, 4) * 60}
+              className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#0D332B]/5"
+            >
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                sizes="(min-width: 1280px) 300px, (min-width: 1024px) 23vw, 48vw"
+                className="object-cover"
+              />
+            </Reveal>
+          ))}
+          <li className="flex aspect-[3/4] flex-col justify-end rounded-2xl bg-[#0D332B] p-5 text-[#F7FAF8] md:p-7">
+            <p className="font-heading text-[1.25rem] font-semibold leading-tight tracking-[-0.03em] md:text-[1.6rem]">
+              Une équipe dédiée à vos rendez-vous.
+            </p>
+            <p className="mt-3 text-[14px] leading-relaxed text-[#F7FAF8]/75 md:text-[15px]">
+              Ciblage, prise de contact et qualification, avant le passage de relais à vos commerciaux.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 /* One member, one hairline row: name and role, then what they hold. */
 function MemberRow({ member, index }) {
   return (
@@ -195,6 +255,7 @@ export default function EquipeClient() {
         size="xl"
       />
 
+      <TeamPhotos />
       {/* The roster, filterable by pôle. */}
       <section className="bg-[#F6F7F4] py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
