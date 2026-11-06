@@ -508,5 +508,12 @@ Owner-approved draft (`seo-reports/B13-brouillon-outbound-vs-inbound.md`). SEO t
 
 Production right after saving: 200, `<title>` « Outbound ou inbound en B2B : que choisir ? | Suzali Conseil », self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + **`FAQPage` (3 questions)**; new text present, old text and figures gone; links to `/services/outbound-marketing-b2b`, `/services/digital/seo-acquisition`, `/services/marketing-b2b-externalise` present (all 200). The page refreshed immediately, which also confirms B15's revalidation in production.
 
-**To do by hand**
-- Search Console: request re-indexing of `/actualites/agence-outbound-vs-inbound-quand-choisir-mug27mpp` (content changed).
+**Re-indexing requested** (Search Console, 2026-11-06 about 13:00 UTC): « Indexing requested, URL added to a priority crawl queue ».
+
+Nothing to do by hand.
+
+## 2026-11-06 — Search Console: indexing requests for the service pages
+
+The quota opened again early afternoon. Requested, each answered « Indexing requested, URL added to a priority crawl queue »: `/services/qualification-leads-b2b`, `/services/fichier-prospection-b2b`, `/services/campagnes-email-sms-b2b`, `/etudes-de-cas` (all four were « URL is not on Google » that morning), plus the outbound/inbound article above. With the 4 T3 articles already indexed, every page from the 2026-11-05 « Discovered, not indexed » list has now been requested.
+
+**To do by hand (optional, from 2026-11-07):** the rest of the 2026-11-05 list (the 9 `/services/…` pages requested before then do not need a second request); check the « Pages » report in about a week.
