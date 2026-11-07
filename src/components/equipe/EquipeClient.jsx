@@ -117,6 +117,12 @@ const TEAM_PHOTOS = [
   { src: "/images/equipe/equipe-7.webp", alt: "Membre de l'équipe commerciale en appel, lunettes et casque, au clavier" },
 ];
 
+/* The developer gets the large 2×2 cell that opens the grid. */
+const DEVELOPER_PHOTO = {
+  src: "/images/equipe/developpeur.webp",
+  alt: "Développeur de l'équipe technique codant sur son ordinateur, casque autour du cou",
+};
+
 /* The team at work: a grid of portraits, closed by a short caption cell. */
 function TeamPhotos() {
   return (
@@ -128,10 +134,25 @@ function TeamPhotos() {
         <SectionHead
           size="md"
           title="L'équipe au travail"
-          intro="Appels, emails, qualification des leads : une journée de l'équipe commerciale, à son poste."
+          intro="Développement, appels, emails, qualification des leads : une journée de l'équipe, à son poste."
         />
 
         <ul className="mt-12 grid grid-cols-2 gap-3 md:mt-16 md:gap-4 lg:grid-cols-4">
+          <Reveal
+            as="li"
+            className="relative col-span-2 row-span-2 aspect-[3/4] overflow-hidden rounded-2xl bg-[#0D332B]/5"
+          >
+            <Image
+              src={DEVELOPER_PHOTO.src}
+              alt={DEVELOPER_PHOTO.alt}
+              fill
+              sizes="(min-width: 1280px) 616px, (min-width: 1024px) 47vw, 96vw"
+              className="object-cover"
+            />
+            <p className="absolute bottom-4 left-4 rounded-full bg-[#0D332B]/85 px-4 py-2 text-[13px] font-semibold tracking-[-0.01em] text-[#F7FAF8] md:bottom-6 md:left-6 md:text-sm">
+              Pôle Technologie · Développement
+            </p>
+          </Reveal>
           {TEAM_PHOTOS.map((photo, index) => (
             <Reveal
               as="li"
