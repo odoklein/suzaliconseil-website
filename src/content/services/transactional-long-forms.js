@@ -45,7 +45,7 @@ export const LONG_FORMS = {
         closing: [
           [
             "L’arbitrage entre interne et externe dépend de votre situation. Pour la prospection, nous l’avons détaillé dans l’article ",
-            link(ARTICLES.pourquoiExternaliser, "pourquoi externaliser sa prospection commerciale B2B"),
+            link(ARTICLES.vraiCout, "internaliser ou externaliser sa prospection : le vrai coût"),
             ".",
           ],
         ],

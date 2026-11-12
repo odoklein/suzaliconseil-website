@@ -135,7 +135,7 @@ export const MARQUE_BLANCHE_CONTENT = {
       paragraphs: [
         [
           "Une force de vente externalisée n’exclut pas une équipe interne : beaucoup d’entreprises l’utilisent pour absorber un pic, lancer un marché ou valider un discours avant de recruter. Notre article ",
-          link(ARTICLES.pourquoiExternaliser),
+          link(ARTICLES.vraiCout),
           " compare les options, et la page ",
           link(SERVICES.externalisee),
           " décrit le dispositif de prospection complet qui précède la vente.",
@@ -176,8 +176,8 @@ export const MARQUE_BLANCHE_CONTENT = {
       [...SERVICES.qualification, "Trier vos leads avant de les confier à la vente."],
     ],
     articles: [
-      [...ARTICLES.pourquoiExternaliser, "Externaliser ou recruter : l’arbitrage."],
-      [...ARTICLES.guideExternalisee, "Le guide de la prospection commerciale externalisée."],
+      [...ARTICLES.vraiCout, "Externaliser ou recruter : l’arbitrage."],
+      [...ARTICLES.prixAgence, "Ce que coûte une agence de prospection B2B."],
       [...ARTICLES.kpiProspection, "Piloter l’activité commerciale avec les bons indicateurs."],
     ],
   },

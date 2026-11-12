@@ -122,9 +122,9 @@ export const COMMERCIAL_CONTENT = {
         "Il n’y a pas de bonne réponse universelle. Prospecter en interne donne le contrôle total et une connaissance fine du produit, mais demande du recrutement, de la formation, des outils et du temps avant d’atteindre un rythme régulier. Externaliser permet de démarrer vite avec une méthode et des outils déjà en place, au prix d’une période d’apprentissage de votre offre par l’équipe externe.",
         [
           "Beaucoup d’entreprises choisissent un dispositif mixte : une équipe externe lance le marché et valide le discours, puis l’entreprise internalise tout ou partie quand la méthode est éprouvée. Nous détaillons cet arbitrage dans l’article ",
-          link(ARTICLES.pourquoiExternaliser),
-          " et dans le ",
-          link(ARTICLES.guideExternalisee, "guide de la prospection commerciale externalisée"),
+          link(ARTICLES.vraiCout),
+          " et sur notre ",
+          link(SERVICES.externalisee, "page prospection commerciale externalisée"),
           ".",
         ],
       ],

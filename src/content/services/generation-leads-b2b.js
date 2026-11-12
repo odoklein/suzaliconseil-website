@@ -123,7 +123,7 @@ export const GENERATION_LEADS_CONTENT = {
           title: "Vous hésitez avant de recruter",
           text: [
             "Avant d’embaucher un commercial sédentaire, mesurer ce que rapporte un dispositif externalisé aide à décider. Notre article ",
-            link(ARTICLES.pourquoiExternaliser),
+            link(ARTICLES.vraiCout),
             " détaille cet arbitrage.",
           ],
         },
