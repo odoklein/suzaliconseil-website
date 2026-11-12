@@ -83,7 +83,8 @@ mais chacune a son propre rapport et son propre OK.
 Ces tâches viennent de la section « Côté technique » du plan contenu. Elles dépendent du travail
 de l'équipe marketing : **dès qu'une est débloquée, elle passe avant la piste B.**
 
-- [ ] **T1 — Fusions et redirections (cannibalisation)** · id plan : `t-cannib`
+- [x] **T1 — Fusions et redirections (cannibalisation)** · id plan : `t-cannib`
+  - *(En ligne le 12/11/2026, PR #32 : « guide complet 2024 » → page service ; « Pourquoi externaliser » → article « vrai coût » ; « Boostez vos ventes… » déjà fusionné en C4 ; « génération de leads b2b » et « outbound » laissés tels quels sur décision du propriétaire.)*
   - Déclencheur : l'équipe a rempli les relevés Search Console (tâche `s1-cannib`) et m'a envoyé ses notes.
   - Toi : me proposer, pour chaque recherche (« prospection commerciale externalisée »,
     « génération de leads b2b », « agence outbound »), **quelle page garder** (plus d'impressions +
