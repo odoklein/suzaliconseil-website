@@ -59,13 +59,15 @@ export const ARTICLES = {
     "prospection-commerciale-pme-les-strategies-incontournables-mmix31os",
     "Prospection commerciale PME : les stratégies incontournables",
   ),
-  pourquoiExternaliser: article(
-    "pourquoi-externaliser-sa-prospection-commerciale-b2b-mojth973",
-    "Pourquoi externaliser sa prospection commerciale B2B ?",
+  // T1 (12/11/2026) : « Pourquoi externaliser… » et « … guide complet 2024 » sont fusionnés
+  // (src/data/article-merges.json). Les liens pointent directement vers leur cible.
+  vraiCout: article(
+    "internaliser-ou-externaliser-sa-prospection-le-vrai-cout",
+    "Internaliser ou externaliser sa prospection : le vrai coût",
   ),
-  guideExternalisee: article(
-    "prospection-commerciale-externalisee-guide-complet-2024-mug26uk3",
-    "Prospection commerciale externalisée : le guide complet",
+  prixAgence: article(
+    "prix-d-une-agence-de-prospection-b2b-combien-compter",
+    "Prix d’une agence de prospection B2B : combien compter ?",
   ),
   strategieOutbound: article(
     "strategie-outbound-b2b-reussir-sa-prospection-commerciale-momocs1c",

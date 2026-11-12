@@ -158,7 +158,7 @@ export const PRISE_RDV_CONTENT = {
       [...SERVICES.qualification, "Qualifier les leads que vous avez déjà."],
     ],
     articles: [
-      [...ARTICLES.pourquoiExternaliser, "Pourquoi et quand externaliser la prospection."],
+      [...ARTICLES.vraiCout, "Pourquoi et quand externaliser la prospection."],
       [...ARTICLES.kpiProspection, "Mesurer la prospection : les indicateurs utiles."],
       [...ARTICLES.prospectionPme, "Structurer la prospection dans une PME."],
     ],

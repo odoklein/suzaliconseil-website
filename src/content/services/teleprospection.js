@@ -198,7 +198,7 @@ export const TELEPROSPECTION_CONTENT = {
     ],
     articles: [
       [...ARTICLES.strategieOutbound, "Construire une séquence qui combine email, LinkedIn et téléphone."],
-      [...ARTICLES.pourquoiExternaliser, "Quand externaliser plutôt que recruter."],
+      [...ARTICLES.vraiCout, "Quand externaliser plutôt que recruter."],
       [...ARTICLES.prospectionPme, "Adapter la prospection à la taille d’une PME."],
     ],
   },
