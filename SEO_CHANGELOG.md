@@ -571,3 +571,15 @@ Re-indexing requested the same day (« added to a priority crawl queue »): `/se
 **To do by hand**
 - Search Console, about 2026-11-26: look again at the 3 searches. The merged pages should leave the results and the service page's position should improve.
 - Admin: the « Agence de génération de leads B2B : comment bien choisir » article still has a 117-character description (target 130–160).
+
+## 2026-11-12 — Weekly article (manual): « Script d'appel de prospection B2B : un modèle pas à pas »
+
+The automatic generator has been paused since 2026-10-22 (the `article_generation_attempts` table does not exist in production; creating it is a production database change, left to the owner), so no article was published during the week of 9 November. The owner asked for one anyway: drafted locally (`seo-reports/articles/admin/script-appel.txt`, local folder), approved, then published from the admin in the owner's Chrome. Topic chosen because no article or service page targets it (the phone counterpart of the cold emailing article); no figure and no claim about Suzali's results; 4 FAQ items.
+
+Before submitting, the 12 form fields were compared by SHA-256 with the approved file (identical). Settings: theme Commercial, AI cover image, « Publier immédiatement ».
+
+Production right after: `/actualites/script-d-appel-de-prospection-b2b-un-modele-pas-a-pas` → 200, clean slug, `<title>` « Script d'appel de prospection B2B : modèle | Suzali Conseil » (SEO title 42), description 144, self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + `FAQPage` (4 questions), the 4 internal links present (all 200), cover image, listed on `/actualites`. Not yet in the sitemap at that moment (it refreshes within the hour; check that it reaches 42 URLs). Indexing requested: « added to a priority crawl queue ».
+
+**To do by hand**
+- Owner (or whoever manages the database): run `docs/article-attempts-table.sql` once on the production Neon database to re-enable the weekly automatic article; then I test with `?dryRun=1`.
+- Team: add the article to the content plan.
