@@ -547,3 +547,39 @@ The admin page `/admin/articles/<id>` now has a « Titre de l'article (H1) » fi
 Used right away on the cold emailing article: H1 « Cold Emailing B2B France : La Stratégie Gagnante en 2024 » → « Cold emailing B2B en France : la méthode pas à pas ». Text, excerpt and FAQ checked by SHA-256 as unchanged before saving. Production: 200, H1 and `BlogPosting` headline updated, no « 2024 » left in the H1, `<title>` (SEO title) and canonical unchanged, FAQ 3 questions, `/actualites` shows the new title.
 
 Nothing to do by hand.
+
+## 2026-11-12 — T1: cannibalisation on « prospection commerciale externalisée » (PR #32)
+
+Figures read in Search Console on 2026-11-12 (last 3 months, per page, query containing the phrase). The team's content plan artifact could not be read from this account, so the numbers come directly from Search Console.
+
+| Search | Page | Impressions | Position |
+|---|---|---|---|
+| prospection commerciale externalisée | `/services/prospection-commerciale-externalisee` | 193 | 54 |
+| | article « guide complet 2024 » | 56 | 46 |
+| | article « Pourquoi externaliser… » | 58 (+7 on `www.`) | 84 |
+| leads b2b | `/services/generation-leads-b2b` | 712 of about 860 | 76 |
+| outbound | `/services/outbound-marketing-b2b` | 142 (+222 on `www.`) | 30 |
+
+Owner's decisions: keep the service page for the first search and merge the two articles; leave the « génération de leads b2b » and « outbound » searches as they are (the old Paris article was already merged in C4; the two outbound articles target other questions and link to the service page).
+
+Done (`src/data/article-merges.json`, with `src/lib/internal-links.js` and 6 files in `src/content/services/`): « …guide complet 2024 » → `/services/prospection-commerciale-externalisee`; « Pourquoi externaliser… » → `/actualites/internaliser-ou-externaliser-sa-prospection-le-vrai-cout`. Current and future clean slugs and the `/blog/` forms are covered, so each old URL goes to its target in one 308 hop; the two older redirects that led to « Pourquoi externaliser » now go straight to « vrai coût ». Nothing deleted: the articles stay in the database. Internal links of the service pages now point to the targets (« Marque blanche » links the « Prix d'une agence » article instead of the guide).
+
+Merged 13:09 UTC (`d2f0db8`), live by 13:15 UTC. Production: the 4 old URLs checked end on their target in one hop (200); sitemap **41 URLs** (was 43), neither merged article in the sitemap or in `/actualites`; `/services/commercial` has no link left to a merged article and links the « vrai coût » article.
+
+Re-indexing requested the same day (« added to a priority crawl queue »): `/services/prospection-commerciale-externalisee` and the « vrai coût » article.
+
+**To do by hand**
+- Search Console, about 2026-11-26: look again at the 3 searches. The merged pages should leave the results and the service page's position should improve.
+- Admin: the « Agence de génération de leads B2B : comment bien choisir » article still has a 117-character description (target 130–160).
+
+## 2026-11-12 — Weekly article (manual): « Script d'appel de prospection B2B : un modèle pas à pas »
+
+The automatic generator has been paused since 2026-10-22 (the `article_generation_attempts` table does not exist in production; creating it is a production database change, left to the owner), so no article was published during the week of 9 November. The owner asked for one anyway: drafted locally (`seo-reports/articles/admin/script-appel.txt`, local folder), approved, then published from the admin in the owner's Chrome. Topic chosen because no article or service page targets it (the phone counterpart of the cold emailing article); no figure and no claim about Suzali's results; 4 FAQ items.
+
+Before submitting, the 12 form fields were compared by SHA-256 with the approved file (identical). Settings: theme Commercial, AI cover image, « Publier immédiatement ».
+
+Production right after: `/actualites/script-d-appel-de-prospection-b2b-un-modele-pas-a-pas` → 200, clean slug, `<title>` « Script d'appel de prospection B2B : modèle | Suzali Conseil » (SEO title 42), description 144, self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + `FAQPage` (4 questions), the 4 internal links present (all 200), cover image, listed on `/actualites`. Not yet in the sitemap at that moment (it refreshes within the hour; check that it reaches 42 URLs). Indexing requested: « added to a priority crawl queue ».
+
+**To do by hand**
+- Owner (or whoever manages the database): run `docs/article-attempts-table.sql` once on the production Neon database to re-enable the weekly automatic article; then I test with `?dryRun=1`.
+- Team: add the article to the content plan.
