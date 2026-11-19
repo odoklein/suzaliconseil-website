@@ -583,3 +583,17 @@ Production right after: `/actualites/script-d-appel-de-prospection-b2b-un-modele
 **To do by hand**
 - Owner (or whoever manages the database): run `docs/article-attempts-table.sql` once on the production Neon database to re-enable the weekly automatic article; then I test with `?dryRun=1`.
 - Team: add the article to the content plan.
+
+## 2026-11-19 — Weekly article (manual): « Relancer un prospect B2B : quand, comment et avec quels messages »
+
+No article had been published during the week of 16 November (the automatic generator is still off, same cause as above). Drafted locally (`seo-reports/articles/admin/relance-prospect.txt`, local folder), approved by the owner, then published from the admin in the owner's Chrome. Topic: follow-up of prospects who do not reply, the sequel of the cold emailing and « script d'appel » articles; no article or service page targeted it. No figure and no claim about Suzali's results (deliberately no statistic on number or timing of follow-ups: no source). 4 FAQ items, 7 internal links (3 articles, 4 services).
+
+The 12 form fields were compared by SHA-256 with the approved file before submitting (identical); « Publier immédiatement », AI cover image, theme Commercial.
+
+Production right after: `/actualites/relancer-un-prospect-b2b-quand-comment-et-avec-quels-messages` → 200, clean slug, `<title>` « Relancer un prospect B2B : modèles | Suzali Conseil » (SEO title 34), description 150, self canonical, `index, follow`, one H1, `BlogPosting` + `BreadcrumbList` + `FAQPage` (4 questions), the 7 internal links present (all 200), listed on `/actualites`. Not yet in the sitemap at that moment (hourly refresh; it was at 42 URLs, the 12/11 article included). Indexing requested: « added to a priority crawl queue ». Search Console index report that day: 44 indexed pages (41 on 12/11), 339 not indexed (346).
+
+Side note: during this session the temporary working copy used for changelog edits lost its files from disk (cleaned up by the system); everything was already pushed, nothing was lost, and the main project folder was untouched.
+
+**To do by hand**
+- Same as above: run `docs/article-attempts-table.sql` once on the production database to re-enable the weekly automatic article.
+- Team: add the article to the content plan.
