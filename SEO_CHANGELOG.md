@@ -597,3 +597,13 @@ Side note: during this session the temporary working copy used for changelog edi
 **To do by hand**
 - Same as above: run `docs/article-attempts-table.sql` once on the production database to re-enable the weekly automatic article.
 - Team: add the article to the content plan.
+
+## 2026-11-19 — « Comment bien choisir » article: SEO title and description fixed
+
+`/actualites/agence-de-generation-de-leads-b2b-comment-bien-choisir-mug25o6t`, edited in the admin (« Modifier les métadonnées SEO ») after the owner's OK. Before: SEO title « Comment choisir son agence de génération » (cut off mid-sentence) and a 117-character description promising to « maximiser vos ROI » (an unsupported claim). After: « Choisir son agence de génération de leads » (41 characters, 58 with the brand suffix) and « Comment choisir une agence de génération de leads B2B : alignement stratégique, méthode, preuves terrain, tarifs et grille pour comparer les agences. » (149 characters, built from the article's own headings). Text, URL, canonical and FAQ (5 questions) unchanged.
+
+Production right after (the save refreshes the page, B15): 200, new `<title>` and description, `index, follow`, one H1, `FAQPage` 5 questions.
+
+This page was the last one in Search Console's « Discovered, currently not indexed » group (6 pages on 12/11, 1 on 19/11) and had never had an indexing request: requested now, « added to a priority crawl queue ». This closes the meta description item of the final report (`SEO_REPORT.md` §2); the other one (« agence outbound vs inbound », 105 characters) was fixed by B13.
+
+Nothing to do by hand.
