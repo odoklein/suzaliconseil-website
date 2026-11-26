@@ -31,6 +31,22 @@ export const OFFER_CATEGORIES = [
             tag: "Recommandé",
           },
           {
+            id: "contact-pack-lancement",
+            serviceHref: "/services/marketing-b2b-externalise",
+            name: "Pack Lancement",
+            price: "899 €",
+            billing: "/mois · 3 mois maximum",
+            description:
+              "L'offre test tout inclus pour les startups et petites PME : fichier, emailing, appels et suivi, sur 3 mois maximum.",
+            features: [
+              "Fichier de contacts ciblés",
+              "Campagne emailing",
+              "Appels et prise de rendez-vous",
+              "Suivi et reporting",
+            ],
+            tag: "Startups & PME",
+          },
+          {
             id: "contact-vente-rdv",
             serviceHref: "/services/prise-rendez-vous-b2b",
             name: "Vente au Rendez-Vous",

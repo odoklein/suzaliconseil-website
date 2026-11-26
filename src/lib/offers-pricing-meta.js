@@ -20,6 +20,8 @@ export const OFFER_PRICING = {
     cadence: "monthly",
     usage: { amount: 150, label: "par RDV validé et honoré" },
   },
+  // Offre test startups / petites PME : 899 € par mois, 3 mois maximum.
+  "contact-pack-lancement": { amount: 899, cadence: "monthly", maxMonths: 3 },
   "contact-vente-rdv": {
     amount: 599,
     cadence: "one-shot",
