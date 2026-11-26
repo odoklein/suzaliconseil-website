@@ -32,7 +32,7 @@ const DERIVED = [
   {
     question: "Comment sont facturées les différentes offres ?",
     answer:
-      `Quatre modes coexistent : un paiement unique (fichiers, packs SMS, projets web), un abonnement mensuel (${GROWTH_STANDARD.name}, avec une part variable par rendez-vous ; pack campagne complet), une facturation à l'usage (Qualification de Leads, ${VENTE_AU_RDV.name}) et le sur-devis pour les dispositifs sur mesure. Le prix exact de chaque offre est affiché, avec son nom, dans le catalogue.`,
+      `Quatre modes coexistent : un paiement unique (fichiers, packs SMS, projets web), un abonnement mensuel (${GROWTH_STANDARD.name}, avec une part variable par rendez-vous ; Pack Lancement, limité à 3 mois ; pack campagne complet), une facturation à l'usage (Qualification de Leads, ${VENTE_AU_RDV.name}) et le sur-devis pour les dispositifs sur mesure. Le prix exact de chaque offre est affiché, avec son nom, dans le catalogue.`,
     href: "/offres",
     label: "Voir le catalogue",
   },

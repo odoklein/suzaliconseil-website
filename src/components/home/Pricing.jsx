@@ -15,7 +15,7 @@ import { serviceLabel } from "../../lib/article-services";
  */
 const FEATURED = getOffersByIds([
   "file-starter-500",
-  "contact-vente-rdv",
+  "contact-pack-lancement",
   "contact-growth-standard",
 ]);
 
@@ -37,8 +37,8 @@ const Pricing = () => {
             delay={160}
             className="max-w-[44ch] text-lg leading-relaxed text-[#4E605B] lg:col-span-5 lg:pb-2"
           >
-            Testez une cible, remplissez un agenda ou pilotez toute votre
-            acquisition : trois points d&apos;entrée, sans engagement caché.
+            Testez une cible, lancez votre prospection sur 3 mois ou pilotez
+            toute votre acquisition : trois points d&apos;entrée, sans engagement caché.
           </Reveal>
         </div>
 
