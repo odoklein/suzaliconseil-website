@@ -547,3 +547,18 @@ The admin page `/admin/articles/<id>` now has a « Titre de l'article (H1) » fi
 Used right away on the cold emailing article: H1 « Cold Emailing B2B France : La Stratégie Gagnante en 2024 » → « Cold emailing B2B en France : la méthode pas à pas ». Text, excerpt and FAQ checked by SHA-256 as unchanged before saving. Production: 200, H1 and `BlogPosting` headline updated, no « 2024 » left in the H1, `<title>` (SEO title) and canonical unchanged, FAQ 3 questions, `/actualites` shows the new title.
 
 Nothing to do by hand.
+
+## 2026-11-26 — O1: new « Pack Lancement » offer (`52fe665`)
+
+Owner's offer for startups and small SMEs: **Pack Lancement, 899 € per month, 3 months maximum**, tag « Startups & PME ». Included: targeted contact file, emailing campaign, calls and appointment setting, follow-up and reporting. Data in `src/lib/offers-catalog.js` (+ `offers-pricing-meta.js`: monthly, `maxMonths: 3`).
+
+- Homepage price block: Pack Lancement replaces the Vente au Rendez-Vous (599 €) column → 290 € / 899 € / 1 590 €; intro line now « …lancez votre prospection sur 3 mois… ». The card's button links to `/services/marketing-b2b-externalise`.
+- `/offres`: listed in « Acquisition & RDV » after Growth Standard; the pricing FAQ billing answer mentions it. Vente au Rendez-Vous stays in the catalogue and on the prospection externalisée page.
+
+No PR: `gh` is not installed on this PC, so on the owner's instruction the branch `seo/O1-pack-lancement` was squashed locally and pushed to `main` (fast-forward, no force). Live about 6 minutes after the push. Production (11:09 local): `/` 200, one H1, self canonical, Pack Lancement + 899 € present, no 599 €; `/offres` 200, one H1, self canonical, offer present; `/services/prospection-commerciale-externalisee` 200, prices unchanged; `/sitemap.xml` and `/robots.txt` 200.
+
+Also made (outside git): post-visio sales PDF `commercial/Suzali-Conseil-Offres.pdf` (7 pages, prices read from the catalogue).
+
+**To do by hand**
+- Say whether prices are HT; neither the site nor the PDF says so.
+- Optional: mention the Pack Lancement on `/services/marketing-b2b-externalise`, where its card's button leads.
