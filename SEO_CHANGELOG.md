@@ -547,3 +547,11 @@ The admin page `/admin/articles/<id>` now has a « Titre de l'article (H1) » fi
 Used right away on the cold emailing article: H1 « Cold Emailing B2B France : La Stratégie Gagnante en 2024 » → « Cold emailing B2B en France : la méthode pas à pas ». Text, excerpt and FAQ checked by SHA-256 as unchanged before saving. Production: 200, H1 and `BlogPosting` headline updated, no « 2024 » left in the H1, `<title>` (SEO title) and canonical unchanged, FAQ 3 questions, `/actualites` shows the new title.
 
 Nothing to do by hand.
+
+## 2026-11-07 — `/equipe`: developer photo as a large tile (PR #30)
+
+Owner's request: the developer photo (`public/images/equipe/developpeur.webp`, 3:4 WebP, 119 KiB) opens the « L'équipe au travail » grid as a 2×2 tile labelled « Pôle Technologie · Développement », ahead of the 7 sales-team photos and the caption tile (3 full rows on desktop; full width on mobile). Intro sentence now « Développement, appels, emails, qualification des leads : une journée de l'équipe, à son poste. ». No name; the alt text describes the scene only. Approved after before/after captures and a local preview (`seo-reports/captures/equipe/`, local folder).
+
+Merged 14:31 UTC (`3c286d5`), live at 14:36 UTC: `/equipe` 200, one H1, the photo and its label in the HTML, `/images/equipe/developpeur.webp` 200.
+
+Nothing to do by hand.
